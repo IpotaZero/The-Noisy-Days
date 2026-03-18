@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--black);
+    color: var(--white);
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+
+    border: 1px solid var(--white);
+    border-radius: 0.1em;
+    padding: 0.2em 0;
+    width: 100%;
+
+    text-align: center;
+
+    &:hover {
+        background-color: var(--white);
+        color: var(--black);
+    }
+}
+
+.hidden {
+    display: none !important;
+}

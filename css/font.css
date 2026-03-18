@@ -1,0 +1,9 @@
+@font-face {
+    font-family: mincho;
+    src: url(../asset/font/KH-Dot-Hibiya-32.ttf);
+}
+
+@font-face {
+    font-family: fraktur;
+    src: url(../asset/font/DSCaslonGotisch.ttf);
+}

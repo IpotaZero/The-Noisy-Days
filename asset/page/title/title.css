@@ -1,0 +1,95 @@
+.page {
+    padding: 8cqw;
+    font-size: 4cqw;
+}
+
+h1 {
+    font-size: 32cqw;
+    font-weight: 100;
+    line-height: 0.9em;
+
+    font-family: fraktur;
+}
+
+.options {
+    gap: 4cqw;
+}
+
+button {
+    font-size: 8cqw;
+}
+
+#credit {
+    font-size: 3.5cqw;
+}
+
+.chapter-description {
+    display: flex;
+    flex-direction: column;
+    gap: 4cqw;
+
+    height: 32cqw;
+    width: 100%;
+
+    h2 {
+        width: 100%;
+        font-size: 8cqw;
+        border-bottom: 1px solid var(--white);
+    }
+
+    p {
+        font-size: 6cqw;
+    }
+}
+
+.act-description {
+    display: flex;
+    flex-direction: column;
+    gap: 4cqw;
+
+    height: 32cqw;
+    width: 100%;
+
+    h3 {
+        width: 100%;
+        font-size: 8cqw;
+        border-bottom: 1px solid var(--white);
+    }
+
+    p {
+        font-size: 6cqw;
+    }
+}
+
+.stage-button {
+    display: flex;
+    flex-direction: row;
+    gap: 2cqw;
+    padding: 2cqw;
+    width: 100%;
+
+    .stage-icon {
+        aspect-ratio: 1;
+        height: 16cqw;
+
+        background-color: var(--white);
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 1cqw;
+        width: 100%;
+
+        h4 {
+            font-size: 6cqw;
+            border-bottom: 1px solid var(--white);
+            text-align: left;
+        }
+
+        .stage-description {
+            font-size: 4cqw;
+            text-align: left;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+#container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+
+    height: 100%;
+    aspect-ratio: 9/16;
+
+    background-color: var(--black);
+    border: 1px solid var(--white);
+
+    container-type: inline-size;
+    font-family: mincho, serif;
+
+    /* pointer-events: none; */
+}
+
+/* スマホ用 */
+@media (aspect-ratio<=9/16) {
+    #container {
+        aspect-ratio: unset;
+        width: 100%;
+        height: 100%;
+        border: unset;
+    }
+}
