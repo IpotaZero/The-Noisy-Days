@@ -11,6 +11,22 @@ export default [
                         "stage-name": "Tutorial",
                         "description": "チュートリアル",
                     },
+                    {
+                        "stage-name": "Tutorial",
+                        "description": "チュートリアル",
+                    },
+                    {
+                        "stage-name": "Tutorial",
+                        "description": "チュートリアル",
+                    },
+                    {
+                        "stage-name": "Tutorial",
+                        "description": "チュートリアル",
+                    },
+                    {
+                        "stage-name": "Tutorial",
+                        "description": "チュートリアル",
+                    },
                 ],
             },
         ],

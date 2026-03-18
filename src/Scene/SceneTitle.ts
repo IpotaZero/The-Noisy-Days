@@ -7,11 +7,12 @@ import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
 
 export default class implements Scene {
+    private readonly pages = new Pages()
     private readonly selector
 
     constructor() {
         this.selector = new Selector({
-            "[data-stage]": { alias: "stage-button", expectedCount: 1 },
+            "[data-stage]": { alias: "stage-button", expectedCount: 5 },
         })
     }
 
@@ -19,8 +20,7 @@ export default class implements Scene {
         const html = createPage()
         Dom.container.insertAdjacentHTML("beforeend", html)
 
-        const pages = new Pages()
-        await pages.loadFromFile(Dom.container, "./asset/page/title/title.html", {
+        await this.pages.loadFromFile(Dom.container, "./asset/page/title/title.html", {
             history: ["title"],
             override: false,
         })
@@ -38,16 +38,22 @@ export default class implements Scene {
     async end(): Promise<void> {}
 
     private gotoStage(stageName: string) {
-        SceneChanger.goto(async () => {
-            // @ts-ignore
-            const modules = import.meta.glob("../Stage/*")
-            const url = `../Stage/Stage${stageName}.ts`
-            const { default: Stage } = await modules[url]()
+        SceneChanger.goto(
+            async () => {
+                // @ts-ignore
+                const modules = import.meta.glob("../Stage/*")
+                const url = `../Stage/Stage${stageName}.ts`
+                const { default: Stage } = await modules[url]()
 
-            const stage = new Stage()
-            const scene = await import(`./SceneStage`).then((module) => new module.default(stage))
-            return scene
-        })
+                const stage = new Stage()
+                const scene = await import(`./SceneStage`).then((module) => new module.default(stage))
+                return scene
+            },
+            {
+                msIn: 1000,
+                msOut: 1000,
+            },
+        )
     }
 }
 

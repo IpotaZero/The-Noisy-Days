@@ -1,5 +1,5 @@
 .page {
-    padding: 8cqw;
+    padding: 6cqw;
     font-size: 4cqw;
 }
 
@@ -47,7 +47,7 @@ button {
     flex-direction: column;
     gap: 4cqw;
 
-    height: 32cqw;
+    height: 24cqw;
     width: 100%;
 
     h3 {

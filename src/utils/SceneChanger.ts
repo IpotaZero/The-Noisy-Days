@@ -27,8 +27,8 @@ export class SceneChanger {
             fadeOut = Transition.fadeOut,
             fadeIn = Transition.fadeIn,
 
-            msIn = 0,
-            msOut = 0,
+            msIn = 200,
+            msOut = 200,
 
             afterLoad = () => {},
         }: {
