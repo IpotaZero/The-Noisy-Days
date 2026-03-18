@@ -19,12 +19,20 @@ export default class extends Stage {
         yield* this.text("「……敵飛行体の殲滅ッ！」")
 
         // 操作説明
-        if (navigator.userAgent.includes("Windows")) {
+        if (isSmartPhone()) {
+            yield* this.text("画面をスライドして移動")
+        } else {
             yield* this.text("矢印キーで移動")
             yield* this.text("Shiftキーで低速移動")
             yield* this.text("Controlキーで高速移動")
-        } else {
-            yield* this.text("画面をスライドして移動")
         }
+    }
+}
+
+function isSmartPhone() {
+    if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+        return true
+    } else {
+        return false
     }
 }

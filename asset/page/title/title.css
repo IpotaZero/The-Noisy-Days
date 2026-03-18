@@ -9,6 +9,10 @@ h1 {
     line-height: 0.9em;
 
     font-family: fraktur;
+
+    text-shadow:
+        4px 4px 0px rgba(242, 13, 13, 0.5),
+        8px 8px 0px rgba(0, 0, 0, 0.2);
 }
 
 .options {
@@ -21,6 +25,58 @@ button {
 
 #credit {
     font-size: 3.5cqw;
+}
+
+#chapters {
+    section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        gap: 0.5em;
+
+        h2 {
+            font-size: 8cqw;
+            border-bottom: 1px solid var(--white);
+        }
+
+        p {
+            font-size: 6cqw;
+        }
+    }
+}
+
+.chapter-button {
+    display: flex;
+    flex-direction: row;
+    gap: 2cqw;
+    padding: 2cqw;
+    width: 100%;
+
+    .chapter-icon {
+        aspect-ratio: 1;
+        height: 16cqw;
+
+        background-color: var(--white);
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 1cqw;
+        width: 100%;
+
+        h2 {
+            font-size: 6cqw;
+            border-bottom: 1px solid var(--white);
+            text-align: left;
+        }
+
+        .chapter-description {
+            font-size: 4cqw;
+            text-align: left;
+        }
+    }
 }
 
 .chapter-description {
@@ -42,12 +98,44 @@ button {
     }
 }
 
+.act-button {
+    display: flex;
+    flex-direction: row;
+    gap: 2cqw;
+    padding: 2cqw;
+    width: 100%;
+
+    .act-icon {
+        aspect-ratio: 1;
+        height: 16cqw;
+
+        background-color: var(--white);
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 1cqw;
+        width: 100%;
+
+        h3 {
+            font-size: 6cqw;
+            border-bottom: 1px solid var(--white);
+            text-align: left;
+        }
+
+        .act-description {
+            font-size: 4cqw;
+            text-align: left;
+        }
+    }
+}
+
 .act-description {
     display: flex;
     flex-direction: column;
     gap: 4cqw;
 
-    height: 24cqw;
     width: 100%;
 
     h3 {

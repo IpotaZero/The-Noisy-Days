@@ -12,11 +12,13 @@ export default class implements Scene {
 
     constructor() {
         this.selector = new Selector({
-            "[data-stage]": { alias: "stage-button", expectedCount: 5 },
+            "[data-stage]": { alias: "stage-button", expectedCount: 4 },
         })
     }
 
     async start(): Promise<void> {
+        Dom.container.innerHTML = ""
+
         const html = createPage()
         Dom.container.insertAdjacentHTML("beforeend", html)
 
@@ -58,7 +60,20 @@ export default class implements Scene {
 }
 
 function createPage(): string {
-    return stages
+    const chaptersPage = `
+        <div class="page" id="chapters">
+            <section>
+                <h2>Chapters</h2>
+                <p>aaaaaaaa</p>
+            </section>
+
+            <div class="options" data-direction="column">${stages.map(createChapterButton)}</div>
+
+            <button data-back>Back</button>
+        </div>
+    `
+
+    const chapterPages = stages
         .map((chapter) => {
             const chapterPage = `
                 <div class="page" id="chapter-${chapter["chapter-name"]}">
@@ -68,7 +83,7 @@ function createPage(): string {
                     </section>
 
                     <div class="options" data-direction="column">
-                        ${chapter["acts"].map((act) => `<button data-link="act-${act["act-name"]}">${act["act-name"]}</button>`).join("")}
+                        ${chapter["acts"].map(createActButton).join("")}
                     </div>
 
                     <button data-back>Back</button>
@@ -80,12 +95,44 @@ function createPage(): string {
             return chapterPage + actPages
         })
         .join("")
+
+    return chaptersPage + chapterPages
+}
+
+type Chapter = {
+    "chapter-name": string
+    "chapter-description": string
+    "acts": Act[]
+}
+
+function createChapterButton(chapter: Chapter) {
+    return `
+        <button class="chapter-button" data-link="chapter-${chapter["chapter-name"]}">
+            <img class="chapter-icon" />
+            <section>
+                <h2>${chapter["chapter-name"]}</h2>
+                <p class="chapter-description">${chapter["chapter-description"]}</p>
+            </section>
+        </button>
+    `
 }
 
 type Act = {
     "act-name": string
     "description": string
     "stages": Stage[]
+}
+
+function createActButton(act: Act): string {
+    return `
+        <button class="act-button" data-link="act-${act["act-name"]}">
+            <img class="act-icon" />
+            <section>
+                <h3>${act["act-name"]}</h3>
+                <p class="act-description">${act["description"]}</p>
+            </section>
+        </button>
+    `
 }
 
 function createActPage(act: Act): string {
