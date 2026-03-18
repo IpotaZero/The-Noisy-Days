@@ -11,7 +11,10 @@ export default class implements Scene {
     private readonly selector
     private readonly looper: Looper
 
-    constructor(stage: Stage) {
+    constructor(
+        stage: Stage,
+        private readonly history: readonly string[],
+    ) {
         let done = false
 
         this.looper = new Looper(
@@ -40,11 +43,12 @@ export default class implements Scene {
     async end(): Promise<void> {}
 
     private gotoNextScene() {
-        const history = ["title", "chapters", "chapter-ch0.", "act-Kari"]
-
-        SceneChanger.goto(() => import("./SceneTitle").then((module) => new module.default({ history })), {
-            msIn: 500,
-            msOut: 500,
-        })
+        SceneChanger.goto(
+            () => import("./SceneTitle").then((module) => new module.default({ history: this.history })),
+            {
+                msIn: 500,
+                msOut: 500,
+            },
+        )
     }
 }

@@ -48,7 +48,9 @@ export default class implements Scene {
                 const { default: Stage } = await modules[url]()
 
                 const stage = new Stage()
-                const scene = await import(`./SceneStage`).then((module) => new module.default(stage))
+                const scene = await import(`./SceneStage`).then(
+                    (module) => new module.default(stage, this.pages.getHistory()),
+                )
                 return scene
             },
             {

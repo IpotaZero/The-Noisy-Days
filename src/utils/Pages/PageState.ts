@@ -14,6 +14,10 @@ export class PageState {
         this.currentPageId = first
     }
 
+    getHistory(): readonly string[] {
+        return this.history
+    }
+
     goto(pageId: string) {
         this.history.push(pageId)
         this.currentPageId = pageId

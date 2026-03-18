@@ -48,6 +48,10 @@ export class Pages {
         })
     }
 
+    getHistory() {
+        return this.state.getHistory()
+    }
+
     getPage(pageId: string, option: { noError: true }): HTMLElement | undefined
     getPage(pageId: string, option?: { noError?: false }): HTMLElement
     getPage(pageId: string, option: { noError?: boolean } = {}) {
