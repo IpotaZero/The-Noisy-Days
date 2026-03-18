@@ -3,8 +3,18 @@ import { Pages } from "../utils/Pages/Pages"
 import { Dom } from "../Dom"
 
 import stages from "../stages"
+import { Selector } from "../utils/Selector"
+import { SceneChanger } from "../utils/SceneChanger"
 
 export default class implements Scene {
+    private readonly selector
+
+    constructor() {
+        this.selector = new Selector({
+            "[data-stage]": { alias: "stage-button", expectedCount: 1 },
+        })
+    }
+
     async start(): Promise<void> {
         const html = createPage()
         Dom.container.insertAdjacentHTML("beforeend", html)
@@ -14,9 +24,31 @@ export default class implements Scene {
             history: ["title"],
             override: false,
         })
+
+        this.selector.load(Dom.container)
+
+        this.selector.onClick("stage-button", ({ element }) => {
+            const stageName = element.dataset.stage
+            if (!stageName) throw new Error("Stage name is missing")
+
+            this.gotoStage(stageName)
+        })
     }
 
     async end(): Promise<void> {}
+
+    private gotoStage(stageName: string) {
+        SceneChanger.goto(async () => {
+            // @ts-ignore
+            const modules = import.meta.glob("../Stage/*")
+            const url = `../Stage/Stage${stageName}.ts`
+            const { default: Stage } = await modules[url]()
+
+            const stage = new Stage()
+            const scene = await import(`./SceneStage`).then((module) => new module.default(stage))
+            return scene
+        })
+    }
 }
 
 function createPage(): string {
@@ -74,7 +106,7 @@ type Stage = {
 
 function createStageButton(stage: Stage): string {
     return `
-        <button class="stage-button">
+        <button class="stage-button" data-stage="${stage["stage-name"]}">
             <img class="stage-icon" />
             <section>
                 <h4>${stage["stage-name"]}</h4>
