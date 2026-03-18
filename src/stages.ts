@@ -5,6 +5,27 @@ const KariStages = [
     },
 ]
 
+const Kari2Stages = [
+    {
+        "stage-name": "シオン",
+        "description": "ああああ",
+    },
+]
+
+const Kari3Stages = [
+    {
+        "stage-name": "SILO",
+        "description": "ああああ",
+    },
+]
+
+const Kari4Stages = [
+    {
+        "stage-name": "一年前",
+        "description": "ああああ",
+    },
+]
+
 const ch0Acts = [
     {
         "act-name": "Kari",
@@ -14,17 +35,17 @@ const ch0Acts = [
     {
         "act-name": "Kari2",
         "description": "後で書きます",
-        "stages": KariStages,
+        "stages": Kari2Stages,
     },
     {
         "act-name": "Kari3",
         "description": "後で書きます",
-        "stages": KariStages,
+        "stages": Kari3Stages,
     },
     {
         "act-name": "Kari4",
         "description": "後で書きます",
-        "stages": KariStages,
+        "stages": Kari4Stages,
     },
 ]
 

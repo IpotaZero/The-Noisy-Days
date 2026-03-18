@@ -6,7 +6,7 @@ export class PageState {
     private history: string[] = []
     private transitioning: boolean = false
 
-    constructor(history: string[] | undefined) {
+    constructor(history: readonly string[] | undefined) {
         // Initialize history
         const first = history && history.length ? history.at(-1)! : "first"
         this.history = history && history.length ? history.slice(0, -1) : []

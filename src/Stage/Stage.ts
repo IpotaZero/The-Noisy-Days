@@ -18,7 +18,7 @@ export abstract class Stage {
     protected *text(text: string): Generator<void, void, unknown> {
         const p = document.createElement("p")
         p.classList.add("stage-text")
-        p.textContent = text
+        p.innerHTML = text
         Dom.container.appendChild(p)
 
         yield* this.ok()

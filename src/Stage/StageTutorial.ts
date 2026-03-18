@@ -4,7 +4,7 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(60)
 
-        yield* this.text("プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう荒野。")
+        yield* this.text("プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう廃墟群。")
         yield* this.text("虫の羽音の様な騒音と共に小さな人影が飛び去って行く。")
 
         yield* this.text("『こちら本部、シオン、聴こえるか。』")
@@ -30,9 +30,5 @@ export default class extends Stage {
 }
 
 function isSmartPhone() {
-    if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
-        return true
-    } else {
-        return false
-    }
+    return !!navigator.userAgent.match(/iPhone|Android.+Mobile/)
 }

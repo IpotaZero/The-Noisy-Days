@@ -5,7 +5,7 @@ import { PageState } from "./PageState"
 
 export type FadeOption = Partial<{ msIn: number; msOut: number }>
 type GotoOption = FadeOption & { back?: boolean }
-type LoadOption = Partial<{ history: string[]; override: boolean }>
+type LoadOption = Partial<{ history: readonly string[]; override: boolean }>
 
 /**
  * Pages <- Dom, Run, State, EventSetter

@@ -10,7 +10,7 @@ export default class implements Scene {
     private readonly pages = new Pages()
     private readonly selector
 
-    constructor() {
+    constructor(private readonly config: { history?: readonly string[] } = {}) {
         this.selector = new Selector({
             "[data-stage]": { alias: "stage-button", expectedCount: 4 },
         })
@@ -23,7 +23,7 @@ export default class implements Scene {
         Dom.container.insertAdjacentHTML("beforeend", html)
 
         await this.pages.loadFromFile(Dom.container, "./asset/page/title/title.html", {
-            history: ["title"],
+            history: this.config.history ?? ["title"],
             override: false,
         })
 
