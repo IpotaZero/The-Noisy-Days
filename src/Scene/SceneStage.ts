@@ -23,7 +23,7 @@ export default class implements Scene {
         let done = false
 
         this.looper = new Looper(
-            60,
+            30,
             () => {
                 done = stage.tick()
                 this.tick()
@@ -74,7 +74,10 @@ export default class implements Scene {
 
         this.ctx.restore()
 
-        g.bullets = g.bullets.filter((b) => b.life > 0)
+        g.bullets = g.bullets.filter((b) => {
+            b.tick()
+            return b.life > 0
+        })
     }
 
     private gotoNextScene() {

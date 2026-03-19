@@ -8,3 +8,5 @@ export const g = {
     width: 630,
     height: 1120,
 }
+
+export const T = Math.PI * 2

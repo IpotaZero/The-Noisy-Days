@@ -15,13 +15,41 @@ export class Bullet {
     collision = Bullet.Collision.ball
 
     private g: Generator[]
+    private gs: ((me: Bullet) => Generator)[] = []
 
     constructor() {
         this.g = [this.move(), this.boundary()]
     }
 
+    init() {
+        this.g.push(...this.gs.map((g) => g(this)))
+    }
+
     tick() {
         this.g = this.g.filter((g) => !g.next().done)
+    }
+
+    G(g: (me: Bullet) => Generator) {
+        this.gs.push(g)
+    }
+
+    F(f: (me: Bullet) => void, count = Infinity) {
+        this.G(function* (me) {
+            while (count--) {
+                f(me)
+                yield
+            }
+        })
+    }
+
+    clone(): Bullet {
+        const b = { ...this }
+
+        b.gs = [...this.gs]
+        b.g = [...this.g]
+        ;(b as any).__proto__ = Bullet.prototype
+
+        return b
     }
 
     private *move() {

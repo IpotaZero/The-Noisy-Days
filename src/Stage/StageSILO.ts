@@ -2,7 +2,7 @@ import { Stage } from "./Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
-        yield* this.wait(60)
+        yield* this.wait(30)
 
         yield* this.text("機械大戦の終結後、人は己らの行いを反省した。")
         yield* this.text("だが、東アジア自治体の取った方法は逆説的なものであった。")

@@ -1,10 +1,12 @@
 import { Bullet } from "../Game/Bullet"
-import { g } from "../global"
+import { remodel } from "../Game/Remodel"
+import { vec } from "../Game/Vec"
+import { g, T } from "../global"
 import { Stage } from "./Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
-        yield* this.wait(60)
+        yield* this.wait(30)
 
         yield* this.text("プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう廃墟群。")
         yield* this.text("虫の羽音の様な騒音と共に小さな人影が飛び去って行く。")
@@ -21,7 +23,11 @@ export default class extends Stage {
 
         // ここでドローンが飛び出す
 
-        g.bullets.push(new Bullet())
+        remodel([new Bullet()])
+            .p(vec(0, 0))
+            .speed(8)
+            .radian(T / 4)
+            .fire()
 
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 

@@ -2,7 +2,7 @@ import { Stage } from "./Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
-        yield* this.wait(60)
+        yield* this.wait(30)
 
         yield* this.text("「あなた、合成人でしょう。」", { name: "サカイ" })
         yield* this.text("「誰だアンタは。」", { name: "シオン" })
@@ -26,7 +26,7 @@ export default class extends Stage {
 
         // 戦闘
 
-        yield* this.wait(60)
+        yield* this.wait(30)
 
         yield* this.text("「……はは、はははっ!」", { name: "シオン" })
         yield* this.text("「善意が、傍から見ればこんなにも滑稽だなんて!」", { name: "シオン" })

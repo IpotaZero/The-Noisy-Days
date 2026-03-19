@@ -2,7 +2,7 @@ import { Stage } from "./Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
-        yield* this.wait(60)
+        yield* this.wait(30)
 
         // 先生
         yield* this.text(
