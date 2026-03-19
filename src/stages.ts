@@ -21,7 +21,7 @@ const Kari3Stages = [
 
 const Kari4Stages = [
     {
-        "stage-name": "一年前",
+        "stage-name": "一年前その1",
         "description": "ああああ",
     },
 ]
