@@ -27,7 +27,7 @@ export class BulletDrawer {
         const context = canvas.getContext("2d")!
 
         context.shadowColor = bullet.color
-        context.shadowBlur = 10
+        context.shadowBlur = 16
 
         context.beginPath()
         context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)

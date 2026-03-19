@@ -1,4 +1,5 @@
 import { Bullet } from "../Game/Bullet"
+import { Enemy } from "../Game/Enemy"
 import { remodel } from "../Game/Remodel"
 import { vec } from "../Game/Vec"
 import { g, T } from "../global"
@@ -22,15 +23,7 @@ export default class extends Stage {
         yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
 
         // ここでドローンが飛び出す
-
-        remodel([new Bullet()])
-            .p(vec(0, 0))
-            .speed(8)
-            .radian(T / 4)
-            .nway(7, T / 12)
-            .fire()
-
-        console.log(g.bullets)
+        g.enemies.push(new EnemyTutorial())
 
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
@@ -42,9 +35,29 @@ export default class extends Stage {
             yield* this.text("Shiftキーで低速移動")
             yield* this.text("Controlキーで高速移動")
         }
+
+        yield* this.waitDefeatEnemy()
     }
 }
 
 function isSmartPhone() {
     return !!navigator.userAgent.match(/iPhone|Android.+Mobile/)
+}
+
+class EnemyTutorial extends Enemy {
+    constructor() {
+        super(1000)
+    }
+
+    *G() {
+        remodel([new Bullet()])
+            .colorful(this.frame)
+            .p(this.p.clone())
+            .speed(8)
+            .radian(T / 4)
+            .nway(7, T / 12)
+            .fire()
+
+        yield* Array(10)
+    }
 }

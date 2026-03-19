@@ -1,4 +1,5 @@
 import { Dom } from "../Dom"
+import { g } from "../global"
 
 export abstract class Stage {
     private readonly generator: Generator<void, void, unknown>
@@ -63,5 +64,9 @@ export abstract class Stage {
         }
 
         abort.abort()
+    }
+
+    protected *waitDefeatEnemy() {
+        while (g.enemies.length > 0) yield
     }
 }

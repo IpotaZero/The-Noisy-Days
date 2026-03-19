@@ -72,11 +72,20 @@ export default class implements Scene {
             this.drawer.draw(b, this.ctx)
         })
 
+        g.enemies.forEach((e) => {
+            e.draw(this.ctx)
+        })
+
         this.ctx.restore()
 
         g.bullets = g.bullets.filter((b) => {
             b.tick()
             return b.life > 0
+        })
+
+        g.enemies = g.enemies.filter((e) => {
+            e.tick()
+            return e.life > 0
         })
     }
 

@@ -28,6 +28,10 @@ class Remodel {
         g.bullets.push(...this.bullets)
     }
 
+    colorful(seed: number) {
+        return this.set("color", `hsl(${seed % 360} 100% 50%)`)
+    }
+
     nway(num: number, angle: number) {
         this.bullets = this.bullets.flatMap((b) =>
             Array.from({ length: num }, (_, i) => {
