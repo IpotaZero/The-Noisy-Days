@@ -9,5 +9,7 @@ export default class extends Stage {
         yield* this.text("『Social Integration and Longevity Operation』<br>──通称 SILO")
         yield* this.text("アルゴリズムによる、人の同質コミュニティへの自動振り分け機構。")
         yield* this.text("謳い文句は『もう二度と、憎しみが戦争になる前に』。")
+
+        yield* this.text("「……それが大戦の原因というのが分からないのか。」", { name: "シオン" })
     }
 }

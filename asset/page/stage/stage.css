@@ -1,14 +1,32 @@
-.stage-text {
+.stage-text-container {
+    display: flex;
+    flex-direction: column;
+
     position: absolute;
     left: 1em;
     bottom: 1em;
 
+    width: calc(100% - 2em);
+    height: 8em;
+
     font-size: 5.5cqw;
 
-    width: calc(100% - 2em);
-    height: 6em;
+    border-collapse: collapse;
 
+    animation: fade-in 0.2s ease-out forwards;
+}
+
+.stage-text-name {
+    width: fit-content;
+    padding: 0.25em 0.5em;
+    border: 1px solid var(--white);
+    border-radius: 0.1em;
+}
+
+.stage-text {
     background-color: var(--black-vale);
+
+    flex: 1;
 
     border: 1px solid var(--white);
     border-radius: 0.1em;
@@ -16,12 +34,6 @@
     line-height: 1.2;
 
     cursor: pointer;
-
-    animation: fade-in 0.2s ease-out forwards;
-
-    &:hover {
-        box-shadow: 0 0 0.5em var(--white);
-    }
 
     &::after {
         content: "/";

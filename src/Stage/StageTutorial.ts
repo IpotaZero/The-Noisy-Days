@@ -7,16 +7,19 @@ export default class extends Stage {
         yield* this.text("プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう廃墟群。")
         yield* this.text("虫の羽音の様な騒音と共に小さな人影が飛び去って行く。")
 
-        yield* this.text("『こちら本部、シオン、聴こえるか。』")
-        yield* this.text("「こちらシオン、聴こえるよ。」")
+        yield* this.text("『こちら本部、シオン、聴こえるか。』", { name: "本部" })
+        yield* this.text("「こちらシオン、聴こえるよ。」", { name: "シオン" })
 
         yield* this.text("酷くノイズの掛かった声がスピーカを通して流れてくる。")
-        yield* this.text("『これより高ジャミング地帯へと突入するため通信は途切れる。念のため作戦を復唱せよ。作戦は……』")
-        yield* this.text("「言わなくても分かってる。作戦は……」")
+        yield* this.text(
+            "『これより高ジャミング地帯へと突入するため通信は途切れる。念のため作戦を復唱せよ。作戦は……』",
+            { name: "本部" },
+        )
+        yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
 
         // ここでドローンが飛び出す
 
-        yield* this.text("「……敵飛行体の殲滅ッ！」")
+        yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
         // 操作説明
         if (isSmartPhone()) {

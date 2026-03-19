@@ -15,15 +15,21 @@ export abstract class Stage {
 
     protected abstract G(): Generator<void, void, unknown>
 
-    protected *text(text: string): Generator<void, void, unknown> {
-        const p = document.createElement("p")
-        p.classList.add("stage-text")
-        p.innerHTML = text
-        Dom.container.appendChild(p)
+    protected *text(text: string, option: { name?: string } = {}): Generator<void, void, unknown> {
+        const div = document.createElement("div")
+
+        const name = option.name ? `<div class="stage-text-name">${option.name}</div>` : ""
+
+        div.innerHTML = `
+            ${name}
+            <p class="stage-text">${text}</p>
+        `
+        div.classList.add("stage-text-container")
+        Dom.container.appendChild(div)
 
         yield* this.ok()
 
-        p.remove()
+        div.remove()
     }
 
     protected *wait(frame: number): Generator<void, void, unknown> {
