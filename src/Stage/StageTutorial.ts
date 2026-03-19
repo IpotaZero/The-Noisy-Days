@@ -1,3 +1,5 @@
+import { Bullet } from "../Game/Bullet"
+import { g } from "../global"
 import { Stage } from "./Stage"
 
 export default class extends Stage {
@@ -18,6 +20,8 @@ export default class extends Stage {
         yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
 
         // ここでドローンが飛び出す
+
+        g.bullets.push(new Bullet())
 
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
