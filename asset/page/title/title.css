@@ -8,13 +8,11 @@ h1 {
     font-weight: 100;
     line-height: 0.9em;
 
-    font-family: fraktur;
-
     letter-spacing: 2cqw;
 
     text-shadow:
-        4px 4px 0px rgba(242, 13, 13, 0.5),
-        8px 8px 0px rgba(0, 0, 0, 0.2);
+        1cqw 1cqw 0px rgba(242, 13, 13, 0.5),
+        2cqw 2cqw 0px rgba(0, 0, 0, 0.2);
 }
 
 .options {
