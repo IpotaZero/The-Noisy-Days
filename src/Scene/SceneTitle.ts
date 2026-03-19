@@ -12,7 +12,7 @@ export default class implements Scene {
 
     constructor(private readonly config: { history?: readonly string[] } = {}) {
         this.selector = new Selector({
-            "[data-stage]": { alias: "stage-button", expectedCount: 4 },
+            "[data-stage]": { alias: "stage-button", expectedCount: 16 },
         })
     }
 
@@ -64,12 +64,12 @@ export default class implements Scene {
 function createPage(): string {
     const chaptersPage = `
         <div class="page" id="chapters">
-            <section>
+            <section class="page-description">
                 <h2>Chapters</h2>
                 <p>aaaaaaaa</p>
             </section>
 
-            <div class="options" data-direction="column">${stages.map(createChapterButton)}</div>
+            <div class="options" data-direction="column">${stages.map(createChapterButton).join("")}</div>
 
             <button data-back>Back</button>
         </div>
@@ -79,7 +79,7 @@ function createPage(): string {
         .map((chapter) => {
             const chapterPage = `
                 <div class="page" id="chapter-${chapter["chapter-name"]}">
-                    <section class="chapter-description">
+                    <section class="page-description">
                         <h2>${chapter["chapter-name"]}</h2>
                         <p>${chapter["chapter-description"]}</p>
                     </section>
@@ -109,11 +109,11 @@ type Chapter = {
 
 function createChapterButton(chapter: Chapter) {
     return `
-        <button class="chapter-button" data-link="chapter-${chapter["chapter-name"]}">
-            <img class="chapter-icon" />
+        <button class="button" data-link="chapter-${chapter["chapter-name"]}">
+            <img class="icon" />
             <section>
                 <h2>${chapter["chapter-name"]}</h2>
-                <p class="chapter-description">${chapter["chapter-description"]}</p>
+                <p class="description">${chapter["chapter-description"]}</p>
             </section>
         </button>
     `
@@ -127,11 +127,11 @@ type Act = {
 
 function createActButton(act: Act): string {
     return `
-        <button class="act-button" data-link="act-${act["act-name"]}">
-            <img class="act-icon" />
+        <button class="button" data-link="act-${act["act-name"]}">
+            <img class="icon" />
             <section>
                 <h3>${act["act-name"]}</h3>
-                <p class="act-description">${act["description"]}</p>
+                <p class="description">${act["description"]}</p>
             </section>
         </button>
     `
@@ -140,7 +140,7 @@ function createActButton(act: Act): string {
 function createActPage(act: Act): string {
     return `
         <div class="page" id="act-${act["act-name"]}">
-            <section class="act-description">
+            <section class="page-description">
                 <h3>${act["act-name"]}</h3>
                 <p>${act["description"]}</p>
             </section>
@@ -161,11 +161,11 @@ type Stage = {
 
 function createStageButton(stage: Stage): string {
     return `
-        <button class="stage-button" data-stage="${stage["stage-name"]}">
-            <img class="stage-icon" />
+        <button class="button" data-stage="${stage["stage-name"]}">
+            <img class="icon" />
             <section>
                 <h4>${stage["stage-name"]}</h4>
-                <p class="stage-description">${stage["description"]}</p>
+                <p class="description">${stage["description"]}</p>
             </section>
         </button>
     `

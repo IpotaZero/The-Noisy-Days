@@ -27,68 +27,16 @@ button {
     font-size: 3.5cqw;
 }
 
-#chapters {
-    section {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-
-        gap: 0.5em;
-
-        h2 {
-            font-size: 8cqw;
-            border-bottom: 1px solid var(--white);
-        }
-
-        p {
-            font-size: 6cqw;
-        }
-    }
-}
-
-.chapter-button {
-    display: flex;
-    flex-direction: row;
-    gap: 2cqw;
-    padding: 2cqw;
-    width: 100%;
-
-    .chapter-icon {
-        aspect-ratio: 1;
-        height: 16cqw;
-
-        background-color: var(--white);
-    }
-
-    section {
-        display: flex;
-        flex-direction: column;
-        gap: 1cqw;
-        width: 100%;
-
-        h2 {
-            font-size: 6cqw;
-            border-bottom: 1px solid var(--white);
-            text-align: left;
-        }
-
-        .chapter-description {
-            font-size: 4cqw;
-            text-align: left;
-        }
-    }
-}
-
-.chapter-description {
+.page-description {
     display: flex;
     flex-direction: column;
-    gap: 4cqw;
-
-    height: 32cqw;
     width: 100%;
 
-    h2 {
-        width: 100%;
+    gap: 0.5em;
+
+    h2,
+    h3,
+    h4 {
         font-size: 8cqw;
         border-bottom: 1px solid var(--white);
     }
@@ -98,14 +46,14 @@ button {
     }
 }
 
-.act-button {
+.button {
     display: flex;
     flex-direction: row;
     gap: 2cqw;
     padding: 2cqw;
     width: 100%;
 
-    .act-icon {
+    .icon {
         aspect-ratio: 1;
         height: 16cqw;
 
@@ -118,64 +66,15 @@ button {
         gap: 1cqw;
         width: 100%;
 
-        h3 {
-            font-size: 6cqw;
-            border-bottom: 1px solid var(--white);
-            text-align: left;
-        }
-
-        .act-description {
-            font-size: 4cqw;
-            text-align: left;
-        }
-    }
-}
-
-.act-description {
-    display: flex;
-    flex-direction: column;
-    gap: 4cqw;
-
-    width: 100%;
-
-    h3 {
-        width: 100%;
-        font-size: 8cqw;
-        border-bottom: 1px solid var(--white);
-    }
-
-    p {
-        font-size: 6cqw;
-    }
-}
-
-.stage-button {
-    display: flex;
-    flex-direction: row;
-    gap: 2cqw;
-    padding: 2cqw;
-    width: 100%;
-
-    .stage-icon {
-        aspect-ratio: 1;
-        height: 16cqw;
-
-        background-color: var(--white);
-    }
-
-    section {
-        display: flex;
-        flex-direction: column;
-        gap: 1cqw;
-        width: 100%;
-
+        h2,
+        h3,
         h4 {
             font-size: 6cqw;
             border-bottom: 1px solid var(--white);
             text-align: left;
         }
 
-        .stage-description {
+        .description {
             font-size: 4cqw;
             text-align: left;
         }

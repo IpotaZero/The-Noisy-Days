@@ -49,10 +49,94 @@ const ch0Acts = [
     },
 ]
 
+const ch1Acts = [
+    {
+        "act-name": "Kari",
+        "description": "後で書きます",
+        "stages": KariStages,
+    },
+    {
+        "act-name": "Kari2",
+        "description": "後で書きます",
+        "stages": Kari2Stages,
+    },
+    {
+        "act-name": "Kari3",
+        "description": "後で書きます",
+        "stages": Kari3Stages,
+    },
+    {
+        "act-name": "Kari4",
+        "description": "後で書きます",
+        "stages": Kari4Stages,
+    },
+]
+
+const ch2Acts = [
+    {
+        "act-name": "Kari",
+        "description": "後で書きます",
+        "stages": KariStages,
+    },
+    {
+        "act-name": "Kari2",
+        "description": "後で書きます",
+        "stages": Kari2Stages,
+    },
+    {
+        "act-name": "Kari3",
+        "description": "後で書きます",
+        "stages": Kari3Stages,
+    },
+    {
+        "act-name": "Kari4",
+        "description": "後で書きます",
+        "stages": Kari4Stages,
+    },
+]
+
+const ch3Acts = [
+    {
+        "act-name": "Kari",
+        "description": "後で書きます",
+        "stages": KariStages,
+    },
+    {
+        "act-name": "Kari2",
+        "description": "後で書きます",
+        "stages": Kari2Stages,
+    },
+    {
+        "act-name": "Kari3",
+        "description": "後で書きます",
+        "stages": Kari3Stages,
+    },
+    {
+        "act-name": "Kari4",
+        "description": "後で書きます",
+        "stages": Kari4Stages,
+    },
+]
+
 export default [
     {
         "chapter-name": "ch0.",
         "chapter-description": "aaaa",
         "acts": ch0Acts,
+    },
+    {
+        "chapter-name": "ch1.",
+        "chapter-description": "aaaa",
+        "acts": ch1Acts,
+    },
+    {
+        "chapter-name": "ch2.",
+        "chapter-description": "aaaa",
+        "acts": ch2Acts,
+    },
+    {
+        "chapter-name": "ch3.",
+        "chapter-description": "aaaa",
+        "acts": ch3Acts,
     },
 ] as const
