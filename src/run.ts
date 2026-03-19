@@ -6,3 +6,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     SceneChanger.init(Dom.container, await import("./Scene/SceneTitle").then((module) => new module.default()))
 })
+
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault()
+})
