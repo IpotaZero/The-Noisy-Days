@@ -6,7 +6,7 @@ export class Bullet {
 
     r = 16
     p = vec(0, 0)
-    speed = 0
+    speed = 8
     radian = 0
 
     alpha = 1
@@ -14,15 +14,11 @@ export class Bullet {
     appearance = Bullet.Appearance.donut
     collision = Bullet.Collision.ball
 
-    private g: Generator[]
+    private g: Generator[] = []
     private gs: ((me: Bullet) => Generator)[] = []
 
-    constructor() {
-        this.g = [this.move(), this.boundary()]
-    }
-
     init() {
-        this.g.push(...this.gs.map((g) => g(this)))
+        this.g = [this.move(), this.boundary(), ...this.gs.map((g) => g(this))]
     }
 
     tick() {
@@ -45,6 +41,7 @@ export class Bullet {
     clone(): Bullet {
         const b = { ...this }
 
+        b.p = this.p.clone()
         b.gs = [...this.gs]
         b.g = [...this.g]
         ;(b as any).__proto__ = Bullet.prototype
@@ -63,10 +60,10 @@ export class Bullet {
     private *boundary() {
         while (1) {
             if (
-                this.p.x < -g.width / 2 ||
-                g.width / 2 < this.p.x ||
-                this.p.y < -g.height / 2 ||
-                g.height / 2 < this.p.y
+                this.p.x + this.r < -g.width / 2 ||
+                g.width / 2 < this.p.x - this.r ||
+                this.p.y + this.r < -g.height / 2 ||
+                g.height / 2 < this.p.y - this.r
             ) {
                 this.life = 0
             }

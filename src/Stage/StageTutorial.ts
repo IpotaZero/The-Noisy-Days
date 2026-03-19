@@ -27,7 +27,10 @@ export default class extends Stage {
             .p(vec(0, 0))
             .speed(8)
             .radian(T / 4)
+            .nway(7, T / 12)
             .fire()
+
+        console.log(g.bullets)
 
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
