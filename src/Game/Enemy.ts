@@ -10,8 +10,10 @@ export class Enemy {
     maxLife = 100
 
     r = 64
-    p = vec(g.width, -g.height)
+    p = vec(g.width / 2, -g.height / 2)
     frame = 0
+
+    isInvincible = false
 
     private g: Generator[] = []
 
@@ -48,7 +50,7 @@ export class Enemy {
     draw(ctx: CanvasRenderingContext2D) {
         const white = "#ffffff80"
 
-        const lifeColor = this.damaged ? "rgba(255, 33, 33, 0.5)" : white
+        const lifeColor = this.damaged || this.isInvincible ? "rgba(255, 33, 33, 0.5)" : white
 
         Ctx.rect(
             ctx,

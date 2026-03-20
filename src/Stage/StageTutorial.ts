@@ -52,10 +52,10 @@ function isSmartPhone() {
 class EnemyTutorial extends Enemy {
     private readonly orbit
 
-    private started = false
-
     constructor() {
         super(200)
+
+        this.isInvincible = true
 
         this.orbit = Curves.Lissajous(g.width * 0.8, g.height / 3, 3, 4).curve
 
@@ -63,11 +63,11 @@ class EnemyTutorial extends Enemy {
     }
 
     start() {
-        this.started = true
+        this.isInvincible = false
     }
 
     *G() {
-        if (!this.started) {
+        if (this.isInvincible) {
             this.life = 200
             yield
             return

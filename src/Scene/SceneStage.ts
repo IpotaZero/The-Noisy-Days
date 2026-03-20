@@ -84,6 +84,8 @@ export default class implements Scene {
         g.enemies.forEach((e) => {
             e.tick()
 
+            if (e.isInvincible) return
+
             g.bullets
                 .values()
                 .filter((b) => b.type === Bullet.Type.Friend)
