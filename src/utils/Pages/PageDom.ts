@@ -9,19 +9,24 @@ import { FadeOption } from "./Pages"
 export class PageDom {
     readonly container: HTMLElement
     private readonly pages = new RegExpDict<HTMLElement>({})
+    private readonly gotoable = new Set<string>()
 
     readonly ready
 
-    constructor(container: HTMLElement, html: string, { override }: { override: boolean }) {
+    constructor(container: HTMLElement, html: string, override: boolean) {
         // Initialize container
         this.container = container
         this.ready = this.setup(html, override)
     }
 
+    isGotoable(pageId: string) {
+        return this.gotoable.has(pageId)
+    }
+
     async fadeOut(currentPageId: string, { msOut }: FadeOption = {}) {
         const from = this.getPage(currentPageId)
 
-        await Transition.fadeOut(this.container, msOut)
+        await Transition.fadeOut(this.getPage(currentPageId), msOut)
         from.classList.add("hidden")
     }
 
@@ -29,7 +34,7 @@ export class PageDom {
         const to = this.getPage(nextPageId)
 
         to.classList.remove("hidden")
-        await Transition.fadeIn(this.container, msIn)
+        await Transition.fadeIn(this.getPage(nextPageId), msIn)
     }
 
     getPage(pageId: string, option: { noError: true }): HTMLElement | undefined
@@ -67,6 +72,10 @@ export class PageDom {
             .forEach((page) => {
                 this.pages.add(page.id, page)
                 page.classList.add("hidden")
+
+                if (page.hasAttribute("data-gotoable")) {
+                    this.gotoable.add(page.id)
+                }
             })
 
         const load = Promise.all([
@@ -75,9 +84,10 @@ export class PageDom {
             //
         ])
 
-        await Awaits.timeOver(5000, load, () => {
+        const result = await Awaits.timeout(5000, load)
+        if (result === "timeout") {
             console.warn("pageの読み込みに時間掛かり過ぎ! スキップしました。")
-        })
+        }
 
         this.container.style.display = ""
     }

@@ -42,10 +42,7 @@ button {
 
     text-align: center;
 
-    &:hover {
-        background-color: var(--white);
-        color: var(--black);
-    }
+    transition: all 0.1s;
 }
 
 .hidden {

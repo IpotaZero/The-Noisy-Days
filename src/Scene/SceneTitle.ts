@@ -6,6 +6,7 @@ import stages from "../stages"
 import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
 import { SE } from "../SE"
+import { Focuses } from "../utils/Focuses/Focuses"
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -74,7 +75,7 @@ function createPage(): string {
 
             <div class="options" data-direction="column">${stages.map(createChapterButton).join("")}</div>
 
-            <button data-back>Back</button>
+            <div class="options" data-direction="row"><button data-back>Back</button></div>
         </div>
     `
 
@@ -91,7 +92,7 @@ function createPage(): string {
                         ${chapter["acts"].map(createActButton).join("")}
                     </div>
 
-                    <button data-back>Back</button>
+                    <div class="options" data-direction="row"><button data-back>Back</button></div>
                 </div>
             `
 
@@ -152,7 +153,7 @@ function createActPage(act: Act): string {
                 ${act["stages"].map(createStageButton).join("")}
             </div>
 
-            <button data-back>Back</button>
+            <div class="options" data-direction="row"><button data-back>Back</button></div>
         </div>
     `
 }

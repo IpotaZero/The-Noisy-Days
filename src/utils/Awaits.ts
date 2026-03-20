@@ -1,6 +1,6 @@
 export class Awaits {
-    static sleep(ms: number) {
-        return new Promise<void>((resolve) => {
+    static sleep<T>(ms: number) {
+        return new Promise<T>((resolve) => {
             setTimeout(resolve, ms)
         })
     }
@@ -64,17 +64,8 @@ export class Awaits {
         )
     }
 
-    static async timeOver(ms: number, promise: Promise<unknown>, whenOver: () => void): Promise<void> {
-        let done = false
-
-        const timeoutPromise = Awaits.sleep(ms).then(() => {
-            if (!done) {
-                whenOver()
-            }
-        })
-
-        await Promise.race([promise, timeoutPromise])
-        done = true
+    static async timeout<T>(ms: number, promise: Promise<T>): Promise<T | "timeout"> {
+        return Promise.race([promise, Awaits.sleep(ms).then(() => "timeout" as const)])
     }
 
     static async loading<T>(ms: number, promise: Promise<T>, whenOver: () => void) {
@@ -94,26 +85,49 @@ export class Awaits {
         return { value, over }
     }
 
-    static waitElementReady(container: Element) {
+    static async waitElementReady(container: Element): Promise<void> {
         type ElementWithReady = Element & { ready: Promise<unknown> }
 
         const hasReadyPromise = Array.from(container.querySelectorAll("*")).filter(
             (e: any): e is ElementWithReady => e.ready instanceof Promise,
         )
 
-        return Promise.all(hasReadyPromise.map((e) => e.ready))
+        await Promise.all(hasReadyPromise.map((e) => e.ready))
     }
 
-    static waitCSSLoad(container: Element) {
+    static async waitCSSLoad(container: Element): Promise<void> {
         const links = Array.from(container.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
-        return Promise.all(
+        await Promise.all(
             links.map((link) => {
                 if (link.sheet) return Promise.resolve() // すでに読み込み済み
-                return new Promise((resolve) => {
-                    link.onload = resolve
-                    link.onerror = resolve // エラー時も進めるようにする
+                return new Promise<void>((resolve) => {
+                    link.onload = () => resolve()
+                    link.onerror = () => resolve() // エラー時も進めるようにする
                 })
             }),
         )
+    }
+
+    static inputFile(extension: string) {
+        // 1. ファイルを選択するための隠し input 要素を作成
+        const input = document.createElement("input")
+        input.type = "file"
+        input.accept = extension
+
+        return new Promise<File | null>((resolve) => {
+            // 2. ファイルが選択された時の処理
+            input.onchange = async () => {
+                const file = input.files?.[0]
+                if (!file) {
+                    resolve(null)
+                    return
+                }
+
+                resolve(file)
+            }
+
+            // 3. ファイル選択ダイアログを表示
+            input.click()
+        })
     }
 }
