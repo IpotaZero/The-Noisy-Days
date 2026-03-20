@@ -2,7 +2,7 @@ import { Bullet } from "../Game/Bullet"
 import { Enemy } from "../Game/Enemy"
 import { remodel } from "../Game/Remodel"
 import { vec } from "../utils/Vec"
-import { g, T } from "../global"
+import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
 import { Curves } from "../utils/Curves"
 import { isSmartPhone } from "../utils/isSmartPhone"
@@ -42,6 +42,7 @@ export default class extends Stage {
         e.start()
 
         yield* this.waitDefeatEnemy()
+        scorenize()
         yield* this.clear()
     }
 }

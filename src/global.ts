@@ -12,3 +12,13 @@ export const g = {
 }
 
 export const T = Math.PI * 2
+
+export function scorenize() {
+    g.bullets = g.bullets.map((b) => {
+        if (b.type !== Bullet.Type.Enemy) return b
+
+        b.scorenize(g.player)
+
+        return b
+    })
+}

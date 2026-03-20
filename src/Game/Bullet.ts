@@ -1,5 +1,6 @@
 import { g } from "../global"
-import { vec } from "../utils/Vec"
+import { Vec, vec } from "../utils/Vec"
+import { Player } from "./Player"
 
 export class Bullet {
     life = 1
@@ -17,6 +18,15 @@ export class Bullet {
 
     private g: Generator[] = []
     private gs: ((me: Bullet) => Generator)[] = []
+
+    scorenize(player: Player) {
+        this.r = 16
+        this.color = "lightcyan"
+        this.type = Bullet.Type.Score
+        this.alpha = 0.6
+        this.appearance = Bullet.Appearance.Score
+        this.g = [this.move(), this.boundary(), this.homing(player)]
+    }
 
     init() {
         this.g = [this.move(), this.boundary(), ...this.gs.map((g) => g(this))]
@@ -71,6 +81,17 @@ export class Bullet {
             yield
         }
     }
+
+    private *homing(player: Player) {
+        while (1) {
+            const v = player.p.minus(this.p).scaled(1 / 7)
+
+            this.speed = v.magnitude()
+            this.radian = v.arg()
+
+            yield
+        }
+    }
 }
 
 export namespace Bullet {
@@ -79,6 +100,7 @@ export namespace Bullet {
         Ball,
         Line,
         Player,
+        Score,
     }
     export enum Collision {
         ball,
@@ -87,5 +109,7 @@ export namespace Bullet {
     export enum Type {
         Enemy,
         Friend,
+        Score,
+        Effect,
     }
 }

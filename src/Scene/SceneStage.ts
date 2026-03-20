@@ -106,6 +106,14 @@ export default class implements Scene {
                 g.player.life--
             })
 
+        g.bullets
+            .values()
+            .filter((b) => b.type === Bullet.Type.Score)
+            .filter((b) => b.p.minus(g.player.p).magnitude() <= b.r + g.player.GRAZE_R)
+            .forEach((b) => {
+                b.life = 0
+            })
+
         g.bullets = g.bullets.filter((b) => b.life > 0)
         g.enemies = g.enemies.filter((e) => e.life > 0)
     }

@@ -6,11 +6,18 @@ export class BulletDrawer {
     draw(bullet: Bullet, ctx: CanvasRenderingContext2D) {
         if (Math.floor(bullet.r) === 0) return
 
-        const hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
+        let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
+
+        if (bullet.appearance === Bullet.Appearance.Score) {
+            hash += `,${bullet.radian}`
+        }
 
         if (!this.cache.has(hash)) {
             if (bullet.appearance === Bullet.Appearance.Donut) {
                 const cvs = this.drawDonut(bullet)
+                this.cache.set(hash, cvs)
+            } else if (bullet.appearance === Bullet.Appearance.Score) {
+                const cvs = this.drawLaser(bullet)
                 this.cache.set(hash, cvs)
             } else {
                 const cvs = this.drawPlayer(bullet)
@@ -47,6 +54,25 @@ export class BulletDrawer {
         context.stroke()
         context.lineWidth = 1
         context.stroke()
+
+        return canvas
+    }
+
+    private drawLaser(bullet: Bullet) {
+        const canvas = document.createElement("canvas")
+        canvas.width = bullet.r * 4
+        canvas.height = bullet.r * 4
+
+        const context = canvas.getContext("2d")!
+        context.fillStyle = bullet.color
+
+        context.save()
+        context.translate(bullet.r * 2, bullet.r * 2)
+        context.rotate(bullet.radian)
+        context.beginPath()
+        context.rect(-bullet.r, -bullet.r, bullet.r * 2, bullet.r * 2)
+        context.fill()
+        context.restore()
 
         return canvas
     }
