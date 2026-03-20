@@ -8,7 +8,7 @@ import { vec } from "../utils/Vec"
 import { SE } from "../SE"
 
 export class Player {
-    life = 0
+    life = 8
     p = vec(0, 0)
 
     private invincibleFrame = 0

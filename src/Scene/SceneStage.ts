@@ -55,6 +55,8 @@ export default class SceneStage implements Scene {
         this.selector.load(Dom.container)
 
         this.selector.onClick("back", () => {
+            document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+
             SceneChanger.goto(
                 () => import("./SceneTitle").then((module) => new module.default({ history: this.history })),
                 {
@@ -65,6 +67,8 @@ export default class SceneStage implements Scene {
         })
 
         this.selector.onClick("retry", () => {
+            document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+
             this.stage.reset()
             SceneChanger.goto(async () => new SceneStage(this.stage, this.history), {
                 msIn: 500,
