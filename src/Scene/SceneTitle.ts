@@ -5,6 +5,7 @@ import { Dom } from "../Dom"
 import stages from "../stages"
 import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
+import { SE } from "../SE"
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -40,6 +41,8 @@ export default class implements Scene {
     async end(): Promise<void> {}
 
     private gotoStage(stageName: string) {
+        SE.start.play()
+
         SceneChanger.goto(
             async () => {
                 // @ts-ignore
