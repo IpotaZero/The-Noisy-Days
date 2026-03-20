@@ -1,4 +1,3 @@
-import { FocusesHistory } from "./FocusesHistory"
 import { FocusesGridHandler } from "./FocusesGridHandler"
 import { GamepadOperator } from "./GamepadOperator"
 import { KeyboardOperator } from "./KeyboardOperator"
@@ -15,11 +14,8 @@ export class Focuses {
     private static readonly keyboardOperator = new KeyboardOperator(this.operate.bind(this))
 
     private static readonly gridHandler = new FocusesGridHandler()
-    private static readonly history = new FocusesHistory()
 
     private static readonly disabledReasons = new Set<string>()
-
-    private static ac = new AbortController()
 
     static remove() {
         this.gamepadOperator.remove()
@@ -44,34 +40,11 @@ export class Focuses {
         this.blur()
         this.gridHandler.setGrid(buildGrid(page))
         this.focus()
-        this.setupCancel(page)
     }
 
     private static focus() {
-        // 復元を試みる。なければ最初のボタン。
-        const restoreKey = this.history.popRestoreKey()
-
-        if (restoreKey) {
-            this.gridHandler.focusByKey(restoreKey)
-        } else {
-            this.gridHandler.focusFirstButton()
-        }
-
+        this.gridHandler.focusFirstButton()
         this.highlightButton()
-    }
-
-    private static setupCancel(page: HTMLElement) {
-        this.ac.abort()
-        this.ac = new AbortController()
-        page.addEventListener("click", this.onPageClick.bind(this), { signal: this.ac.signal })
-    }
-
-    private static async onPageClick(e: PointerEvent) {
-        const button = e.target
-        if (!(button instanceof HTMLButtonElement)) return
-
-        const key = this.gridHandler.getKeyFromButton(button)
-        this.history.record(button, key)
     }
 
     private static operate(operation: Operation) {

@@ -72,7 +72,7 @@ export abstract class Stage {
 
     protected *clear() {
         const p = document.createElement("p")
-        p.innerHTML = `:撃破完了`
+        p.innerHTML = `--::[ 撃破完了 ]::--`
         p.classList.add("clear-text")
 
         Dom.container.appendChild(p)

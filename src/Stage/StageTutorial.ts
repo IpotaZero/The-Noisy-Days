@@ -5,6 +5,7 @@ import { vec } from "../utils/Vec"
 import { g, T } from "../global"
 import { Stage } from "./Stage"
 import { Curves } from "../utils/Curves"
+import { isSmartPhone } from "../utils/isSmartPhone"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -43,10 +44,6 @@ export default class extends Stage {
         yield* this.waitDefeatEnemy()
         yield* this.clear()
     }
-}
-
-function isSmartPhone() {
-    return !!navigator.userAgent.match(/iPhone|Android.+Mobile/)
 }
 
 class EnemyTutorial extends Enemy {

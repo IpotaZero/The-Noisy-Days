@@ -1,11 +1,18 @@
 import { Dom } from "./Dom"
 import { Focuses } from "./utils/Focuses/Focuses"
+import { isSmartPhone } from "./utils/isSmartPhone"
 import { Pages } from "./utils/Pages/Pages"
 import { SceneChanger } from "./utils/SceneChanger"
 
 window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
     Focuses.init()
+
+    const smaho = isSmartPhone()
+
+    if (smaho) {
+        Focuses.pause("all")
+    }
 
     SceneChanger.onTransitionStart = () => {
         Focuses.pause("scene-change")
@@ -20,7 +27,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     Pages.onTransitionEnd = (pages) => {
-        Focuses.update(pages.getCurrentPage())
+        if (!smaho) {
+            Focuses.update(pages.getCurrentPage())
+        }
         Focuses.resume("page-change")
     }
 
