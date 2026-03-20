@@ -1,6 +1,8 @@
 export interface IInput {
     pushed: Set<Operation>
     pressed: Set<Operation>
+
+    tick(): void
 }
 
 export enum Operation {

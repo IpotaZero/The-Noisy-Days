@@ -75,7 +75,7 @@ export class Player {
             this.invincibleCoolDown = this.INVINCIBLE_COOL_DOWN
         }
 
-        if (this.invincibleFrame > 0) v.scale(3)
+        if (this.invincibleFrame > 0) v.scale(4)
 
         v.scale(this.BASE_SPEED)
 
@@ -100,6 +100,8 @@ export class Player {
             this.p.x,
             this.p.y,
         )
+
+        this.input.tick()
     }
 
     private fire() {

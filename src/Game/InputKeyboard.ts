@@ -13,6 +13,7 @@ const KEY_MAP: Record<string, Operation> = {
     ShiftLeft: Operation.Slow,
     ShiftRight: Operation.Slow,
     ControlLeft: Operation.Dash,
+    ControlRight: Operation.Dash,
 }
 
 export class InputKeyboard implements IInput {
@@ -53,6 +54,10 @@ export class InputKeyboard implements IInput {
 
         // フォーカスが外れたら全キーをリセット
         window.addEventListener("blur", () => this.pressed.clear(), { signal })
+    }
+
+    tick() {
+        this.pushed.clear()
     }
 
     /** イベントリスナーを解除する */
