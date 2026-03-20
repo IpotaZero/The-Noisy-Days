@@ -1,7 +1,6 @@
 import { g, T } from "../global"
 import { TouchTracker } from "../utils/TouchTracker"
 import { Bullet } from "./Bullet"
-import { Ctx } from "./Ctx"
 import { IInput, Operation } from "./Input"
 import { PlayerRenderer } from "./PlayerRenderer"
 import { remodel } from "./Remodel"
@@ -22,7 +21,6 @@ export class Player {
     readonly BASE_SPEED = 20
 
     private readonly renderer = new PlayerRenderer()
-
     private readonly input: IInput
     private readonly touchTracker: TouchTracker
 
@@ -94,8 +92,14 @@ export class Player {
         if (this.p.y < -g.height / 2) this.p.y = -g.height / 2
         if (this.p.y > g.height / 2) this.p.y = g.height / 2
 
-        // 描画アニメーションの更新を renderer に委譲
-        this.renderer.tick(movingRight, movingLeft, this.isSneaking())
+        this.renderer.tick(
+            movingRight,
+            movingLeft,
+            this.isSneaking(),
+            this.invincibleFrame > 0, // Dash 中かどうか
+            this.p.x,
+            this.p.y,
+        )
     }
 
     private fire() {
