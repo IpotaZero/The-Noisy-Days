@@ -1,4 +1,6 @@
 .page {
+    position: absolute;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,5 +18,11 @@
 
     &[data-direction="column"] {
         flex-direction: column;
+    }
+
+    button {
+        * {
+            pointer-events: none;
+        }
     }
 }

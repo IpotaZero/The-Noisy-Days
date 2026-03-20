@@ -1,5 +1,4 @@
 .page {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,7 +80,7 @@
     justify-content: center;
 }
 
-.clear-text {
+.game-over {
     position: absolute;
     align-self: center;
 
@@ -89,36 +88,31 @@
 
     padding: 2cqw;
 
-    border-top: 1cqw var(--white) double;
-    border-bottom: 1cqw var(--white) double;
+    border-top: 1cqw var(--white-vale) double;
+    border-bottom: 1cqw var(--white-vale) double;
 }
 
-@keyframes braille-spin {
-    0% {
-        content: "⠋";
-    }
-    12.5% {
-        content: "⠙";
-    }
-    25% {
-        content: "⠹";
-    }
-    37.5% {
-        content: "⠸";
-    }
-    50% {
-        content: "⠼";
-    }
-    62.5% {
-        content: "⠴";
-    }
-    75% {
-        content: "⠦";
-    }
-    87.5% {
-        content: "⠧";
-    }
-    100% {
-        content: "⠇";
+.clear-label {
+    position: absolute;
+
+    font-size: 8cqw;
+
+    padding: 2cqw;
+
+    transform: translateY(2em);
+
+    animation: blink 1s infinite steps(1, end);
+}
+
+#retry,
+#clear {
+    padding: 2em;
+}
+
+.options {
+    transform: translateY(8em);
+
+    button {
+        font-size: 8cqw;
     }
 }

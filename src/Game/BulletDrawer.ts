@@ -27,8 +27,10 @@ export class BulletDrawer {
 
         const cvs = this.cache.get(hash)!
 
+        ctx.save()
         ctx.globalAlpha = bullet.alpha
         ctx.drawImage(cvs, bullet.p.x - bullet.r * 2, bullet.p.y - bullet.r * 2)
+        ctx.restore()
     }
 
     private drawDonut(bullet: Bullet) {

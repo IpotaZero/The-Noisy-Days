@@ -32,6 +32,7 @@ export class Transition {
             return
         }
 
+        container.style.opacity = "0"
         container.style.transition = "opacity 0s"
         container.style.pointerEvents = "none"
 

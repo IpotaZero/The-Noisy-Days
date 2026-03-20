@@ -3,6 +3,7 @@ export interface IInput {
     pressed: Set<Operation>
 
     tick(): void
+    remove(): void
 }
 
 export enum Operation {

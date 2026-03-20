@@ -61,7 +61,7 @@ export class InputKeyboard implements IInput {
     }
 
     /** イベントリスナーを解除する */
-    destroy(): void {
+    remove(): void {
         this.ac.abort()
         this.pressed.clear()
     }

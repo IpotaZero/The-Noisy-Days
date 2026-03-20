@@ -82,9 +82,14 @@ export class Ctx {
             }
         }
 
-        ctx.strokeStyle = color
-        ctx.lineWidth = lineWidth
-        ctx.stroke()
+        if (lineWidth > 0) {
+            ctx.strokeStyle = color
+            ctx.lineWidth = lineWidth
+            ctx.stroke()
+        } else {
+            ctx.fillStyle = color
+            ctx.fill()
+        }
     }
 
     static rect(

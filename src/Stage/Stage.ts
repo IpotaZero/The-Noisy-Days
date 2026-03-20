@@ -2,9 +2,13 @@ import { Dom } from "../Dom"
 import { g } from "../global"
 
 export abstract class Stage {
-    private readonly generator: Generator<void, void, unknown>
+    private generator!: Generator<void, void, unknown>
 
     constructor() {
+        this.reset()
+    }
+
+    reset() {
         this.generator = this.G()
     }
 
@@ -68,15 +72,5 @@ export abstract class Stage {
 
     protected *waitDefeatEnemy() {
         while (g.enemies.length > 0) yield
-    }
-
-    protected *clear() {
-        const p = document.createElement("p")
-        p.innerHTML = `--::[ 撃破完了 ]::--`
-        p.classList.add("clear-text")
-
-        Dom.container.appendChild(p)
-
-        yield* this.ok()
     }
 }

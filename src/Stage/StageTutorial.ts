@@ -6,6 +6,7 @@ import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
 import { Curves } from "../utils/Curves"
 import { isSmartPhone } from "../utils/isSmartPhone"
+import { SE } from "../SE"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -43,7 +44,7 @@ export default class extends Stage {
 
         yield* this.waitDefeatEnemy()
         scorenize()
-        yield* this.clear()
+        SE.crush.play()
     }
 }
 
@@ -51,7 +52,7 @@ class EnemyTutorial extends Enemy {
     private readonly orbit
 
     constructor() {
-        super(200)
+        super(400)
 
         this.isInvincible = true
 
@@ -66,7 +67,6 @@ class EnemyTutorial extends Enemy {
 
     *G() {
         if (this.isInvincible) {
-            this.life = 200
             yield
             return
         }
@@ -79,7 +79,7 @@ class EnemyTutorial extends Enemy {
             .nway(7, T / 12)
             .fire()
 
-        yield* Array(10)
+        yield* Array(30)
     }
 
     *H() {

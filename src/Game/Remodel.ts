@@ -67,6 +67,14 @@ class Remodel {
         })
     }
 
+    g(g: (me: Bullet) => Generator) {
+        this.bullets.forEach((b) => {
+            b.G(g)
+        })
+
+        return this
+    }
+
     forEach(handler: (b: Bullet) => void) {
         this.bullets.forEach(handler)
         return this

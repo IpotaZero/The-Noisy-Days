@@ -5,9 +5,10 @@ import { IInput, Operation } from "./Input"
 import { PlayerRenderer } from "./PlayerRenderer"
 import { remodel } from "./Remodel"
 import { vec } from "../utils/Vec"
+import { SE } from "../SE"
 
 export class Player {
-    life = 8
+    life = 0
     p = vec(0, 0)
 
     private invincibleFrame = 0
@@ -26,6 +27,8 @@ export class Player {
 
     frame = 0
 
+    isDead = false
+
     constructor(
         input: IInput,
         touchTracker: TouchTracker,
@@ -33,6 +36,12 @@ export class Player {
     ) {
         this.input = input
         this.touchTracker = touchTracker
+    }
+
+    remove() {
+        this.input.remove()
+        this.isDead = true
+        this.p.y = -g.height
     }
 
     tick() {
@@ -71,6 +80,7 @@ export class Player {
         if (pressed.has(Operation.Slow)) {
             v.scale(0.5)
         } else if (pushed.has(Operation.Dash) && this.invincibleCoolDown === 0) {
+            SE.dash.play()
             this.invincibleFrame = this.INVINCIBLE_FRAME
             this.invincibleCoolDown = this.INVINCIBLE_COOL_DOWN
         }
@@ -87,10 +97,12 @@ export class Player {
             this.p.y += delta.dy * this.scale
         }
 
-        if (this.p.x < -g.width / 2) this.p.x = -g.width / 2
-        if (this.p.x > g.width / 2) this.p.x = g.width / 2
-        if (this.p.y < -g.height / 2) this.p.y = -g.height / 2
-        if (this.p.y > g.height / 2) this.p.y = g.height / 2
+        if (!this.isDead) {
+            if (this.p.x < -g.width / 2) this.p.x = -g.width / 2
+            if (this.p.x > g.width / 2) this.p.x = g.width / 2
+            if (this.p.y < -g.height / 2) this.p.y = -g.height / 2
+            if (this.p.y > g.height / 2) this.p.y = g.height / 2
+        }
 
         this.renderer.tick(
             movingRight,
