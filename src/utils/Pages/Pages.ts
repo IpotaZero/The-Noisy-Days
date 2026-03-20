@@ -118,11 +118,11 @@ export class Pages {
         // layerに応じて場合分け
         const layerFrom = parseToNumber(this.dom.getPage(this.state.currentPageId).dataset["layer"], 0)
         const layerTo = parseToNumber(this.dom.getPage(id).dataset["layer"], 0)
+
         await this.transition(layerFrom, layerTo, id, option)
 
         // 5. 遷移完了
         this.state.endTransition()
-        Pages.onTransitionEnd(this)
     }
 
     private async transition(
@@ -141,11 +141,14 @@ export class Pages {
 
             // 4. 新しいページに入る
             await this.run.onEnter(id, { button })
+
+            Pages.onTransitionEnd(this)
             await this.dom.fadeIn(id, { msIn })
         } else if (layerFrom < layerTo) {
             this.state.goto(id)
 
             await this.run.onEnter(id, { button })
+            Pages.onTransitionEnd(this)
             await this.dom.fadeIn(id, { msIn })
         } else {
             if (!back) throw new Error("下のlayerにback以外でgotoしようとした。")
@@ -156,6 +159,7 @@ export class Pages {
             this.state.goto(id)
 
             await this.run.onEnter(id, { button })
+            Pages.onTransitionEnd(this)
         }
     }
 }
