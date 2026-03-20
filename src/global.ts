@@ -1,10 +1,11 @@
 import { Bullet } from "./Game/Bullet"
 import { Enemy } from "./Game/Enemy"
+import { Player } from "./Game/Player"
 
 export const g = {
     enemies: [] as Enemy[],
     bullets: [] as Bullet[],
-    player: undefined,
+    player: undefined as Player | undefined,
 
     width: 630,
     height: 1120,

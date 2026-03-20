@@ -1,11 +1,14 @@
 import { Dom } from "../Dom"
 import { BulletDrawer } from "../Game/BulletDrawer"
+import { InputKeyboard } from "../Game/InputKeyboard"
+import { Player } from "../Game/Player"
 import { g } from "../global"
 import { Stage } from "../Stage/Stage"
 import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
+import { TouchTracker } from "../utils/TouchTracker"
 import { Scene } from "./Scene"
 
 export default class implements Scene {
@@ -57,26 +60,15 @@ export default class implements Scene {
 
         this.ctx = cvs.getContext("2d")!
 
+        g.player = new Player(new InputKeyboard(), new TouchTracker(Dom.container), g.width / rect.width)
+
         this.looper.start()
     }
 
     async end(): Promise<void> {}
 
     private tick() {
-        this.ctx.clearRect(0, 0, g.width, g.height)
-        this.ctx.save()
-
-        this.ctx.translate(g.width / 2, g.height / 2)
-
-        g.bullets.forEach((b) => {
-            this.drawer.draw(b, this.ctx)
-        })
-
-        g.enemies.forEach((e) => {
-            e.draw(this.ctx)
-        })
-
-        this.ctx.restore()
+        g.player?.tick()
 
         g.bullets = g.bullets.filter((b) => {
             b.tick()
@@ -87,6 +79,23 @@ export default class implements Scene {
             e.tick()
             return e.life > 0
         })
+
+        this.ctx.clearRect(0, 0, g.width, g.height)
+        this.ctx.save()
+
+        this.ctx.translate(g.width / 2, g.height / 2)
+
+        g.player?.draw(this.ctx)
+
+        g.bullets.forEach((b) => {
+            this.drawer.draw(b, this.ctx)
+        })
+
+        g.enemies.forEach((e) => {
+            e.draw(this.ctx)
+        })
+
+        this.ctx.restore()
     }
 
     private gotoNextScene() {
