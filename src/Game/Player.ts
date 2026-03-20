@@ -1,7 +1,10 @@
-import { g } from "../global"
+import { g, T } from "../global"
 import { TouchTracker } from "../utils/TouchTracker"
+import { Bullet } from "./Bullet"
 import { Ctx } from "./Ctx"
 import { IInput, Operation } from "./Input"
+import { PlayerRenderer } from "./PlayerRenderer"
+import { remodel } from "./Remodel"
 import { vec } from "./Vec"
 
 export class Player {
@@ -9,19 +12,21 @@ export class Player {
     p = vec(0, 0)
 
     private invincibleFrame = 0
-    private invincibleCoolDown = 0
+    invincibleCoolDown = 0
 
     readonly INVINCIBLE_FRAME = 15
     readonly INVINCIBLE_COOL_DOWN = 60
 
-    readonly R = 6
+    readonly R = 4
     readonly GRAZE_R = 24
-    readonly BASE_SPEED = 16
+    readonly BASE_SPEED = 20
 
-    private drawRadian = 0
+    private readonly renderer = new PlayerRenderer()
 
-    private readonly input
-    private readonly touchTracker
+    private readonly input: IInput
+    private readonly touchTracker: TouchTracker
+
+    frame = 0
 
     constructor(
         input: IInput,
@@ -37,6 +42,10 @@ export class Player {
 
         if (this.invincibleFrame > 0) this.invincibleFrame--
         if (this.invincibleCoolDown > 0) this.invincibleCoolDown--
+
+        this.fire()
+
+        this.frame++
     }
 
     isInvincible() {
@@ -44,40 +53,31 @@ export class Player {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        Ctx.arc(ctx, this.p.l, this.R, "red", { lineWidth: 0 })
-        Ctx.arc(ctx, this.p.l, this.GRAZE_R, "#ffffff80", { lineWidth: 2 })
+        this.renderer.draw(ctx, this)
     }
 
     private move() {
-        const operations = this.input.tick()
-
+        const { pressed, pushed } = this.input
         const v = vec(0, 0)
 
-        if (operations.includes(Operation.Right)) {
-            v.x += 1
-        }
-        if (operations.includes(Operation.Left)) {
-            v.x -= 1
-        }
-        if (operations.includes(Operation.Down)) {
-            v.y += 1
-        }
-        if (operations.includes(Operation.Up)) {
-            v.y -= 1
-        }
+        const movingRight = pressed.has(Operation.Right)
+        const movingLeft = pressed.has(Operation.Left)
+
+        if (movingRight) v.x += 1
+        if (movingLeft) v.x -= 1
+        if (pressed.has(Operation.Down)) v.y += 1
+        if (pressed.has(Operation.Up)) v.y -= 1
 
         v.normalize()
 
-        if (operations.includes(Operation.Slow)) {
+        if (pressed.has(Operation.Slow)) {
             v.scale(0.5)
-        } else if (operations.includes(Operation.Dash) && this.invincibleCoolDown === 0) {
+        } else if (pushed.has(Operation.Dash) && this.invincibleCoolDown === 0) {
             this.invincibleFrame = this.INVINCIBLE_FRAME
             this.invincibleCoolDown = this.INVINCIBLE_COOL_DOWN
         }
 
-        if (this.invincibleFrame > 0) {
-            v.scale(3)
-        }
+        if (this.invincibleFrame > 0) v.scale(3)
 
         v.scale(this.BASE_SPEED)
 
@@ -93,5 +93,40 @@ export class Player {
         if (this.p.x > g.width / 2) this.p.x = g.width / 2
         if (this.p.y < -g.height / 2) this.p.y = -g.height / 2
         if (this.p.y > g.height / 2) this.p.y = g.height / 2
+
+        // 描画アニメーションの更新を renderer に委譲
+        this.renderer.tick(movingRight, movingLeft, this.isSneaking())
+    }
+
+    private fire() {
+        if (this.frame % 3 === 0) {
+            if (!this.isSneaking()) {
+                remodel([new Bullet()])
+                    .type(Bullet.Type.friend)
+                    .appearance(Bullet.Appearance.player)
+                    .color("#ffffff80")
+                    .r(this.R)
+                    .p(this.p.clone())
+                    .radian(-T / 4)
+                    .speed(48)
+                    .nway(5, T / 48)
+                    .fire()
+            } else {
+                remodel([new Bullet()])
+                    .type(Bullet.Type.friend)
+                    .appearance(Bullet.Appearance.player)
+                    .color("#ffffff80")
+                    .r(this.R)
+                    .p(this.p.clone())
+                    .radian(-T / 4)
+                    .speed(48)
+                    .shift(5, this.GRAZE_R)
+                    .fire()
+            }
+        }
+    }
+
+    private isSneaking() {
+        return this.input.pressed.has(Operation.Slow)
     }
 }

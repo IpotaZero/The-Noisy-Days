@@ -17,32 +17,42 @@ const KEY_MAP: Record<string, Operation> = {
 
 export class InputKeyboard implements IInput {
     private readonly ac = new AbortController()
-    private readonly pressed = new Set<string>()
+
+    readonly pushed = new Set<Operation>()
+    readonly pressed = new Set<Operation>()
 
     constructor() {
         const { signal } = this.ac
 
-        window.addEventListener("keydown", (e: KeyboardEvent) => this.pressed.add(e.code), { signal })
+        window.addEventListener(
+            "keydown",
+            (e: KeyboardEvent) => {
+                const operation = KEY_MAP[e.code]
+                if (operation === undefined) return
 
-        window.addEventListener("keyup", (e: KeyboardEvent) => this.pressed.delete(e.code), { signal })
+                if (!this.pressed.has(operation)) {
+                    this.pushed.add(operation)
+                }
+
+                this.pressed.add(operation)
+            },
+            { signal },
+        )
+
+        window.addEventListener(
+            "keyup",
+            (e: KeyboardEvent) => {
+                const operation = KEY_MAP[e.code]
+                if (operation === undefined) return
+
+                this.pushed.delete(operation)
+                this.pressed.delete(operation)
+            },
+            { signal },
+        )
 
         // フォーカスが外れたら全キーをリセット
         window.addEventListener("blur", () => this.pressed.clear(), { signal })
-    }
-
-    /**
-     * 現在押されているキーに対応する Operation の配列を返す。
-     * 同じ Operation が複数のキーで重複しないよう Set で一意化する。
-     */
-    tick(): readonly Operation[] {
-        const operations = new Set<Operation>()
-
-        for (const code of this.pressed) {
-            const op = KEY_MAP[code]
-            if (op !== undefined) operations.add(op)
-        }
-
-        return [...operations]
     }
 
     /** イベントリスナーを解除する */

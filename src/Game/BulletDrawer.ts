@@ -9,8 +9,13 @@ export class BulletDrawer {
         const hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
 
         if (!this.cache.has(hash)) {
-            const cvs = this.drawDonut(bullet)
-            this.cache.set(hash, cvs)
+            if (bullet.appearance === Bullet.Appearance.donut) {
+                const cvs = this.drawDonut(bullet)
+                this.cache.set(hash, cvs)
+            } else {
+                const cvs = this.drawPlayer(bullet)
+                this.cache.set(hash, cvs)
+            }
         }
 
         const cvs = this.cache.get(hash)!
@@ -42,6 +47,21 @@ export class BulletDrawer {
         context.stroke()
         context.lineWidth = 1
         context.stroke()
+
+        return canvas
+    }
+
+    private drawPlayer(bullet: Bullet) {
+        const canvas = document.createElement("canvas")
+        canvas.width = bullet.r * 4
+        canvas.height = bullet.r * 4
+
+        const context = canvas.getContext("2d")!
+        context.fillStyle = bullet.color
+
+        context.beginPath()
+        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
+        context.fill()
 
         return canvas
     }

@@ -1,5 +1,6 @@
-import { g } from "../global"
+import { g, T } from "../global"
 import { Bullet } from "./Bullet"
+import { vec } from "./Vec"
 
 export const remodel = (bullets: Bullet[]) =>
     new Proxy(new Remodel(bullets), {
@@ -33,11 +34,25 @@ class Remodel {
     }
 
     nway(num: number, angle: number) {
-        this.bullets = this.bullets.flatMap((b) =>
+        return this.duplicate(num, (bullet, i) => {
+            const clone = bullet.clone()
+            clone.radian = bullet.radian + angle * (i - (num - 1) / 2)
+            return clone
+        })
+    }
+
+    shift(num: number, shift: number) {
+        return this.duplicate(num, (bullet, i) => {
+            const clone = bullet.clone()
+            clone.p = clone.p.plus(vec.arg(bullet.radian + T / 4).scaled(shift * (i - (num - 1) / 2)))
+            return clone
+        })
+    }
+
+    duplicate(num: number, map: (bullet: Bullet, index: number) => Bullet) {
+        this.bullets = this.bullets.flatMap((bullet) =>
             Array.from({ length: num }, (_, i) => {
-                const clone = b.clone()
-                clone.radian = b.radian + angle * (i - (num - 1) / 2)
-                return clone
+                return map(bullet, i)
             }),
         )
 
@@ -45,15 +60,11 @@ class Remodel {
     }
 
     ex(num: number) {
-        this.bullets = this.bullets.flatMap((b) =>
-            Array.from({ length: num }, (_, i) => {
-                const clone = b.clone()
-                clone.radian = b.radian + Math.PI * 2 * (i / num)
-                return clone
-            }),
-        )
-
-        return this
+        return this.duplicate(num, (b, i) => {
+            const clone = b.clone()
+            clone.radian = b.radian + Math.PI * 2 * (i / num)
+            return clone
+        })
     }
 
     forEach(handler: (b: Bullet) => void) {

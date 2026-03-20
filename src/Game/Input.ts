@@ -1,5 +1,6 @@
 export interface IInput {
-    tick(): readonly Operation[]
+    pushed: Set<Operation>
+    pressed: Set<Operation>
 }
 
 export enum Operation {
