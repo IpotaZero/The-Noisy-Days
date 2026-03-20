@@ -4,7 +4,7 @@ import { Bullet } from "./Bullet"
 import { IInput, Operation } from "./Input"
 import { PlayerRenderer } from "./PlayerRenderer"
 import { remodel } from "./Remodel"
-import { vec } from "./Vec"
+import { vec } from "../utils/Vec"
 
 export class Player {
     life = 8
@@ -16,7 +16,7 @@ export class Player {
     readonly INVINCIBLE_FRAME = 15
     readonly INVINCIBLE_COOL_DOWN = 60
 
-    readonly R = 4
+    readonly r = 4
     readonly GRAZE_R = 24
     readonly BASE_SPEED = 20
 
@@ -75,7 +75,7 @@ export class Player {
             this.invincibleCoolDown = this.INVINCIBLE_COOL_DOWN
         }
 
-        if (this.invincibleFrame > 0) v.scale(4)
+        if (this.invincibleFrame > 0) v.scale(5)
 
         v.scale(this.BASE_SPEED)
 
@@ -108,10 +108,10 @@ export class Player {
         if (this.frame % 3 === 0) {
             if (!this.isSneaking()) {
                 remodel([new Bullet()])
-                    .type(Bullet.Type.friend)
-                    .appearance(Bullet.Appearance.player)
+                    .type(Bullet.Type.Friend)
+                    .appearance(Bullet.Appearance.Player)
                     .color("#ffffff80")
-                    .r(this.R)
+                    .r(this.r)
                     .p(this.p.clone())
                     .radian(-T / 4)
                     .speed(48)
@@ -119,14 +119,14 @@ export class Player {
                     .fire()
             } else {
                 remodel([new Bullet()])
-                    .type(Bullet.Type.friend)
-                    .appearance(Bullet.Appearance.player)
+                    .type(Bullet.Type.Friend)
+                    .appearance(Bullet.Appearance.Player)
                     .color("#ffffff80")
-                    .r(this.R)
+                    .r(this.r)
                     .p(this.p.clone())
                     .radian(-T / 4)
                     .speed(48)
-                    .shift(5, this.GRAZE_R)
+                    .shift(5, this.GRAZE_R / 2)
                     .fire()
             }
         }

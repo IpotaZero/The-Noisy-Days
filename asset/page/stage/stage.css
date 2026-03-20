@@ -1,3 +1,10 @@
+.page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .stage-text-container {
     display: flex;
     flex-direction: column;
@@ -68,4 +75,20 @@
     height: 100%;
 
     position: absolute;
+}
+
+#container {
+    justify-content: center;
+}
+
+.clear-text {
+    position: absolute;
+    align-self: center;
+
+    font-size: 8cqw;
+
+    &::after {
+        content: "/";
+        animation: blink 1s step-start 0s infinite;
+    }
 }

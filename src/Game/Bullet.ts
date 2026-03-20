@@ -1,5 +1,5 @@
 import { g } from "../global"
-import { vec } from "./Vec"
+import { vec } from "../utils/Vec"
 
 export class Bullet {
     life = 1
@@ -11,9 +11,9 @@ export class Bullet {
 
     alpha = 1
     color = "yellow"
-    appearance = Bullet.Appearance.donut
+    appearance = Bullet.Appearance.Donut
     collision = Bullet.Collision.ball
-    type = Bullet.Type.enemy
+    type = Bullet.Type.Enemy
 
     private g: Generator[] = []
     private gs: ((me: Bullet) => Generator)[] = []
@@ -75,17 +75,17 @@ export class Bullet {
 
 export namespace Bullet {
     export enum Appearance {
-        donut,
-        ball,
-        line,
-        player,
+        Donut,
+        Ball,
+        Line,
+        Player,
     }
     export enum Collision {
         ball,
         line,
     }
     export enum Type {
-        enemy,
-        friend,
+        Enemy,
+        Friend,
     }
 }

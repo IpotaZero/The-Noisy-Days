@@ -1,7 +1,7 @@
 import { T } from "../global"
 import { Ctx } from "./Ctx"
 import { Player } from "./Player"
-import { vec } from "./Vec"
+import { vec } from "../utils/Vec"
 
 /** 残像1コマ分のスナップショット */
 interface AfterImage {
@@ -115,7 +115,7 @@ export class PlayerRenderer {
     }
 
     private drawAfterImages(ctx: CanvasRenderingContext2D, player: Player): void {
-        const { R, GRAZE_R } = player
+        const { r: R, GRAZE_R } = player
 
         for (let i = 0; i < this.afterImages.length; i++) {
             const img = this.afterImages[i]
@@ -161,7 +161,7 @@ export class PlayerRenderer {
     }
 
     private drawCoreAndGrazeBoundary(ctx: CanvasRenderingContext2D, player: Player): void {
-        Ctx.arc(ctx, player.p.l, player.R, "red", { lineWidth: 0 })
+        Ctx.arc(ctx, player.p.l, player.r, "red", { lineWidth: 0 })
         Ctx.arc(ctx, player.p.l, player.GRAZE_R, "#ffffff80", { lineWidth: 2 })
     }
 

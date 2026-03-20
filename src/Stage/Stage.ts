@@ -69,4 +69,14 @@ export abstract class Stage {
     protected *waitDefeatEnemy() {
         while (g.enemies.length > 0) yield
     }
+
+    protected *clear() {
+        const p = document.createElement("p")
+        p.innerHTML = `:撃破完了`
+        p.classList.add("clear-text")
+
+        Dom.container.appendChild(p)
+
+        yield* this.ok()
+    }
 }

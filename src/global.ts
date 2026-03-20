@@ -5,7 +5,7 @@ import { Player } from "./Game/Player"
 export const g = {
     enemies: [] as Enemy[],
     bullets: [] as Bullet[],
-    player: undefined as Player | undefined,
+    player: undefined as unknown as Player,
 
     width: 630,
     height: 1120,

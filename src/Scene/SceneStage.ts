@@ -1,4 +1,5 @@
 import { Dom } from "../Dom"
+import { Bullet } from "../Game/Bullet"
 import { BulletDrawer } from "../Game/BulletDrawer"
 import { InputKeyboard } from "../Game/InputKeyboard"
 import { Player } from "../Game/Player"
@@ -65,27 +66,55 @@ export default class implements Scene {
         this.looper.start()
     }
 
-    async end(): Promise<void> {}
+    async end(): Promise<void> {
+        g.bullets = []
+        g.enemies = []
+    }
 
     private tick() {
-        g.player?.tick()
+        this.logic()
+        this.draw()
+    }
 
-        g.bullets = g.bullets.filter((b) => {
-            b.tick()
-            return b.life > 0
-        })
+    private logic() {
+        g.player.tick()
 
-        g.enemies = g.enemies.filter((e) => {
+        g.bullets.forEach((b) => b.tick())
+
+        g.enemies.forEach((e) => {
             e.tick()
-            return e.life > 0
+
+            g.bullets
+                .values()
+                .filter((b) => b.type === Bullet.Type.Friend)
+                .filter((b) => b.p.minus(e.p).magnitude() <= b.r + e.r)
+                .forEach((b) => {
+                    b.life = 0
+                    e.life -= Math.ceil(b.p.minus(e.p).magnitude() / g.width)
+                    e.damaged = true
+                })
         })
 
+        g.bullets
+            .values()
+            .filter((b) => b.type === Bullet.Type.Enemy)
+            .filter((b) => b.p.minus(g.player.p).magnitude() <= b.r + g.player.r)
+            .forEach((b) => {
+                b.life = 0
+                g.player.life--
+            })
+
+        g.bullets = g.bullets.filter((b) => b.life > 0)
+        g.enemies = g.enemies.filter((e) => e.life > 0)
+    }
+
+    private draw() {
         this.ctx.clearRect(0, 0, g.width, g.height)
         this.ctx.save()
 
         this.ctx.translate(g.width / 2, g.height / 2)
 
-        g.player?.draw(this.ctx)
+        g.player.draw(this.ctx)
 
         g.bullets.forEach((b) => {
             this.drawer.draw(b, this.ctx)

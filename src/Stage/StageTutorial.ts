@@ -1,9 +1,10 @@
 import { Bullet } from "../Game/Bullet"
 import { Enemy } from "../Game/Enemy"
 import { remodel } from "../Game/Remodel"
-import { vec } from "../Game/Vec"
+import { vec } from "../utils/Vec"
 import { g, T } from "../global"
 import { Stage } from "./Stage"
+import { Curves } from "../utils/Curves"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -23,7 +24,8 @@ export default class extends Stage {
         yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
 
         // ここでドローンが飛び出す
-        g.enemies.push(new EnemyTutorial())
+        const e = new EnemyTutorial()
+        g.enemies.push(e)
 
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
@@ -36,7 +38,10 @@ export default class extends Stage {
             yield* this.text("Controlキーで高速移動")
         }
 
+        e.start()
+
         yield* this.waitDefeatEnemy()
+        yield* this.clear()
     }
 }
 
@@ -45,11 +50,29 @@ function isSmartPhone() {
 }
 
 class EnemyTutorial extends Enemy {
+    private readonly orbit
+
+    private started = false
+
     constructor() {
-        super(1000)
+        super(200)
+
+        this.orbit = Curves.Lissajous(g.width * 0.8, g.height / 3, 3, 4).curve
+
+        this.moveTo(vec(0, -g.height / 4), 60)
+    }
+
+    start() {
+        this.started = true
     }
 
     *G() {
+        if (!this.started) {
+            this.life = 200
+            yield
+            return
+        }
+
         remodel([new Bullet()])
             .colorful(this.frame)
             .p(this.p.clone())
@@ -59,5 +82,10 @@ class EnemyTutorial extends Enemy {
             .fire()
 
         yield* Array(10)
+    }
+
+    *H() {
+        this.p = this.orbit((this.frame - 60) / 120).point.plus(vec(0, -g.height / 4))
+        yield
     }
 }

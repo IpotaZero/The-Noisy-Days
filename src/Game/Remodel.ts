@@ -1,6 +1,6 @@
 import { g, T } from "../global"
 import { Bullet } from "./Bullet"
-import { vec } from "./Vec"
+import { vec } from "../utils/Vec"
 
 export const remodel = (bullets: Bullet[]) =>
     new Proxy(new Remodel(bullets), {

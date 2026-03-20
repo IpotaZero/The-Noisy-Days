@@ -24,6 +24,15 @@ export class Looper {
     private loop() {
         const currentTime = performance.now()
 
+        if (currentTime - this.lastRunTime > 1000) {
+            this.lastRunTime = currentTime
+            requestAnimationFrame(() => this.loop())
+            if (this.finishCondition()) {
+                this.onFinished()
+            }
+            return
+        }
+
         while (this.lastRunTime <= currentTime - this.interval) {
             this.handler()
             // lastRunTimeを正確な間隔分だけ進める（誤差の蓄積を防ぐ）

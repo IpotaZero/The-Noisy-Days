@@ -9,7 +9,7 @@ export class BulletDrawer {
         const hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
 
         if (!this.cache.has(hash)) {
-            if (bullet.appearance === Bullet.Appearance.donut) {
+            if (bullet.appearance === Bullet.Appearance.Donut) {
                 const cvs = this.drawDonut(bullet)
                 this.cache.set(hash, cvs)
             } else {
