@@ -20,13 +20,13 @@ export function shake(element: HTMLElement, durationMS = 1500, initialAmplitude 
     })
 }
 
-export function flash(element: HTMLElement, duration = 400) {
+export function flash(element: HTMLElement, duration = 1000) {
     const overlay = document.createElement("div")
 
     Object.assign(overlay.style, {
         position: "absolute",
         inset: "0",
-        backgroundColor: "#ffffff",
+        backgroundColor: "#eee8",
         pointerEvents: "none",
     })
 
