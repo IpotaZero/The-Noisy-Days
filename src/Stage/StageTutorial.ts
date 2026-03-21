@@ -7,7 +7,7 @@ import { Stage } from "./Stage"
 import { Curves } from "../utils/Curves"
 import { isSmartPhone } from "../utils/isSmartPhone"
 import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
+import { flash } from "../utils/shake"
 import { Dom } from "../Dom"
 
 export default class extends Stage {
