@@ -4,11 +4,12 @@ import { remodel } from "../Game/Remodel"
 import { vec } from "../utils/Vec"
 import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
-import { Curves } from "../utils/Curves"
 import { isSmartPhone } from "../utils/isSmartPhone"
 import { SE } from "../SE"
 import { flash } from "../utils/shake"
 import { Dom } from "../Dom"
+
+import * as Curves from "../utils/Curves"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -52,14 +53,10 @@ export default class extends Stage {
 }
 
 class EnemyTutorial extends Enemy {
-    private readonly orbit
-
     constructor() {
-        super(400)
+        super(400, 64)
 
         this.isInvincible = true
-
-        this.orbit = Curves.Lissajous(g.width * 0.8, g.height / 3, 3, 4).curve
 
         this.moveTo(vec(0, -g.height / 4), 60)
     }
@@ -86,7 +83,12 @@ class EnemyTutorial extends Enemy {
     }
 
     *H() {
-        this.p = this.orbit((this.frame - 60) / 120).point.plus(vec(0, -g.height / 4))
+        this.p = Curves.lissajous(
+            g.width * 0.8,
+            g.height / 3,
+            3,
+            4,
+        )((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
         yield
     }
 }

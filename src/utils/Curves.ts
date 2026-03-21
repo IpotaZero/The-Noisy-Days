@@ -1,218 +1,122 @@
 import { Vec, vec } from "./Vec"
 
-type CurveParameter = {
-    curve: Curve
-    length: (steps: number, interval: [number, number]) => number
+export type Curve = (t: number) => Vec
+
+// ── プリミティブ ──────────────────────────────────────────────────────────────
+
+/** 直線補間 */
+export function line(start: Vec, end: Vec): Curve {
+    return (t) => vec((1 - t) * start.x + t * end.x, (1 - t) * start.y + t * end.y)
 }
 
-type Curve = (t: number) => { point: Vec; velocity: Vec }
-
-export class Curves {
-    static lengthOf(curve: Curve, steps: number, interval: [number, number] = [0, 1]) {
-        let len = 0
-        let prev = curve(interval[0]).velocity
-
-        for (let i = 1; i <= steps; i++) {
-            const t = i / steps
-            const current = curve(interval[0] + (interval[1] - interval[0]) * t).velocity
-            const speedPrev = Math.hypot(prev.x, prev.y)
-            const speedCurr = Math.hypot(current.x, current.y)
-
-            len += 0.5 * (speedPrev + speedCurr) * (1 / steps)
-
-            prev = current
-        }
-
-        return len
+/** 二次ベジェ曲線 */
+export function bezier(start: Vec, control: Vec, end: Vec): Curve {
+    return (t) => {
+        const u = 1 - t
+        return vec(
+            u * u * start.x + 2 * u * t * control.x + t * t * end.x,
+            u * u * start.y + 2 * u * t * control.y + t * t * end.y,
+        )
     }
+}
 
-    static join(curves: CurveParameter[]): CurveParameter {
-        const joinedCurve = (t: number) => {
-            const m = curves.length
+/** Catmull-Rom スプライン（4点以上必要） */
+export function catmullRom(points: readonly Vec[]): Curve {
+    if (points.length < 4) throw new Error("At least 4 points are required.")
 
-            const n = Math.floor(t * m)
+    const segs = points.length - 3
 
-            return curves[n].curve((t - n / m) * m)
-        }
+    return (t) => {
+        const scaled = Math.min(t * segs, segs - 1e-10)
+        const i = Math.floor(scaled)
+        const u = scaled - i
 
-        const length = (steps: number, interval: [number, number]) => {
-            return curves.reduce((sum, c) => sum + c.length(steps, interval), 0)
-        }
+        const [p0, p1, p2, p3] = points.slice(i, i + 4)
+        const u2 = u * u
+        const u3 = u2 * u
 
-        return { curve: joinedCurve, length }
-    }
-
-    static Bezier(start: Vec, control: Vec, end: Vec): CurveParameter {
-        const curve = (t: number) => {
-            const oneMinusT = 1 - t
-            const x = oneMinusT ** 2 * start.x + 2 * oneMinusT * t * control.x + t ** 2 * end.x
-            const y = oneMinusT ** 2 * start.y + 2 * oneMinusT * t * control.y + t ** 2 * end.y
-
-            const dx = 2 * oneMinusT * (control.x - start.x) + 2 * t * (end.x - control.x)
-            const dy = 2 * oneMinusT * (control.y - start.y) + 2 * t * (end.y - control.y)
-
-            return { point: vec(x, y), velocity: vec(dx, dy) }
-        }
-
-        return {
-            curve,
-            length: (steps, interval) => Curves.lengthOf(curve, steps, interval),
-        }
-    }
-
-    static Line(start: Vec, end: Vec): CurveParameter {
-        const dx = end.x - start.x
-        const dy = end.y - start.y
-
-        const curve = (t: number) => {
-            const x = (1 - t) * start.x + t * end.x
-            const y = (1 - t) * start.y + t * end.y
-
-            return { point: vec(x, y), velocity: vec(dx, dy) }
-        }
-
-        return { curve, length: (steps, interval) => Math.hypot(dx, dy) * (interval[1] - interval[0]) }
-    }
-
-    static #CatmullRom(p0: Vec, p1: Vec, p2: Vec, p3: Vec): CurveParameter {
-        const curve = (t: number) => {
-            const t2 = t * t
-            const t3 = t2 * t
-
-            const x =
-                0.5 *
+        return vec(
+            0.5 *
                 (2 * p1.x +
-                    (-p0.x + p2.x) * t +
-                    (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 +
-                    (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3)
-
-            const y =
-                0.5 *
+                    (-p0.x + p2.x) * u +
+                    (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * u2 +
+                    (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * u3),
+            0.5 *
                 (2 * p1.y +
-                    (-p0.y + p2.y) * t +
-                    (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 +
-                    (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3)
+                    (-p0.y + p2.y) * u +
+                    (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * u2 +
+                    (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * u3),
+        )
+    }
+}
 
-            const dx =
-                0.5 *
-                (-p0.x +
-                    p2.x +
-                    2 * (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t +
-                    3 * (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t2)
+/** リサジュー曲線 */
+export function lissajous(width: number, height: number, fx: number, fy: number): Curve {
+    return (t) => vec((width / 2) * Math.sin(fx * t), (height / 2) * Math.sin(fy * t))
+}
 
-            const dy =
-                0.5 *
-                (-p0.y +
-                    p2.y +
-                    2 * (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t +
-                    3 * (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t2)
+/** エピトロコイド */
+export function epitrochoid(centerR: number, moveR: number, deltaR: number): Curve {
+    return (t) =>
+        vec(
+            (centerR + moveR) * Math.cos(t) - deltaR * Math.cos(((centerR + moveR) / moveR) * t),
+            (centerR + moveR) * Math.sin(t) - deltaR * Math.sin(((centerR + moveR) / moveR) * t),
+        )
+}
 
-            return { point: vec(x, y), velocity: vec(dx, dy) }
-        }
+/** ハイポトロコイド */
+export function hypotrochoid(centerR: number, moveR: number, deltaR: number): Curve {
+    return (t) =>
+        vec(
+            (centerR - moveR) * Math.cos(t) - deltaR * Math.cos(((centerR - moveR) / moveR) * t),
+            (centerR - moveR) * Math.sin(t) - deltaR * Math.sin(((centerR - moveR) / moveR) * t),
+        )
+}
 
-        return { curve, length: (steps: number, interval) => Curves.lengthOf(curve, steps, interval) }
+// ── コンビネータ ──────────────────────────────────────────────────────────────
+
+/** 複数のカーブを t=0〜1 の範囲で均等に連結する */
+export function join(...curves: Curve[]): Curve {
+    const n = curves.length
+    return (t) => {
+        const scaled = Math.min(t * n, n - 1e-10)
+        const i = Math.floor(scaled)
+        return curves[i](scaled - i)
+    }
+}
+
+/**
+ * 等速パラメータ化。
+ * そのままの t は速度が一定にならないカーブを、弧長に比例した t で動くように変換する。
+ * steps を大きくするほど精度が上がる（既定値 200 で大抵十分）。
+ */
+export function normalize(curve: Curve, steps = 200): Curve {
+    // 累積弧長テーブルを構築
+    const table: number[] = [0]
+    let prev = curve(0)
+
+    for (let i = 1; i <= steps; i++) {
+        const curr = curve(i / steps)
+        table.push(table[i - 1] + Math.hypot(curr.x - prev.x, curr.y - prev.y))
+        prev = curr
     }
 
-    static CatmullRom(points: Vec[], loop: boolean = false): CurveParameter {
-        if (points.length < 4) {
-            throw new Error("At least 4 points are required.")
+    const totalLen = table[steps]
+
+    return (s) => {
+        const target = s * totalLen
+
+        // 二分探索で対応する t を求める
+        let lo = 0,
+            hi = steps
+        while (hi - lo > 1) {
+            const mid = (lo + hi) >> 1
+            table[mid] < target ? (lo = mid) : (hi = mid)
         }
 
-        const curves = []
+        const frac = (target - table[lo]) / (table[hi] - table[lo] || 1)
+        const t = (lo + frac) / steps
 
-        for (let i = 0; i < points.length - 3; i++) {
-            curves.push(this.#CatmullRom(...(points.slice(i, i + 4) as [Vec, Vec, Vec, Vec])))
-        }
-
-        return Curves.join(curves)
-    }
-
-    static Lissajous(width: number, height: number, fx: number, fy: number): CurveParameter {
-        const curve = (t: number) => ({
-            point: vec((width / 2) * Math.sin(fx * t), (height / 2) * Math.sin(fy * t)),
-            velocity: vec((width / 2) * fx * Math.cos(fx * t), -(height / 2) * fy * Math.cos(fy * t)),
-        })
-
-        return {
-            curve,
-            length: (steps: number, interval) => Curves.lengthOf(curve, steps, interval),
-        }
-    }
-
-    static EpiTrochoid(centerR: number, moveR: number, deltaR: number): CurveParameter {
-        const curve = (t: number) => ({
-            point: vec(
-                (centerR + moveR) * Math.cos(t) - deltaR * Math.cos(((centerR + moveR) / moveR) * t),
-                (centerR + moveR) * Math.sin(t) - deltaR * Math.sin(((centerR + moveR) / moveR) * t),
-            ),
-            velocity: vec(
-                -(centerR + moveR) * Math.sin(t) +
-                    deltaR * ((centerR + moveR) / moveR) * Math.sin(((centerR + moveR) / moveR) * t),
-                (centerR + moveR) * Math.cos(t) -
-                    deltaR * ((centerR + moveR) / moveR) * Math.cos(((centerR + moveR) / moveR) * t),
-            ),
-        })
-
-        return {
-            curve,
-            length: (steps: number, interval) => Curves.lengthOf(curve, steps, interval),
-        }
-    }
-
-    static HypoTrochoid(centerR: number, moveR: number, deltaR: number): CurveParameter {
-        const curve = (t: number) => ({
-            point: vec(
-                (centerR - moveR) * Math.cos(t) - deltaR * Math.cos(((centerR - moveR) / moveR) * t),
-                (centerR - moveR) * Math.sin(t) - deltaR * Math.sin(((centerR - moveR) / moveR) * t),
-            ),
-            velocity: vec(
-                -(centerR + moveR) * Math.sin(t) +
-                    deltaR * ((centerR - moveR) / moveR) * Math.sin(((centerR - moveR) / moveR) * t),
-                (centerR + moveR) * Math.cos(t) -
-                    deltaR * ((centerR - moveR) / moveR) * Math.cos(((centerR - moveR) / moveR) * t),
-            ),
-        })
-
-        return {
-            curve,
-            length: (steps: number, interval) => Curves.lengthOf(curve, steps, interval),
-        }
-    }
-
-    static isosceles(curve: CurveParameter, errorCap: number = 1): CurveParameter {
-        const L = curve.length(100, [0, 1])
-
-        return {
-            curve: (s: number) => {
-                // length(t) = l * length となるtを探す
-
-                let ts = 0
-                let te = 1
-
-                let t = 0
-
-                let lt = 0
-
-                let safety = 0
-
-                // errorCapに収まるまで二分探索する
-                do {
-                    if (s * L < lt) {
-                        te = t
-                        t = (ts + t) / 2
-                    } else {
-                        ts = t
-                        t = (t + te) / 2
-                    }
-
-                    lt = curve.length(100, [0, t])
-
-                    console.log(ts, t, te, lt, L, s * L, s, Math.abs(lt - s * L))
-                } while (Math.abs(lt - s * L) > errorCap && safety++ < 10)
-
-                return curve.curve(t)
-            },
-            length: curve.length,
-        }
+        return curve(t)
     }
 }
