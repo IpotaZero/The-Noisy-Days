@@ -1,9 +1,7 @@
-import { g, T } from "../global"
+import { g } from "../global"
 import { Ease } from "../utils/Ease"
 import { Ctx } from "./Ctx"
 import { Vec, vec } from "../utils/Vec"
-import { remodel } from "./Remodel"
-import { Bullet } from "./Bullet"
 
 export class Enemy {
     damaged = false
