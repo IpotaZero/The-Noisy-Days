@@ -11,11 +11,12 @@ export class Player {
     life = 8
     p = vec(0, 0)
 
-    private invincibleFrame = 0
-    invincibleCoolDown = 0
+    private deadFrame = 0
+    private dashFrame = 0
+    dashCoolDown = 0
 
-    readonly INVINCIBLE_FRAME = 15
-    readonly INVINCIBLE_COOL_DOWN = 60
+    readonly DASH_FRAME = 15
+    readonly DASH_COOL_DOWN = 60
 
     readonly r = 4
     readonly GRAZE_R = 24
@@ -38,6 +39,11 @@ export class Player {
         this.touchTracker = touchTracker
     }
 
+    damage() {
+        this.deadFrame = this.DASH_COOL_DOWN
+        this.life--
+    }
+
     remove() {
         this.input.remove()
         this.isDead = true
@@ -47,8 +53,9 @@ export class Player {
     tick() {
         this.move()
 
-        if (this.invincibleFrame > 0) this.invincibleFrame--
-        if (this.invincibleCoolDown > 0) this.invincibleCoolDown--
+        if (this.deadFrame > 0) this.deadFrame--
+        if (this.dashFrame > 0) this.dashFrame--
+        if (this.dashCoolDown > 0) this.dashCoolDown--
 
         this.fire()
 
@@ -56,7 +63,7 @@ export class Player {
     }
 
     isInvincible() {
-        return this.invincibleFrame > 0
+        return this.dashFrame > 0 || this.deadFrame > 0
     }
 
     draw(ctx: CanvasRenderingContext2D) {
@@ -79,13 +86,13 @@ export class Player {
 
         if (pressed.has(Operation.Slow)) {
             v.scale(0.5)
-        } else if (pushed.has(Operation.Dash) && this.invincibleCoolDown === 0) {
+        } else if (pushed.has(Operation.Dash) && this.dashCoolDown === 0) {
             SE.dash.play()
-            this.invincibleFrame = this.INVINCIBLE_FRAME
-            this.invincibleCoolDown = this.INVINCIBLE_COOL_DOWN
+            this.dashFrame = this.DASH_FRAME
+            this.dashCoolDown = this.DASH_COOL_DOWN
         }
 
-        if (this.invincibleFrame > 0) v.scale(5)
+        if (this.dashFrame > 0) v.scale(5)
 
         v.scale(this.BASE_SPEED)
 
@@ -108,7 +115,7 @@ export class Player {
             movingRight,
             movingLeft,
             this.isSneaking(),
-            this.invincibleFrame > 0, // Dash 中かどうか
+            this.dashFrame > 0, // Dash 中かどうか
             this.p.x,
             this.p.y,
         )

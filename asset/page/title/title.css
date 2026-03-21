@@ -80,3 +80,23 @@ button {
         }
     }
 }
+
+#credit {
+    h2 {
+        font-size: 8cqw;
+    }
+
+    p {
+        font-size: 4cqw;
+    }
+
+    text-align: center;
+}
+
+#womake {
+    padding: 2em;
+
+    p {
+        line-height: 1.4;
+    }
+}

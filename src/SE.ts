@@ -9,10 +9,6 @@ export class Sound {
         this.#audio.preload = "auto"
     }
 
-    get duration() {
-        return this.#audio.duration
-    }
-
     play() {
         this.#audio.currentTime = 0
         this.#audio.play()

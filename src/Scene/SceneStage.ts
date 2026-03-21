@@ -12,6 +12,7 @@ import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
+import { shake } from "../utils/shake"
 import { TouchTracker } from "../utils/TouchTracker"
 import { Vec } from "../utils/Vec"
 import { Scene } from "./Scene"
@@ -84,7 +85,7 @@ export default class SceneStage implements Scene {
         cvs.width = g.width
         cvs.height = g.height
 
-        this.ctx = cvs.getContext("2d")!
+        this.ctx = cvs.getContext("2d", { alpha: false })!
 
         g.player = new Player(new InputKeyboard(), new TouchTracker(Dom.container), g.width / rect.width)
 
@@ -128,25 +129,26 @@ export default class SceneStage implements Scene {
             }
         })
 
-        g.bullets
-            .values()
-            .filter((b) => b.type === Bullet.Type.Enemy)
-            .forEach((b) => {
-                const distance = b.p.minus(g.player.p).magnitude()
+        if (!g.player.isInvincible())
+            g.bullets
+                .values()
+                .filter((b) => b.type === Bullet.Type.Enemy)
+                .forEach((b) => {
+                    const distance = b.p.minus(g.player.p).magnitude()
 
-                if (distance <= b.r + g.player.GRAZE_R) {
-                    SE.graze.play()
-                }
+                    if (distance <= b.r + g.player.GRAZE_R) {
+                        SE.graze.play()
+                    }
 
-                if (distance <= b.r + g.player.r) {
-                    b.life = 0
-                    g.player.life--
-                    SE.u.play()
-                    SE.hit.play()
+                    if (distance <= b.r + g.player.r) {
+                        b.life = 0
+                        g.player.damage()
+                        SE.u.play()
+                        SE.hit.play()
 
-                    this.fireDeleteField()
-                }
-            })
+                        this.fireDeleteField()
+                    }
+                })
 
         g.bullets
             .values()
@@ -170,6 +172,8 @@ export default class SceneStage implements Scene {
     }
 
     private fireDeleteField() {
+        shake(Dom.container, 1000, 12)
+
         if (g.player.life < 0) {
             this.explosion(g.player.p.clone())
             return
@@ -229,6 +233,10 @@ export default class SceneStage implements Scene {
 
     private draw() {
         this.ctx.clearRect(0, 0, g.width, g.height)
+
+        this.ctx.fillStyle = "black"
+        this.ctx.fillRect(0, 0, g.width, g.height)
+
         this.ctx.save()
 
         this.ctx.translate(g.width / 2, g.height / 2)

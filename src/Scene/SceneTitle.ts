@@ -44,6 +44,8 @@ export default class implements Scene {
     private gotoStage(stageName: string) {
         SE.start.play()
 
+        document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+
         SceneChanger.goto(
             async () => {
                 // @ts-ignore

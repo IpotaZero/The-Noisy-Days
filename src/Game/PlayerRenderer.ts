@@ -67,6 +67,9 @@ export class PlayerRenderer {
         // sneak / dash / normal の合計が 1 になるよう normal を算出
         const normal = Math.max(0, 1 - sneak - dash)
 
+        ctx.save()
+        ctx.globalAlpha = player.isInvincible() ? 0.5 : 1
+
         this.drawAfterImages(ctx, player)
 
         this.drawSneakEffect(ctx, player, sneak)
@@ -76,6 +79,8 @@ export class PlayerRenderer {
         this.drawCoreAndGrazeBoundary(ctx, player)
         this.drawInvincibleProgress(ctx, player)
         this.drawLife(ctx, player)
+
+        ctx.restore()
     }
 
     // ── private ────────────────────────────────────────────────────────
@@ -166,8 +171,8 @@ export class PlayerRenderer {
     }
 
     private drawInvincibleProgress(ctx: CanvasRenderingContext2D, player: Player): void {
-        if (player.invincibleCoolDown > 0) {
-            const progress = T - T * (player.invincibleCoolDown / player.INVINCIBLE_COOL_DOWN)
+        if (player.dashCoolDown > 0) {
+            const progress = T - T * (player.dashCoolDown / player.DASH_COOL_DOWN)
             Ctx.arc(ctx, player.p.l, player.GRAZE_R / 2, "rgb(255, 255, 127)", {
                 lineWidth: 2,
                 start: 0,

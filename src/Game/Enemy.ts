@@ -53,7 +53,6 @@ export class Enemy {
         const white = "#ffffff80"
         const red = "rgba(255, 60, 60, 0.6)"
         const hpRatio = this.life / this.maxLife
-        const isCritical = hpRatio < 0.3
 
         // 状態に応じたカラーと拍動（パルス）の計算
         const mainColor = this.damaged || this.isInvincible ? red : white
@@ -104,8 +103,8 @@ export class Enemy {
         })
 
         // メインの二重円
-        Ctx.arc(ctx, this.p.l, this.r * (1 + pulse), white, { lineWidth: 1 })
-        Ctx.arc(ctx, this.p.l, this.r, "rgba(255, 255, 255, 0.4)", { lineWidth: 2 })
+        Ctx.arc(ctx, this.p.l, this.r * (1 + pulse), this.damaged ? red : white, { lineWidth: 2 })
+        Ctx.arc(ctx, this.p.l, this.r, white, { lineWidth: 2 })
 
         // 内部の七角形（ユーザーのデザインを継承・洗練）
         Ctx.polygon(ctx, 7, 2, this.p.l, this.r * 0.85, white, {

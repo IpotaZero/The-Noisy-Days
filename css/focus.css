@@ -1,4 +1,6 @@
-.nav-focus {
+.nav-focus,
+button:hover,
+button:active {
     background-color: var(--white);
     color: var(--black);
 }

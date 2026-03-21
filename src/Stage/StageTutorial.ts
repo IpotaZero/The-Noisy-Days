@@ -7,6 +7,8 @@ import { Stage } from "./Stage"
 import { Curves } from "../utils/Curves"
 import { isSmartPhone } from "../utils/isSmartPhone"
 import { SE } from "../SE"
+import { flash, shake } from "../utils/shake"
+import { Dom } from "../Dom"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -35,15 +37,16 @@ export default class extends Stage {
         if (isSmartPhone()) {
             yield* this.text("画面をスライドして移動")
         } else {
-            yield* this.text("矢印キーで移動")
-            yield* this.text("Shiftキーで低速移動")
-            yield* this.text("Controlキーで高速移動")
+            yield* this.text("矢印キーで移動<br>Shiftキーで低速移動<br>Controlキーで高速移動")
         }
+
+        yield* this.text("当たり判定は赤丸のみ")
 
         e.start()
 
         yield* this.waitDefeatEnemy()
         scorenize()
+        flash(Dom.container)
         SE.crush.play()
     }
 }
