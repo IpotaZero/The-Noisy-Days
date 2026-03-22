@@ -3,18 +3,14 @@ import { Bullet } from "../Game/Bullet"
 import { BulletDrawer } from "../Game/BulletDrawer"
 import { InputKeyboard } from "../Game/InputKeyboard"
 import { Player } from "../Game/Player"
-import { remodel } from "../Game/Remodel"
-import { g, T } from "../global"
+import { explosion, fireDeleteField, g, T } from "../global"
 import { SE } from "../SE"
 import { Stage } from "../Stage/Stage"
-import { Ease } from "../utils/Ease"
 import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
-import { shake } from "../utils/shake"
 import { TouchTracker } from "../utils/TouchTracker"
-import { Vec } from "../utils/Vec"
 import { Scene } from "./Scene"
 
 export default class SceneStage implements Scene {
@@ -146,7 +142,7 @@ export default class SceneStage implements Scene {
                 })
 
             if (e.life <= 0) {
-                this.explosion(e.p.clone())
+                explosion(e.p.clone())
             }
         })
 
@@ -167,7 +163,7 @@ export default class SceneStage implements Scene {
                         SE.u.play()
                         SE.hit.play()
 
-                        this.fireDeleteField()
+                        fireDeleteField()
                     }
                 })
 
@@ -193,72 +189,12 @@ export default class SceneStage implements Scene {
     }
 
     private selfDestruct() {
-        if (this.isFinished || g.player.isInvincible()) return
+        if (this.isFinished) return
 
         SE.u.play()
         SE.hit.play()
         g.player.life = -1
-        this.fireDeleteField()
-    }
-
-    private fireDeleteField() {
-        shake(Dom.container, 1000, 12)
-
-        if (g.player.life < 0) {
-            this.explosion(g.player.p.clone())
-            return
-        }
-
-        remodel([new Bullet()])
-            .type(Bullet.Type.Effect)
-            .color("white")
-            .p(g.player.p.clone())
-            .speed(0.001)
-            .g(function* (me) {
-                const frame = 45
-
-                for (let i = 1; i < frame + 1; i++) {
-                    me.r = Ease.Out(i / frame) * g.width
-                    me.alpha = 1 - Ease.Out(i / frame)
-
-                    g.bullets
-                        .filter((b) => b.type === Bullet.Type.Enemy)
-                        .filter((b) => b.p.minus(me.p).magnitude() <= me.r)
-                        .forEach((b) => {
-                            b.scorenize(g.player)
-                        })
-
-                    yield
-                }
-
-                me.life = 0
-            })
-            .fire()
-    }
-
-    private explosion(p: Vec) {
-        remodel([new Bullet()])
-            .p(p)
-            .type(Bullet.Type.Effect)
-            .color("white")
-            .duplicate(16, (b) => {
-                const clone = b.clone()
-                clone.r = Math.random() * 8 + 8
-                clone.speed = Math.random() * 4 + 4
-                clone.radian = Math.random() * T
-                return clone
-            })
-            .g(function* (me) {
-                const frame = 60
-
-                for (let i = 1; i < frame + 1; i++) {
-                    me.alpha = (1 - i / frame) * 0.5
-                    yield
-                }
-
-                me.life = 0
-            })
-            .fire()
+        fireDeleteField()
     }
 
     private draw() {
