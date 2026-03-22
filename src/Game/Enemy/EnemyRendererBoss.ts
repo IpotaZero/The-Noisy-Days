@@ -1,9 +1,9 @@
-import { Ctx } from "./Ctx"
 import { Enemy } from "./Enemy"
-import { vec } from "../utils/Vec"
 import { IEnemyRenderer } from "./IEnemyRenderer"
-import { g, T } from "../global" // T は 2*Math.PI と想定
-import * as Curves from "../utils/Curves"
+import * as Curves from "../../utils/Curves"
+import { g, T } from "../../global"
+import { Ctx } from "../../utils/Ctx"
+import { vec } from "../../utils/Vec"
 
 const WHITE = "#ffffff80"
 const GOLD = "rgba(255, 215, 0, 0.6)"

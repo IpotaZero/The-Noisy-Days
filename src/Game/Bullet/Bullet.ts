@@ -1,6 +1,6 @@
-import { g } from "../global"
-import { Vec, vec } from "../utils/Vec"
-import { Player } from "./Player/Player"
+import { g } from "../../global"
+import { vec } from "../../utils/Vec"
+import { Player } from "./../Player/Player"
 
 export class Bullet {
     life = 1

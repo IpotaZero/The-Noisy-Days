@@ -1,6 +1,6 @@
-import { Ctx } from "./Ctx"
+import { Ctx } from "../../utils/Ctx"
+import { vec } from "../../utils/Vec"
 import { Enemy } from "./Enemy"
-import { vec } from "../utils/Vec"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
 const WHITE = "#ffffff80"
