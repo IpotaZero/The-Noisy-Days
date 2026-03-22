@@ -43,6 +43,7 @@ export class KeyboardOperator {
             case "Enter":
             case "Space":
             case "KeyZ":
+                e.preventDefault()
                 this.operate("ok")
                 break
 
