@@ -31,5 +31,5 @@ export function hidePointerTemporarily() {
 }
 
 export function isCancelButton(button: HTMLElement) {
-    return button.classList.contains("back") || button.hasAttribute("data-back")
+    return button.hasAttribute("data-back")
 }
