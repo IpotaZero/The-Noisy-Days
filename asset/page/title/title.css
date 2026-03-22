@@ -100,3 +100,69 @@ button {
         line-height: 1.4;
     }
 }
+
+#setting {
+    font-size: 6cqw;
+
+    h2 {
+        text-align: center;
+        width: 100%;
+        font-size: 8cqw;
+        padding-bottom: 0.2em;
+        border-bottom: 1px solid var(--white);
+    }
+
+    .setting-container {
+        width: 100%;
+    }
+
+    .options {
+        display: flex;
+        width: 100%;
+        gap: 0.5em;
+
+        padding-bottom: 0.2em;
+        border-bottom: 1px var(--white-vale) solid;
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2em;
+            text-align: center;
+            width: 100%;
+
+            label {
+                font-size: 0.75em;
+                color: var(--white-vale);
+            }
+        }
+    }
+
+    x-radio {
+        display: flex;
+        flex-direction: row;
+
+        .value {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5em;
+            width: 100%;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+
+    x-number {
+        line-height: 1em;
+        width: 100%;
+        display: flex;
+
+        .value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

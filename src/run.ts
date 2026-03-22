@@ -1,8 +1,12 @@
 import { Dom } from "./Dom"
+import { HTMLNumberElement } from "./HTMLNumberElement"
+import { HTMLRadioElement } from "./HTMLRadioElement"
 import { Focuses } from "./utils/Focuses/Focuses"
 import { isSmartPhone } from "./utils/isSmartPhone"
 import { Pages } from "./utils/Pages/Pages"
 import { SceneChanger } from "./utils/SceneChanger"
+HTMLNumberElement
+HTMLRadioElement
 
 window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
