@@ -75,7 +75,7 @@ export class TouchTracker {
     }
 
     /** イベントリスナーを一括解除してリソースを解放する */
-    destroy(): void {
+    remove(): void {
         this.ac.abort()
         this.clearState()
     }

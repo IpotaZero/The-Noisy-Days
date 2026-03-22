@@ -46,6 +46,7 @@ export class Player {
 
     remove() {
         this.input.remove()
+        this.touchTracker.remove()
         this.isDead = true
         this.p.y = -g.height
     }
