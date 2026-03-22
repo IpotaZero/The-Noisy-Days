@@ -73,4 +73,22 @@ export abstract class Stage {
     protected *waitDefeatEnemy() {
         while (g.enemies.length > 0) yield
     }
+
+    protected changeBackground(path: string | undefined) {
+        if (path) {
+            const img = new Image()
+            img.src = path
+            img.classList.add("stage-background")
+
+            img.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000 })
+
+            Dom.container.appendChild(img)
+        } else {
+            Dom.container.querySelectorAll(".stage-background").forEach((i) => {
+                i.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1000 }).finished.then(() => {
+                    i.remove()
+                })
+            })
+        }
+    }
 }

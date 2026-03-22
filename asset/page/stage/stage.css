@@ -20,6 +20,8 @@
     border-collapse: collapse;
 
     animation: fade-in 0.2s ease-out forwards;
+
+    z-index: 1000;
 }
 
 .stage-text-name {
@@ -115,4 +117,12 @@
     button {
         font-size: 8cqw;
     }
+}
+
+.stage-background {
+    z-index: 100;
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
