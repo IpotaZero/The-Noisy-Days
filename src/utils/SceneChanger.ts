@@ -1,5 +1,5 @@
-import { Awaits } from "./Awaits.js"
-import { Transition } from "./Transition.js"
+import { Awaits } from "./Functions/Awaits"
+import { Transition } from "./Functions/Transition"
 import { Scene } from "../Scene/Scene.js"
 
 type FadeFunction = (container: HTMLElement, ms: number) => Promise<void>

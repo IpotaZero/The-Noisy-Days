@@ -3,7 +3,7 @@ import { Bullet } from "./Game/Bullet/Bullet"
 import { Enemy } from "./Game/Enemy/Enemy"
 import { Player } from "./Game/Player/Player"
 import { remodel } from "./Game/Bullet/Remodel"
-import { Ease } from "./utils/Ease"
+import { Ease } from "./utils/Functions/Ease"
 import { shake } from "./utils/shake"
 import { Vec } from "./utils/Vec"
 

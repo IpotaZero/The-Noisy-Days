@@ -1,6 +1,6 @@
-import { Awaits } from "../Awaits"
+import { Awaits } from "../Functions/Awaits"
+import { Transition } from "../Functions/Transition"
 import { RegExpDict } from "../RegExpDict"
-import { Transition } from "../Transition"
 import { FadeOption } from "./Pages"
 
 /**

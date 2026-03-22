@@ -1,8 +1,8 @@
 import { Enemy } from "./Enemy"
 import { IEnemyRenderer } from "./IEnemyRenderer"
-import * as Curves from "../../utils/Curves"
+import * as Curves from "../../utils/Functions/Curves"
 import { g, T } from "../../global"
-import { Ctx } from "../../utils/Ctx"
+import { Ctx } from "../../utils/Functions/Ctx"
 import { vec } from "../../utils/Vec"
 
 const WHITE = "#ffffff80"

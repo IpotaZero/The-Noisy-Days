@@ -1,5 +1,5 @@
 import { T } from "../../global"
-import { Ctx } from "../../utils/Ctx"
+import { Ctx } from "../../utils/Functions/Ctx"
 import { Player } from "./Player"
 import { vec } from "../../utils/Vec"
 

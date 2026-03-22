@@ -4,12 +4,12 @@ import { remodel } from "../Game/Bullet/Remodel"
 import { vec } from "../utils/Vec"
 import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
-import { isSmartPhone } from "../utils/isSmartPhone"
+import { isSmartPhone } from "../utils/Functions/isSmartPhone"
 import { SE } from "../SE"
 import { flash } from "../utils/shake"
 import { Dom } from "../Dom"
 
-import * as Curves from "../utils/Curves"
+import * as Curves from "../utils/Functions/Curves"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {

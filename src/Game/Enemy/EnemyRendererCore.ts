@@ -1,4 +1,4 @@
-import { Ctx } from "../../utils/Ctx"
+import { Ctx } from "../../utils/Functions/Ctx"
 import { vec } from "../../utils/Vec"
 import { Enemy } from "./Enemy"
 import { IEnemyRenderer } from "./IEnemyRenderer"

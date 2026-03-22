@@ -2,7 +2,7 @@ import { Dom } from "./Dom"
 import { HTMLNumberElement } from "./utils/HTMLNumberElement"
 import { HTMLRadioElement } from "./utils/HTMLRadioElement"
 import { Focuses } from "./utils/Focuses/Focuses"
-import { isSmartPhone } from "./utils/isSmartPhone"
+import { isSmartPhone } from "./utils/Functions/isSmartPhone"
 import { Pages } from "./utils/Pages/Pages"
 import { SceneChanger } from "./utils/SceneChanger"
 HTMLNumberElement

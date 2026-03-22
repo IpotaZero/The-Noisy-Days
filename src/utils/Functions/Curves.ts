@@ -1,4 +1,4 @@
-import { Vec, vec } from "./Vec"
+import { Vec, vec } from "../Vec"
 
 export type Curve = (t: number) => Vec
 

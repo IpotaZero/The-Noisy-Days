@@ -1,5 +1,5 @@
 import { g } from "../../global"
-import { Ease } from "../../utils/Ease"
+import { Ease } from "../../utils/Functions/Ease"
 import { Vec, vec } from "../../utils/Vec"
 import { EnemyRendererCore } from "./EnemyRendererCore"
 import { IEnemyRenderer } from "./IEnemyRenderer"
