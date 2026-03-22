@@ -1,10 +1,19 @@
 import { Operation } from "./Focuses"
 
 export class KeyboardOperator {
+    private pushed = false
+
     private readonly ac = new AbortController()
 
     constructor(private readonly operate: (o: Operation) => void) {
         window.addEventListener("keydown", this.onKeyDown.bind(this), { signal: this.ac.signal })
+        window.addEventListener(
+            "keyup",
+            () => {
+                this.pushed = false
+            },
+            { signal: this.ac.signal },
+        )
     }
 
     remove() {
@@ -12,6 +21,8 @@ export class KeyboardOperator {
     }
 
     private onKeyDown(e: KeyboardEvent): void {
+        if (this.pushed) return
+
         switch (e.code) {
             case "ArrowUp":
                 this.operate("up")
@@ -41,5 +52,7 @@ export class KeyboardOperator {
                 this.operate("cancel")
                 break
         }
+
+        this.pushed = true
     }
 }

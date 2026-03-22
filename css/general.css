@@ -48,3 +48,7 @@ button {
 .hidden {
     display: none !important;
 }
+
+p {
+    line-height: 1.4;
+}
