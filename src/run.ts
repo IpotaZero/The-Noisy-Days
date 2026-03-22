@@ -1,6 +1,6 @@
 import { Dom } from "./Dom"
-import { HTMLNumberElement } from "./HTMLNumberElement"
-import { HTMLRadioElement } from "./HTMLRadioElement"
+import { HTMLNumberElement } from "./utils/HTMLNumberElement"
+import { HTMLRadioElement } from "./utils/HTMLRadioElement"
 import { Focuses } from "./utils/Focuses/Focuses"
 import { isSmartPhone } from "./utils/isSmartPhone"
 import { Pages } from "./utils/Pages/Pages"
