@@ -86,7 +86,7 @@ export class Bullet {
         while (1) {
             const v = player.p.minus(this.p).scaled(1 / 7)
 
-            this.speed = v.magnitude()
+            this.speed = Math.max(v.magnitude(), 16)
             this.radian = v.arg()
 
             yield

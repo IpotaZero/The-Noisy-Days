@@ -1,6 +1,6 @@
 import { g, T } from "../global"
 import { Bullet } from "./Bullet"
-import { vec } from "../utils/Vec"
+import { Vec, vec } from "../utils/Vec"
 
 export const remodel = (bullets: Bullet[]) =>
     new Proxy(new Remodel(bullets), {
@@ -31,6 +31,12 @@ class Remodel {
 
     colorful(seed: number) {
         return this.set("color", `hsl(${seed % 360} 100% 50%)`)
+    }
+
+    aim(target: Vec) {
+        return this.forEach((b) => {
+            b.radian = target.minus(b.p).arg()
+        })
     }
 
     nway(num: number, angle: number) {

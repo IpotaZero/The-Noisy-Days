@@ -27,6 +27,8 @@ export default class SceneStage implements Scene {
 
     private isFinished = false
 
+    private readonly ac = new AbortController()
+
     constructor(
         private readonly stage: Stage,
         private readonly history: readonly string[],
@@ -90,6 +92,24 @@ export default class SceneStage implements Scene {
         g.player = new Player(new InputKeyboard(), new TouchTracker(Dom.container), g.width / rect.width)
 
         this.looper.start()
+
+        const { signal } = this.ac
+
+        window.addEventListener(
+            "keydown",
+            (e) => {
+                if (e.code === "Escape") this.selfDestruct()
+            },
+            { signal },
+        )
+
+        Dom.container.addEventListener(
+            "touchstart",
+            (e) => {
+                if (e.touches.length >= 2) this.selfDestruct()
+            },
+            { passive: true, signal },
+        )
     }
 
     async end(): Promise<void> {
@@ -97,6 +117,7 @@ export default class SceneStage implements Scene {
         g.bullets = []
         g.enemies = []
         g.player.remove()
+        this.ac.abort()
     }
 
     private tick() {
@@ -169,6 +190,15 @@ export default class SceneStage implements Scene {
             this.pages.enter("retry")
             g.player.remove()
         }
+    }
+
+    private selfDestruct() {
+        if (this.isFinished || g.player.isInvincible()) return
+
+        SE.u.play()
+        SE.hit.play()
+        g.player.life = -1
+        this.fireDeleteField()
     }
 
     private fireDeleteField() {

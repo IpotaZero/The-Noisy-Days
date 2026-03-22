@@ -58,8 +58,8 @@ export class EnemyRendererCore implements IEnemyRenderer {
             theta: -orbitTheta,
             lineWidth: 2,
         })
-        Ctx.arc(ctx, e.p.l, e.r * (1 + pulse), e.damaged ? RED : WHITE, { lineWidth: 2 })
-        Ctx.arc(ctx, e.p.l, e.r, WHITE, { lineWidth: 2 })
+        Ctx.arc(ctx, e.p.l, e.r, e.damaged ? RED : WHITE, { lineWidth: 2 })
+        Ctx.arc(ctx, e.p.l, e.r * (1 + pulse), WHITE, { lineWidth: 2 })
         Ctx.polygon(ctx, 7, 2, e.p.l, e.r * 0.85, WHITE, {
             theta: orbitTheta,
             lineWidth: 2,

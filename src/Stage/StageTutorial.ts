@@ -37,8 +37,10 @@ export default class extends Stage {
         // 操作説明
         if (isSmartPhone()) {
             yield* this.text("画面をスライドして移動")
+            yield* this.text("2本指タップで自爆")
         } else {
             yield* this.text("矢印キーで移動<br>Shiftキーで低速移動<br>Controlキーで高速移動")
+            yield* this.text("Escapeで自爆")
         }
 
         yield* this.text("当たり判定は赤丸のみ")
@@ -75,8 +77,8 @@ class EnemyTutorial extends Enemy {
             .colorful(this.frame)
             .p(this.p.clone())
             .speed(8)
-            .radian(T / 4)
-            .nway(7, T / 12)
+            .aim(g.player.p)
+            .nway(6, T / 12)
             .fire()
 
         yield* Array(30)
