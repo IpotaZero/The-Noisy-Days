@@ -1,9 +1,7 @@
-import { g } from "../global"
-import { Ease } from "../utils/Ease"
-import { Vec, vec } from "../utils/Vec"
-import { EnemyRendererBoss } from "./EnemyRendererBoss"
+import { g } from "../../global"
+import { Ease } from "../../utils/Ease"
+import { Vec, vec } from "../../utils/Vec"
 import { EnemyRendererCore } from "./EnemyRendererCore"
-import { EnemyRendererMob } from "./EnemyRendererMob"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
 export class Enemy {

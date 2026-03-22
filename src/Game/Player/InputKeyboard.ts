@@ -1,4 +1,4 @@
-import { IInput, Operation } from "./Input"
+import { IInput, Operation } from "../Input"
 
 /** キーコードと Operation のマッピング */
 const KEY_MAP: Record<string, Operation> = {

@@ -1,11 +1,11 @@
-import { g, T } from "../global"
-import { TouchTracker } from "../utils/TouchTracker"
-import { Bullet } from "./Bullet"
+import { g, T } from "../../global"
+import { TouchTracker } from "../../utils/TouchTracker"
+import { Bullet } from "../Bullet/Bullet"
 import { IInput, Operation } from "./Input"
 import { PlayerRenderer } from "./PlayerRenderer"
-import { remodel } from "./Remodel"
-import { vec } from "../utils/Vec"
-import { SE } from "../SE"
+import { remodel } from "../Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { SE } from "../../SE"
 
 export class Player {
     life = 8

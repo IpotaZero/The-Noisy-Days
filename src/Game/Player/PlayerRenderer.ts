@@ -1,7 +1,7 @@
-import { T } from "../global"
-import { Ctx } from "./Ctx"
+import { T } from "../../global"
+import { Ctx } from "../../utils/Ctx"
 import { Player } from "./Player"
-import { vec } from "../utils/Vec"
+import { vec } from "../../utils/Vec"
 
 /** 残像1コマ分のスナップショット */
 interface AfterImage {
