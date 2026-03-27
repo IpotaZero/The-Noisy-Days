@@ -1,16 +1,16 @@
 import { Operation } from "./Focuses"
 
 export class KeyboardOperator {
-    private pushed = false
-
     private readonly ac = new AbortController()
+
+    private readonly pushedKeys = new Set<string>()
 
     constructor(private readonly operate: (o: Operation) => void) {
         window.addEventListener("keydown", this.onKeyDown.bind(this), { signal: this.ac.signal })
         window.addEventListener(
             "keyup",
-            () => {
-                this.pushed = false
+            (e) => {
+                this.pushedKeys.delete(e.code)
             },
             { signal: this.ac.signal },
         )
@@ -21,7 +21,13 @@ export class KeyboardOperator {
     }
 
     private onKeyDown(e: KeyboardEvent): void {
-        if (this.pushed) return
+        console.log(e.code)
+        if (this.pushedKeys.has(e.code)) {
+            return
+        }
+        console.log(e.code)
+
+        this.pushedKeys.add(e.code)
 
         switch (e.code) {
             case "ArrowUp":
@@ -43,7 +49,6 @@ export class KeyboardOperator {
             case "Enter":
             case "Space":
             case "KeyZ":
-                e.preventDefault()
                 this.operate("ok")
                 break
 
@@ -53,7 +58,5 @@ export class KeyboardOperator {
                 this.operate("cancel")
                 break
         }
-
-        this.pushed = true
     }
 }

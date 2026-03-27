@@ -40,6 +40,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     SceneChanger.init(Dom.container, await import("./Scene/SceneTitle").then((module) => new module.default()))
 })
 
+window.addEventListener("keydown", (e) => {
+    if (e.code === "Enter" || e.code === "Space") e.preventDefault()
+})
+
 window.addEventListener("contextmenu", (e) => {
     e.preventDefault()
 })
