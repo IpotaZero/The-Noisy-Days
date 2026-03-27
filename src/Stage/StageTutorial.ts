@@ -43,11 +43,13 @@ export default class extends Stage {
             yield* this.text("画面をスライドして移動")
             yield* this.text("2本指タップで自爆")
         } else {
-            yield* this.text("矢印キーで移動<br>Shiftキーで低速移動<br>Controlキーで高速移動")
+            yield* this.text("矢印キーで移動<br>Shiftで低速移動")
+            yield* this.text("Controlで0.5秒間高速移動(無敵)<br>チャージに2秒掛かる")
             yield* this.text("Escapeで自爆")
         }
 
-        yield* this.text("当たり判定は赤丸のみ")
+        yield* this.text("自機の当たり判定は赤丸のみ")
+        yield* this.text("敵自体に当たり判定は無い")
 
         e.start()
 
