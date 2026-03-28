@@ -1,4 +1,8 @@
-export function shake(element: HTMLElement, durationMS = 1500, initialAmplitude = 12) {
+export function shake(
+    element: HTMLElement,
+    durationMS = 1500,
+    initialAmplitude = 12,
+) {
     const FRAMES = 30
 
     const keyframes: Keyframe[] = Array.from({ length: FRAMES + 1 }, (_, i) => {
@@ -26,13 +30,17 @@ export function flash(element: HTMLElement, duration = 1000) {
     Object.assign(overlay.style, {
         position: "absolute",
         inset: "0",
-        backgroundColor: "#eee8",
+        backgroundColor: "#eee2",
         pointerEvents: "none",
     })
 
     element.appendChild(overlay)
 
     overlay
-        .animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: "ease-out", fill: "none" })
+        .animate([{ opacity: 1 }, { opacity: 0 }], {
+            duration,
+            easing: "ease-out",
+            fill: "none",
+        })
         .finished.then(() => overlay.remove())
 }

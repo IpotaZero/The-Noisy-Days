@@ -1,30 +1,30 @@
 // Chapter 1: Hue
 const WarmStages = [
-    { "stage-name": "Tutorial", "description": "" },
-    { "stage-name": "Red", "description": "" },
-    { "stage-name": "Orange", "description": "" },
+    { "stage-name": "Tutorial", "description": "チュートリアル" },
     { "stage-name": "Yellow", "description": "" },
-    { "stage-name": "Yellow-Green", "description": "" },
+    { "stage-name": "Orange", "description": "" },
+    { "stage-name": "Red", "description": "" },
+    { "stage-name": "Crimson", "description": "" },
 ]
 
 const CoolStages = [
-    { "stage-name": "シオン", "description": "" },
+    { "stage-name": "シオン", "description": "背景、及びシオン・シマについて" },
     { "stage-name": "Cyan", "description": "" },
     { "stage-name": "Blue", "description": "" },
     { "stage-name": "Indigo", "description": "" },
-    { "stage-name": "Violet", "description": "" },
+    { "stage-name": "Navy", "description": "" },
 ]
 
 const NeutralStages = [
-    { "stage-name": "SILO", "description": "" },
+    { "stage-name": "SILO", "description": "逆説的措置" },
     { "stage-name": "Green", "description": "" },
     { "stage-name": "Purple", "description": "" },
-    { "stage-name": "Magenta", "description": "" },
-    { "stage-name": "Rose", "description": "" },
+    { "stage-name": "Violet", "description": "" },
+    { "stage-name": "Chartreuse", "description": "" },
 ]
 
 const AchromaticStages = [
-    { "stage-name": "一年前その1", "description": "" },
+    { "stage-name": "一年前その1", "description": "レイ・コウダ" },
     { "stage-name": "White", "description": "" },
     { "stage-name": "Gray", "description": "" },
     { "stage-name": "Silver", "description": "" },
@@ -40,7 +40,7 @@ const HueActs = [
 
 // Chapter 2: Saturation
 const VividStages = [
-    { "stage-name": "一年前その2", "description": "" },
+    { "stage-name": "一年前その2", "description": "レイ・コウダ" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },

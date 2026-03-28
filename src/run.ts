@@ -37,11 +37,27 @@ window.addEventListener("DOMContentLoaded", async () => {
         Focuses.resume("page-change")
     }
 
-    SceneChanger.init(Dom.container, await import("./Scene/SceneTitle").then((module) => new module.default()))
+    SceneChanger.init(
+        Dom.container,
+        await import("./Scene/SceneTitle").then(
+            (module) => new module.default(),
+        ),
+    )
 })
 
 window.addEventListener("keydown", (e) => {
-    if (e.code === "Enter" || e.code === "Space") e.preventDefault()
+    if (
+        [
+            "Enter",
+            "Space",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowRight",
+            "ArrowLeft",
+            "Tab",
+        ].includes(e.code)
+    )
+        e.preventDefault()
 })
 
 window.addEventListener("contextmenu", (e) => {
