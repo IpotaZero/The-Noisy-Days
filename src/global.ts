@@ -67,11 +67,10 @@ export function explosion(p: Vec) {
         .type(Bullet.Type.Effect)
         .color("white")
         .duplicate(16, (b) => {
-            const clone = b.clone()
-            clone.r = Math.random() * 8 + 8
-            clone.speed = Math.random() * 4 + 4
-            clone.radian = Math.random() * T
-            return clone
+            b.r = Math.random() * 8 + 8
+            b.speed = Math.random() * 4 + 4
+            b.radian = Math.random() * T
+            return b
         })
         .g(function* (me) {
             const frame = 60

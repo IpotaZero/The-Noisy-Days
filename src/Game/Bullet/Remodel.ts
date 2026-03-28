@@ -40,25 +40,26 @@ class Remodel {
     }
 
     nway(num: number, angle: number) {
-        return this.duplicate(num, (bullet, i) => {
-            const clone = bullet.clone()
-            clone.radian = bullet.radian + angle * (i - (num - 1) / 2)
-            return clone
+        return this.duplicate(num, (b, i) => {
+            b.radian += angle * (i - (num - 1) / 2)
+            return b
         })
     }
 
     shift(num: number, shift: number) {
-        return this.duplicate(num, (bullet, i) => {
-            const clone = bullet.clone()
-            clone.p = clone.p.plus(vec.arg(bullet.radian + T / 4).scaled(shift * (i - (num - 1) / 2)))
-            return clone
+        return this.duplicate(num, (b, i) => {
+            const shiftVec = vec
+                .arg(b.radian + T / 4)
+                .scaled(shift * (i - (num - 1) / 2))
+            b.p = b.p.plus(shiftVec)
+            return b
         })
     }
 
     duplicate(num: number, map: (bullet: Bullet, index: number) => Bullet) {
         this.bullets = this.bullets.flatMap((bullet) =>
             Array.from({ length: num }, (_, i) => {
-                return map(bullet, i)
+                return map(bullet.clone(), i)
             }),
         )
 
@@ -67,7 +68,7 @@ class Remodel {
 
     ex(num: number) {
         return this.duplicate(num, (b, i) => {
-            const clone = b.clone()
+            const clone = b
             clone.radian = b.radian + Math.PI * 2 * (i / num)
             return clone
         })

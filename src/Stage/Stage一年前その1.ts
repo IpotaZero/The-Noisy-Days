@@ -17,7 +17,7 @@ export default class extends Stage {
 
         yield* this.text("『……それ、先生から。』", { name: "シオン" })
 
-        yield* this.text("レイは、まるで空中に浮いた紙を掴むような手つきでそれを受け取った。")
+        yield* this.text("レイは空中に浮いた紙を掴むような手つきでそれを受け取った。")
         yield* this.text("『……あ、そ。』", { name: "レイ" })
 
         yield* this.text("『……。』", { name: "シオン" })

@@ -6,7 +6,9 @@ export class KeyboardOperator {
     private readonly pushedKeys = new Set<string>()
 
     constructor(private readonly operate: (o: Operation) => void) {
-        window.addEventListener("keydown", this.onKeyDown.bind(this), { signal: this.ac.signal })
+        window.addEventListener("keydown", this.onKeyDown.bind(this), {
+            signal: this.ac.signal,
+        })
         window.addEventListener(
             "keyup",
             (e) => {
@@ -31,18 +33,22 @@ export class KeyboardOperator {
 
         switch (e.code) {
             case "ArrowUp":
+            case "KeyW":
                 this.operate("up")
                 break
 
             case "ArrowDown":
+            case "KeyS":
                 this.operate("down")
                 break
 
             case "ArrowLeft":
+            case "KeyA":
                 this.operate("left")
                 break
 
             case "ArrowRight":
+            case "KeyD":
                 this.operate("right")
                 break
 

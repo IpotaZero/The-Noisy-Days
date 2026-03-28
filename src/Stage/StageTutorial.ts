@@ -26,10 +26,7 @@ export default class extends Stage {
         yield* this.text("「こちらシオン、聴こえるよ。」", { name: "シオン" })
 
         yield* this.text("酷くノイズの掛かった声がスピーカを通して流れてくる。")
-        yield* this.text(
-            "『これより高ジャミング地帯へと突入するため通信は途切れる。念のため作戦を復唱せよ。作戦は……』",
-            { name: "本部" },
-        )
+        yield* this.text("『これより高ジャミング地帯へと突入するため通信は途切れる。念のため作戦を復唱せよ。作戦は……』", { name: "本部" })
         yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
 
         // ここでドローンが飛び出す
@@ -48,8 +45,7 @@ export default class extends Stage {
             yield* this.text("Escapeで自爆")
         }
 
-        yield* this.text("自機の当たり判定は赤丸のみ")
-        yield* this.text("敵自体に当たり判定は無い")
+        yield* this.text("自機の当たり判定は赤丸のみ<br>敵自体に当たり判定は無い")
 
         e.start()
 
@@ -91,12 +87,7 @@ class EnemyTutorial extends Enemy {
     }
 
     *H() {
-        this.p = Curves.lissajous(
-            g.width * 0.8,
-            g.height / 3,
-            3,
-            4,
-        )((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
+        this.p = Curves.lissajous(g.width * 0.8, g.height / 3, 3, 4)((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
         yield
     }
 }

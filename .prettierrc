@@ -1,0 +1,15 @@
+{
+    "semi": false,
+    "tabWidth": 4,
+    "quoteProps": "consistent",
+    "overrides": [
+        {
+            "files": "src/Stage/*.ts",
+            "options": {
+                "singleAttributePerLine": true,
+                "bracketSameLine": true,
+                "printWidth": 400
+            }
+        }
+    ]
+}

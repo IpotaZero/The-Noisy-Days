@@ -6,7 +6,6 @@ import stages from "../stages"
 import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
 import { SE } from "../SE"
-import { Focuses } from "../utils/Focuses/Focuses"
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -14,7 +13,7 @@ export default class implements Scene {
 
     constructor(private readonly config: { history?: readonly string[] } = {}) {
         this.selector = new Selector({
-            "[data-stage]": { alias: "stage-button", expectedCount: 16 },
+            "[data-stage]": { alias: "stage-button", expectedCount: 80 },
         })
     }
 
@@ -24,10 +23,14 @@ export default class implements Scene {
         const html = createPage()
         Dom.container.insertAdjacentHTML("beforeend", html)
 
-        await this.pages.loadFromFile(Dom.container, "./asset/page/title/title.html", {
-            history: this.config.history ?? ["title"],
-            override: false,
-        })
+        await this.pages.loadFromFile(
+            Dom.container,
+            "./asset/page/title/title.html",
+            {
+                history: this.config.history ?? ["title"],
+                override: false,
+            },
+        )
 
         this.selector.load(Dom.container)
 
@@ -55,7 +58,8 @@ export default class implements Scene {
 
                 const stage = new Stage()
                 const scene = await import(`./SceneStage`).then(
-                    (module) => new module.default(stage, this.pages.getHistory()),
+                    (module) =>
+                        new module.default(stage, this.pages.getHistory()),
                 )
                 return scene
             },
@@ -87,7 +91,7 @@ function createPage(): string {
                 <div class="page" id="chapter-${chapter["chapter-name"]}">
                     <section class="page-description">
                         <h2>${chapter["chapter-name"]}</h2>
-                        <p>${chapter["chapter-description"]}</p>
+                        <p>${chapter["description"]}</p>
                     </section>
 
                     <div class="options" data-direction="column">
@@ -109,7 +113,7 @@ function createPage(): string {
 
 type Chapter = {
     "chapter-name": string
-    "chapter-description": string
+    "description": string
     "acts": Act[]
 }
 
@@ -119,7 +123,7 @@ function createChapterButton(chapter: Chapter) {
             <img class="icon" />
             <section>
                 <h2>${chapter["chapter-name"]}</h2>
-                <p class="description">${chapter["chapter-description"]}</p>
+                <p class="description">${chapter["description"]}</p>
             </section>
         </button>
     `

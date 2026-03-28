@@ -11,7 +11,7 @@ h1 {
     letter-spacing: 2cqw;
 
     text-shadow:
-        1cqw 1cqw 0px rgba(199, 99, 226, 0.5),
+        1cqw 1cqw 0px var(--wisteria),
         2cqw 2cqw 0px rgba(0, 0, 0, 0.2);
 }
 

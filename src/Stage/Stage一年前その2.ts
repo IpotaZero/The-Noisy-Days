@@ -5,10 +5,7 @@ export default class extends Stage {
         yield* this.wait(30)
 
         // 先生
-        yield* this.text(
-            "『……と云うことで、ついに我々の町にもSILOがやってくるわけです。皆さん、大いに喜びましょう!』",
-            { name: "先生" },
-        )
+        yield* this.text("『……と云うことで、ついに我々の町にもSILOがやってくるわけです。皆さん、大いに喜びましょう!』", { name: "先生" })
         yield* this.text("大人たちが拍手を始める。それを真似して子供たちも手を叩く。")
         // 子どもたちはよく分かっていない
         // 分かり合えない人というものを理解していないから
