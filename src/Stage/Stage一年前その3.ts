@@ -13,7 +13,7 @@ export default class extends Stage {
         yield* this.text("「それに、私には、もうこれしか無いんだよ。」", { name: "シオン" })
         yield* this.text("シオンはレイの顔を思い出したが、それがどうしてかは分からなかった。")
 
-        yield* this.text("2XXX年 夏 重ね着を思い出す季節 トウキョウ内乱 開始")
+        yield* this.text("2XXX年 夏 重ね着を思い出す季節 トウキョウ内乱 発生")
 
         // SILOの導入によりシオンとレイは離れ離れになった。
         // 仲良くなんてなくて、むしろ虐められていたのに、心に、何故か欠けた部分ができてしまった

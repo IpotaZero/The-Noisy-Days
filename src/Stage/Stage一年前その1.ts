@@ -12,7 +12,7 @@ export default class extends Stage {
         // yield* this.text("彼女はまだここに居る。だが、彼らの中では既に『整理済みの過去』なのだ。")
 
         // 忘れ物の受け渡し
-        yield* this.text("（……あの。）", { name: "シオン" })
+        yield* this.text("『……あの。』", { name: "シオン" })
         yield* this.text("シオンが差し出したプリントに、レイは視線すら向けない。")
 
         yield* this.text("『……それ、先生から。』", { name: "シオン" })

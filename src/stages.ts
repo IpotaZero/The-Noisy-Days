@@ -40,7 +40,7 @@ const HueActs = [
 
 // Chapter 2: Saturation
 const VividStages = [
-    { "stage-name": "一年前その2", "description": "レイ・コウダ" },
+    { "stage-name": "", "description": "レイ・コウダ" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },
@@ -64,7 +64,7 @@ const PaleStages = [
 ]
 
 const DullStages = [
-    { "stage-name": "Kari", "description": "" },
+    { "stage-name": "一年前その2", "description": "" },
     { "stage-name": "Mud", "description": "" },
     { "stage-name": "Ash", "description": "" },
     { "stage-name": "Moss", "description": "" },
@@ -104,7 +104,7 @@ const HighStages = [
 ]
 
 const LowStages = [
-    { "stage-name": "Kari", "description": "" },
+    { "stage-name": "一年前その3", "description": "" },
     { "stage-name": "Fog", "description": "" },
     { "stage-name": "Sand", "description": "" },
     { "stage-name": "Stone", "description": "" },

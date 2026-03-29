@@ -5,8 +5,8 @@ export default class extends Stage {
         yield* this.wait(30)
 
         yield* this.text("「……色々と批判はあると思われますが、SILOは決して短慮ではない。」", { name: "シュンスケ" })
-        yield* this.text("シュンスケ・ヤナガワはマイクに向かって静かに語り始めた。")
         yield* this.text("「SILOは、我々が手に入れた最も有用な知恵なのだ。」", { name: "シュンスケ" })
+        yield* this.text("シュンスケ・ヤナガワはマイクに向かって静かに語り始めた。")
         yield* this.text("「前世紀の大戦で死亡した人口は、人口の三割とも五割とも云われるが、なぜそれほどの命が失われたのか。」", { name: "シュンスケ" })
         yield* this.text("「新型爆弾か? いや、違う。実際、ドローン技術の向上によりあらゆる飛行兵器は事実上無力化されていた。」", { name: "シュンスケ" })
         yield* this.text("「そう、前線にはもはや人の出る幕は無かった。」", { name: "シュンスケ" })
