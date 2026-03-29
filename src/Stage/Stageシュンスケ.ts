@@ -7,7 +7,7 @@ export default class extends Stage {
         // 柳川 俊介
 
         yield* this.text("「ドーモ。ヤナガワさん。僕です。」", { name: "マス" })
-        yield* this.text("「またアンタか……。なんで何時も場所が分かるんだよ。」", { name: "シュンスケ" })
+        yield* this.text("「またアンタか……。なんで何時も場所が分かるかな。」", { name: "シュンスケ" })
 
         yield* this.text("シュンスケ・ヤナガワ 当局のSILO推進派のトップ")
 

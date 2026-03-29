@@ -13,9 +13,7 @@ export default class extends Stage {
         yield* this.text("アオ・ササキ 第二世代合成人")
         yield* this.text("反SILO組織TAMAMUSHIの代表")
 
-        yield* this.text("「では、早速質問に入らせていただきます。貴方方は何故、SILO政策に反対するのでしょう?」", {
-            name: "マス",
-        })
+        yield* this.text("「では、早速質問に入らせていただきます。貴方方は何故、SILO政策に反対するのでしょう?」", { name: "マス" })
         yield* this.text("「それは実は個々人によって違うんですよね。ただ、SILOは『SILOに反対する』人をも集めてしまう自己矛盾を抱えています。僕らのような集団が現れるのは構造的に必然でしょう。」", { name: "アオ" })
         // 生々しすぎるので書かない
         // yield* this.text("「なるほど。では貴方の理由は何なのでしょうか?」", {
@@ -33,15 +31,9 @@ export default class extends Stage {
 
         // 女性の社長に対して「お仕事と家庭の両立って大変でしょう」って聞くようなこと
         // 誰もが善意で動いている
-        yield* this.text("「なるほど、しかし、ササキさん、若いですね。大変でしょう。」", {
-            name: "マス",
-        })
+        yield* this.text("「なるほど、しかし、ササキさん、若いですね。大変でしょう。」", { name: "マス" })
         yield* this.text("「……はは、僕含め上層部は合成人ですからね、分かって言ってんでしょう?」", { name: "アオ" })
-        yield* this.text("「あー、いや、すみません。」", {
-            name: "マス",
-        })
-        yield* this.text("「時間は掛かりますよ、そう云うのを変えるのは。だけど、きっと皆分かり合える。」", {
-            name: "アオ",
-        })
+        yield* this.text("「あー、いや、すみません。」", { name: "マス" })
+        yield* this.text("「時間は掛かりますよ、そう云うのを変えるのは。だけど、きっと皆分かり合える。」", { name: "アオ" })
     }
 }

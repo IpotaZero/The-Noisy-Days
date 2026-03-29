@@ -17,7 +17,7 @@ export default class extends Stage {
 
         yield* this.text("「よーお、お手柄じゃあないの。さっすが、合成人。」", { name: "マス" })
         yield* this.text("「そういう言い方、好きじゃないし嫌いだよ。何の用かな、新聞屋さん。」", { name: "シオン" })
-
+        yield* this.text("マスは隣に座り、少女の三角に尖った耳を見た。")
         yield* this.text("「悪ぃ悪ぃ。で、此度の戦闘はどうだったんです?」", { name: "マス" })
         yield* this.text("マスが懐から煙草を取り出し火を付ける。")
         yield* this.text("「あたしにもくれない?」", { name: "シオン" })
