@@ -6,7 +6,7 @@ export default class extends Stage {
 
         yield* this.text("教室の喧騒は、シオンの周りだけを避けるように流れている。")
         yield* this.text("『ねえ、SILOが来たら、この机どうなるのかな。』", { name: "子供" })
-        yield* this.text("『新しい子が来るんじゃない？ ほら、もっと「普通」の。』", { name: "子供" })
+        yield* this.text("『新しい子が来るんじゃない? ほら、もっと普通の。』", { name: "子供" })
 
         yield* this.text("目の前に座っているシオンを、彼らの視線は透過していく。")
         // yield* this.text("彼女はまだここに居る。だが、彼らの中では既に『整理済みの過去』なのだ。")

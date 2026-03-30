@@ -4,7 +4,6 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        // [todo] アオの殺された理由が弱い
         yield* this.text("アオは死んだ。")
         yield* this.text("頭を失ったTAMAMUSHIは烏合の衆と化し瓦解した。")
         yield* this.text("玉虫色が、黒く塗りつぶされていく。")
