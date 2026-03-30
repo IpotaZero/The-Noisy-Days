@@ -23,11 +23,9 @@ export class KeyboardOperator {
     }
 
     private onKeyDown(e: KeyboardEvent): void {
-        console.log(e.code)
         if (this.pushedKeys.has(e.code)) {
             return
         }
-        console.log(e.code)
 
         this.pushedKeys.add(e.code)
 

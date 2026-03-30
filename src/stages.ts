@@ -40,7 +40,7 @@ const HueActs = [
 
 // Chapter 2: Saturation
 const VividStages = [
-    { "stage-name": "", "description": "レイ・コウダ" },
+    { "stage-name": "", "description": "" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },
@@ -48,7 +48,7 @@ const VividStages = [
 ]
 
 const MutedStages = [
-    { "stage-name": "Kari", "description": "" },
+    { "stage-name": "アオ", "description": "" },
     { "stage-name": "Rust", "description": "" },
     { "stage-name": "Slate", "description": "" },
     { "stage-name": "Khaki", "description": "" },
@@ -56,7 +56,7 @@ const MutedStages = [
 ]
 
 const PaleStages = [
-    { "stage-name": "Kari", "description": "" },
+    { "stage-name": "犠牲", "description": "シュンスケ・ヤナガワの演説" },
     { "stage-name": "Blush", "description": "" },
     { "stage-name": "Mist", "description": "" },
     { "stage-name": "Sage", "description": "" },
@@ -64,7 +64,7 @@ const PaleStages = [
 ]
 
 const DullStages = [
-    { "stage-name": "一年前その2", "description": "" },
+    { "stage-name": "一年前その2", "description": "レイ・コウダ" },
     { "stage-name": "Mud", "description": "" },
     { "stage-name": "Ash", "description": "" },
     { "stage-name": "Moss", "description": "" },
@@ -80,7 +80,7 @@ const SaturationActs = [
 
 // Chapter 3: Brightness
 const LightStages = [
-    { "stage-name": "Kari", "description": "" },
+    { "stage-name": "シュンスケ", "description": "" },
     { "stage-name": "Pearl", "description": "" },
     { "stage-name": "Ivory", "description": "" },
     { "stage-name": "Cream", "description": "" },
@@ -104,7 +104,7 @@ const HighStages = [
 ]
 
 const LowStages = [
-    { "stage-name": "一年前その3", "description": "" },
+    { "stage-name": "一年前その3", "description": "レイ・コウダ" },
     { "stage-name": "Fog", "description": "" },
     { "stage-name": "Sand", "description": "" },
     { "stage-name": "Stone", "description": "" },

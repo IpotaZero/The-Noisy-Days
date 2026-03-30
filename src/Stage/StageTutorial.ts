@@ -57,6 +57,8 @@ export default class extends Stage {
 }
 
 class EnemyTutorial extends Enemy {
+    private readonly curve = Curves.lissajous(g.width * 0.8, g.height / 3, 3, 4)
+
     constructor() {
         super(400, 64)
 
@@ -87,7 +89,7 @@ class EnemyTutorial extends Enemy {
     }
 
     *H() {
-        this.p = Curves.lissajous(g.width * 0.8, g.height / 3, 3, 4)((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
         yield
     }
 }

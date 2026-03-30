@@ -4,11 +4,11 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        yield* this.text("「シオン。もう、時間が無くなってしまった。」", { name: "アオ" })
-        yield* this.text("「……。」", { name: "アオ" })
+        yield* this.text("「シオン。もう、時間が無くなってしまった。」", { name: "ササキ" })
+        yield* this.text("「……。」", { name: "ササキ" })
         yield* this.text('「分かってるよ。私はここの"姫"なんでしょ。」', { name: "シオン" })
-        // yield* this.text('「"姫"……。希望、とも言い換えられるかもしれない。」', { name: "アオ" })
-        yield* this.text("「……本当に申し訳ない。」", { name: "アオ" })
+        // yield* this.text('「"姫"……。希望、とも言い換えられるかもしれない。」', { name: "ササキ" })
+        yield* this.text("「……本当に申し訳ない。」", { name: "ササキ" })
         yield* this.text("「私が一番上手く扱えるのは、どうしようもない現実だし。」", { name: "シオン" })
         yield* this.text("「それに、私には、もうこれしか無いんだよ。」", { name: "シオン" })
         yield* this.text("シオンはレイの顔を思い出したが、それがどうしてかは分からなかった。")
@@ -34,6 +34,8 @@ export default class extends Stage {
         // 遠隔操作はジャミングによりできない
         // そこでパワードスーツの利点が生まれる
         // 人間の思考+合成人の反応速度を以って漸くドローンを上回る
+        //
+        // 人命の損害が必要であることもある
 
         // 大人の合成人は? 政治運営に注力している。
         // 倫理に反してしまうほど逼迫しているのか?
