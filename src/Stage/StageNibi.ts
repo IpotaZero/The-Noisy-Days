@@ -5,7 +5,7 @@ export default class extends Stage {
         yield* this.wait(30)
 
         // [todo] アオの殺された理由が弱い
-        yield* this.text("アオは死んだ。結局の所自治するものは嫌われる運命にある。")
+        yield* this.text("アオは死んだ。")
         yield* this.text("頭を失ったTAMAMUSHIは烏合の衆と化し瓦解した。")
         yield* this.text("玉虫色が、黒く塗りつぶされていく。")
         yield* this.text("だが、一つだけ勝ち取ったものがあった。当局は反政府主義の凝集をリスクと認識し、一部地域でのSILOの導入を見送ったのだ。")
@@ -16,8 +16,6 @@ export default class extends Stage {
 
         yield* this.text("混ざり合えない、分かり合えない、<ruby>摩擦<rt>ノイズ</rt></ruby>だらけの、斑のある鈍色の都市。")
         yield* this.text("それでも、二人の少女は隣り合って座っていた。")
-
-        // 信じましたが死んじまいました、ね
 
         // 多様性を担保するためには、いろんな人がいればそれだけでいいわけではなくて、
         // それぞれの色が混ざり合わずに同時に存在している、つまり意見を表明できなければならない

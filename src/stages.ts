@@ -40,7 +40,7 @@ const HueActs = [
 
 // Chapter 2: Saturation
 const VividStages = [
-    { "stage-name": "", "description": "" },
+    { "stage-name": "合成人", "description": "" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },
@@ -80,7 +80,7 @@ const SaturationActs = [
 
 // Chapter 3: Brightness
 const LightStages = [
-    { "stage-name": "シュンスケ", "description": "" },
+    { "stage-name": "ヤナガワ", "description": "シュンスケ・ヤナガワについて" },
     { "stage-name": "Pearl", "description": "" },
     { "stage-name": "Ivory", "description": "" },
     { "stage-name": "Cream", "description": "" },
@@ -144,7 +144,7 @@ const OpaqueStages = [
 ]
 
 const LuminousStages = [
-    { "stage-name": "Kari", "description": "" },
+    { "stage-name": "信じましたが", "description": "" },
     { "stage-name": "Ember", "description": "" },
     { "stage-name": "Phosphor", "description": "" },
     { "stage-name": "Glow", "description": "" },
