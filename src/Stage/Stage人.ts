@@ -1,0 +1,21 @@
+import { Stage } from "./Stage"
+
+export default class extends Stage {
+    protected *G(): Generator<void, void, unknown> {
+        yield* this.wait(30)
+
+        // 親であり、友である
+
+        yield* this.text("「ねえ新聞屋さん。合成人って、何なのかな。」", { name: "シオン" })
+        yield* this.text("テントの中、シオンはだらしなく寝転びながらマスに問を投げる。")
+        yield* this.text("「そりゃあ、あんたが一番良く分かるんじゃないのか?」", { name: "マス" })
+        yield* this.text("「知りたいのはさ、変位なんだよ。原点を知らないと知りようがない。」", { name: "シオン" })
+        yield* this.text("「要するに、人とは何か、か。」", { name: "マス" })
+        yield* this.text("「そう。」", { name: "シオン" })
+        yield* this.text("「そうだな……。人にだって勘が良いやつ悪いやつ、居るよな。」", { name: "マス" })
+        yield* this.text("「パラメタは無数にあって、平均値はきっと意味をなさない。戦闘機の話知ってるか。」", { name: "マス" })
+        yield* this.text("「俺たちは大きな揺らぎの中の一点に過ぎない。合成人は外れ値かもしれないけどな、同じなんだよ。」", { name: "マス" })
+        yield* this.text("「……。」", { name: "シオン" })
+        yield* this.text("「つまんねー……。」", { name: "シオン" })
+    }
+}
