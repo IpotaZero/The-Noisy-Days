@@ -9,24 +9,24 @@ const WarmStages = [
 const CoolStages = [
     { "stage-name": "シオン", "description": "背景、及びシオン・シマについて" },
     { "stage-name": "Cyan", "description": "扇状に弾を撃つ衛星を持つ" },
-    { "stage-name": "Blue", "description": "二つの衛星を持つ" },
-    { "stage-name": "Navy", "description": "自機狙いの衛星を二つ持つ" },
+    { "stage-name": "Blue", "description": "" },
+    { "stage-name": "Navy", "description": "" },
 ]
 
 const NeutralStages = [
     { "stage-name": "SILO", "description": "逆説的措置" },
-    { "stage-name": "Green", "description": "回転しながら弾を撃つコアを持つ" },
-    { "stage-name": "Purple", "description": "回転する衛星を持つ" },
-    { "stage-name": "Violet", "description": "回転する衛星を二つ持つ" },
+    { "stage-name": "Green", "description": "" },
+    { "stage-name": "Purple", "description": "" },
+    { "stage-name": "Violet", "description": "" },
 ]
 
 const AchromaticStages = [
     { "stage-name": "一か月前その1", "description": "レイ・コウダ" },
-    { "stage-name": "White", "description": "全方位に弾を撃つコアを持つ" },
+    { "stage-name": "White", "description": "" },
     { "stage-name": "Gray", "description": "全方位弾と自機狙いの衛星を持つ" },
     {
         "stage-name": "Black",
-        "description": "Warmからの複合パターンを展開する",
+        "description": "",
     },
 ]
 
@@ -43,15 +43,16 @@ const HueActs = [
     },
     {
         "act-name": "Neutral",
-        "description": "回転するコアと衛星を持つドローン",
+        "description": "",
         "stages": NeutralStages,
     },
     {
         "act-name": "Achromatic",
-        "description": "複合的な弾幕を展開するドローン",
+        "description": "",
         "stages": AchromaticStages,
     },
 ]
+
 // Chapter 1: Saturation
 const VividStages = [
     { "stage-name": "合成人", "description": "" },

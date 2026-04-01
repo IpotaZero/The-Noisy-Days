@@ -1,6 +1,7 @@
 import { Dom } from "../Dom"
 import { Bullet } from "../Game/Bullet/Bullet"
 import { BulletDrawer } from "../Game/Bullet/BulletDrawer"
+import { Collision } from "../Game/Collision"
 import { InputKeyboard } from "../Game/Player/InputKeyboard"
 import { Player } from "../Game/Player/Player"
 import { explosion, fireDeleteField, g, T } from "../global"
@@ -12,6 +13,7 @@ import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
 import { TouchTracker } from "../utils/TouchTracker"
+import { vec } from "../utils/Vec"
 import { Scene } from "./Scene"
 
 export default class SceneStage implements Scene {
@@ -21,6 +23,7 @@ export default class SceneStage implements Scene {
 
     private ctx!: CanvasRenderingContext2D
     private readonly drawer = new BulletDrawer()
+    private readonly collision = new Collision()
 
     private isFinished = false
 
@@ -177,7 +180,19 @@ export default class SceneStage implements Scene {
                         SE.graze.play()
                     }
 
-                    if (distance <= b.r + g.player.r) {
+                    const isColliding =
+                        b.collision === Bullet.Collision.Ball
+                            ? this.collision.isCollidingCircle(
+                                  { p: b.p, r: b.r },
+                                  { p: g.player.p, r: g.player.r },
+                              )
+                            : this.collision.isCollidingLine(
+                                  { p: g.player.p, r: g.player.r },
+                                  b.p.plus(vec.arg(b.radian).scaled(b.r)),
+                                  b.p.minus(vec.arg(b.radian).scaled(b.r)),
+                              )
+
+                    if (isColliding) {
                         b.life = 0
                         g.player.damage()
                         SE.u.play()

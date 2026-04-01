@@ -3,6 +3,7 @@ export const vec = (x: number, y: number) => {
 }
 
 vec.arg = (radian: number) => vec(Math.cos(radian), Math.sin(radian))
+vec.unit = () => vec(1, 0)
 
 export class Vec {
     x: number
@@ -91,6 +92,10 @@ export class Vec {
     // スカラー
     magnitude() {
         return Math.hypot(this.x, this.y)
+    }
+
+    magnitudeSquared() {
+        return this.x ** 2 + this.y ** 2
     }
 
     dot(v: Vec) {

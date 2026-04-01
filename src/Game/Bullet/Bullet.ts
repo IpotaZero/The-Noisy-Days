@@ -13,7 +13,7 @@ export class Bullet {
     alpha = 1
     color = "yellow"
     appearance = Bullet.Appearance.Donut
-    collision = Bullet.Collision.ball
+    collision = Bullet.Collision.Ball
     type = Bullet.Type.Enemy
 
     private g: Generator[] = []
@@ -103,8 +103,8 @@ export namespace Bullet {
         Score,
     }
     export enum Collision {
-        ball,
-        line,
+        Ball,
+        Line,
     }
     export enum Type {
         Enemy,
