@@ -113,7 +113,7 @@ function createPage(): string {
         <div class="page" id="chapters">
             <section class="page-description">
                 <h2>Chapters</h2>
-                <p>aaaaaaaa</p>
+                <p>西暦2XXX年 トウキョウ</p>
             </section>
 
             <div class="options" data-direction="column">${stages.map(createChapterButton).join("")}</div>
