@@ -127,7 +127,7 @@ function createPage(): string {
             const chapterPage = `
                 <div class="page" id="chapter-${chapter["chapter-name"]}">
                     <section class="page-description">
-                        <h2>${chapter["chapter-name"]}</h2>
+                        <h2>Chapters > ${chapter["chapter-name"]}</h2>
                         <p>${chapter["description"]}</p>
                     </section>
 
@@ -139,7 +139,9 @@ function createPage(): string {
                 </div>
             `
 
-            const actPages = chapter["acts"].map(createActPage).join("")
+            const actPages = chapter["acts"]
+                .map((act) => createActPage(chapter["chapter-name"], act))
+                .join("")
 
             return chapterPage + actPages
         })
@@ -184,11 +186,11 @@ function createActButton(act: Act): string {
     `
 }
 
-function createActPage(act: Act): string {
+function createActPage(chapterName: string, act: Act): string {
     return `
         <div class="page" id="act-${act["act-name"]}">
             <section class="page-description">
-                <h3>${act["act-name"]}</h3>
+                <h3>Chapters > ${chapterName} > ${act["act-name"]}</h3>
                 <p>${act["description"]}</p>
             </section>
 

@@ -39,6 +39,7 @@ button {
     h4 {
         font-size: 8cqw;
         border-bottom: 1px solid var(--white);
+        padding-bottom: 0.1em;
     }
 
     p {
