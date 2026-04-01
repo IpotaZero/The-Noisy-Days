@@ -86,8 +86,22 @@ button {
         font-size: 8cqw;
     }
 
+    section {
+        width: 100%;
+    }
+
+    h3 {
+        font-size: 6cqw;
+        border-bottom: 1px solid var(--white);
+        padding-bottom: 0.2em;
+        text-align: left;
+        width: 100%;
+    }
+
     p {
-        font-size: 3.5cqw;
+        padding: 0.5em;
+        font-size: 3.6cqw;
+        text-align: left;
     }
 
     text-align: center;
