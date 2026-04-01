@@ -77,7 +77,7 @@ class EnemyTutorial extends Enemy {
             return
         }
 
-        remodel([new Bullet()])
+        remodel()
             .colorful(this.frame)
             .p(this.p.clone())
             .speed(8)

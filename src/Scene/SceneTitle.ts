@@ -13,7 +13,7 @@ export default class implements Scene {
 
     constructor(private readonly config: { history?: readonly string[] } = {}) {
         this.selector = new Selector({
-            "[data-stage]": { alias: "stage-button", expectedCount: 80 },
+            "[data-stage]": { alias: "stage-button", expectedCount: 64 },
         })
     }
 
@@ -120,7 +120,7 @@ type Chapter = {
 function createChapterButton(chapter: Chapter) {
     return `
         <button class="button" data-link="chapter-${chapter["chapter-name"]}">
-            <img class="icon" />
+            <img class="icon" src="asset/icon.ico" />
             <section>
                 <h2>${chapter["chapter-name"]}</h2>
                 <p class="description">${chapter["description"]}</p>
@@ -138,7 +138,7 @@ type Act = {
 function createActButton(act: Act): string {
     return `
         <button class="button" data-link="act-${act["act-name"]}">
-            <img class="icon" />
+            <img class="icon" src="asset/icon.ico" />
             <section>
                 <h3>${act["act-name"]}</h3>
                 <p class="description">${act["description"]}</p>
@@ -172,7 +172,7 @@ type Stage = {
 function createStageButton(stage: Stage): string {
     return `
         <button class="button" data-stage="${stage["stage-name"]}">
-            <img class="icon" />
+            <img class="icon" src="asset/icon.ico" />
             <section>
                 <h4>${stage["stage-name"]}</h4>
                 <p class="description">${stage["description"]}</p>

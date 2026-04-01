@@ -9,7 +9,7 @@ const BLACK_VALE = "rgba(255, 255, 255, 0.2)"
 
 export class EnemyRendererMob implements IEnemyRenderer {
     draw(ctx: CanvasRenderingContext2D, e: Enemy): void {
-        const orbitTheta = e.frame / 60
+        const orbitTheta = e.frame / 30
 
         this.drawHpBar(ctx, e)
         this.drawCore(ctx, e, orbitTheta)
@@ -36,10 +36,16 @@ export class EnemyRendererMob implements IEnemyRenderer {
         }
     }
 
-    private drawCore(ctx: CanvasRenderingContext2D, e: Enemy, orbitTheta: number): void {
-        Ctx.arc(ctx, e.p.l, e.r * 1.1, e.damaged ? RED : WHITE, { lineWidth: 2 })
-        Ctx.arc(ctx, e.p.l, e.r, WHITE, { lineWidth: 2 })
-        Ctx.polygon(ctx, 7, 2, e.p.l, e.r * 0.85, WHITE, {
+    private drawCore(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        orbitTheta: number,
+    ): void {
+        Ctx.arc(ctx, e.p.l, e.r * 1.1, WHITE, {
+            lineWidth: 2,
+        })
+        Ctx.arc(ctx, e.p.l, e.r, e.damaged ? RED : WHITE, { lineWidth: 2 })
+        Ctx.polygon(ctx, 5, 1, e.p.l, e.r * 0.85, WHITE, {
             theta: orbitTheta,
             lineWidth: 2,
         })

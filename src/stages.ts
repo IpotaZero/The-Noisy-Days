@@ -1,56 +1,68 @@
 // Chapter 0: Hue
 const WarmStages = [
     { "stage-name": "Tutorial", "description": "チュートリアル" },
-    { "stage-name": "Yellow", "description": "" },
-    { "stage-name": "Orange", "description": "" },
-    { "stage-name": "Red", "description": "" },
-    { "stage-name": "Crimson", "description": "" },
+    { "stage-name": "Yellow", "description": "拡大する弾を撃つ衛星を持つ" },
+    { "stage-name": "Orange", "description": "速射する衛星を持つ" },
+    { "stage-name": "Crimson", "description": "弾速の速い弾を撃つ衛星を持つ" },
 ]
 
 const CoolStages = [
     { "stage-name": "シオン", "description": "背景、及びシオン・シマについて" },
-    { "stage-name": "Cyan", "description": "" },
-    { "stage-name": "Blue", "description": "" },
-    { "stage-name": "Indigo", "description": "" },
-    { "stage-name": "Navy", "description": "" },
+    { "stage-name": "Cyan", "description": "扇状に弾を撃つ衛星を持つ" },
+    { "stage-name": "Blue", "description": "二つの衛星を持つ" },
+    { "stage-name": "Navy", "description": "自機狙いの衛星を二つ持つ" },
 ]
 
 const NeutralStages = [
     { "stage-name": "SILO", "description": "逆説的措置" },
-    { "stage-name": "Green", "description": "" },
-    { "stage-name": "Purple", "description": "" },
-    { "stage-name": "Violet", "description": "" },
-    { "stage-name": "Chartreuse", "description": "" },
+    { "stage-name": "Green", "description": "回転しながら弾を撃つコアを持つ" },
+    { "stage-name": "Purple", "description": "回転する衛星を持つ" },
+    { "stage-name": "Violet", "description": "回転する衛星を二つ持つ" },
 ]
 
 const AchromaticStages = [
     { "stage-name": "一か月前その1", "description": "レイ・コウダ" },
-    { "stage-name": "White", "description": "" },
-    { "stage-name": "Gray", "description": "" },
-    { "stage-name": "Silver", "description": "" },
-    { "stage-name": "Black", "description": "" },
+    { "stage-name": "White", "description": "全方位に弾を撃つコアを持つ" },
+    { "stage-name": "Gray", "description": "全方位弾と自機狙いの衛星を持つ" },
+    {
+        "stage-name": "Black",
+        "description": "Warmからの複合パターンを展開する",
+    },
 ]
 
 const HueActs = [
-    { "act-name": "Warm", "description": "", "stages": WarmStages },
-    { "act-name": "Cool", "description": "", "stages": CoolStages },
-    { "act-name": "Neutral", "description": "", "stages": NeutralStages },
-    { "act-name": "Achromatic", "description": "", "stages": AchromaticStages },
+    {
+        "act-name": "Warm",
+        "description": "自機外しのコアと一つの衛星を持つドローン",
+        "stages": WarmStages,
+    },
+    {
+        "act-name": "Cool",
+        "description": "自機狙いのコアと二つの衛星を持つドローン",
+        "stages": CoolStages,
+    },
+    {
+        "act-name": "Neutral",
+        "description": "回転するコアと衛星を持つドローン",
+        "stages": NeutralStages,
+    },
+    {
+        "act-name": "Achromatic",
+        "description": "複合的な弾幕を展開するドローン",
+        "stages": AchromaticStages,
+    },
 ]
-
 // Chapter 1: Saturation
 const VividStages = [
     { "stage-name": "合成人", "description": "" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },
-    { "stage-name": "Emerald", "description": "" },
 ]
 
 const MutedStages = [
     { "stage-name": "アオ", "description": "" },
     { "stage-name": "Rust", "description": "" },
-    { "stage-name": "Slate", "description": "" },
     { "stage-name": "Khaki", "description": "" },
     { "stage-name": "Olive", "description": "" },
 ]
@@ -58,7 +70,6 @@ const MutedStages = [
 const PaleStages = [
     { "stage-name": "犠牲", "description": "シュンスケ・ヤナガワの演説" },
     { "stage-name": "Blush", "description": "" },
-    { "stage-name": "Mist", "description": "" },
     { "stage-name": "Sage", "description": "" },
     { "stage-name": "Lavender", "description": "" },
 ]
@@ -66,7 +77,6 @@ const PaleStages = [
 const DullStages = [
     { "stage-name": "一か月前その2", "description": "レイ・コウダ" },
     { "stage-name": "Mud", "description": "" },
-    { "stage-name": "Ash", "description": "" },
     { "stage-name": "Moss", "description": "" },
     { "stage-name": "Soot", "description": "" },
 ]
@@ -83,7 +93,6 @@ const LightStages = [
     { "stage-name": "隣", "description": "" },
     { "stage-name": "Pearl", "description": "" },
     { "stage-name": "Ivory", "description": "" },
-    { "stage-name": "Cream", "description": "" },
     { "stage-name": "Snow", "description": "" },
 ]
 
@@ -91,7 +100,6 @@ const DarkStages = [
     { "stage-name": "ヤナガワ", "description": "シュンスケ・ヤナガワについて" },
     { "stage-name": "Obsidian", "description": "" },
     { "stage-name": "Noir", "description": "" },
-    { "stage-name": "Void", "description": "" },
     { "stage-name": "Pitch", "description": "" },
 ]
 
@@ -100,13 +108,11 @@ const HighStages = [
     { "stage-name": "Amber", "description": "" },
     { "stage-name": "Vermilion", "description": "" },
     { "stage-name": "Lime", "description": "" },
-    { "stage-name": "Azure", "description": "" },
 ]
 
 const LowStages = [
     { "stage-name": "一か月前その3", "description": "レイ・コウダ" },
     { "stage-name": "Fog", "description": "" },
-    { "stage-name": "Sand", "description": "" },
     { "stage-name": "Stone", "description": "" },
     { "stage-name": "Dust", "description": "" },
 ]
@@ -121,7 +127,6 @@ const BrightnessActs = [
 // Chapter 3: Alpha
 const ClearStages = [
     { "stage-name": "レイ", "description": "" },
-    { "stage-name": "Water", "description": "" },
     { "stage-name": "Glass", "description": "" },
     { "stage-name": "Ice", "description": "" },
     { "stage-name": "Haze", "description": "" },
@@ -129,7 +134,6 @@ const ClearStages = [
 
 const TranslucentStages = [
     { "stage-name": "人", "description": "" },
-    { "stage-name": "Smoke", "description": "" },
     { "stage-name": "Veil", "description": "" },
     { "stage-name": "Frost", "description": "" },
     { "stage-name": "Dusk", "description": "" },
@@ -137,7 +141,6 @@ const TranslucentStages = [
 
 const OpaqueStages = [
     { "stage-name": "心", "description": "" },
-    { "stage-name": "Iron", "description": "" },
     { "stage-name": "Lead", "description": "" },
     { "stage-name": "Clay", "description": "" },
     { "stage-name": "Tar", "description": "" },
@@ -145,7 +148,6 @@ const OpaqueStages = [
 
 const LuminousStages = [
     { "stage-name": "信じましたが", "description": "" },
-    { "stage-name": "Ember", "description": "" },
     { "stage-name": "Phosphor", "description": "" },
     { "stage-name": "Glow", "description": "" },
     { "stage-name": "Dawn", "description": "" },
@@ -162,9 +164,17 @@ const AlphaActs = [
     { "act-name": "Luminous", "description": "", "stages": LuminousStages },
 ]
 
-export default [
+const chapters = [
     { "chapter-name": "Hue", "description": "", "acts": HueActs },
     { "chapter-name": "Saturation", "description": "", "acts": SaturationActs },
     { "chapter-name": "Brightness", "description": "", "acts": BrightnessActs },
     { "chapter-name": "Alpha", "description": "", "acts": AlphaActs },
 ] as const
+
+export default chapters
+
+export const stageList = chapters.flatMap((chapter) =>
+    chapter.acts.flatMap((act) =>
+        act.stages.flatMap((stage) => stage["stage-name"]),
+    ),
+)

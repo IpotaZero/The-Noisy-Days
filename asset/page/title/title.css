@@ -42,7 +42,7 @@ button {
     }
 
     p {
-        font-size: 6cqw;
+        font-size: 4cqw;
     }
 }
 
@@ -75,7 +75,7 @@ button {
         }
 
         .description {
-            font-size: 4cqw;
+            font-size: 3cqw;
             text-align: left;
         }
     }
@@ -87,7 +87,7 @@ button {
     }
 
     p {
-        font-size: 4cqw;
+        font-size: 3.5cqw;
     }
 
     text-align: center;

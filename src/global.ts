@@ -34,7 +34,7 @@ export function fireDeleteField() {
         return
     }
 
-    remodel([new Bullet()])
+    remodel()
         .type(Bullet.Type.Effect)
         .color("white")
         .p(g.player.p.clone())
@@ -62,7 +62,7 @@ export function fireDeleteField() {
 }
 
 export function explosion(p: Vec) {
-    remodel([new Bullet()])
+    remodel()
         .p(p)
         .type(Bullet.Type.Effect)
         .color("white")

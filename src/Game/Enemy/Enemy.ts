@@ -16,7 +16,11 @@ export class Enemy {
     private readonly renderer: IEnemyRenderer
     private g: Generator[] = []
 
-    constructor(life: number, r: number, renderer = new EnemyRendererCore()) {
+    constructor(
+        life: number,
+        r: number,
+        renderer: IEnemyRenderer = new EnemyRendererCore(),
+    ) {
         this.renderer = renderer
 
         this.r = r
@@ -50,13 +54,31 @@ export class Enemy {
         this.damaged = false
     }
 
+    protected setParent(enemy: Enemy, position: () => Vec) {
+        this.g.push(
+            function* (this: Enemy) {
+                while (1) {
+                    if (enemy.life <= 0) {
+                        this.life = 0
+                        return
+                    }
+
+                    this.p = enemy.p.plus(position())
+                    yield
+                }
+            }.bind(this)(),
+        )
+    }
+
     protected moveTo(target: Vec, frame: number, easing: Ease.Type = Ease.Out) {
         const start = this.p.clone()
 
         this.g.push(
             function* (this: Enemy) {
                 for (let i = 1; i < frame + 1; i++) {
-                    this.p = start.plus(target.minus(start).scaled(easing(i / frame)))
+                    this.p = start.plus(
+                        target.minus(start).scaled(easing(i / frame)),
+                    )
                     yield
                 }
             }.bind(this)(),

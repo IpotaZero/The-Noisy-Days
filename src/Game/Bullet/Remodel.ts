@@ -2,8 +2,8 @@ import { g, T } from "../../global"
 import { Bullet } from "./Bullet"
 import { Vec, vec } from "../../utils/Vec"
 
-export const remodel = (bullets: Bullet[]) =>
-    new Proxy(new Remodel(bullets), {
+export const remodel = () =>
+    new Proxy(new Remodel([new Bullet()]), {
         get(target, key) {
             if (key in target) return (target as any)[key]
 
@@ -36,6 +36,13 @@ class Remodel {
     aim(target: Vec) {
         return this.forEach((b) => {
             b.radian = target.minus(b.p).arg()
+        })
+    }
+
+    sim(num: number, min: number, max: number) {
+        return this.duplicate(num, (b, i) => {
+            b.speed = (max - min) * (i / num) + min
+            return b
         })
     }
 
