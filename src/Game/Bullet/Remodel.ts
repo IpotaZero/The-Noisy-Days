@@ -41,7 +41,7 @@ class Remodel {
 
     sim(num: number, min: number, max: number) {
         return this.duplicate(num, (b, i) => {
-            b.speed = (max - min) * (i / num) + min
+            b.speed = (max - min) * (i / (num - 1)) + min
             return b
         })
     }
