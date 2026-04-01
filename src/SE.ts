@@ -28,6 +28,7 @@ export class SE {
     static dash = new Sound("asset/se/dash.mp3")
 
     static setVolume(volume: number) {
+        console.log(volume)
         Object.values(this).forEach((se) => {
             se.setVolume(volume)
         })

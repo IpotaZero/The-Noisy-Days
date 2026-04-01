@@ -5,6 +5,8 @@ import { Focuses } from "./utils/Focuses/Focuses"
 import { isSmartPhone } from "./utils/Functions/isSmartPhone"
 import { Pages } from "./utils/Pages/Pages"
 import { SceneChanger } from "./utils/SceneChanger"
+import { SE } from "./SE"
+import { LocalStorage } from "./LocalStorage"
 HTMLNumberElement
 HTMLRadioElement
 
@@ -43,6 +45,8 @@ window.addEventListener("DOMContentLoaded", async () => {
             (module) => new module.default(),
         ),
     )
+
+    SE.setVolume(LocalStorage.getVolumeSE() / 9)
 })
 
 window.addEventListener("keydown", (e) => {

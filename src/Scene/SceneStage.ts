@@ -4,6 +4,7 @@ import { BulletDrawer } from "../Game/Bullet/BulletDrawer"
 import { InputKeyboard } from "../Game/Player/InputKeyboard"
 import { Player } from "../Game/Player/Player"
 import { explosion, fireDeleteField, g, T } from "../global"
+import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { Stage } from "../Stage/Stage"
 import { Looper } from "../utils/Looper"
@@ -103,7 +104,7 @@ export default class SceneStage implements Scene {
         g.player = new Player(
             new InputKeyboard(),
             new TouchTracker(Dom.container),
-            (g.width / rect.width) * g.swipeRatio,
+            (g.width / rect.width) * LocalStorage.getSwipeRatio(),
         )
 
         this.looper.start()

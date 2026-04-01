@@ -6,6 +6,9 @@ import stages from "../stages"
 import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
 import { SE } from "../SE"
+import { HTMLNumberElement } from "../utils/HTMLNumberElement"
+import { LocalStorage } from "../LocalStorage"
+import { g } from "../global"
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -14,6 +17,9 @@ export default class implements Scene {
     constructor(private readonly config: { history?: readonly string[] } = {}) {
         this.selector = new Selector({
             "[data-stage]": { alias: "stage-button", expectedCount: 64 },
+            "#swipe-ratio": { alias: "swipe-ratio" },
+            "#volume-bgm": { alias: "volume-bgm" },
+            "#volume-se": { alias: "volume-se" },
         })
     }
 
@@ -40,6 +46,36 @@ export default class implements Scene {
 
             this.gotoStage(stageName)
         })
+
+        this.setupSetting()
+    }
+
+    private setupSetting() {
+        const swipeRatio = this.selector.getFirst(
+            "swipe-ratio",
+        ) as HTMLNumberElement
+
+        swipeRatio.oninput = () => {
+            LocalStorage.setSwipeRatio(swipeRatio.value)
+        }
+
+        const volumeBGM = this.selector.getFirst(
+            "volume-bgm",
+        ) as HTMLNumberElement
+
+        volumeBGM.oninput = () => {}
+
+        const volumeSE = this.selector.getFirst(
+            "volume-se",
+        ) as HTMLNumberElement
+
+        volumeSE.oninput = () => {
+            LocalStorage.setVolumeSE(volumeSE.value)
+            SE.setVolume(LocalStorage.getVolumeSE() / 9)
+        }
+
+        volumeBGM.value = LocalStorage.getVolumeBGM()
+        volumeSE.value = LocalStorage.getVolumeSE()
     }
 
     async end(): Promise<void> {}

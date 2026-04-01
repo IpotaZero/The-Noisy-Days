@@ -7,6 +7,9 @@ export class LocalStorage {
         if (!data) {
             return {
                 cleared: 0,
+                swipeRatio: 1,
+                volumeBGM: 9,
+                volumeSE: 9,
             }
         }
 
@@ -26,8 +29,41 @@ export class LocalStorage {
         data.cleared = num
         this.set(data)
     }
+
+    static getSwipeRatio() {
+        return this.get().swipeRatio
+    }
+
+    static setSwipeRatio(num: number) {
+        const data = this.get()
+        data.swipeRatio = num
+        this.set(data)
+    }
+
+    static getVolumeBGM() {
+        return this.get().volumeBGM
+    }
+
+    static setVolumeBGM(num: number) {
+        const data = this.get()
+        data.volumeBGM = num
+        this.set(data)
+    }
+
+    static getVolumeSE() {
+        return this.get().volumeSE
+    }
+
+    static setVolumeSE(num: number) {
+        const data = this.get()
+        data.volumeSE = num
+        this.set(data)
+    }
 }
 
 type Data = {
     cleared: number
+    swipeRatio: number
+    volumeBGM: number
+    volumeSE: number
 }
