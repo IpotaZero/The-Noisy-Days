@@ -47,17 +47,27 @@ export default class SceneStage implements Scene {
     }
 
     async start(): Promise<void> {
-        await this.pages.loadFromFile(Dom.container, "./asset/page/stage/stage.html", {
-            history: ["stage"],
-        })
+        await this.pages.loadFromFile(
+            Dom.container,
+            "./asset/page/stage/stage.html",
+            {
+                history: ["stage"],
+            },
+        )
 
         this.selector.load(Dom.container)
 
         this.selector.onClick("back", () => {
-            document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+            document
+                .querySelectorAll("button")
+                .forEach((b) => (b.disabled = true))
 
             SceneChanger.goto(
-                () => import("./SceneTitle").then((module) => new module.default({ history: this.history })),
+                () =>
+                    import("./SceneTitle").then(
+                        (module) =>
+                            new module.default({ history: this.history }),
+                    ),
                 {
                     msIn: 500,
                     msOut: 500,
@@ -66,13 +76,18 @@ export default class SceneStage implements Scene {
         })
 
         this.selector.onClick("retry", () => {
-            document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+            document
+                .querySelectorAll("button")
+                .forEach((b) => (b.disabled = true))
 
             this.stage.reset()
-            SceneChanger.goto(async () => new SceneStage(this.stage, this.history), {
-                msIn: 500,
-                msOut: 500,
-            })
+            SceneChanger.goto(
+                async () => new SceneStage(this.stage, this.history),
+                {
+                    msIn: 500,
+                    msOut: 500,
+                },
+            )
         })
 
         const rect = Dom.container.getClientRects()[0]
@@ -85,7 +100,11 @@ export default class SceneStage implements Scene {
 
         this.ctx = cvs.getContext("2d", { alpha: false })!
 
-        g.player = new Player(new InputKeyboard(), new TouchTracker(Dom.container), g.width / rect.width)
+        g.player = new Player(
+            new InputKeyboard(),
+            new TouchTracker(Dom.container),
+            (g.width / rect.width) * g.swipeRatio,
+        )
 
         this.looper.start()
 
@@ -170,7 +189,10 @@ export default class SceneStage implements Scene {
         g.bullets
             .values()
             .filter((b) => b.type === Bullet.Type.Score)
-            .filter((b) => b.p.minus(g.player.p).magnitude() <= b.r + g.player.GRAZE_R)
+            .filter(
+                (b) =>
+                    b.p.minus(g.player.p).magnitude() <= b.r + g.player.GRAZE_R,
+            )
             .forEach((b) => {
                 b.life = 0
                 SE.graze.play()

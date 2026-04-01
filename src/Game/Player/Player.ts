@@ -127,7 +127,7 @@ export class Player {
     private fire() {
         if (this.frame % 3 === 0) {
             if (!this.isSneaking()) {
-                remodel([new Bullet()])
+                remodel()
                     .type(Bullet.Type.Friend)
                     .appearance(Bullet.Appearance.Player)
                     .color("#ffffff80")
@@ -138,7 +138,7 @@ export class Player {
                     .nway(5, T / 48)
                     .fire()
             } else {
-                remodel([new Bullet()])
+                remodel()
                     .type(Bullet.Type.Friend)
                     .appearance(Bullet.Appearance.Player)
                     .color("#ffffff80")
