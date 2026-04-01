@@ -5,7 +5,10 @@ export default class extends Stage {
         yield* this.wait(30)
 
         yield* this.text("私にとって、シオン・シマとは、何であったのだろうか。")
-        yield* this.text("レイ・コウダの日記より抜粋")
-        yield* this.text("")
+        yield* this.text("レイ・コウダへのインタビューより抜粋")
+        yield* this.text("『教室の中で、彼女は正直言って異物だった。』")
+        yield* this.text("『話しかけることも、話しかけられることも、嫌だった、と思う。』")
+        yield* this.text("『何故かって?』")
+        yield* this.text('『"違うかった"から、かな。』')
     }
 }

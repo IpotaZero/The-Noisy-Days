@@ -7,7 +7,7 @@ export default class extends Stage {
         // 佐々木 碧
 
         yield* this.text("「いやー、どうも。まさかササキさん本人にお話を伺えるとは。」", { name: "マス" })
-        yield* this.text("「こちらこそ、僕らのの意見を表明する機会をいただけてありがたいです。」", { name: "ササキ" })
+        yield* this.text("「こちらこそ、僕らの意見を表明する機会をいただけてありがたいです。」", { name: "ササキ" })
 
         yield* this.text("マスはテロ組織のトップにしては若すぎる青年を観察しながら手帳を開く。")
         yield* this.text("アオ・ササキ 第二世代合成人")
@@ -33,6 +33,7 @@ export default class extends Stage {
         // 誰もが善意で動いている
         yield* this.text("「なるほど、しかし、ササキさん、若いですね。大変でしょう。」", { name: "マス" })
         yield* this.text("「……はは、僕含め上層部は合成人ですからね、分かって言ってんでしょう?」", { name: "ササキ" })
+        // yield* this.text("「あなたはこう言いたいんだ。『合成人は頭がいいからトップに立つべきだ』と。」", { name: "ササキ" })
         yield* this.text("「あー、いや、すみません。」", { name: "マス" })
         yield* this.text("「時間は掛かりますよ、そう云うのを変えるのは。だけど、きっと皆分かり合える。」", { name: "ササキ" })
     }

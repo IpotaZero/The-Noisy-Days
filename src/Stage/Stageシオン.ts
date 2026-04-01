@@ -5,7 +5,7 @@ export default class extends Stage {
         yield* this.wait(30)
 
         yield* this.text("前世紀、アルゴリズムは人の憎悪を増幅し、ついには人類を世界大戦へと導いた。")
-        yield* this.text("世界中の国々が戦争継続能力を喪失して漸く終結した機械対戦。")
+        yield* this.text("世界中の国々が戦争継続能力を喪失して漸く終結した機械大戦。")
         yield* this.text("だが倫理と不釣り合いに増大した科学力は諍いの種を蒔いていった。")
         yield* this.text("（って所かな。）", { name: "マス" })
         yield* this.text("マスは手帳を閉じながらテントに入り、中の少女をちらと見る。")
