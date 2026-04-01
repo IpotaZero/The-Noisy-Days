@@ -56,7 +56,7 @@ button {
 
     .icon {
         aspect-ratio: 1;
-        height: 16cqw;
+        height: 20cqw;
 
         background-color: var(--white);
     }
@@ -70,9 +70,10 @@ button {
         h2,
         h3,
         h4 {
-            font-size: 6cqw;
-            border-bottom: 1px solid var(--white);
+            font-size: 8cqw;
+            border-bottom: 1px solid var(--white-vale);
             text-align: left;
+            padding-bottom: 0.1em;
         }
 
         .description {

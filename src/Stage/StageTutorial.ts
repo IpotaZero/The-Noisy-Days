@@ -65,6 +65,7 @@ class EnemyTutorial extends Enemy {
 
         this.isInvincible = true
 
+        this.p = vec(g.width / 2, -g.height / 2)
         this.moveTo(vec(0, -g.height / 4), 60)
     }
 

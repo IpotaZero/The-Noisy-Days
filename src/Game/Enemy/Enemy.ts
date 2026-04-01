@@ -9,12 +9,14 @@ export class Enemy {
     life = 100
     maxLife = 100
     r = 64
-    p = vec(g.width / 2, -g.height / 2)
+    p = vec(g.width / 2, -g.height)
     frame = 0
     isInvincible = false
 
     private readonly renderer: IEnemyRenderer
     private g: Generator[] = []
+
+    protected margin = 30
 
     constructor(
         life: number,
@@ -31,6 +33,7 @@ export class Enemy {
         if ("G" in this) {
             this.g.push(
                 function* (this: any) {
+                    yield* Array(this.margin)
                     while (1) yield* this.G()
                 }.bind(this)(),
             )
@@ -38,6 +41,7 @@ export class Enemy {
         if ("H" in this) {
             this.g.push(
                 function* (this: any) {
+                    yield* Array(this.margin)
                     while (1) yield* this.H()
                 }.bind(this)(),
             )

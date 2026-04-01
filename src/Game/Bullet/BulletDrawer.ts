@@ -8,7 +8,10 @@ export class BulletDrawer {
 
         let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r * 10) / 10}`
 
-        if (bullet.appearance === Bullet.Appearance.Score) {
+        if (
+            bullet.appearance === Bullet.Appearance.Score ||
+            bullet.appearance === Bullet.Appearance.Line
+        ) {
             hash += `,${bullet.radian}`
         }
 
