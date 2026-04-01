@@ -46,6 +46,7 @@ export default class extends Stage {
         }
 
         yield* this.text("自機の当たり判定は赤丸のみ<br>敵自体に当たり判定は無い")
+        yield* this.text("盾は8枚ある")
 
         e.start()
 
