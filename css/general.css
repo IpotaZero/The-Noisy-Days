@@ -52,3 +52,20 @@ button {
 p {
     line-height: 1.4;
 }
+
+/* 未訪問のリンク */
+a:link {
+    color: lime;
+}
+
+/* 訪問済みのリンク */
+a:visited {
+    color: darkolivegreen;
+}
+
+/* マウスホバー時（カーソルを乗せた時） */
+a:hover {
+    color: darkolivegreen;
+    text-decoration: underline; /* 下線を表示 */
+    opacity: 0.3; /* 少し透明にする */
+}
