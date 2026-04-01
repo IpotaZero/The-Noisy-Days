@@ -74,6 +74,7 @@ export default class implements Scene {
             SE.setVolume(LocalStorage.getVolumeSE() / 9)
         }
 
+        swipeRatio.value = LocalStorage.getSwipeRatio()
         volumeBGM.value = LocalStorage.getVolumeBGM()
         volumeSE.value = LocalStorage.getVolumeSE()
     }
