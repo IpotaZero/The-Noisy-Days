@@ -201,3 +201,18 @@ button {
         text-align: center;
     }
 }
+
+[id*="act"] {
+    .button {
+        position: relative;
+
+        section::after {
+            content: ">>>START";
+            position: absolute;
+            right: 2cqw;
+            bottom: 2cqw;
+            font-size: 4cqw;
+            color: var(--white-vale);
+        }
+    }
+}
