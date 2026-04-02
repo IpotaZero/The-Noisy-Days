@@ -145,7 +145,7 @@ export default class SceneStage implements Scene {
     }
 
     private logic() {
-        g.player.tick()
+        g.player.tick(this.ctx)
 
         g.bullets.forEach((b) => b.tick())
 

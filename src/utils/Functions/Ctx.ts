@@ -70,14 +70,18 @@ export class Ctx {
             const groupSin = Math.sin(groupAngle)
             const groupCos = Math.cos(groupAngle)
 
-            let firstX = x + r * (cosCache[0] * groupCos - sinCache[0] * groupSin)
-            let firstY = y + r * (sinCache[0] * groupCos + cosCache[0] * groupSin)
+            let firstX =
+                x + r * (cosCache[0] * groupCos - sinCache[0] * groupSin)
+            let firstY =
+                y + r * (sinCache[0] * groupCos + cosCache[0] * groupSin)
 
             ctx.moveTo(firstX, firstY)
 
             for (let i = 1; i <= reducedVertices; i++) {
-                const pointX = x + r * (cosCache[i] * groupCos - sinCache[i] * groupSin)
-                const pointY = y + r * (sinCache[i] * groupCos + cosCache[i] * groupSin)
+                const pointX =
+                    x + r * (cosCache[i] * groupCos - sinCache[i] * groupSin)
+                const pointY =
+                    y + r * (sinCache[i] * groupCos + cosCache[i] * groupSin)
                 ctx.lineTo(pointX, pointY)
             }
         }
@@ -130,5 +134,32 @@ export class Ctx {
             const r = 1 + maxLineWidth * Math.sin(Math.PI * progress)
             this.arc(ctx, [x, y], r, color)
         }
+    }
+
+    static text(
+        ctx: CanvasRenderingContext2D,
+        [x, y]: [number, number],
+        color: string,
+        text: string,
+        {
+            align = "center",
+            baseline = "middle",
+            fontFamily,
+            fontSize,
+        }: {
+            align?: CanvasTextAlign
+            baseline?: CanvasTextBaseline
+            fontFamily?: string
+            fontSize?: number
+        } = {},
+    ) {
+        if (fontFamily && fontSize) {
+            ctx.font = `${fontSize}px ${fontFamily}`
+        }
+
+        ctx.textAlign = align
+        ctx.textBaseline = baseline
+        ctx.fillStyle = color
+        ctx.fillText(text, x, y)
     }
 }

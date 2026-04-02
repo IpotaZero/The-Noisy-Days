@@ -6,6 +6,8 @@ import { PlayerRenderer } from "./PlayerRenderer"
 import { remodel } from "../Bullet/Remodel"
 import { vec } from "../../utils/Vec"
 import { SE } from "../../SE"
+import { Ctx } from "../../utils/Functions/Ctx"
+import { Ease } from "../../utils/Functions/Ease"
 
 export class Player {
     life = 8
@@ -26,6 +28,8 @@ export class Player {
     private readonly renderer = new PlayerRenderer()
     private readonly input: IInput
     private readonly touchTracker: TouchTracker
+
+    private gs: Generator[] = []
 
     frame = 0
 
@@ -52,16 +56,57 @@ export class Player {
         this.p.y = -g.height
     }
 
-    tick() {
+    tick(ctx: CanvasRenderingContext2D) {
         this.move()
 
         if (this.deadFrame > 0) this.deadFrame--
         if (this.dashFrame > 0) this.dashFrame--
-        if (this.dashCoolDown > 0) this.dashCoolDown--
+        if (this.dashCoolDown > 0) {
+            this.dashCoolDown--
+
+            if (this.dashCoolDown === 0) {
+                SE.charge.play()
+                this.gs.push(this.charge(ctx))
+            }
+        }
 
         this.fire()
 
         this.frame++
+    }
+
+    private *charge(ctx: CanvasRenderingContext2D) {
+        const frame = 30
+
+        for (let i = 1; i < frame + 1; i++) {
+            const r = Ease.Out(i / frame) * this.GRAZE_R * 3 + this.GRAZE_R * 3
+
+            ctx.globalAlpha = 1 - i / frame
+            Ctx.arc(ctx, this.p.l, r, "#ffffff80", {
+                lineWidth: 2,
+            })
+            Ctx.arc(ctx, this.p.l, r + this.GRAZE_R / 4, "#ffffff80", {
+                lineWidth: 2,
+            })
+            Ctx.arc(ctx, this.p.l, r / 2, "#ffffff80", {
+                lineWidth: 2,
+            })
+
+            const text = [..."CHARGED"]
+
+            text.forEach((c, index) => {
+                const p = this.p.plus(
+                    vec.arg(T * (index / text.length)).scaled(this.GRAZE_R * 3),
+                )
+                Ctx.text(ctx, p.l, "#ffffff80", c, {
+                    fontFamily: "fraktur",
+                    fontSize: this.GRAZE_R,
+                })
+            })
+
+            ctx.globalAlpha = 1
+            yield
+        }
     }
 
     isInvincible() {
@@ -70,6 +115,8 @@ export class Player {
 
     draw(ctx: CanvasRenderingContext2D) {
         this.renderer.draw(ctx, this)
+
+        this.gs = this.gs.filter((g) => !g.next().done)
     }
 
     private move() {
@@ -94,7 +141,7 @@ export class Player {
             this.dashCoolDown = this.DASH_COOL_DOWN
         }
 
-        if (this.dashFrame > 0) this.v.scale(5)
+        if (this.dashFrame > 0) this.v.scale(7)
 
         this.v.scale(this.BASE_SPEED)
 

@@ -27,6 +27,8 @@ export class SE {
     static crush = new Sound("asset/se/crush.mp3")
     static dash = new Sound("asset/se/dash.mp3")
 
+    static charge = new Sound("asset/se/se_charge.mp3")
+
     static setVolume(volume: number) {
         console.log(volume)
         Object.values(this).forEach((se) => {
