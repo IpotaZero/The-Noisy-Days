@@ -6,7 +6,7 @@ export default class extends Stage {
 
         yield* this.text("「そういえば、ヤナガワさんからの声明が出ましたよっと。」", { name: "マス" })
         yield* this.text("俺は煙草を咥えながら少女に新聞を渡す。")
-        yield* this.text("「ヤナガワ……防衛大臣か。」", { name: "シオン" })
+        yield* this.text("「ヤナガワ……防衛大臣か。SILO派のトップの。」", { name: "シオン" })
         yield* this.text("少女はそれを広げると、見出しを指でなぞった。")
 
         yield* this.text("『機械大戦は終わった、だが人は己らの行いを反省しなければならない。』")
