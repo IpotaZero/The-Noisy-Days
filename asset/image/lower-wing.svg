@@ -9,7 +9,7 @@
    id="svg1"
    inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
    sodipodi:docname="描画.svg"
-   inkscape:export-filename="C:\ipota\git\The-Noisy-Days\asset\image\upper-wing.svg"
+   inkscape:export-filename="C:\ipota\git\The-Noisy-Days\asset\image\lower-wing.svg"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -52,7 +52,7 @@
      id="layer1">
     <path
        style="fill:#ffffff;fill-opacity:0.173469;stroke-width:0.2092"
-       d="M 2.4259856,9.9662609 C 36.293253,8.1358555 29.16017,18.240416 29.16017,18.240416 L 22.540994,20.942122 13.144372,22.120713 2.7224,12.680379"
+       d="M 2.4259856,9.9662609 C 28.946462,7.8670705 28.533005,16.717301 28.533005,16.717301 L 20.390714,20.046172 9.6501668,21.314358 2.7224,12.680379"
        id="path1-8"
        sodipodi:nodetypes="ccccc" />
   </g>

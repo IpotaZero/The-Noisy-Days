@@ -150,13 +150,15 @@ export default class implements Scene {
     private evaluateStageCleared() {
         const stages = LocalStorage.getStages()
 
+        const gold = "#edca5f"
+
         this.selector.getAll("stage-button").forEach((button, index) => {
             const rank = stages[index]
             if (rank === 0) return
 
             const rankEl = button.querySelector(".rank") as HTMLElement
             rankEl.textContent = "★"
-            rankEl.style.color = rank === 2 ? "gold" : "silver"
+            rankEl.style.color = rank === 2 ? gold : "silver"
         })
 
         this.selector.getAll("act-button").forEach((button, index) => {
@@ -168,7 +170,7 @@ export default class implements Scene {
             rankEl.innerHTML = actStages
                 .map((rank) => {
                     if (rank === 0) return "<span>☆</span>"
-                    return `<span style="color: ${rank === 2 ? "gold" : "silver"}">★</span>`
+                    return `<span style="color: ${rank === 2 ? gold : "silver"}">★</span>`
                 })
                 .join("")
         })
