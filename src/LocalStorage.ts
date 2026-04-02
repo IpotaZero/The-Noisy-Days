@@ -6,7 +6,7 @@ export class LocalStorage {
 
         if (!data) {
             return {
-                cleared: 0,
+                stages: Array(64).fill(0) as (0 | 1 | 2)[],
                 swipeRatio: 1,
                 volumeBGM: 9,
                 volumeSE: 9,
@@ -20,14 +20,22 @@ export class LocalStorage {
         localStorage.setItem(this.KEY, JSON.stringify(data))
     }
 
-    static getClearedStage(): number {
-        return this.get().cleared
+    static getStages() {
+        return this.get().stages
     }
 
-    static setClearedStage(num: number): void {
+    static getFirstUncleared() {
         const data = this.get()
-        data.cleared = num
-        this.set(data)
+        return data.stages.findIndex((rank) => rank === 0)
+    }
+
+    static updateClearedStage(stageIndex: number, rank: 0 | 1 | 2) {
+        const data = this.get()
+        const currentRank = data.stages[stageIndex]
+        if (currentRank < rank) {
+            data.stages[stageIndex] = rank
+            this.set(data)
+        }
     }
 
     static getSwipeRatio() {
@@ -59,10 +67,14 @@ export class LocalStorage {
         data.volumeSE = num
         this.set(data)
     }
+
+    static clear() {
+        localStorage.removeItem(this.KEY)
+    }
 }
 
 type Data = {
-    cleared: number
+    stages: (0 | 1 | 2)[]
     swipeRatio: number
     volumeBGM: number
     volumeSE: number

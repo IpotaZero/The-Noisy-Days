@@ -30,6 +30,7 @@ export default class SceneStage implements Scene {
     private readonly ac = new AbortController()
 
     constructor(
+        private readonly stageIndex: number,
         private readonly stage: Stage,
         private readonly history: readonly string[],
     ) {
@@ -38,8 +39,7 @@ export default class SceneStage implements Scene {
             this.tick()
 
             if (done && !this.isFinished) {
-                this.isFinished = true
-                this.pages.enter("clear")
+                this.onClear()
             }
         })
 
@@ -48,6 +48,14 @@ export default class SceneStage implements Scene {
             ".back": { alias: "back", expectedCount: 2 },
             ".retry": { alias: "retry", expectedCount: 2 },
         })
+    }
+
+    private onClear() {
+        this.isFinished = true
+        this.pages.enter("clear")
+
+        const rank = g.player.life === 8 ? 2 : 1
+        LocalStorage.updateClearedStage(this.stageIndex, rank)
     }
 
     async start(): Promise<void> {
@@ -86,7 +94,8 @@ export default class SceneStage implements Scene {
 
             this.stage.reset()
             SceneChanger.goto(
-                async () => new SceneStage(this.stage, this.history),
+                async () =>
+                    new SceneStage(this.stageIndex, this.stage, this.history),
                 {
                     msIn: 500,
                     msOut: 500,

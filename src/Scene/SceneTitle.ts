@@ -2,13 +2,14 @@ import { Scene } from "./Scene"
 import { Pages } from "../utils/Pages/Pages"
 import { Dom } from "../Dom"
 
-import stages from "../stages"
+import stages, { stageList } from "../stages"
 import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
 import { SE } from "../SE"
 import { HTMLNumberElement } from "../utils/HTMLNumberElement"
 import { LocalStorage } from "../LocalStorage"
 import { g } from "../global"
+import { MathEx } from "../utils/Functions/MathEx"
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -17,6 +18,8 @@ export default class implements Scene {
     constructor(private readonly config: { history?: readonly string[] } = {}) {
         this.selector = new Selector({
             "[data-stage]": { alias: "stage-button", expectedCount: 64 },
+            ".act-button": { alias: "act-button", expectedCount: 16 },
+            ".chapter-button": { alias: "chapter-button", expectedCount: 4 },
             "#swipe-ratio": { alias: "swipe-ratio" },
             "#volume-bgm": { alias: "volume-bgm" },
             "#volume-se": { alias: "volume-se" },
@@ -40,14 +43,16 @@ export default class implements Scene {
 
         this.selector.load(Dom.container)
 
-        this.selector.onClick("stage-button", ({ element }) => {
+        this.selector.onClick("stage-button", ({ element, index }) => {
             const stageName = element.dataset.stage
             if (!stageName) throw new Error("Stage name is missing")
 
-            this.gotoStage(stageName)
+            this.gotoStage(index, stageName)
         })
 
         this.setupSetting()
+        this.lockButtons()
+        this.evaluateStageCleared()
     }
 
     private setupSetting() {
@@ -79,9 +84,89 @@ export default class implements Scene {
         volumeSE.value = LocalStorage.getVolumeSE()
     }
 
+    private lockButtons() {
+        const firstUnclearedStage = LocalStorage.getFirstUncleared()
+        const firstUnclearedAct = Math.floor(firstUnclearedStage / 4)
+        const firstUnclearedChapter = Math.floor(firstUnclearedAct / 4)
+
+        this.selector
+            .getAll("stage-button")
+            .filter(
+                (button): button is HTMLButtonElement =>
+                    button instanceof HTMLButtonElement,
+            )
+            .forEach((button, index) => {
+                button.disabled = index > firstUnclearedStage
+            })
+
+        this.selector
+            .getAll("act-button")
+            .filter(
+                (button): button is HTMLButtonElement =>
+                    button instanceof HTMLButtonElement,
+            )
+            .forEach((button, index) => {
+                button.disabled = index > firstUnclearedAct
+            })
+
+        this.selector
+            .getAll("chapter-button")
+            .filter(
+                (button): button is HTMLButtonElement =>
+                    button instanceof HTMLButtonElement,
+            )
+            .forEach((button, index) => {
+                button.disabled = index > firstUnclearedChapter
+            })
+        ;(
+            this.selector.getAll("stage-button")[9] as HTMLButtonElement
+        ).disabled = true
+    }
+
+    private evaluateStageCleared() {
+        const stages = LocalStorage.getStages()
+
+        this.selector.getAll("stage-button").forEach((button, index) => {
+            const rank = stages[index]
+            if (rank === 0) return
+
+            const rankEl = button.querySelector(".rank") as HTMLElement
+            rankEl.textContent = "★"
+            rankEl.style.color = rank === 2 ? "gold" : "silver"
+        })
+
+        this.selector.getAll("act-button").forEach((button, index) => {
+            const actIndex = index
+            const stageIndex = actIndex * 4
+            const actStages = stages.slice(stageIndex, stageIndex + 4)
+
+            const rankEl = button.querySelector(".rank") as HTMLElement
+            rankEl.innerHTML = actStages
+                .map((rank) => {
+                    if (rank === 0) return "<span>☆</span>"
+                    return `<span style="color: ${rank === 2 ? "gold" : "silver"}">★</span>`
+                })
+                .join("")
+        })
+
+        this.selector.getAll("chapter-button").forEach((button, index) => {
+            const chapterIndex = index
+            const actIndex = chapterIndex * 4
+            const stageIndex = actIndex * 4
+            const chapterStages: number[] = stages.slice(
+                stageIndex,
+                stageIndex + 16,
+            )
+
+            const rankEl = button.querySelector(".rank") as HTMLElement
+            const progress = MathEx.sum(chapterStages)
+            rankEl.textContent = `${Math.floor((progress / 32) * 100)}%`
+        })
+    }
+
     async end(): Promise<void> {}
 
-    private gotoStage(stageName: string) {
+    private gotoStage(stageIndex: number, stageName: string) {
         SE.start.play()
 
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
@@ -96,7 +181,11 @@ export default class implements Scene {
                 const stage = new Stage()
                 const scene = await import(`./SceneStage`).then(
                     (module) =>
-                        new module.default(stage, this.pages.getHistory()),
+                        new module.default(
+                            stageIndex,
+                            stage,
+                            this.pages.getHistory(),
+                        ),
                 )
                 return scene
             },
@@ -158,10 +247,13 @@ type Chapter = {
 
 function createChapterButton(chapter: Chapter) {
     return `
-        <button class="button" data-link="chapter-${chapter["chapter-name"]}">
+        <button class="button chapter-button" data-link="chapter-${chapter["chapter-name"]}">
             <img class="icon" src="asset/image/background.png" />
             <section>
-                <h2>${chapter["chapter-name"]}</h2>
+                <div class="title">
+                    <span class="name">${chapter["chapter-name"]}</span>
+                    <span class="rank"></span>
+                </div>
                 <p class="description">${chapter["description"]}</p>
             </section>
         </button>
@@ -176,10 +268,13 @@ type Act = {
 
 function createActButton(act: Act): string {
     return `
-        <button class="button" data-link="act-${act["act-name"]}">
+        <button class="button act-button" data-link="act-${act["act-name"]}">
             <img class="icon" src="asset/image/background.png" />
             <section>
-                <h3>${act["act-name"]}</h3>
+                <div class="title">
+                    <span class="name">${act["act-name"]}</span>
+                    <span class="rank"></span>
+                </div>
                 <p class="description">${act["description"]}</p>
             </section>
         </button>
@@ -213,7 +308,10 @@ function createStageButton(stage: Stage): string {
         <button class="button" data-stage="${stage["stage-name"]}">
             <img class="icon" src="asset/image/background.png" />
             <section>
-                <h4>${stage["stage-name"]}</h4>
+                <div class="title">
+                    <span class="name">${stage["stage-name"]}</span>
+                    <span class="rank"></span>
+                </div>
                 <p class="description">${stage["description"]}</p>
             </section>
         </button>

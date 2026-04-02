@@ -67,11 +67,8 @@ button {
         gap: 1cqw;
         width: 100%;
 
-        h2,
-        h3,
-        h4 {
+        .name {
             font-size: 6cqw;
-            border-bottom: 1px solid var(--white-vale);
             text-align: left;
             padding-bottom: 0.1em;
         }
@@ -79,6 +76,31 @@ button {
         .description {
             font-size: 3cqw;
             text-align: left;
+        }
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        position: relative;
+
+        &::after {
+            content: " --::LOCKED::-- ";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--black);
+        }
+    }
+
+    .title {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--white-vale);
+
+        .rank {
+            font-size: 5cqw;
         }
     }
 }

@@ -1,6 +1,6 @@
 .nav-focus,
 button:hover,
 button:active {
-    filter: invert(1);
-    background-color: var(--black);
+    box-shadow: 0 0 0.5em var(--wisteria);
+    border: 1px solid var(--wisteria);
 }
