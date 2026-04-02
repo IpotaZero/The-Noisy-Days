@@ -96,7 +96,9 @@ export default class implements Scene {
                     button instanceof HTMLButtonElement,
             )
             .forEach((button, index) => {
-                button.disabled = index > firstUnclearedStage
+                if (index > firstUnclearedStage) {
+                    this.lock(button)
+                }
             })
 
         this.selector
@@ -106,7 +108,9 @@ export default class implements Scene {
                     button instanceof HTMLButtonElement,
             )
             .forEach((button, index) => {
-                button.disabled = index > firstUnclearedAct
+                if (index > firstUnclearedAct) {
+                    this.lock(button)
+                }
             })
 
         this.selector
@@ -116,11 +120,20 @@ export default class implements Scene {
                     button instanceof HTMLButtonElement,
             )
             .forEach((button, index) => {
-                button.disabled = index > firstUnclearedChapter
+                if (index > firstUnclearedChapter) {
+                    this.lock(button)
+                }
             })
-        ;(
-            this.selector.getAll("stage-button")[9] as HTMLButtonElement
-        ).disabled = true
+
+        this.lock(this.selector.getAll("stage-button")[9] as HTMLButtonElement)
+    }
+
+    private lock(button: HTMLButtonElement) {
+        button.insertAdjacentHTML(
+            "beforeend",
+            `<div class="lock">--:: 封 ::--</div>`,
+        )
+        button.disabled = true
     }
 
     private evaluateStageCleared() {

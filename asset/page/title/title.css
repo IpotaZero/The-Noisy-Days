@@ -48,6 +48,7 @@ button {
 }
 
 .button {
+    position: relative;
     display: flex;
     flex-direction: row;
     gap: 2cqw;
@@ -79,7 +80,7 @@ button {
         }
     }
 
-    &:disabled {
+    /* &:disabled {
         cursor: not-allowed;
         position: relative;
 
@@ -92,6 +93,17 @@ button {
             justify-content: center;
             background-color: var(--black);
         }
+    } */
+
+    .lock {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--black);
+
+        font-size: 10cqw;
     }
 
     .title {
