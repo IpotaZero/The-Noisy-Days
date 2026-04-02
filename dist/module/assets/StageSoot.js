@@ -1,0 +1,2 @@
+import"./Bullet.js";import{t as e}from"./Stage2.js";var t=class extends e{*G(){yield*this.wait(30),yield*this.text(`「自律兵器は条約違反でしょおっ!」`,{name:`todo`}),yield*this.text(`「あたしはロボットじゃない。」`,{name:`シオン`}),yield*this.text(`「って、にゃるへそ。当たらなければどうということは無い……ってかあ?」`,{name:`todo`})}};export{t as default};
+//# sourceMappingURL=StageSoot.js.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"isSmartPhone.js","names":[],"sources":["../../../src/utils/Functions/isSmartPhone.ts"],"sourcesContent":["export function isSmartPhone() {\r\n    return !!navigator.userAgent.match(/iPhone|Android.+Mobile/)\r\n}\r\n"],"mappings":"AAAA,SAAgB,GAAe,CAC3B,MAAO,CAAC,CAAC,UAAU,UAAU,MAAM,yBAAyB"}
