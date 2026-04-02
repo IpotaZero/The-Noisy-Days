@@ -119,7 +119,7 @@ button {
 
 #credit {
     justify-content: start;
-    gap: 4em;
+    gap: 3em;
 
     h2 {
         font-size: 8cqw;
@@ -137,7 +137,8 @@ button {
         width: 100%;
     }
 
-    p {
+    p,
+    a {
         padding: 0.5em;
         font-size: 3.6cqw;
         text-align: left;
@@ -147,6 +148,17 @@ button {
 
     .options {
         margin-top: auto;
+    }
+
+    .font {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+
+        a {
+            font-size: 3.5cqw;
+            text-align: left;
+        }
     }
 }
 
