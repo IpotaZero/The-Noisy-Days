@@ -32,7 +32,6 @@ export class Player {
     private gs: Generator[] = []
 
     frame = 0
-
     isDead = false
 
     constructor(
@@ -56,148 +55,185 @@ export class Player {
         this.p.y = -g.height
     }
 
+    isInvincible() {
+        return this.dashFrame > 0 || this.deadFrame > 0
+    }
+
     tick(ctx: CanvasRenderingContext2D) {
         this.move()
+        this.tickFrames(ctx)
+        this.fire()
+        this.frame++
+    }
 
+    draw(ctx: CanvasRenderingContext2D) {
+        this.renderer.draw(ctx, this)
+        this.gs = this.gs.filter((g) => !g.next().done)
+    }
+
+    // ----------------------------------------------------------------
+    // tick helpers
+    // ----------------------------------------------------------------
+
+    private tickFrames(ctx: CanvasRenderingContext2D) {
         if (this.deadFrame > 0) this.deadFrame--
         if (this.dashFrame > 0) this.dashFrame--
+
         if (this.dashCoolDown > 0) {
             this.dashCoolDown--
-
             if (this.dashCoolDown === 0) {
                 SE.charge.play()
                 this.gs.push(this.charge(ctx))
             }
         }
-
-        this.fire()
-
-        this.frame++
     }
 
     private *charge(ctx: CanvasRenderingContext2D) {
         const frame = 30
-
         for (let i = 1; i < frame + 1; i++) {
-            const r = Ease.Out(i / frame) * this.GRAZE_R * 3 + this.GRAZE_R * 3
-
-            ctx.globalAlpha = 1 - i / frame
-            Ctx.arc(ctx, this.p.l, r, "#ffffff80", {
-                lineWidth: 2,
-            })
-            Ctx.arc(ctx, this.p.l, r + this.GRAZE_R / 4, "#ffffff80", {
-                lineWidth: 2,
-            })
-            Ctx.arc(ctx, this.p.l, r / 2, "#ffffff80", {
-                lineWidth: 2,
-            })
-
-            const text = [..."CHARGED"]
-
-            text.forEach((c, index) => {
-                const p = this.p.plus(
-                    vec.arg(T * (index / text.length)).scaled(this.GRAZE_R * 3),
-                )
-                Ctx.text(ctx, p.l, "#ffffff80", c, {
-                    fontFamily: "fraktur",
-                    fontSize: this.GRAZE_R,
-                })
-            })
-
+            this.drawChargeRings(ctx, i, frame)
+            this.drawChargeText(ctx, i, frame)
             ctx.globalAlpha = 1
             yield
         }
     }
 
-    isInvincible() {
-        return this.dashFrame > 0 || this.deadFrame > 0
+    private drawChargeRings(
+        ctx: CanvasRenderingContext2D,
+        i: number,
+        frame: number,
+    ) {
+        const r = Ease.Out(i / frame) * this.GRAZE_R * 3 + this.GRAZE_R * 3
+        ctx.globalAlpha = 1 - i / frame
+        Ctx.arc(ctx, this.p.l, r, "#ffffff80", { lineWidth: 2 })
+        Ctx.arc(ctx, this.p.l, r + this.GRAZE_R / 4, "#ffffff80", {
+            lineWidth: 2,
+        })
+        Ctx.arc(ctx, this.p.l, r / 2, "#ffffff80", { lineWidth: 2 })
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
-        this.renderer.draw(ctx, this)
-
-        this.gs = this.gs.filter((g) => !g.next().done)
+    private drawChargeText(
+        ctx: CanvasRenderingContext2D,
+        i: number,
+        frame: number,
+    ) {
+        ctx.globalAlpha = 1 - i / frame
+        const text = [..."CHARGED"]
+        text.forEach((c, index) => {
+            const p = this.p.plus(
+                vec.arg(T * (index / text.length)).scaled(this.GRAZE_R * 3),
+            )
+            Ctx.text(ctx, p.l, "#ffffff80", c, {
+                fontFamily: "fraktur",
+                fontSize: this.GRAZE_R,
+            })
+        })
     }
+
+    // ----------------------------------------------------------------
+    // move helpers
+    // ----------------------------------------------------------------
 
     private move() {
+        this.applyInput()
+        this.applyTouch()
+        this.clampPosition()
+        this.updateRenderer()
+        this.input.tick()
+    }
+
+    private applyInput() {
         const { pressed, pushed } = this.input
         this.v = vec(0, 0)
 
-        const movingRight = pressed.has(Operation.Right)
-        const movingLeft = pressed.has(Operation.Left)
-
-        if (movingRight) this.v.x += 1
-        if (movingLeft) this.v.x -= 1
+        if (pressed.has(Operation.Right)) this.v.x += 1
+        if (pressed.has(Operation.Left)) this.v.x -= 1
         if (pressed.has(Operation.Down)) this.v.y += 1
         if (pressed.has(Operation.Up)) this.v.y -= 1
 
         this.v.normalize()
+        this.applySpeedModifier(pressed, pushed)
 
+        this.v.scale(this.BASE_SPEED)
+        this.p.add(this.v)
+    }
+
+    private applySpeedModifier(
+        pressed: Set<Operation>,
+        pushed: Set<Operation>,
+    ) {
         if (pressed.has(Operation.Slow)) {
             this.v.scale(0.5)
-        } else if (pushed.has(Operation.Dash) && this.dashCoolDown === 0) {
+            return
+        }
+        if (pushed.has(Operation.Dash) && this.dashCoolDown === 0) {
             SE.dash.play()
             this.dashFrame = this.DASH_FRAME
             this.dashCoolDown = this.DASH_COOL_DOWN
         }
-
         if (this.dashFrame > 0) this.v.scale(7)
+    }
 
-        this.v.scale(this.BASE_SPEED)
-
-        this.p.add(this.v)
-
+    private applyTouch() {
         const delta = this.touchTracker.getDelta()
         if (delta) {
             this.p.x += delta.dx * this.scale
             this.p.y += delta.dy * this.scale
         }
+    }
 
-        if (!this.isDead) {
-            if (this.p.x < -g.width / 2) this.p.x = -g.width / 2
-            if (this.p.x > g.width / 2) this.p.x = g.width / 2
-            if (this.p.y < -g.height / 2) this.p.y = -g.height / 2
-            if (this.p.y > g.height / 2) this.p.y = g.height / 2
-        }
+    private clampPosition() {
+        if (this.isDead) return
+        if (this.p.x < -g.width / 2) this.p.x = -g.width / 2
+        if (this.p.x > g.width / 2) this.p.x = g.width / 2
+        if (this.p.y < -g.height / 2) this.p.y = -g.height / 2
+        if (this.p.y > g.height / 2) this.p.y = g.height / 2
+    }
 
+    private updateRenderer() {
         this.renderer.tick(
             this.v.x > 0,
             this.v.x < 0,
             this.isSneaking(),
-            this.dashFrame > 0, // Dash 中かどうか
+            this.dashFrame > 0,
             this.p.x,
             this.p.y,
         )
-
-        this.input.tick()
     }
 
+    // ----------------------------------------------------------------
+    // fire helpers
+    // ----------------------------------------------------------------
+
     private fire() {
-        if (this.frame % 3 === 0) {
-            if (!this.isSneaking()) {
-                remodel()
-                    .type(Bullet.Type.Friend)
-                    .appearance(Bullet.Appearance.Player)
-                    .color("#ffffff80")
-                    .r(this.r)
-                    .p(this.p.clone())
-                    .radian(-T / 4)
-                    .speed(48)
-                    .nway(5, T / 48)
-                    .fire()
-            } else {
-                remodel()
-                    .type(Bullet.Type.Friend)
-                    .appearance(Bullet.Appearance.Player)
-                    .color("#ffffff80")
-                    .r(this.r)
-                    .p(this.p.clone())
-                    .radian(-T / 4)
-                    .speed(48)
-                    .shift(5, this.GRAZE_R / 2)
-                    .fire()
-            }
-        }
+        if (this.frame % 3 !== 0) return
+        this.isSneaking() ? this.fireSneakShot() : this.fireNormalShot()
+    }
+
+    private fireNormalShot() {
+        remodel()
+            .type(Bullet.Type.Friend)
+            .appearance(Bullet.Appearance.Player)
+            .color("#ffffff80")
+            .r(this.r)
+            .p(this.p.clone())
+            .radian(-T / 4)
+            .speed(48)
+            .nway(5, T / 48)
+            .fire()
+    }
+
+    private fireSneakShot() {
+        remodel()
+            .type(Bullet.Type.Friend)
+            .appearance(Bullet.Appearance.Player)
+            .color("#ffffff80")
+            .r(this.r)
+            .p(this.p.clone())
+            .radian(-T / 4)
+            .speed(48)
+            .shift(5, this.GRAZE_R / 2)
+            .fire()
     }
 
     private isSneaking() {
