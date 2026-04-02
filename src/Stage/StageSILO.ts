@@ -15,8 +15,11 @@ export default class extends Stage {
         yield* this.text("『アルゴリズムによる、同質コミュニティへの自動振り分け機構。』")
         yield* this.text("『謳い文句は「もう二度と、憎しみが戦争になる前に」。』")
 
-        yield* this.text("「……それが大戦の原因だったと分からないのか。」", { name: "シオン" })
+        yield* this.text("「……それが、過度な同質性が大戦の原因だったと分からないのか。」", { name: "シオン" })
         yield* this.text("少女は新聞を固く握りしめた。")
         yield* this.text("「……機械大戦、か。」", { name: "マス" })
+
+        // SILOの良くない面を強調
+        // 過度な同質性がエコーチェンバを生み、憎悪を増幅させる
     }
 }
