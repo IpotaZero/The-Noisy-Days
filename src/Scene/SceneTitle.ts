@@ -136,7 +136,7 @@ export default class implements Scene {
                 }
             })
 
-        // this.lock(this.selector.getAll("stage-button")[9] as HTMLButtonElement)
+        this.lock(this.selector.getAll("stage-button")[10] as HTMLButtonElement)
     }
 
     private lock(button: HTMLButtonElement) {
