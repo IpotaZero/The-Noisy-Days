@@ -153,10 +153,15 @@ export default class implements Scene {
         const gold = "#edca5f"
 
         this.selector.getAll("stage-button").forEach((button, index) => {
-            const rank = stages[index]
-            if (rank === 0) return
-
             const rankEl = button.querySelector(".rank") as HTMLElement
+
+            const rank = stages[index]
+
+            if (rank === 0) {
+                rankEl.textContent = ""
+                return
+            }
+
             rankEl.textContent = "★"
             rankEl.style.color = rank === 2 ? gold : "silver"
         })
