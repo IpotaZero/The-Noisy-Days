@@ -6,10 +6,11 @@ import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
 import { isSmartPhone } from "../utils/Functions/isSmartPhone"
 import { SE } from "../SE"
-import { flash } from "../utils/shake"
+import { flash, shake } from "../utils/shake"
 import { Dom } from "../Dom"
 
 import * as Curves from "../utils/Functions/Curves"
+import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -31,7 +32,9 @@ export default class extends Stage {
 
         // ここでドローンが飛び出す
         const e = new EnemyTutorial()
+        const c = new Child(e)
         g.enemies.push(e)
+        g.enemies.push(c)
 
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
@@ -49,11 +52,12 @@ export default class extends Stage {
         yield* this.text("盾は8枚ある")
 
         e.start()
+        c.start()
 
         yield* this.waitDefeatEnemy()
         scorenize()
         flash(Dom.container)
-        SE.crush.play()
+        shake(Dom.container)
     }
 }
 
@@ -93,5 +97,17 @@ class EnemyTutorial extends Enemy {
     *H() {
         this.p = this.curve((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
         yield
+    }
+}
+
+class Child extends Enemy {
+    constructor(parent: Enemy) {
+        super(300, 48, new EnemyRendererMob())
+        this.setParent(parent, () => vec.arg(this.frame / 60).scaled(150))
+        this.isInvincible = true
+    }
+
+    start() {
+        this.isInvincible = false
     }
 }

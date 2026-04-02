@@ -10,6 +10,7 @@ import { SE } from "../../SE"
 export class Player {
     life = 8
     p = vec(0, 0)
+    v = vec(0, 0)
 
     private deadFrame = 0
     private dashFrame = 0
@@ -73,31 +74,31 @@ export class Player {
 
     private move() {
         const { pressed, pushed } = this.input
-        const v = vec(0, 0)
+        this.v = vec(0, 0)
 
         const movingRight = pressed.has(Operation.Right)
         const movingLeft = pressed.has(Operation.Left)
 
-        if (movingRight) v.x += 1
-        if (movingLeft) v.x -= 1
-        if (pressed.has(Operation.Down)) v.y += 1
-        if (pressed.has(Operation.Up)) v.y -= 1
+        if (movingRight) this.v.x += 1
+        if (movingLeft) this.v.x -= 1
+        if (pressed.has(Operation.Down)) this.v.y += 1
+        if (pressed.has(Operation.Up)) this.v.y -= 1
 
-        v.normalize()
+        this.v.normalize()
 
         if (pressed.has(Operation.Slow)) {
-            v.scale(0.5)
+            this.v.scale(0.5)
         } else if (pushed.has(Operation.Dash) && this.dashCoolDown === 0) {
             SE.dash.play()
             this.dashFrame = this.DASH_FRAME
             this.dashCoolDown = this.DASH_COOL_DOWN
         }
 
-        if (this.dashFrame > 0) v.scale(5)
+        if (this.dashFrame > 0) this.v.scale(5)
 
-        v.scale(this.BASE_SPEED)
+        this.v.scale(this.BASE_SPEED)
 
-        this.p.add(v)
+        this.p.add(this.v)
 
         const delta = this.touchTracker.getDelta()
         if (delta) {
@@ -113,8 +114,8 @@ export class Player {
         }
 
         this.renderer.tick(
-            movingRight,
-            movingLeft,
+            this.v.x > 0,
+            this.v.x < 0,
             this.isSneaking(),
             this.dashFrame > 0, // Dash 中かどうか
             this.p.x,

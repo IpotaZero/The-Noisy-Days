@@ -24,7 +24,6 @@ export default class extends Stage {
         yield* this.waitDefeatEnemy()
         scorenize()
         flash(Dom.container)
-        SE.crush.play()
     }
 }
 

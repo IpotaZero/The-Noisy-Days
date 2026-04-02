@@ -166,6 +166,7 @@ export default class SceneStage implements Scene {
 
             if (e.life <= 0) {
                 explosion(e.p.clone())
+                SE.crush.play()
             }
         })
 

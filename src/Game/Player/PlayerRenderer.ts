@@ -13,6 +13,34 @@ interface AfterImage {
 const AFTER_IMAGE_MAX = 12
 const AFTER_IMAGE_DECAY = 0.08
 
+const [upperWing, lowerWing] = await createWings()
+
+async function createWings() {
+    const upper = new Image()
+    upper.src = "asset/image/upper-wing.svg"
+    const lower = new Image()
+    lower.src = "asset/image/lower-wing.svg"
+    await Promise.all([upper.decode(), lower.decode()])
+
+    const upperWing = document.createElement("canvas")
+    upperWing.width = 512
+    upperWing.height = 64
+    const upperWingCtx = upperWing.getContext("2d")!
+    upperWingCtx.drawImage(upper, 256, 0)
+    upperWingCtx.scale(-1, 1)
+    upperWingCtx.drawImage(upper, -256, 0)
+
+    const lowerWing = document.createElement("canvas")
+    lowerWing.width = 512
+    lowerWing.height = 128
+    const lowerWingCtx = lowerWing.getContext("2d")!
+    lowerWingCtx.drawImage(lower, 256, 0)
+    lowerWingCtx.scale(-1, 1)
+    lowerWingCtx.drawImage(lower, -256, 0)
+
+    return [upperWing, lowerWing] as const
+}
+
 export class PlayerRenderer {
     private drawRadianVelocity = 0
     private drawRadian = 0
@@ -44,21 +72,25 @@ export class PlayerRenderer {
         // ── スニーク遷移 ────────────────────────────────────────────
         const sneakTarget = isSneaking ? 1 : 0
         this.sneakProgress += (sneakTarget - this.sneakProgress) * 0.25
-        if (Math.abs(this.sneakProgress - sneakTarget) < 0.001) this.sneakProgress = sneakTarget
+        if (Math.abs(this.sneakProgress - sneakTarget) < 0.001)
+            this.sneakProgress = sneakTarget
 
         // ── Dash 遷移 ───────────────────────────────────────────────
         const dashTarget = isDashing ? 1 : 0
         this.dashProgress += (dashTarget - this.dashProgress) * 0.35
-        if (Math.abs(this.dashProgress - dashTarget) < 0.001) this.dashProgress = dashTarget
+        if (Math.abs(this.dashProgress - dashTarget) < 0.001)
+            this.dashProgress = dashTarget
 
         // ── 残像 ────────────────────────────────────────────────────
         if (isDashing) {
             this.afterImages.push({ x: px, y: py, alpha: 1.0 })
-            if (this.afterImages.length > AFTER_IMAGE_MAX) this.afterImages.shift()
+            if (this.afterImages.length > AFTER_IMAGE_MAX)
+                this.afterImages.shift()
         }
 
         for (const img of this.afterImages) img.alpha -= AFTER_IMAGE_DECAY
-        while (this.afterImages.length > 0 && this.afterImages[0].alpha <= 0) this.afterImages.shift()
+        while (this.afterImages.length > 0 && this.afterImages[0].alpha <= 0)
+            this.afterImages.shift()
     }
 
     draw(ctx: CanvasRenderingContext2D, player: Player): void {
@@ -80,6 +112,8 @@ export class PlayerRenderer {
         this.drawInvincibleProgress(ctx, player)
         this.drawLife(ctx, player)
 
+        this.drawWings(ctx, player)
+
         ctx.restore()
     }
 
@@ -89,7 +123,11 @@ export class PlayerRenderer {
      * Dash 中の見た目: 鋭い多角形を二重・三重に重ねて回転させる。
      * 尖った印象を出すために頂点数を 3〜4 にし、高速回転させる。
      */
-    private drawDashEffect(ctx: CanvasRenderingContext2D, player: Player, ratio: number): void {
+    private drawDashEffect(
+        ctx: CanvasRenderingContext2D,
+        player: Player,
+        ratio: number,
+    ): void {
         if (ratio < 0.001) return
 
         const { p, GRAZE_R } = player
@@ -119,7 +157,10 @@ export class PlayerRenderer {
         })
     }
 
-    private drawAfterImages(ctx: CanvasRenderingContext2D, player: Player): void {
+    private drawAfterImages(
+        ctx: CanvasRenderingContext2D,
+        player: Player,
+    ): void {
         const { r: R, GRAZE_R } = player
 
         for (let i = 0; i < this.afterImages.length; i++) {
@@ -143,36 +184,79 @@ export class PlayerRenderer {
         }
     }
 
-    private drawNormalEffect(ctx: CanvasRenderingContext2D, player: Player, ratio: number): void {
+    private drawNormalEffect(
+        ctx: CanvasRenderingContext2D,
+        player: Player,
+        ratio: number,
+    ): void {
         if (ratio < 0.001) return
-        Ctx.polygon(ctx, 8, 2, player.p.l, player.GRAZE_R * 2 * ratio, "#ffffff80", {
-            theta: this.drawRadian / 36,
-            lineWidth: 2,
-        })
+        Ctx.polygon(
+            ctx,
+            8,
+            2,
+            player.p.l,
+            player.GRAZE_R * 2 * ratio,
+            "#ffffff80",
+            {
+                theta: this.drawRadian / 36,
+                lineWidth: 2,
+            },
+        )
     }
 
-    private drawSneakEffect(ctx: CanvasRenderingContext2D, player: Player, ratio: number): void {
+    private drawSneakEffect(
+        ctx: CanvasRenderingContext2D,
+        player: Player,
+        ratio: number,
+    ): void {
         if (ratio < 0.001) return
-        Ctx.arc(ctx, player.p.l, player.GRAZE_R * 3 * ratio, "#ffffff80", { lineWidth: 2 })
-        Ctx.arc(ctx, player.p.l, player.GRAZE_R * 2.8 * ratio, "#ffffff80", { lineWidth: 2 })
-        Ctx.polygon(ctx, 13, 2, player.p.l, player.GRAZE_R * 2.7 * ratio, "#ffffff80", {
-            theta: this.drawRadian / 72,
+        Ctx.arc(ctx, player.p.l, player.GRAZE_R * 3 * ratio, "#ffffff80", {
             lineWidth: 2,
         })
-        Ctx.polygon(ctx, 11, 2, player.p.l, player.GRAZE_R * 2 * ratio, "#ffffff80", {
-            theta: this.drawRadian / 144,
+        Ctx.arc(ctx, player.p.l, player.GRAZE_R * 2.8 * ratio, "#ffffff80", {
             lineWidth: 2,
         })
+        Ctx.polygon(
+            ctx,
+            13,
+            2,
+            player.p.l,
+            player.GRAZE_R * 2.7 * ratio,
+            "#ffffff80",
+            {
+                theta: this.drawRadian / 72,
+                lineWidth: 2,
+            },
+        )
+        Ctx.polygon(
+            ctx,
+            11,
+            2,
+            player.p.l,
+            player.GRAZE_R * 2 * ratio,
+            "#ffffff80",
+            {
+                theta: this.drawRadian / 144,
+                lineWidth: 2,
+            },
+        )
     }
 
-    private drawCoreAndGrazeBoundary(ctx: CanvasRenderingContext2D, player: Player): void {
+    private drawCoreAndGrazeBoundary(
+        ctx: CanvasRenderingContext2D,
+        player: Player,
+    ): void {
         Ctx.arc(ctx, player.p.l, player.r, "red", { lineWidth: 0 })
         Ctx.arc(ctx, player.p.l, player.GRAZE_R, "#ffffff80", { lineWidth: 2 })
     }
 
-    private drawInvincibleProgress(ctx: CanvasRenderingContext2D, player: Player): void {
+    private drawInvincibleProgress(
+        ctx: CanvasRenderingContext2D,
+        player: Player,
+    ): void {
         if (player.dashCoolDown > 0) {
-            const progress = T - T * (player.dashCoolDown / player.DASH_COOL_DOWN)
+            const progress =
+                T - T * (player.dashCoolDown / player.DASH_COOL_DOWN)
             Ctx.arc(ctx, player.p.l, player.GRAZE_R / 2, "rgb(255, 255, 127)", {
                 lineWidth: 2,
                 start: 0,
@@ -185,10 +269,30 @@ export class PlayerRenderer {
         const { life, GRAZE_R, frame, p: playerPos } = player
 
         for (let i = 0; i < life; i++) {
-            const center = playerPos.plus(vec(GRAZE_R * 3, 0).rotated(T * (i / 8) + frame / 24)).l
+            const center = playerPos.plus(
+                vec(GRAZE_R * 3, 0).rotated(T * (i / 8) + frame / 24),
+            ).l
             Ctx.polygon(ctx, 4, 1, center, GRAZE_R, "#ffffff80", {
                 theta: frame / 24,
             })
         }
+    }
+
+    private drawWings(ctx: CanvasRenderingContext2D, player: Player): void {
+        const { p } = player
+
+        ctx.save()
+        ctx.globalAlpha = 0.6
+        ctx.translate(p.x, p.y)
+        ctx.rotate((player.v.x / 20) * T * 0.01)
+        ctx.translate(-256, -40)
+
+        if (player.frame % 2 < 1) {
+            ctx.drawImage(upperWing, Math.random() - 0.5, Math.random() - 0.5)
+        } else {
+            ctx.drawImage(lowerWing, Math.random() - 0.5, Math.random() - 0.5)
+        }
+
+        ctx.restore()
     }
 }

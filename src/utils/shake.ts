@@ -13,7 +13,7 @@ export function shake(
         if (i === FRAMES) return { transform: "translate(0px, 0px)" }
 
         const dx = (Math.random() * 2 - 1) * amplitude
-        const dy = (Math.random() * 2 - 1) * amplitude
+        const dy = (Math.random() * 2 - 1) * amplitude * 0.5
         return { transform: `translate(${dx}px, ${dy}px)` }
     })
 
