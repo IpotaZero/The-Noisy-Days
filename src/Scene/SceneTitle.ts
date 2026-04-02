@@ -159,7 +159,7 @@ type Chapter = {
 function createChapterButton(chapter: Chapter) {
     return `
         <button class="button" data-link="chapter-${chapter["chapter-name"]}">
-            <img class="icon" src="asset/image/icon.ico" />
+            <img class="icon" src="asset/image/background.png" />
             <section>
                 <h2>${chapter["chapter-name"]}</h2>
                 <p class="description">${chapter["description"]}</p>
@@ -177,7 +177,7 @@ type Act = {
 function createActButton(act: Act): string {
     return `
         <button class="button" data-link="act-${act["act-name"]}">
-            <img class="icon" src="asset/image/icon.ico" />
+            <img class="icon" src="asset/image/background.png" />
             <section>
                 <h3>${act["act-name"]}</h3>
                 <p class="description">${act["description"]}</p>
@@ -211,7 +211,7 @@ type Stage = {
 function createStageButton(stage: Stage): string {
     return `
         <button class="button" data-stage="${stage["stage-name"]}">
-            <img class="icon" src="asset/image/icon.ico" />
+            <img class="icon" src="asset/image/background.png" />
             <section>
                 <h4>${stage["stage-name"]}</h4>
                 <p class="description">${stage["description"]}</p>

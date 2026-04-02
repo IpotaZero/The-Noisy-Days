@@ -58,7 +58,7 @@ button {
         aspect-ratio: 1;
         height: 20cqw;
 
-        background-color: var(--white);
+        /* background-color: var(--white); */
     }
 
     section {

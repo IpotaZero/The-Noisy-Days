@@ -10,10 +10,10 @@ const WarmStages = [
 ]
 
 const CoolStages = [
-    { "stage-name": "シオン", "description": "背景、及びシオン・シマについて" },
+    { "stage-name": "シオン", "description": "シオン・シマについて" },
     { "stage-name": "Cyan", "description": "扇状に弾を撃つ衛星を持つ" },
-    { "stage-name": "Blue", "description": "" },
-    { "stage-name": "Navy", "description": "" },
+    { "stage-name": "Blue", "description": "針を飛ばす衛星を持つ" },
+    { "stage-name": "Navy", "description": "波状隘路攻撃" },
 ]
 
 const NeutralStages = [
