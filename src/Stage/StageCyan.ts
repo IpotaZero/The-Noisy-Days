@@ -5,7 +5,7 @@ import { vec } from "../utils/Vec"
 import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
 import { SE } from "../SE"
-import { flash } from "../utils/shake"
+import { flash, shake } from "../utils/shake"
 import { Dom } from "../Dom"
 
 import * as Curves from "../utils/Functions/Curves"
@@ -24,6 +24,7 @@ export default class extends Stage {
         yield* this.waitDefeatEnemy()
         scorenize()
         flash(Dom.container)
+        shake(Dom.container)
     }
 }
 

@@ -3,7 +3,10 @@ const WarmStages = [
     { "stage-name": "Tutorial", "description": "チュートリアル" },
     { "stage-name": "Yellow", "description": "拡大する弾を撃つ衛星を持つ" },
     { "stage-name": "Orange", "description": "速射する衛星を持つ" },
-    { "stage-name": "Crimson", "description": "弾速の速い弾を撃つ衛星を持つ" },
+    {
+        "stage-name": "Crimson",
+        "description": "弾速の大きい弾を撃つ衛星を持つ",
+    },
 ]
 
 const CoolStages = [
