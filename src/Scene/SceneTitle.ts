@@ -23,6 +23,7 @@ export default class implements Scene {
             "#swipe-ratio": { alias: "swipe-ratio" },
             "#volume-bgm": { alias: "volume-bgm" },
             "#volume-se": { alias: "volume-se" },
+            "#delete-data": { alias: "delete-data" },
         })
     }
 
@@ -48,6 +49,16 @@ export default class implements Scene {
             if (!stageName) throw new Error("Stage name is missing")
 
             this.gotoStage(index, stageName)
+        })
+
+        this.selector.onClick("delete-data", () => {
+            if (confirm("データを初期化する?")) {
+                LocalStorage.clear()
+                alert("データを初期化した")
+                this.setupSetting()
+                this.lockButtons()
+                this.evaluateStageCleared()
+            }
         })
 
         this.setupSetting()
