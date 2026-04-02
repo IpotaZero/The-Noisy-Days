@@ -24,7 +24,7 @@ const NeutralStages = [
 ]
 
 const AchromaticStages = [
-    { "stage-name": "一か月前その1", "description": "レイ・コウダ" },
+    { "stage-name": "機械大戦", "description": "歴史" },
     { "stage-name": "White", "description": "" },
     { "stage-name": "Gray", "description": "全方位弾と自機狙いの衛星を持つ" },
     {
@@ -46,7 +46,7 @@ const HueActs = [
     },
     {
         "act-name": "Neutral",
-        "description": "",
+        "description": "移動を妨げるコアと二つの衛星を持つドローン",
         "stages": NeutralStages,
     },
     {
@@ -169,7 +169,11 @@ const AlphaActs = [
 ]
 
 const chapters = [
-    { "chapter-name": "Hue", "description": "", "acts": HueActs },
+    {
+        "chapter-name": "Hue",
+        "description": "小さめの飛行兵器",
+        "acts": HueActs,
+    },
     { "chapter-name": "Saturation", "description": "", "acts": SaturationActs },
     { "chapter-name": "Brightness", "description": "", "acts": BrightnessActs },
     { "chapter-name": "Alpha", "description": "", "acts": AlphaActs },
