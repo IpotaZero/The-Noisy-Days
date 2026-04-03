@@ -149,7 +149,7 @@ export default class implements Scene {
         button: HTMLButtonElement,
         reason: "normal" | "unimplemented" = "normal",
     ) {
-        const text = reason === "normal" ? "--:: 封 ::--" : "×-× 未 ×-×"
+        const text = reason === "normal" ? "--:: 封 ::--" : "×=× 未 ×=×"
 
         button.insertAdjacentHTML(
             "beforeend",
