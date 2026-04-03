@@ -23,13 +23,10 @@ export class SceneChanger {
         {
             showLoading = this.showLoading,
             hideLoading = this.hideLoading,
-
             fadeOut = Transition.fadeOut,
             fadeIn = Transition.fadeIn,
-
             msIn = 200,
             msOut = 200,
-
             afterLoad = () => {},
         }: {
             showLoading?: () => void
@@ -38,7 +35,6 @@ export class SceneChanger {
             fadeIn?: FadeFunction
             msIn?: number
             msOut?: number
-
             afterLoad?: () => void
         } = {},
     ) {
@@ -48,17 +44,20 @@ export class SceneChanger {
 
         await Promise.all([this.currentScene.end(), fadeOut(container, msIn)])
 
-        this.currentScene = await newScene()
+        // newScene()をawaitせずに先に起動しておく
+        const loadAll = (async () => {
+            this.currentScene = await newScene()
+            await this.currentScene.start()
+        })()
 
-        const { over } = await Awaits.loading(1000, this.currentScene.start(), () => {
-            showLoading() // ローディング画面表示
+        // newScene()を含めた全体を計測対象にする
+        const { over } = await Awaits.loading(250, loadAll, () => {
+            showLoading()
         })
 
-        if (over) {
-            hideLoading()
-        }
+        if (over) hideLoading()
 
-        afterLoad() // 読み込み後処理
+        afterLoad()
 
         this.onTransitionEnd()
         await fadeIn(container, msOut)
@@ -66,7 +65,7 @@ export class SceneChanger {
 
     private static showLoading() {
         const p = document.createElement("p")
-        p.textContent = "Loading"
+        p.textContent = "Loading..."
         p.classList.add("loading")
         document.body.appendChild(p)
     }
