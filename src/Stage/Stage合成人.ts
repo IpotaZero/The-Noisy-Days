@@ -4,9 +4,8 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        yield* this.text("新聞記者 兼 戦場撮影家 マスの手記より")
         yield* this.text("俺が初めてシオン・シマに会ったのは、TAMAMUSHIによる先制攻撃の数日後だった。")
-        yield* this.text("新聞社の代表として彼女に取材することが許可された。")
+        yield* this.text("新聞社の代表として彼女に取材することが許可されたのだ。")
         yield* this.text("みすぼらしいテントに入って見た第一印象は、小さい、だった。")
         yield* this.text("140cm程だろうか、飛行装備に最適な身長もそれくらいだったと思い出す。")
         yield* this.text("対面して腰掛けると顔を上げてこちらを向く。")

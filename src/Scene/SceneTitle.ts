@@ -290,6 +290,7 @@ function createChapterButton(chapter: Chapter) {
                 </div>
                 <p class="description">${chapter["description"]}</p>
             </section>
+            <span class="button-arrow">＼<br>／</span>
         </button>
     `
 }
@@ -311,6 +312,7 @@ function createActButton(act: Act): string {
                 </div>
                 <p class="description">${act["description"]}</p>
             </section>
+            <span class="button-arrow">＼<br>／</span>
         </button>
     `
 }

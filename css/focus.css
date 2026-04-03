@@ -1,6 +1,11 @@
 .nav-focus,
-button:hover,
+button:hover {
+    box-shadow: 0 0 0.5em var(--wisteria);
+    border: 1px solid var(--wisteria);
+}
+
 button:active {
     box-shadow: 0 0 0.5em var(--wisteria);
     border: 1px solid var(--wisteria);
+    background-color: var(--wisteria);
 }

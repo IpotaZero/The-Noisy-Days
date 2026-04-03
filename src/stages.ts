@@ -1,3 +1,8 @@
+// Chapter 0: 世界観
+// Chapter 1: 人物
+// Chapter 2: 過去
+// Chapter 3: 思想
+
 // Chapter 0: Hue
 const WarmStages = [
     { "stage-name": "Tutorial", "description": "チュートリアル" },
@@ -58,28 +63,28 @@ const HueActs = [
 
 // Chapter 1: Saturation
 const VividStages = [
-    { "stage-name": "合成人", "description": "" },
+    { "stage-name": "アオ", "description": "" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },
 ]
 
 const MutedStages = [
-    { "stage-name": "アオ", "description": "" },
+    { "stage-name": "ヤナガワ", "description": "" },
     { "stage-name": "Rust", "description": "" },
     { "stage-name": "Khaki", "description": "" },
     { "stage-name": "Olive", "description": "" },
 ]
 
 const PaleStages = [
-    { "stage-name": "犠牲", "description": "シュンスケ・ヤナガワの演説" },
+    { "stage-name": "レイ", "description": "" },
     { "stage-name": "Blush", "description": "" },
     { "stage-name": "Sage", "description": "" },
     { "stage-name": "Lavender", "description": "" },
 ]
 
 const DullStages = [
-    { "stage-name": "一か月前その2", "description": "レイ・コウダ" },
+    { "stage-name": "合成人", "description": "" },
     { "stage-name": "Mud", "description": "" },
     { "stage-name": "Moss", "description": "" },
     { "stage-name": "Soot", "description": "" },
@@ -94,21 +99,21 @@ const SaturationActs = [
 
 // Chapter 2: Brightness
 const LightStages = [
-    { "stage-name": "隣", "description": "" },
+    { "stage-name": "犠牲", "description": "" },
     { "stage-name": "Pearl", "description": "" },
     { "stage-name": "Ivory", "description": "" },
     { "stage-name": "Snow", "description": "" },
 ]
 
 const DarkStages = [
-    { "stage-name": "ヤナガワ", "description": "シュンスケ・ヤナガワについて" },
+    { "stage-name": "", "description": "" },
     { "stage-name": "Obsidian", "description": "" },
     { "stage-name": "Noir", "description": "" },
     { "stage-name": "Pitch", "description": "" },
 ]
 
 const HighStages = [
-    { "stage-name": "機械大戦", "description": "" },
+    { "stage-name": "", "description": "" },
     { "stage-name": "Amber", "description": "" },
     { "stage-name": "Vermilion", "description": "" },
     { "stage-name": "Lime", "description": "" },
@@ -130,7 +135,7 @@ const BrightnessActs = [
 
 // Chapter 3: Alpha
 const ClearStages = [
-    { "stage-name": "レイ", "description": "" },
+    { "stage-name": "隣", "description": "" },
     { "stage-name": "Glass", "description": "" },
     { "stage-name": "Ice", "description": "" },
     { "stage-name": "Haze", "description": "" },

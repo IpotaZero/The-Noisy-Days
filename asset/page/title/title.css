@@ -109,7 +109,7 @@ button {
     .title {
         display: flex;
         justify-content: space-between;
-        border-bottom: 1px solid var(--white-vale);
+        border-bottom: 0.25cqw solid var(--white-vale);
 
         .rank {
             font-size: 5cqw;
@@ -118,6 +118,16 @@ button {
                 -webkit-text-fill-color: transparent;
             }
         }
+    }
+
+    .button-arrow {
+        margin-left: 0.5em;
+        padding-left: 0.75em;
+        padding-right: 0.25em;
+        display: flex;
+        align-items: center;
+        font-size: 4cqw;
+        border-left: 0.25cqw solid var(--white-vale);
     }
 }
 
