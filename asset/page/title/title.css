@@ -23,10 +23,6 @@ button {
     font-size: 8cqw;
 }
 
-#credit {
-    font-size: 3.5cqw;
-}
-
 .page-description {
     display: flex;
     flex-direction: column;
@@ -133,8 +129,8 @@ button {
 }
 
 #credit {
-    justify-content: start;
-    gap: 3em;
+    font-size: 3.5cqw;
+    justify-content: space-between;
 
     h2 {
         font-size: 8cqw;
@@ -152,18 +148,13 @@ button {
         width: 100%;
     }
 
-    p,
-    a {
+    p {
         padding: 0.5em;
         font-size: 3.6cqw;
         text-align: left;
     }
 
     text-align: center;
-
-    .options {
-        margin-top: auto;
-    }
 
     .font {
         display: flex;
