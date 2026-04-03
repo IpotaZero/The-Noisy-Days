@@ -1,2 +1,2 @@
-function e(){return!!navigator.userAgent.match(/iPhone|Android.+Mobile/)}export{e as t};
+function e(){let e=navigator.userAgent,t=!!e.match(/iPhone|iPad/)||e.includes(`Macintosh`)&&navigator.maxTouchPoints>1,n=!!e.match(/Android/);return t||n}export{e as t};
 //# sourceMappingURL=isSmartPhone.js.map

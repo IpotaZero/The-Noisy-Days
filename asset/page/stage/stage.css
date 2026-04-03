@@ -92,6 +92,8 @@
 
     border-top: 1cqw var(--white-vale) double;
     border-bottom: 1cqw var(--white-vale) double;
+
+    background-color: var(--black-vale);
 }
 
 .clear-label {
@@ -113,10 +115,11 @@
 }
 
 .options {
-    transform: translateY(8em);
+    transform: translateY(7em);
 
     button {
         font-size: 8cqw;
+        background-color: var(--black-vale);
     }
 }
 

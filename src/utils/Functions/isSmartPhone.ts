@@ -1,3 +1,8 @@
 export function isSmartPhone() {
-    return !!navigator.userAgent.match(/iPhone|Android.+Mobile/)
+    const ua = navigator.userAgent
+    const isIOS =
+        !!ua.match(/iPhone|iPad/) ||
+        (ua.includes("Macintosh") && navigator.maxTouchPoints > 1)
+    const isAndroid = !!ua.match(/Android/)
+    return isIOS || isAndroid
 }
