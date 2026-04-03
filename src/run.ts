@@ -47,7 +47,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     loading.classList.add("loading")
     document.body.appendChild(loading)
 
-    const result = await Awaits.timeout(1000, document.fonts.ready)
+    const resources = Promise.all([SE.init(), document.fonts.ready])
+
+    const result = await Awaits.timeout(1000, resources)
     if (result === "timeout") {
         console.warn("フォントの読み込みに時間がかかりすぎ。スキップします。")
     }
