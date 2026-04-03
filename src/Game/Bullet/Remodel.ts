@@ -81,6 +81,19 @@ class Remodel {
         })
     }
 
+    bounce(count: number) {
+        return this.g(function* (b) {
+            while (count > 0) {
+                yield
+
+                if (b.p.x < -g.width / 2 || b.p.x > g.width / 2) {
+                    b.radian = Math.PI - b.radian
+                    count--
+                }
+            }
+        })
+    }
+
     g(g: (me: Bullet) => Generator) {
         this.bullets.forEach((b) => {
             b.G(g)

@@ -59,16 +59,24 @@ class E extends Enemy {
 }
 
 class Child extends Enemy {
-    constructor(parent: Enemy, index: number) {
+    constructor(
+        parent: Enemy,
+        private readonly index: number,
+    ) {
         super(300, 48, new EnemyRendererMob())
         this.setParent(parent, () => vec(150 * (2 * index - 1), 0))
     }
 
     *G() {
+        const x = this.index === 0 ? -g.width - g.player.p.x : g.width - g.player.p.x
+
         remodel()
+            .appearance(Bullet.Appearance.Ball)
+            .r(24)
             .colorful(this.frame * 2)
             .p(this.p.clone())
-            .aim(g.player.p)
+            .aim(vec(x, g.player.p.y))
+            .bounce(1)
             .fire()
 
         yield* Array(30)

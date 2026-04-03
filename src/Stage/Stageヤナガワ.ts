@@ -23,5 +23,7 @@ export default class extends Stage {
         yield* this.text("「……ああ、例の少年兵か。」", { name: "ヤナガワ" })
         yield* this.text("「TAMAMUSHIは何を考えているのやら。」", { name: "マス" })
         yield* this.text("「分かり合えない事も在るだろうさ。」", { name: "ヤナガワ" })
+
+        // todo アナキストの話
     }
 }

@@ -23,9 +23,9 @@ const CoolStages = [
 
 const NeutralStages = [
     { "stage-name": "SILO", "description": "逆説的措置" },
-    { "stage-name": "Green", "description": "" },
-    { "stage-name": "Purple", "description": "" },
-    { "stage-name": "Violet", "description": "" },
+    { "stage-name": "Green", "description": "単純な自機狙い" },
+    { "stage-name": "Purple", "description": "画面端で跳ね返る自機狙い" },
+    { "stage-name": "Violet", "description": "弾幕" },
 ]
 
 const AchromaticStages = [
