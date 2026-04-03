@@ -40,6 +40,9 @@ export default class extends Stage {
         yield* this.text("ササキは一瞬目を逸らしたが、すぐにまた俺の目を見た。")
         yield* this.text("「彼女は……希望です。僕たちの。そしてSILOに反対する理由でもある。」", { name: "ササキ" })
         yield* this.text("「どういうことです?」", { name: "マス" })
+        yield* this.text("「合成人の未来、ですよ。」", { name: "ササキ" })
+        yield* this.text("（じゃあなんで前線に送り出すんだよ。）", { name: "マス" })
+        yield* this.text("俺は益々分からなくなった。")
 
         // 誰もが善意で動いている
         // yield* this.text("「なるほど、しかし、ササキさん、若いですね。大変でしょう。」", { name: "マス" })
