@@ -152,6 +152,7 @@ export default class implements Scene {
 
         const gold = "var(--gold)"
         const silver = "var(--silver)"
+        const bronze = "var(--bronze)"
 
         this.selector.getAll("stage-button").forEach((button, index) => {
             const rankEl = button.querySelector(".rank") as HTMLElement
@@ -192,9 +193,20 @@ export default class implements Scene {
                 stageIndex + 16,
             )
 
+            const progress = Math.floor((MathEx.sum(chapterStages) / 32) * 100)
+
+            // const medal = (() => {
+            //     if (progress === 100)
+            //         return `<span style="background-color: ${gold}">●</span>`
+            //     if (progress > 66)
+            //         return `<span style="background-color: ${silver}">●</span>`
+            //     if (progress > 33)
+            //         return `<span style="background-color: ${bronze}">●</span>`
+            //     return ""
+            // })()
+
             const rankEl = button.querySelector(".rank") as HTMLElement
-            const progress = MathEx.sum(chapterStages)
-            rankEl.textContent = `${Math.floor((progress / 32) * 100)}%`
+            rankEl.innerHTML = `${progress}%`
         })
     }
 
