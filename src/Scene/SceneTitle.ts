@@ -103,6 +103,11 @@ export default class implements Scene {
         const firstUnclearedAct = Math.floor(firstUnclearedStage / 4)
         const firstUnclearedChapter = Math.floor(firstUnclearedAct / 4)
 
+        this.lock(
+            this.selector.getAll("stage-button")[13] as HTMLButtonElement,
+            "unimplemented",
+        )
+
         this.selector
             .getAll("stage-button")
             .filter(
@@ -138,14 +143,17 @@ export default class implements Scene {
                     this.lock(button)
                 }
             })
-
-        // this.lock(this.selector.getAll("stage-button")[10] as HTMLButtonElement)
     }
 
-    private lock(button: HTMLButtonElement) {
+    private lock(
+        button: HTMLButtonElement,
+        reason: "normal" | "unimplemented" = "normal",
+    ) {
+        const text = reason === "normal" ? "--:: 封 ::--" : "--:: 未 ::--"
+
         button.insertAdjacentHTML(
             "beforeend",
-            `<div class="lock">--:: 封 ::--</div>`,
+            `<div class="lock">${text}</div>`,
         )
         button.disabled = true
     }
