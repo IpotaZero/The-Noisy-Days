@@ -150,7 +150,8 @@ export default class implements Scene {
     private evaluateStageCleared() {
         const stages = LocalStorage.getStages()
 
-        const gold = "#edca5f"
+        const gold = "var(--gold)"
+        const silver = "var(--silver)"
 
         this.selector.getAll("stage-button").forEach((button, index) => {
             const rankEl = button.querySelector(".rank") as HTMLElement
@@ -163,7 +164,9 @@ export default class implements Scene {
             }
 
             rankEl.textContent = "★"
-            rankEl.style.color = rank === 2 ? gold : "silver"
+            rankEl.style.background = rank === 2 ? gold : silver
+            rankEl.style.backgroundClip = "text"
+            rankEl.style.webkitTextFillColor = "transparent"
         })
 
         this.selector.getAll("act-button").forEach((button, index) => {
@@ -175,7 +178,7 @@ export default class implements Scene {
             rankEl.innerHTML = actStages
                 .map((rank) => {
                     if (rank === 0) return "<span>☆</span>"
-                    return `<span style="color: ${rank === 2 ? gold : "silver"}">★</span>`
+                    return `<span style="background: ${rank === 2 ? gold : silver}; background-clip: text;">★</span>`
                 })
                 .join("")
         })
