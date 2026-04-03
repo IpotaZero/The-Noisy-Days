@@ -64,11 +64,21 @@ export class Awaits {
         )
     }
 
-    static async timeout<T>(ms: number, promise: Promise<T>): Promise<T | "timeout"> {
-        return Promise.race([promise, Awaits.sleep(ms).then(() => "timeout" as const)])
+    static async timeout<T>(
+        ms: number,
+        promise: Promise<T>,
+    ): Promise<T | "timeout"> {
+        return Promise.race([
+            promise,
+            Awaits.sleep(ms).then(() => "timeout" as const),
+        ])
     }
 
-    static async loading<T>(ms: number, promise: Promise<T>, whenOver: () => void) {
+    static async loading<T>(
+        ms: number,
+        promise: Promise<T>,
+        whenOver: () => void,
+    ) {
         let done = false
         let over = false
 
@@ -88,15 +98,20 @@ export class Awaits {
     static async waitElementReady(container: Element): Promise<void> {
         type ElementWithReady = Element & { ready: Promise<unknown> }
 
-        const hasReadyPromise = Array.from(container.querySelectorAll("*")).filter(
-            (e: any): e is ElementWithReady => e.ready instanceof Promise,
-        )
+        const hasReadyPromise = Array.from(
+            container.querySelectorAll("*"),
+        ).filter((e: any): e is ElementWithReady => e.ready instanceof Promise)
 
         await Promise.all(hasReadyPromise.map((e) => e.ready))
     }
 
     static async waitCSSLoad(container: Element): Promise<void> {
-        const links = Array.from(container.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+        const links = Array.from(
+            container.querySelectorAll<HTMLLinkElement>(
+                'link[rel="stylesheet"]',
+            ),
+        )
+
         await Promise.all(
             links.map((link) => {
                 if (link.sheet) return Promise.resolve() // すでに読み込み済み

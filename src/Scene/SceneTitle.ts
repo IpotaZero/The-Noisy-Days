@@ -28,6 +28,7 @@ export default class implements Scene {
     }
 
     async start(): Promise<void> {
+        Dom.container.style.opacity = "0"
         Dom.container.innerHTML = ""
 
         const html = createPage()
@@ -41,6 +42,8 @@ export default class implements Scene {
                 override: false,
             },
         )
+
+        Dom.container.style.opacity = "1"
 
         this.selector.load(Dom.container)
 

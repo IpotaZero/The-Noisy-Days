@@ -84,7 +84,7 @@ export class PageDom {
             //
         ])
 
-        const result = await Awaits.timeout(5000, load)
+        const result = await Awaits.timeout(1000, load)
         if (result === "timeout") {
             console.warn("pageの読み込みに時間掛かり過ぎ! スキップしました。")
         }

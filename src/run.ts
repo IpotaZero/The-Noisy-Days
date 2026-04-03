@@ -7,6 +7,7 @@ import { Pages } from "./utils/Pages/Pages"
 import { SceneChanger } from "./utils/SceneChanger"
 import { SE } from "./SE"
 import { LocalStorage } from "./LocalStorage"
+import { Awaits } from "./utils/Functions/Awaits"
 HTMLNumberElement
 HTMLRadioElement
 
@@ -39,6 +40,18 @@ window.addEventListener("DOMContentLoaded", async () => {
         Focuses.resume("page-change")
     }
 
+    SE.setVolume(LocalStorage.getVolumeSE() / 9)
+
+    const loading = document.createElement("p")
+    loading.textContent = "Loading..."
+    loading.classList.add("loading")
+    document.body.appendChild(loading)
+
+    const result = await Awaits.timeout(1000, document.fonts.ready)
+    if (result === "timeout") {
+        console.warn("フォントの読み込みに時間がかかりすぎ。スキップします。")
+    }
+
     SceneChanger.init(
         Dom.container,
         await import("./Scene/SceneTitle").then(
@@ -46,7 +59,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         ),
     )
 
-    SE.setVolume(LocalStorage.getVolumeSE() / 9)
+    loading.remove()
 })
 
 window.addEventListener("keydown", (e) => {
