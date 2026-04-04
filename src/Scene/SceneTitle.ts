@@ -89,6 +89,7 @@ export default class implements Scene {
 
     private unlockAct() {
         if (this.config.clear === undefined) return
+        if (this.config.clear % 4 !== 3) return // Actは4ステージクリアごとにアンロックされるので、4で割った余りが3でない場合はアンロックされない
 
         const firstUncleared = LocalStorage.getFirstUncleared()
         if (this.config.clear >= firstUncleared) return
@@ -126,23 +127,17 @@ export default class implements Scene {
         this.unlockButtonAnimation(button)
     }
 
-    private unlockButtonAnimation(button: HTMLButtonElement) {
+    private async unlockButtonAnimation(button: HTMLButtonElement) {
         this.lock(button) // いったんロック（アニメーションのため）
 
         const lockLayer = button.querySelector(".lock")!
         // 1. アニメーションクラスを付与
         lockLayer.classList.add("unlocking")
 
-        // 2. アニメーション終了後に要素を削除し、ボタンを有効化
-        lockLayer.addEventListener(
-            "animationend",
-            () => {
-                lockLayer.remove()
-                button.disabled = false
-                // 効果音を鳴らす場合はここで SE.unlock.play() など
-            },
-            { once: true },
-        )
+        await Awaits.sleep(1000) // アニメーションの長さに合わせて待機（CSSのanimation-duration + animation-delayの合計）
+
+        lockLayer.remove()
+        button.disabled = false
 
         // 演出は一度きりなのでクリア情報をリセット（任意）
         // this.config.clear = undefined
