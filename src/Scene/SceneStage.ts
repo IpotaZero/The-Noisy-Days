@@ -120,7 +120,11 @@ export default class SceneStage implements Scene {
         SceneChanger.goto(
             () =>
                 import("./SceneTitle").then(
-                    (module) => new module.default({ history: this.history }),
+                    (module) =>
+                        new module.default({
+                            history: this.history,
+                            clear: this.stageIndex,
+                        }),
                 ),
             {
                 msIn: 500,

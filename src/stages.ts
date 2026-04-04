@@ -186,6 +186,12 @@ const chapters = [
 
 export default chapters
 
+export const chapterList = chapters.map((chapter) => chapter["chapter-name"])
+
+export const actList = chapters.flatMap((chapter) =>
+    chapter.acts.map((act) => act["act-name"]),
+)
+
 export const stageList = chapters.flatMap((chapter) =>
     chapter.acts.flatMap((act) =>
         act.stages.flatMap((stage) => stage["stage-name"]),

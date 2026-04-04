@@ -38,6 +38,12 @@ export class LocalStorage {
         }
     }
 
+    static setClearedStage(stageIndex: number, rank: 0 | 1 | 2) {
+        const data = this.get()
+        data.stages[stageIndex] = rank
+        this.set(data)
+    }
+
     static getSwipeRatio() {
         return this.get().swipeRatio
     }
@@ -79,3 +85,4 @@ type Data = {
     volumeBGM: number
     volumeSE: number
 }
+;(window as any).LocalStorage = LocalStorage

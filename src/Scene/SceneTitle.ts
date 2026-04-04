@@ -2,7 +2,7 @@ import { Scene } from "./Scene"
 import { Pages } from "../utils/Pages/Pages"
 import { Dom } from "../Dom"
 
-import stages, { stageList } from "../stages"
+import stages, { actList, chapterList, stageList } from "../stages"
 import { Selector } from "../utils/Selector"
 import { SceneChanger } from "../utils/SceneChanger"
 import { SE } from "../SE"
@@ -10,12 +10,18 @@ import { HTMLNumberElement } from "../utils/HTMLNumberElement"
 import { LocalStorage } from "../LocalStorage"
 import { g } from "../global"
 import { MathEx } from "../utils/Functions/MathEx"
+import { Awaits } from "../utils/Functions/Awaits"
 
 export default class implements Scene {
     private readonly pages = new Pages()
     private readonly selector
 
-    constructor(private readonly config: { history?: readonly string[] } = {}) {
+    constructor(
+        private readonly config: {
+            history?: readonly string[]
+            clear?: number
+        } = {},
+    ) {
         this.selector = new Selector({
             "[data-stage]": { alias: "stage-button", expectedCount: 64 },
             ".act-button": { alias: "act-button", expectedCount: 16 },
@@ -67,6 +73,79 @@ export default class implements Scene {
         this.setupSetting()
         this.lockButtons()
         this.evaluateStageCleared()
+        this.setupUnlockAnimation()
+        this.unlockStage()
+    }
+
+    private setupUnlockAnimation() {
+        this.pages.onEnter("act-.*", () => {
+            this.unlockStage()
+        })
+
+        this.pages.onEnter("chapter-.*", () => {
+            this.unlockAct()
+        })
+    }
+
+    private unlockAct() {
+        if (this.config.clear === undefined) return
+
+        const firstUncleared = LocalStorage.getFirstUncleared()
+        if (this.config.clear >= firstUncleared) return
+        const targetChapterPageId =
+            chapterList[Math.floor(this.config.clear / 16)] // クリアしたステージのChapterページIDを計算
+        const pageId = this.pages.getCurrentPageId()
+        if (pageId !== "chapter-" + targetChapterPageId) return
+
+        const targetActIndex = Math.floor(this.config.clear / 4) + 1
+        const buttons = this.selector.getAll("act-button")
+        const button = buttons[targetActIndex] as HTMLButtonElement
+        if (!button) return
+
+        this.unlockButtonAnimation(button)
+    }
+
+    private unlockStage() {
+        if (this.config.clear === undefined) return
+
+        const firstUncleared = LocalStorage.getFirstUncleared()
+        if (this.config.clear >= firstUncleared) return
+
+        const targetActPageId = actList[Math.floor(this.config.clear / 4)] // クリアしたステージのActページIDを計算
+        const pageId = this.pages.getCurrentPageId()
+
+        // 今開いたActページが、クリアしたステージが含まれるページかチェック
+        if (pageId !== "act-" + targetActPageId) return
+
+        // 次のステージのボタンを取得
+        const nextStageIndex = this.config.clear + 1
+        const buttons = this.selector.getAll("stage-button")
+        const button = buttons[nextStageIndex] as HTMLButtonElement
+        if (!button) return
+
+        this.unlockButtonAnimation(button)
+    }
+
+    private unlockButtonAnimation(button: HTMLButtonElement) {
+        this.lock(button) // いったんロック（アニメーションのため）
+
+        const lockLayer = button.querySelector(".lock")!
+        // 1. アニメーションクラスを付与
+        lockLayer.classList.add("unlocking")
+
+        // 2. アニメーション終了後に要素を削除し、ボタンを有効化
+        lockLayer.addEventListener(
+            "animationend",
+            () => {
+                lockLayer.remove()
+                button.disabled = false
+                // 効果音を鳴らす場合はここで SE.unlock.play() など
+            },
+            { once: true },
+        )
+
+        // 演出は一度きりなのでクリア情報をリセット（任意）
+        // this.config.clear = undefined
     }
 
     private setupSetting() {
