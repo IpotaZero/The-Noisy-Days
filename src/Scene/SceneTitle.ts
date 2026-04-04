@@ -96,7 +96,8 @@ export default class implements Scene {
         if (this.config.clear % 4 !== 3) return // Actは4ステージクリアごとにアンロックされるので、4で割った余りが3でない場合はアンロックされない
 
         const firstUncleared = LocalStorage.getFirstUncleared()
-        if (this.config.clear >= firstUncleared) return
+        if (this.config.clear + 1 < firstUncleared) return
+
         const targetChapterPageId =
             chapterList[Math.floor(this.config.clear / 16)] // クリアしたステージのChapterページIDを計算
         const pageId = this.pages.getCurrentPageId()
@@ -115,7 +116,7 @@ export default class implements Scene {
         if (this.config.clear === undefined) return
 
         const firstUncleared = LocalStorage.getFirstUncleared()
-        if (this.config.clear >= firstUncleared) return
+        if (this.config.clear + 1 < firstUncleared) return
 
         const nextStageIndex = this.config.clear + 1
 
