@@ -11,7 +11,7 @@ export default class extends Stage {
 
         yield* this.text("『機械大戦は終わった、だが人は己らの行いを反省しなければならない。』")
         // yield* this.text("『だが、ニッポンの属する東アジア自治体の取った方法は逆説的なものであった。』")
-        yield* this.text("『「Social Integration and Longevity Operation』<br>──通称 SILO』")
+        yield* this.text("『「Social Integration and Longevity Operation」<br>──通称 SILO』")
         yield* this.text("『アルゴリズムによる、同質コミュニティへの自動振り分け機構。』")
         yield* this.text("『謳い文句は「もう二度と、憎しみが戦争になる前に」。』")
 
