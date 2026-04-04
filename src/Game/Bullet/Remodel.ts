@@ -1,6 +1,7 @@
 import { g, T } from "../../global"
 import { Bullet } from "./Bullet"
 import { Vec, vec } from "../../utils/Vec"
+import { Ease } from "../../utils/Functions/Ease"
 
 export const remodel = () =>
     new Proxy(new Remodel([new Bullet()]), {
@@ -27,6 +28,17 @@ class Remodel {
         })
 
         g.bullets.push(...this.bullets)
+    }
+
+    appear(frame: number) {
+        return this.g(function* (me) {
+            const r = me.r
+
+            for (let i = 1; i < frame + 1; i++) {
+                me.r = r * Ease.Out(i / frame)
+                yield
+            }
+        })
     }
 
     colorful(seed: number) {

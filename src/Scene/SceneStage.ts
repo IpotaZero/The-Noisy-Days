@@ -170,8 +170,6 @@ export default class SceneStage implements Scene {
     private logic() {
         g.player.tick(this.ctx)
 
-        g.bullets.forEach((b) => b.tick())
-
         g.enemies.forEach((e) => {
             e.tick()
 
@@ -192,6 +190,8 @@ export default class SceneStage implements Scene {
                 SE.crush.play()
             }
         })
+
+        g.bullets.forEach((b) => b.tick())
 
         if (!g.player.isInvincible())
             g.bullets

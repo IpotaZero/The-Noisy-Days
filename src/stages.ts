@@ -56,7 +56,7 @@ const HueActs = [
     },
     {
         "act-name": "Achromatic",
-        "description": "",
+        "description": "激しく動くコアと二つの衛星を持つドローン",
         "stages": AchromaticStages,
     },
 ]

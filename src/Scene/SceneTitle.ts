@@ -65,10 +65,10 @@ export default class implements Scene {
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
         this.unlockStage()
-        this.lock(
-            this.selector.getAll("stage-button")[13] as HTMLButtonElement,
-            "unimplemented",
-        )
+        // this.lock(
+        //     this.selector.getAll("stage-button")[13] as HTMLButtonElement,
+        //     "unimplemented",
+        // )
     }
 
     private setupUnlockAnimation() {
@@ -102,7 +102,7 @@ export default class implements Scene {
     }
 
     private async unlockStage() {
-        if (this.config.clear === 12) return
+        // if (this.config.clear === 12) return
         if (this.config.clear === undefined) return
 
         const firstUncleared = LocalStorage.getFirstUncleared()

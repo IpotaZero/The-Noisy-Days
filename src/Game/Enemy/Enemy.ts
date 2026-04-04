@@ -49,7 +49,8 @@ export class Enemy {
     }
 
     tick() {
-        this.g = this.g.filter((g) => !g.next().done)
+        const done = this.g.map((g) => g.next().done)
+        this.g = this.g.filter((_, i) => !done[i])
         this.frame++
     }
 

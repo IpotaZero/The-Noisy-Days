@@ -56,6 +56,8 @@ button {
         aspect-ratio: 1;
         height: 20cqw;
 
+        image-rendering: pixelated;
+
         /* background-color: var(--white); */
     }
 
