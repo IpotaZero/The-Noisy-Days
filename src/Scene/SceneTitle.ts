@@ -83,11 +83,11 @@ export default class implements Scene {
 
     private setupUnlockAnimation() {
         this.pages.onEnter("act-.*", async () => {
-            await this.unlockStage()
+            this.unlockStage()
         })
 
         this.pages.onEnter("chapter-.*", async () => {
-            await this.unlockAct()
+            this.unlockAct()
         })
     }
 
@@ -139,6 +139,8 @@ export default class implements Scene {
         const lockLayer = button.querySelector(".lock")!
         // 1. アニメーションクラスを付与
         lockLayer.classList.add("unlocking")
+
+        SE.unlock.play()
 
         await Awaits.sleep(1000) // アニメーションの長さに合わせて待機（CSSのanimation-duration + animation-delayの合計）
 

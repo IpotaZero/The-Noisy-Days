@@ -45,8 +45,6 @@ export class Sound {
 }
 
 export class SE {
-    private static ctx = new AudioContext()
-
     static start: Sound
     static graze: Sound
     static u: Sound
@@ -54,6 +52,7 @@ export class SE {
     static crush: Sound
     static dash: Sound
     static charge: Sound
+    static unlock: Sound
 
     static async init() {
         ;[
@@ -64,6 +63,7 @@ export class SE {
             this.crush,
             this.dash,
             this.charge,
+            this.unlock,
         ] = await Promise.all([
             Sound.new("asset/se/mushi.mp3", 0.5),
             Sound.new("asset/se/graze.wav", 0.1),
@@ -72,13 +72,8 @@ export class SE {
             Sound.new("asset/se/crush.mp3"),
             Sound.new("asset/se/dash.mp3"),
             Sound.new("asset/se/se_charge.mp3"),
+            Sound.new("asset/se/ドアを開ける2.mp3"),
         ])
-    }
-
-    static unlock() {
-        if (this.ctx.state === "suspended") {
-            this.ctx.resume()
-        }
     }
 
     static setVolume(volume: number) {
