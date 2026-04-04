@@ -68,41 +68,15 @@ export default class SceneStage implements Scene {
         )
 
         this.selector.load(Dom.container)
+        this.selector.onClick("back", () => this.backScene())
+        this.selector.onClick("retry", () => this.retry())
+        this.setupSelfDestruct()
+        this.setupCanvas()
 
-        this.selector.onClick("back", () => {
-            document
-                .querySelectorAll("button")
-                .forEach((b) => (b.disabled = true))
+        this.looper.start()
+    }
 
-            SceneChanger.goto(
-                () =>
-                    import("./SceneTitle").then(
-                        (module) =>
-                            new module.default({ history: this.history }),
-                    ),
-                {
-                    msIn: 500,
-                    msOut: 500,
-                },
-            )
-        })
-
-        this.selector.onClick("retry", () => {
-            document
-                .querySelectorAll("button")
-                .forEach((b) => (b.disabled = true))
-
-            this.stage.reset()
-            SceneChanger.goto(
-                async () =>
-                    new SceneStage(this.stageIndex, this.stage, this.history),
-                {
-                    msIn: 500,
-                    msOut: 500,
-                },
-            )
-        })
-
+    private setupCanvas() {
         const rect = Dom.container.getClientRects()[0]
 
         g.height = g.width * (rect.height / rect.width)
@@ -118,9 +92,9 @@ export default class SceneStage implements Scene {
             new TouchTracker(Dom.container),
             (g.width / rect.width) * LocalStorage.getSwipeRatio(),
         )
+    }
 
-        this.looper.start()
-
+    private setupSelfDestruct() {
         const { signal } = this.ac
 
         window.addEventListener(
@@ -137,6 +111,35 @@ export default class SceneStage implements Scene {
                 if (e.touches.length >= 2) this.selfDestruct()
             },
             { passive: true, signal },
+        )
+    }
+
+    private backScene() {
+        document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+
+        SceneChanger.goto(
+            () =>
+                import("./SceneTitle").then(
+                    (module) => new module.default({ history: this.history }),
+                ),
+            {
+                msIn: 500,
+                msOut: 500,
+            },
+        )
+    }
+
+    private retry() {
+        document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+
+        this.stage.reset()
+        SceneChanger.goto(
+            async () =>
+                new SceneStage(this.stageIndex, this.stage, this.history),
+            {
+                msIn: 500,
+                msOut: 500,
+            },
         )
     }
 
@@ -190,17 +193,7 @@ export default class SceneStage implements Scene {
                         SE.graze.play()
                     }
 
-                    const isColliding =
-                        b.collision === Bullet.Collision.Ball
-                            ? this.collision.isCollidingCircle(
-                                  { p: b.p, r: b.r },
-                                  { p: g.player.p, r: g.player.r },
-                              )
-                            : this.collision.isCollidingLine(
-                                  { p: g.player.p, r: g.player.r },
-                                  b.p.plus(vec.arg(b.radian).scaled(b.r)),
-                                  b.p.minus(vec.arg(b.radian).scaled(b.r)),
-                              )
+                    const isColliding = this.collision.isColliding(b, g.player)
 
                     if (isColliding) {
                         b.life = 0

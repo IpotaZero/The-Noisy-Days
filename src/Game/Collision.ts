@@ -1,4 +1,6 @@
 import { vec, Vec } from "../utils/Vec"
+import { Bullet } from "./Bullet/Bullet"
+import { Player } from "./Player/Player"
 
 type Circle = {
     p: Vec
@@ -6,6 +8,16 @@ type Circle = {
 }
 
 export class Collision {
+    isColliding(b: Bullet, e: Player) {
+        return b.collision === Bullet.Collision.Ball
+            ? this.isCollidingCircle({ p: b.p, r: b.r }, { p: e.p, r: e.r })
+            : this.isCollidingLine(
+                  { p: e.p, r: e.r },
+                  b.p.plus(vec.arg(b.radian).scaled(b.r)),
+                  b.p.minus(vec.arg(b.radian).scaled(b.r)),
+              )
+    }
+
     isCollidingCircle({ p: p1, r: r1 }: Circle, { p: p2, r: r2 }: Circle) {
         const distance = p1.minus(p2).magnitude()
         const radiusSum = r1 + r2
