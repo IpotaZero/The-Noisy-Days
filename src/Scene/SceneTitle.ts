@@ -60,16 +60,6 @@ export default class implements Scene {
             this.gotoStage(index, stageName)
         })
 
-        this.selector.onClick("delete-data", () => {
-            if (confirm("データを初期化する?")) {
-                LocalStorage.clear()
-                alert("データを初期化した")
-                this.setupSetting()
-                this.lockButtons()
-                this.evaluateStageCleared()
-            }
-        })
-
         this.setupSetting()
         this.lockButtons()
         this.evaluateStageCleared()
@@ -147,9 +137,6 @@ export default class implements Scene {
         await Awaits.sleep(1000) // アニメーションの長さに合わせて待機（CSSのanimation-duration + animation-delayの合計）
 
         lockLayer.remove()
-
-        // 演出は一度きりなのでクリア情報をリセット（任意）
-        // this.config.clear = undefined
     }
 
     private setupSetting() {
@@ -179,6 +166,16 @@ export default class implements Scene {
         swipeRatio.value = LocalStorage.getSwipeRatio()
         volumeBGM.value = LocalStorage.getVolumeBGM()
         volumeSE.value = LocalStorage.getVolumeSE()
+
+        this.selector.onClick("delete-data", () => {
+            if (confirm("データを初期化する?")) {
+                LocalStorage.clear()
+                alert("データを初期化した")
+                this.setupSetting()
+                this.lockButtons()
+                this.evaluateStageCleared()
+            }
+        })
     }
 
     private lockButtons() {
