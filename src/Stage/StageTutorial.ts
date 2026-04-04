@@ -25,7 +25,7 @@ export default class extends Stage {
         this.changeBackground(undefined)
 
         yield* this.text("『こちらTAMAMUSHI本部、シオン・シマ、聴こえるか。』", { name: "本部" })
-        yield* this.text("「こちらシオン、聴こえるよ。」", { name: "シオン" })
+        yield* this.text("「こちらシマ、聴こえるよ。」", { name: "シオン" })
         yield* this.text("酷くノイズの掛かった声がスピーカを通して流れてくる。")
         yield* this.text("『これより高ジャミング地帯へと突入するため通信は途切れる。復唱せよ。作戦は……』", { name: "本部" })
         yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
