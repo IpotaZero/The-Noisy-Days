@@ -112,16 +112,18 @@ export default class implements Scene {
         const firstUncleared = LocalStorage.getFirstUncleared()
         if (this.config.clear >= firstUncleared) return
 
-        const targetActPageId = actList[Math.floor(this.config.clear / 4)] // クリアしたステージのActページIDを計算
+        const nextStageIndex = this.config.clear + 1
+
+        const targetActPageId = actList[Math.floor(nextStageIndex / 4)] // クリアしたステージのActページIDを計算
         const pageId = this.pages.getCurrentPageId()
 
         // 今開いたActページが、クリアしたステージが含まれるページかチェック
         if (pageId !== "act-" + targetActPageId) return
 
         // 次のステージのボタンを取得
-        const nextStageIndex = this.config.clear + 1
         const buttons = this.selector.getAll("stage-button")
         const button = buttons[nextStageIndex] as HTMLButtonElement
+        console.log(button)
         if (!button) return
 
         this.unlockButtonAnimation(button)
@@ -129,6 +131,7 @@ export default class implements Scene {
 
     private async unlockButtonAnimation(button: HTMLButtonElement) {
         this.lock(button) // いったんロック（アニメーションのため）
+        button.disabled = false
 
         const lockLayer = button.querySelector(".lock")!
         // 1. アニメーションクラスを付与
@@ -137,7 +140,6 @@ export default class implements Scene {
         await Awaits.sleep(1000) // アニメーションの長さに合わせて待機（CSSのanimation-duration + animation-delayの合計）
 
         lockLayer.remove()
-        button.disabled = false
 
         // 演出は一度きりなのでクリア情報をリセット（任意）
         // this.config.clear = undefined

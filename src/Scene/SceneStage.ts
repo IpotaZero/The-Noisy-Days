@@ -101,6 +101,13 @@ export default class SceneStage implements Scene {
             "keydown",
             (e) => {
                 if (e.code === "Escape") this.selfDestruct()
+
+                if (e.code === "Delete") {
+                    const e = g.enemies[0]
+                    if (e) {
+                        e.life = 0
+                    }
+                }
             },
             { signal },
         )
