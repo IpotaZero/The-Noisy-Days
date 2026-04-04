@@ -7,8 +7,8 @@ export default class extends Stage {
         yield* this.text("「……機械大戦、か。」", { name: "マス" })
         yield* this.text("俺は大昔に読んだ教科書の一節をぼんやりと思い出した。")
 
-        yield* this.text("機械大戦の始まりはアルゴリズムによって増幅された局所的な民族差別に由来する憎悪だったと今では云われている。")
-        yield* this.text("民主主義は民意の儘に人類を世界大戦へと導いた。")
+        yield* this.text("機械大戦の始まりは「局所的な民族差別に由来する憎悪」だったと今では云われている。")
+        yield* this.text("その憎悪はアルゴリズムによって増幅され、民主主義は民意の儘に人類を世界大戦へと導いた。")
         yield* this.text("人はお互いの影を恐れ、SILOは、願われて生まれた。")
 
         yield* this.text("機械大戦の罪は戦争成立要件に「人命の損失」を必要としたことだろう。")
