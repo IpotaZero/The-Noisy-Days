@@ -75,19 +75,23 @@ export default class implements Scene {
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
         this.unlockStage()
+        this.lock(
+            this.selector.getAll("stage-button")[13] as HTMLButtonElement,
+            "unimplemented",
+        )
     }
 
     private setupUnlockAnimation() {
-        this.pages.onEnter("act-.*", () => {
-            this.unlockStage()
+        this.pages.onEnter("act-.*", async () => {
+            await this.unlockStage()
         })
 
-        this.pages.onEnter("chapter-.*", () => {
-            this.unlockAct()
+        this.pages.onEnter("chapter-.*", async () => {
+            await this.unlockAct()
         })
     }
 
-    private unlockAct() {
+    private async unlockAct() {
         if (this.config.clear === undefined) return
         if (this.config.clear % 4 !== 3) return // Actは4ステージクリアごとにアンロックされるので、4で割った余りが3でない場合はアンロックされない
 
@@ -103,10 +107,10 @@ export default class implements Scene {
         const button = buttons[targetActIndex] as HTMLButtonElement
         if (!button) return
 
-        this.unlockButtonAnimation(button)
+        await this.unlockButtonAnimation(button)
     }
 
-    private unlockStage() {
+    private async unlockStage() {
         if (this.config.clear === undefined) return
 
         const firstUncleared = LocalStorage.getFirstUncleared()
@@ -123,10 +127,9 @@ export default class implements Scene {
         // 次のステージのボタンを取得
         const buttons = this.selector.getAll("stage-button")
         const button = buttons[nextStageIndex] as HTMLButtonElement
-        console.log(button)
         if (!button) return
 
-        this.unlockButtonAnimation(button)
+        await this.unlockButtonAnimation(button)
     }
 
     private async unlockButtonAnimation(button: HTMLButtonElement) {
@@ -178,11 +181,6 @@ export default class implements Scene {
         const firstUnclearedStage = LocalStorage.getFirstUncleared()
         const firstUnclearedAct = Math.floor(firstUnclearedStage / 4)
         const firstUnclearedChapter = Math.floor(firstUnclearedAct / 4)
-
-        this.lock(
-            this.selector.getAll("stage-button")[13] as HTMLButtonElement,
-            "unimplemented",
-        )
 
         this.selector
             .getAll("stage-button")
