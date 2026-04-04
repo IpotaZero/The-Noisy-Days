@@ -111,6 +111,7 @@ export default class implements Scene {
     }
 
     private async unlockStage() {
+        if (this.config.clear === 12) return
         if (this.config.clear === undefined) return
 
         const firstUncleared = LocalStorage.getFirstUncleared()
@@ -136,7 +137,7 @@ export default class implements Scene {
         this.lock(button) // いったんロック（アニメーションのため）
         button.disabled = false
 
-        const lockLayer = button.querySelector(".lock")!
+        const lockLayer = button.querySelector(".lock.lock-normal")!
         // 1. アニメーションクラスを付与
         lockLayer.classList.add("unlocking")
 
@@ -226,10 +227,12 @@ export default class implements Scene {
         reason: "normal" | "unimplemented" = "normal",
     ) {
         const text = reason === "normal" ? "--:: 封 ::--" : "×=× 未 ×=×"
+        const className =
+            reason === "normal" ? "lock-normal" : "lock-unimplemented"
 
         button.insertAdjacentHTML(
             "beforeend",
-            `<div class="lock">${text}</div>`,
+            `<div class="lock ${className}">${text}</div>`,
         )
         button.disabled = true
     }
