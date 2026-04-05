@@ -20,7 +20,7 @@ export default class extends Stage {
 
         yield* this.text("プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう廃墟群。")
         yield* this.text("虫の羽音めいた騒音と共に小さな人影が飛び去って行く。")
-        yield* this.text("武装組織TAMAMUSHI 対 トウキョウ警察。内乱開始から三日。")
+        yield* this.text("武装組織TAMAMUSHI 対 トウキョウ警察。内乱開始から一月。")
 
         this.changeBackground(undefined)
 
