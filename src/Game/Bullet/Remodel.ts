@@ -18,7 +18,7 @@ type Mod = Remodel & {
     [key in keyof Bullet]: (value: Bullet[key]) => Mod
 }
 
-class Remodel {
+export class Remodel {
     constructor(private bullets: Bullet[]) {}
 
     fire() {
@@ -30,15 +30,38 @@ class Remodel {
         g.bullets.push(...this.bullets)
     }
 
-    appear(frame: number) {
-        return this.g(function* (me) {
-            const r = me.r
+    static *appear(me: Bullet, frame: number) {
+        const r = me.r
 
-            for (let i = 1; i < frame + 1; i++) {
-                me.r = r * Ease.Out(i / frame)
-                yield
-            }
-        })
+        for (let i = 1; i < frame + 1; i++) {
+            me.r = r * Ease.Out(i / frame)
+            yield
+        }
+    }
+
+    static *reaccel(
+        me: Bullet,
+        stopFrame: number,
+        waitFrame: number,
+        accelFrame: number,
+        finalSpeed: number,
+    ) {
+        yield* this.stop(me, stopFrame)
+        yield* Array(waitFrame)
+        yield* this.accel(me, accelFrame, finalSpeed)
+    }
+
+    static *stop(me: Bullet, stopFrame: number) {
+        yield* this.accel(me, stopFrame, 0)
+    }
+
+    static *accel(me: Bullet, frame: number, finalSpeed: number) {
+        const start = me.speed
+
+        for (let i = 1; i < frame + 1; i++) {
+            me.speed = (finalSpeed - start) * (i / frame) + start
+            yield
+        }
     }
 
     colorful(seed: number) {

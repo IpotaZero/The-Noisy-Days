@@ -43,11 +43,20 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         // 外枠と背景
         ctx.save()
         ctx.translate(0, y) // 画面中央上部に固定する場合
-        Ctx.rect(ctx, [x, 0], [width, height], "rgba(255, 255, 255, 0.1)", { lineWidth: 2 })
+        Ctx.rect(ctx, [x, 0], [width, height], "rgba(255, 255, 255, 0.1)", {
+            lineWidth: 2,
+        })
+
+        const color = e.damaged || e.isInvincible ? RED : CYAN
 
         // HPバー本体（グラデーション風に2色重ねる）
-        Ctx.rect(ctx, [x, 0], [width * hpRatio, height], CYAN)
-        Ctx.rect(ctx, [x, height * 0.7], [width * hpRatio, height * 0.3], "rgba(255, 255, 255, 0.3)")
+        Ctx.rect(ctx, [x, 0], [width * hpRatio, height], color)
+        Ctx.rect(
+            ctx,
+            [x, height * 0.7],
+            [width * hpRatio, height * 0.3],
+            "rgba(255, 255, 255, 0.3)",
+        )
 
         // 装飾の目盛り
         for (let i = 0; i <= 10; i++) {
@@ -64,7 +73,12 @@ export class EnemyRendererBoss implements IEnemyRenderer {
     /**
      * 重なり合う回転リングと刻み目（ルーン）の描画
      */
-    private drawMagicCircle(ctx: CanvasRenderingContext2D, e: Enemy, theta: number, pulse: number): void {
+    private drawMagicCircle(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        theta: number,
+        pulse: number,
+    ): void {
         const radii = [1.5, 1.8, 2.2] // 敵半径 e.r に対する倍率
 
         radii.forEach((rMul, idx) => {
@@ -92,7 +106,11 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         })
     }
 
-    private drawMiddleFrame(ctx: CanvasRenderingContext2D, e: Enemy, theta: number): void {
+    private drawMiddleFrame(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        theta: number,
+    ): void {
         Ctx.polygon(ctx, 8, 2, e.p.l, e.r * 2, BLACK_VALE, {
             theta: theta * 0.2, // 非常にゆっくり回転
             lineWidth: 3,
@@ -103,7 +121,11 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         })
     }
 
-    private drawCoreBits(ctx: CanvasRenderingContext2D, e: Enemy, theta: number): void {
+    private drawCoreBits(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        theta: number,
+    ): void {
         const bitCount = 5
 
         const curve = Curves.lissajous(e.r * 4, e.r * 4, 12, 17)
@@ -121,7 +143,11 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         }
     }
 
-    private drawRoundBits(ctx: CanvasRenderingContext2D, e: Enemy, theta: number): void {
+    private drawRoundBits(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        theta: number,
+    ): void {
         const bitCount = 7
 
         for (let i = 0; i < bitCount; i++) {
@@ -140,7 +166,12 @@ export class EnemyRendererBoss implements IEnemyRenderer {
     /**
      * 中心部の複雑な幾何学構造
      */
-    private drawCoreComplex(ctx: CanvasRenderingContext2D, e: Enemy, theta: number, pulse: number): void {
+    private drawCoreComplex(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        theta: number,
+        pulse: number,
+    ): void {
         const coreColor = e.damaged ? RED : WHITE
 
         Ctx.polygon(ctx, 13, 2, e.p.l, e.r * (0.9 + pulse), coreColor, {
@@ -164,7 +195,11 @@ export class EnemyRendererBoss implements IEnemyRenderer {
     /**
      * 実際の当たり判定 (e.r) を示す円を描画
      */
-    private drawHitBox(ctx: CanvasRenderingContext2D, e: Enemy, puls: number): void {
+    private drawHitBox(
+        ctx: CanvasRenderingContext2D,
+        e: Enemy,
+        puls: number,
+    ): void {
         // 境界線
         Ctx.arc(ctx, e.p.l, e.r, WHITE, { lineWidth: 2 })
         Ctx.arc(ctx, e.p.l, e.r * (1 + puls * 2), WHITE, { lineWidth: 1 })

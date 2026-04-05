@@ -103,7 +103,7 @@ export default class SceneStage implements Scene {
                 if (e.code === "Escape") this.selfDestruct()
 
                 if (e.code === "Delete") {
-                    const e = g.enemies[0]
+                    const e = g.enemies.at(-1)
                     if (e) {
                         e.life = 0
                     }

@@ -1,6 +1,6 @@
 import { Bullet } from "../Game/Bullet/Bullet"
 import { Enemy } from "../Game/Enemy/Enemy"
-import { remodel } from "../Game/Bullet/Remodel"
+import { Remodel, remodel } from "../Game/Bullet/Remodel"
 import { vec } from "../utils/Vec"
 import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
@@ -56,7 +56,7 @@ class E extends Enemy {
     phase = 0
 
     constructor() {
-        super(1200, 96, new EnemyRendererBoss())
+        super(400, 96, new EnemyRendererBoss())
 
         this.moveTo(vec(0, -g.height / 4), 60)
 
@@ -71,69 +71,104 @@ class E extends Enemy {
     *H() {
         if (this.phase === 0) {
         } else if (this.phase === 1) {
-            remodel()
-                .colorful(this.frame)
-                .appear(30)
-                .appearance(Bullet.Appearance.Ball)
-                .r(32)
-                .p(this.p.clone())
-                .speed(0)
-                .radian(T / 4)
-                .g(function* (me) {
-                    yield* Array(10)
-
-                    while (1) {
-                        me.speed += 0.2
-                        yield
-                    }
-                })
-                .fire()
+            yield* this.phase1()
         } else if (this.phase === 2) {
-            remodel()
-                .colorful(this.frame)
-                .appear(30)
-                .appearance(Bullet.Appearance.Ball)
-                .r(32)
-                .p(this.p.clone())
-                .aim(g.player.p.clone())
-                .ex(13)
-                //
-                .fire()
+            yield* this.phase2()
         } else if (this.phase === 3) {
-            remodel()
-                .colorful(this.frame)
-                .appear(30)
-                .appearance(Bullet.Appearance.Ball)
-                .r(32)
-                .p(vec(0, (-g.height / 2) * 0.9))
-                .radian(T / 4)
-                .shift(Math.floor((Math.sin(this.frame) + 1) * 5), 96)
-                //
-                .fire()
+            yield* this.phase3()
         } else if (this.phase === 4) {
+            yield* this.phase4()
+        }
+    }
+
+    private *phase1() {
+        const num = 30
+
+        const p = this.p.clone()
+
+        for (let i = 0; i < num; i++) {
             remodel()
                 .colorful(this.frame)
-                .appear(30)
                 .appearance(Bullet.Appearance.Ball)
-                .r(32)
-                .p(this.p.clone())
-                .aim(g.player.p)
-                .nway(Math.floor((Math.sin(this.frame) + 1) * 5), T / 23)
-                .speed(16)
+                .r(4)
+                .p(p.clone())
+                .radian((i / num) * T)
+                .g((me) => Remodel.reaccel(me, 30, 30 - i, 30, 16))
                 //
                 .fire()
+            yield
         }
+    }
 
-        yield* Array(30)
+    private *phase2() {
+        const num = 60
+
+        const p = this.p.clone()
+
+        for (let i = 0; i < num; i++) {
+            remodel()
+                .colorful(this.frame)
+                .appearance(Bullet.Appearance.Ball)
+                .r(4)
+                .p(p.clone())
+                .radian((i / num) * T * 0.5)
+                .g(function* (me) {
+                    yield* Remodel.stop(me, 60)
+                    me.radian += (T / 24) * (2 * i - 1)
+                    yield* Remodel.accel(me, 30, 16)
+                })
+                //
+                .fire()
+            yield
+        }
+    }
+
+    private *phase3() {
+        const p = this.p.plus(vec.arg(this.frame).scaled(150))
+
+        remodel()
+            .colorful(this.frame)
+            .appearance(Bullet.Appearance.Ball)
+            .r(4)
+            .p(p.clone())
+            .ex(24)
+            .g(function* (me) {
+                yield* Remodel.stop(me, 10)
+                me.radian = T / 4
+                yield* Remodel.accel(me, 30, 16)
+            })
+            //
+            .fire()
+
+        yield* Array(10)
+    }
+
+    private *phase4() {
+        const num = 31
+        const num2 = 8
+
+        const p = this.p.clone()
+
+        for (let i = 0; i < num; i++) {
+            for (let j = 0; j < num2; j++)
+                remodel()
+                    .colorful(this.frame)
+                    .appearance(Bullet.Appearance.Ball)
+                    .r(4)
+                    .p(p.clone())
+                    .radian((i / num) * T * (2 * j - 1))
+                    .g((me) => Remodel.reaccel(me, 30, 10, 30, 16))
+                    //
+                    .fire()
+
+            yield
+        }
     }
 }
 
 class Child extends Enemy {
-    constructor(
-        parent: Enemy,
-        private readonly index: number,
-    ) {
-        super(200, 48)
+    constructor(parent: Enemy, index: number) {
+        super(250, 64)
         this.setParent(parent, () => vec.arg(this.frame / 90 + T * (index / 3)).scaled(300))
 
         this.isInvincible = true

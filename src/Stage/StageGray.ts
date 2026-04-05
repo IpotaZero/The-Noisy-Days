@@ -1,6 +1,6 @@
 import { Bullet } from "../Game/Bullet/Bullet"
 import { Enemy } from "../Game/Enemy/Enemy"
-import { remodel } from "../Game/Bullet/Remodel"
+import { Remodel, remodel } from "../Game/Bullet/Remodel"
 import { vec } from "../utils/Vec"
 import { g, scorenize, T } from "../global"
 import { Stage } from "./Stage"
@@ -46,7 +46,7 @@ class E extends Enemy {
 
     *H() {
         remodel()
-            .appear(30)
+            .g((me) => Remodel.appear(me, 30))
             .appearance(Bullet.Appearance.Ball)
             .r(32)
             .p(this.p.clone())
