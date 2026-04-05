@@ -77,13 +77,11 @@ class Child extends Enemy {
 
     *G() {
         remodel()
-            .appearance(Bullet.Appearance.Line)
-            .collision(Bullet.Collision.Line)
+            .appearance(Bullet.Appearance.Ball)
             .colorful(this.frame + this.index * 30)
-            .r(32)
+            .r(6)
             .p(this.p.clone())
-            .aim(g.player.p.clone())
-            .speed(8)
+            .radian(T / 4)
             //
             .fire()
 
