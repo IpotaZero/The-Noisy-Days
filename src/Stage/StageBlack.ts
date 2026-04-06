@@ -70,6 +70,7 @@ class E extends Enemy {
 
     *H() {
         if (this.phase === 0) {
+            yield
         } else if (this.phase === 1) {
             yield* this.phase1()
         } else if (this.phase === 2) {
