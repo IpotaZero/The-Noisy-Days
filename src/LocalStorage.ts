@@ -1,23 +1,32 @@
+import * as lzstring from "lz-string"
+
 export class LocalStorage {
     private static readonly KEY = "The Noisy Days!"
 
+    private static readonly DEFAULT: Data = {
+        stages: Array(64).fill(0) as (0 | 1 | 2)[],
+        swipeRatio: 1,
+        volumeBGM: 9,
+        volumeSE: 9,
+    }
+
     private static get(): Data {
-        const data = localStorage.getItem(this.KEY)
+        try {
+            const compressed = localStorage.getItem(this.KEY)
+            if (!compressed) return structuredClone(this.DEFAULT)
 
-        if (!data) {
-            return {
-                stages: Array(64).fill(0) as (0 | 1 | 2)[],
-                swipeRatio: 1,
-                volumeBGM: 9,
-                volumeSE: 9,
-            }
+            const json = lzstring.decompressFromUTF16(compressed)
+            if (!json) throw new Error("Decompression failed")
+
+            return JSON.parse(json)
+        } catch {
+            return structuredClone(this.DEFAULT)
         }
-
-        return JSON.parse(data)
     }
 
     private static set(data: Data) {
-        localStorage.setItem(this.KEY, JSON.stringify(data))
+        const compressed = lzstring.compressToUTF16(JSON.stringify(data))
+        localStorage.setItem(this.KEY, compressed)
     }
 
     static getStages() {

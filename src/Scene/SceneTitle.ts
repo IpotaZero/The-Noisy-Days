@@ -152,7 +152,9 @@ export default class implements Scene {
             "volume-bgm",
         ) as HTMLNumberElement
 
-        volumeBGM.oninput = () => {}
+        volumeBGM.oninput = () => {
+            LocalStorage.setVolumeBGM(volumeBGM.value)
+        }
 
         const volumeSE = this.selector.getFirst(
             "volume-se",
