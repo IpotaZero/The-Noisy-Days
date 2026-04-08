@@ -66,7 +66,7 @@ export default class implements Scene {
         this.setupUnlockAnimation()
         this.unlockStage()
         this.lock(
-            this.selector.getAll("stage-button")[18] as HTMLButtonElement,
+            this.selector.getAll("stage-button", HTMLButtonElement)[18],
             "unimplemented",
         )
     }
@@ -94,8 +94,8 @@ export default class implements Scene {
         if (pageId !== "chapter-" + targetChapterPageId) return
 
         const targetActIndex = Math.floor(this.config.clear / 4) + 1
-        const buttons = this.selector.getAll("act-button")
-        const button = buttons[targetActIndex] as HTMLButtonElement
+        const buttons = this.selector.getAll("act-button", HTMLButtonElement)
+        const button = buttons[targetActIndex]
         if (!button) return
 
         await this.unlockButtonAnimation(button)
@@ -117,8 +117,8 @@ export default class implements Scene {
         if (pageId !== "act-" + targetActPageId) return
 
         // 次のステージのボタンを取得
-        const buttons = this.selector.getAll("stage-button")
-        const button = buttons[nextStageIndex] as HTMLButtonElement
+        const buttons = this.selector.getAll("stage-button", HTMLButtonElement)
+        const button = buttons[nextStageIndex]
         if (!button) return
 
         await this.unlockButtonAnimation(button)
@@ -142,7 +142,8 @@ export default class implements Scene {
     private setupSetting() {
         const swipeRatio = this.selector.getFirst(
             "swipe-ratio",
-        ) as HTMLNumberElement
+            HTMLNumberElement,
+        )
 
         swipeRatio.oninput = () => {
             LocalStorage.setSwipeRatio(swipeRatio.value)
@@ -150,15 +151,14 @@ export default class implements Scene {
 
         const volumeBGM = this.selector.getFirst(
             "volume-bgm",
-        ) as HTMLNumberElement
+            HTMLNumberElement,
+        )
 
         volumeBGM.oninput = () => {
             LocalStorage.setVolumeBGM(volumeBGM.value)
         }
 
-        const volumeSE = this.selector.getFirst(
-            "volume-se",
-        ) as HTMLNumberElement
+        const volumeSE = this.selector.getFirst("volume-se", HTMLNumberElement)
 
         volumeSE.oninput = () => {
             LocalStorage.setVolumeSE(volumeSE.value)
@@ -186,11 +186,7 @@ export default class implements Scene {
         const firstUnclearedChapter = Math.floor(firstUnclearedAct / 4)
 
         this.selector
-            .getAll("stage-button")
-            .filter(
-                (button): button is HTMLButtonElement =>
-                    button instanceof HTMLButtonElement,
-            )
+            .getAll("stage-button", HTMLButtonElement)
             .forEach((button, index) => {
                 if (index > firstUnclearedStage) {
                     this.lock(button)
@@ -198,11 +194,7 @@ export default class implements Scene {
             })
 
         this.selector
-            .getAll("act-button")
-            .filter(
-                (button): button is HTMLButtonElement =>
-                    button instanceof HTMLButtonElement,
-            )
+            .getAll("act-button", HTMLButtonElement)
             .forEach((button, index) => {
                 if (index > firstUnclearedAct) {
                     this.lock(button)
@@ -210,11 +202,7 @@ export default class implements Scene {
             })
 
         this.selector
-            .getAll("chapter-button")
-            .filter(
-                (button): button is HTMLButtonElement =>
-                    button instanceof HTMLButtonElement,
-            )
+            .getAll("chapter-button", HTMLButtonElement)
             .forEach((button, index) => {
                 if (index > firstUnclearedChapter) {
                     this.lock(button)
