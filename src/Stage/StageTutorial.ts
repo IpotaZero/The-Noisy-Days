@@ -40,9 +40,9 @@ export default class extends Stage {
 
         // 操作説明
         if (isSmartPhone()) {
-            yield* this.text("画面をスライドして移動")
+            yield* this.text("画面をスライドして移動(自機自体を触る必要はない)")
             yield* this.text("速く動かすと弾をすり抜けられる")
-            yield* this.text("2本指タップで自爆")
+            yield* this.text("3本指タップで自爆")
         } else {
             yield* this.text("矢印キーで移動<br>Shiftで低速移動")
             yield* this.text("Controlで0.5秒間高速移動(無敵)<br>チャージに2秒掛かる")

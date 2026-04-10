@@ -115,7 +115,7 @@ export default class SceneStage implements Scene {
         Dom.container.addEventListener(
             "touchstart",
             (e) => {
-                if (e.touches.length >= 2) this.selfDestruct()
+                if (e.touches.length >= 3) this.selfDestruct()
             },
             { passive: true, signal },
         )
