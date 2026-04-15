@@ -1,16 +1,16 @@
-import { Bullet } from "../Game/Bullet/Bullet"
-import { Enemy } from "../Game/Enemy/Enemy"
-import { remodel } from "../Game/Bullet/Remodel"
-import { vec } from "../utils/Vec"
-import { g, scorenize, T } from "../global"
-import { Stage } from "./Stage"
-import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
-import { Dom } from "../Dom"
+import { Bullet } from "../../Game/Bullet/Bullet"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { remodel } from "../../Game/Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { g, scorenize, T } from "../../global"
+import { Stage } from "../Stage"
+import { SE } from "../../SE"
+import { flash, shake } from "../../utils/shake"
+import { Dom } from "../../Dom"
 
-import * as Curves from "../utils/Functions/Curves"
-import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
-import { Ease } from "../utils/Functions/Ease"
+import * as Curves from "../../utils/Functions/Curves"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
+import { Ease } from "../../utils/Functions/Ease"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -33,7 +33,12 @@ export default class extends Stage {
 }
 
 class E extends Enemy {
-    private readonly curve = Curves.lissajous(g.width * 0.6, g.height / 4, 5, 12)
+    private readonly curve = Curves.lissajous(
+        g.width * 0.6,
+        g.height / 4,
+        5,
+        12,
+    )
 
     constructor() {
         super(1200, 64)
@@ -42,7 +47,13 @@ class E extends Enemy {
     }
 
     *G() {
-        remodel().colorful(this.frame).p(this.p.clone()).speed(6).aim(g.player.p).ex(13).fire()
+        remodel()
+            .colorful(this.frame)
+            .p(this.p.clone())
+            .speed(6)
+            .aim(g.player.p)
+            .ex(13)
+            .fire()
 
         yield* Array(30)
     }

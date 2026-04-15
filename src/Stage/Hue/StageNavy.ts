@@ -1,16 +1,16 @@
-import { Bullet } from "../Game/Bullet/Bullet"
-import { Enemy } from "../Game/Enemy/Enemy"
-import { remodel } from "../Game/Bullet/Remodel"
-import { vec } from "../utils/Vec"
-import { g, scorenize, T } from "../global"
-import { Stage } from "./Stage"
-import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
-import { Dom } from "../Dom"
+import { Bullet } from "../../Game/Bullet/Bullet"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { remodel } from "../../Game/Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { g, scorenize, T } from "../../global"
+import { Stage } from "../Stage"
+import { SE } from "../../SE"
+import { flash, shake } from "../../utils/shake"
+import { Dom } from "../../Dom"
 
-import * as Curves from "../utils/Functions/Curves"
-import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
-import { Ease } from "../utils/Functions/Ease"
+import * as Curves from "../../utils/Functions/Curves"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
+import { Ease } from "../../utils/Functions/Ease"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -38,7 +38,13 @@ class E extends Enemy {
     }
 
     *G() {
-        remodel().colorful(this.frame).p(this.p.clone()).speed(8).aim(g.player.p).ex(13).fire()
+        remodel()
+            .colorful(this.frame)
+            .p(this.p.clone())
+            .speed(8)
+            .aim(g.player.p)
+            .ex(13)
+            .fire()
 
         yield* Array(30)
     }
@@ -58,12 +64,12 @@ class Child extends Enemy {
     *G() {
         remodel()
             .colorful(this.frame * 2)
-            .appearance(Bullet.Appearance.Ball)
+            .collision(Bullet.Collision.Line)
+            .appearance(Bullet.Appearance.Line)
             .p(this.p.clone())
-            .r(5)
+            .r(32)
             .aim(g.player.p)
-            .nway(4, T / 20)
-            .sim(3, 8, 16)
+            .nway(13, T / 64)
             .fire()
 
         yield* Array(120)

@@ -1,30 +1,35 @@
-import { Bullet } from "../Game/Bullet/Bullet"
-import { Enemy } from "../Game/Enemy/Enemy"
-import { Remodel, remodel } from "../Game/Bullet/Remodel"
-import { vec } from "../utils/Vec"
-import { g, scorenize, T } from "../global"
-import { Stage } from "./Stage"
-import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
-import { Dom } from "../Dom"
+import { Bullet } from "../../Game/Bullet/Bullet"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { Remodel, remodel } from "../../Game/Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { g, scorenize, T } from "../../global"
+import { Stage } from "../Stage"
+import { SE } from "../../SE"
+import { flash, shake } from "../../utils/shake"
+import { Dom } from "../../Dom"
 
-import * as Curves from "../utils/Functions/Curves"
-import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
-import { Ease } from "../utils/Functions/Ease"
-import { EnemyRendererBoss } from "../Game/Enemy/EnemyRendererBoss"
+import * as Curves from "../../utils/Functions/Curves"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
+import { Ease } from "../../utils/Functions/Ease"
+import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        yield* this.text("「熱源反応……? 人間が来ているのか……?」", { name: "シオン" })
+        yield* this.text("「熱源反応……? 人間が来ているのか……?」", {
+            name: "シオン",
+        })
         const parent = new E()
         const core0 = new Child(parent, 0)
         const core1 = new Child(parent, 1)
         const core2 = new Child(parent, 2)
         g.enemies.push(parent, core0, core1, core2)
 
-        yield* this.text("「ハローハロー、条約違反の兵器かと思ったけど、まさかホントに人間とはね。」", { name: "スナガワ" })
+        yield* this.text(
+            "「ハローハロー、条約違反の兵器かと思ったけど、まさかホントに人間とはね。」",
+            { name: "スナガワ" },
+        )
         yield* this.text("「五月蝿い奴だ。」", { name: "シオン" })
         yield* this.text("「逮捕、させてもらうよ。」", { name: "スナガワ" })
         yield* this.text("「できるもんならね。」", { name: "シオン" })
@@ -51,7 +56,12 @@ export default class extends Stage {
 
 class E extends Enemy {
     protected margin: number = 60
-    private readonly curve = Curves.lissajous(g.width * 0.6, g.height / 3, 13, 12)
+    private readonly curve = Curves.lissajous(
+        g.width * 0.6,
+        g.height / 3,
+        13,
+        12,
+    )
 
     phase = 0
 
@@ -170,7 +180,9 @@ class E extends Enemy {
 class Child extends Enemy {
     constructor(parent: Enemy, index: number) {
         super(250, 64)
-        this.setParent(parent, () => vec.arg(this.frame / 90 + T * (index / 3)).scaled(300))
+        this.setParent(parent, () =>
+            vec.arg(this.frame / 90 + T * (index / 3)).scaled(300),
+        )
 
         this.isInvincible = true
     }

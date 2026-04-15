@@ -1,16 +1,16 @@
-import { Bullet } from "../Game/Bullet/Bullet"
-import { Enemy } from "../Game/Enemy/Enemy"
-import { remodel } from "../Game/Bullet/Remodel"
-import { vec } from "../utils/Vec"
-import { g, scorenize, T } from "../global"
-import { Stage } from "./Stage"
-import { isSmartPhone } from "../utils/Functions/isSmartPhone"
-import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
-import { Dom } from "../Dom"
+import { Bullet } from "../../Game/Bullet/Bullet"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { remodel } from "../../Game/Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { g, scorenize, T } from "../../global"
+import { Stage } from "../Stage"
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
+import { SE } from "../../SE"
+import { flash, shake } from "../../utils/shake"
+import { Dom } from "../../Dom"
 
-import * as Curves from "../utils/Functions/Curves"
-import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
+import * as Curves from "../../utils/Functions/Curves"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -18,17 +18,29 @@ export default class extends Stage {
 
         this.changeBackground("asset/background/buildings.png")
 
-        yield* this.text("プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう廃墟群。")
+        yield* this.text(
+            "プラスチック混じりの砂嵐の吹き荒れる、嘗ては都市だったであろう廃墟群。",
+        )
         yield* this.text("虫の羽音めいた騒音と共に小さな人影が飛び去って行く。")
-        yield* this.text("武装組織TAMAMUSHI 対 トウキョウ警察。内乱開始から一月。")
+        yield* this.text(
+            "武装組織TAMAMUSHI 対 トウキョウ警察。内乱開始から一月。",
+        )
 
         this.changeBackground(undefined)
 
-        yield* this.text("『こちらTAMAMUSHI本部、シオン・シマ、聴こえるか。』", { name: "本部" })
+        yield* this.text(
+            "『こちらTAMAMUSHI本部、シオン・シマ、聴こえるか。』",
+            { name: "本部" },
+        )
         yield* this.text("「こちらシマ、聴こえるよ。」", { name: "シオン" })
         yield* this.text("酷くノイズの掛かった声がスピーカを通して流れてくる。")
-        yield* this.text("『これより高ジャミング地帯へと突入するため通信は途切れる。復唱せよ。作戦は……』", { name: "本部" })
-        yield* this.text("「言わなくても分かってる。作戦は……」", { name: "シオン" })
+        yield* this.text(
+            "『これより高ジャミング地帯へと突入するため通信は途切れる。復唱せよ。作戦は……』",
+            { name: "本部" },
+        )
+        yield* this.text("「言わなくても分かってる。作戦は……」", {
+            name: "シオン",
+        })
 
         // ここでドローンが飛び出す
         const e = new EnemyTutorial()
@@ -45,11 +57,15 @@ export default class extends Stage {
             yield* this.text("3本指タップで自爆")
         } else {
             yield* this.text("矢印キーで移動<br>Shiftで低速移動")
-            yield* this.text("Controlで0.5秒間高速移動(無敵)<br>チャージに2秒掛かる")
+            yield* this.text(
+                "Controlで0.5秒間高速移動(無敵)<br>チャージに2秒掛かる",
+            )
             yield* this.text("Escapeで自爆")
         }
 
-        yield* this.text("自機の当たり判定は赤丸のみ<br>敵自体に当たり判定は無い")
+        yield* this.text(
+            "自機の当たり判定は赤丸のみ<br>敵自体に当たり判定は無い",
+        )
         yield* this.text("盾は8枚ある")
 
         e.start()

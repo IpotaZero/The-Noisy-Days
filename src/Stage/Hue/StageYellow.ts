@@ -1,16 +1,16 @@
-import { Bullet } from "../Game/Bullet/Bullet"
-import { Enemy } from "../Game/Enemy/Enemy"
-import { remodel } from "../Game/Bullet/Remodel"
-import { vec } from "../utils/Vec"
-import { g, scorenize, T } from "../global"
-import { Stage } from "./Stage"
-import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
-import { Dom } from "../Dom"
+import { Bullet } from "../../Game/Bullet/Bullet"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { remodel } from "../../Game/Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { g, scorenize, T } from "../../global"
+import { Stage } from "../Stage"
+import { SE } from "../../SE"
+import { flash, shake } from "../../utils/shake"
+import { Dom } from "../../Dom"
 
-import * as Curves from "../utils/Functions/Curves"
-import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
-import { Ease } from "../utils/Functions/Ease"
+import * as Curves from "../../utils/Functions/Curves"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
+import { Ease } from "../../utils/Functions/Ease"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {

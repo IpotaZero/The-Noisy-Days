@@ -295,11 +295,13 @@ export default class implements Scene {
 
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 
+        const chapter = chapterList[Math.floor(stageIndex / 16)]
+
         SceneChanger.goto(
             async () => {
                 // @ts-ignore
-                const modules = import.meta.glob("../Stage/*")
-                const url = `../Stage/Stage${stageName}.ts`
+                const modules = import.meta.glob("../Stage/*/*")
+                const url = `../Stage/${chapter}/Stage${stageName}.ts`
                 const { default: Stage } = await modules[url]()
 
                 const stage = new Stage()

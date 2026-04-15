@@ -1,16 +1,16 @@
-import { Bullet } from "../Game/Bullet/Bullet"
-import { Enemy } from "../Game/Enemy/Enemy"
-import { Remodel, remodel } from "../Game/Bullet/Remodel"
-import { vec } from "../utils/Vec"
-import { g, scorenize, T } from "../global"
-import { Stage } from "./Stage"
-import { SE } from "../SE"
-import { flash, shake } from "../utils/shake"
-import { Dom } from "../Dom"
+import { Bullet } from "../../Game/Bullet/Bullet"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { Remodel, remodel } from "../../Game/Bullet/Remodel"
+import { vec } from "../../utils/Vec"
+import { g, scorenize, T } from "../../global"
+import { Stage } from "../Stage"
+import { SE } from "../../SE"
+import { flash, shake } from "../../utils/shake"
+import { Dom } from "../../Dom"
 
-import * as Curves from "../utils/Functions/Curves"
-import { EnemyRendererMob } from "../Game/Enemy/EnemyRendererMob"
-import { Ease } from "../utils/Functions/Ease"
+import * as Curves from "../../utils/Functions/Curves"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
+import { Ease } from "../../utils/Functions/Ease"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -31,7 +31,12 @@ export default class extends Stage {
 
 class E extends Enemy {
     protected margin: number = 60
-    private readonly curve = Curves.lissajous(g.width * 0.6, g.height / 3, 13, 12)
+    private readonly curve = Curves.lissajous(
+        g.width * 0.6,
+        g.height / 3,
+        13,
+        12,
+    )
 
     constructor() {
         super(600, 64)
@@ -72,16 +77,20 @@ class Child extends Enemy {
         private readonly index: number,
     ) {
         super(200, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(this.frame / 30 + T * (index / 3)).scaled(150))
+        this.setParent(parent, () =>
+            vec.arg(this.frame / 30 + T * (index / 3)).scaled(150),
+        )
     }
 
     *G() {
         remodel()
-            .appearance(Bullet.Appearance.Ball)
+            .appearance(Bullet.Appearance.Line)
+            .collision(Bullet.Collision.Line)
             .colorful(this.frame + this.index * 30)
-            .r(6)
+            .r(32)
             .p(this.p.clone())
-            .radian(T / 4)
+            .aim(g.player.p.clone())
+            .speed(8)
             //
             .fire()
 
