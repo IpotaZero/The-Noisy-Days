@@ -53,19 +53,20 @@ export class BulletDrawer {
 
         const context = canvas.getContext("2d")!
 
-        context.shadowColor = bullet.color
-        context.shadowBlur = 16
-
         context.beginPath()
         context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
+
+        context.shadowColor = bullet.color
+        context.shadowBlur = bullet.r
         context.strokeStyle = bullet.color
         context.lineWidth = 3
         context.stroke()
 
-        context.shadowBlur = 0
-
+        context.shadowColor = bullet.color
+        context.shadowBlur = bullet.r / 2
         context.strokeStyle = "white"
         context.lineWidth = 2
+
         context.stroke()
         context.lineWidth = 1
         context.stroke()
@@ -81,7 +82,7 @@ export class BulletDrawer {
         const context = canvas.getContext("2d")!
 
         context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r
+        context.shadowBlur = bullet.r * 2
         context.fillStyle = bullet.color
 
         context.beginPath()
@@ -105,6 +106,9 @@ export class BulletDrawer {
 
         const context = canvas.getContext("2d")!
         context.fillStyle = bullet.color
+
+        context.shadowColor = bullet.color
+        context.shadowBlur = bullet.r * 2
 
         context.save()
         context.translate(bullet.r * 2, bullet.r * 2)
@@ -139,6 +143,9 @@ export class BulletDrawer {
 
         const context = canvas.getContext("2d")!
 
+        context.shadowColor = bullet.color
+        context.shadowBlur = bullet.r * 2
+
         context.save()
         context.translate(bullet.r * 2, bullet.r * 2)
         context.rotate(bullet.radian)
@@ -165,6 +172,9 @@ export class BulletDrawer {
         canvas.height = bullet.r * 4
 
         const context = canvas.getContext("2d")!
+
+        context.shadowColor = bullet.color
+        context.shadowBlur = bullet.r * 2
 
         context.save()
         context.translate(bullet.r * 2, bullet.r * 2)
