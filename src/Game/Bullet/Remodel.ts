@@ -44,11 +44,12 @@ export class Remodel {
         stopFrame: number,
         waitFrame: number,
         accelFrame: number,
-        finalSpeed: number,
+        finalSpeed?: number,
     ) {
+        const initialSpeed = me.speed
         yield* this.stop(me, stopFrame)
         yield* Array(waitFrame)
-        yield* this.accel(me, accelFrame, finalSpeed)
+        yield* this.accel(me, accelFrame, finalSpeed ?? initialSpeed)
     }
 
     static *stop(me: Bullet, stopFrame: number) {

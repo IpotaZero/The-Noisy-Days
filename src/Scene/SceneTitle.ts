@@ -12,6 +12,8 @@ import { g } from "../global"
 import { MathEx } from "../utils/Functions/MathEx"
 import { Awaits } from "../utils/Functions/Awaits"
 
+const FINISHED = 19
+
 export default class implements Scene {
     private readonly pages = new Pages()
     private readonly selector
@@ -66,7 +68,7 @@ export default class implements Scene {
         this.setupUnlockAnimation()
         this.unlockStage()
         this.lock(
-            this.selector.getAll("stage-button", HTMLButtonElement)[18],
+            this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED],
             "unimplemented",
         )
     }
@@ -102,7 +104,7 @@ export default class implements Scene {
     }
 
     private async unlockStage() {
-        if (this.config.clear === 17) return
+        if (this.config.clear === FINISHED - 1) return
         if (this.config.clear === undefined) return
 
         const firstUncleared = LocalStorage.getFirstUncleared()

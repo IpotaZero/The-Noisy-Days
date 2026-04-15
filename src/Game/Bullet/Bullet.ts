@@ -99,12 +99,15 @@ export namespace Bullet {
         Donut,
         Ball,
         Line,
+        Arrow,
+
         Player,
         Score,
     }
     export enum Collision {
         Ball,
         Line,
+        Arrow,
     }
     export enum Type {
         Enemy,

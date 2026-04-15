@@ -48,7 +48,7 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 240).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 480).plus(vec(0, -g.height / 4))
         yield
     }
 }
@@ -103,8 +103,8 @@ class Child2 extends Enemy {
     *G() {
         remodel()
             .colorful(this.frame * 2)
-            .collision(Bullet.Collision.Line)
-            .appearance(Bullet.Appearance.Line)
+            .collision(Bullet.Collision.Arrow)
+            .appearance(Bullet.Appearance.Arrow)
             .speed(12)
             .p(this.p.clone())
             .r(28)

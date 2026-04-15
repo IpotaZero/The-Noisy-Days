@@ -1,5 +1,0 @@
-import{t as e}from"./Dom.js";import{a as t}from"./Bullet.js";var n=class{generator;constructor(){this.reset()}reset(){this.generator=this.G()}tick(){return!!this.generator.next().done}*text(t,n={}){let r=document.createElement(`div`);r.innerHTML=`
-            ${n.name?`<div class="stage-text-name">${n.name}</div>`:``}
-            <p class="stage-text">${t}</p>
-        `,r.classList.add(`stage-text-container`),e.container.appendChild(r),yield*this.ok(),r.remove()}*wait(e){yield*Array(e)}*ok(){let t=new AbortController,n=!1;for(e.container.addEventListener(`click`,()=>{n=!0},{signal:t.signal}),window.addEventListener(`keydown`,e=>{(e.code===`Enter`||e.code===`Space`||e.code===`KeyZ`)&&(n=!0)},{signal:t.signal});!n;)yield;t.abort()}*waitDefeatEnemy(){for(;t.enemies.length>0;)yield}changeBackground(t){if(t){let n=new Image;n.src=t,n.classList.add(`stage-background`),n.animate([{opacity:0},{opacity:1}],{duration:1e3}),e.container.appendChild(n)}else e.container.querySelectorAll(`.stage-background`).forEach(e=>{e.animate([{opacity:1},{opacity:0}],{duration:1e3}).finished.then(()=>{e.remove()})})}};export{n as t};
-//# sourceMappingURL=Stage2.js.map

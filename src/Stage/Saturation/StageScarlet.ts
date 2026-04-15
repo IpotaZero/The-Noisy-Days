@@ -1,6 +1,6 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
-import { remodel } from "../../Game/Bullet/Remodel"
+import { Remodel, remodel } from "../../Game/Bullet/Remodel"
 import { vec } from "../../utils/Vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
@@ -48,7 +48,7 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 240).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 480).plus(vec(0, -g.height / 4))
         yield
     }
 }
@@ -60,17 +60,14 @@ class Child0 extends Enemy {
     }
 
     *G() {
-        const num = 13
-        for (let i = 0; i < num; i++) {
-            remodel()
-                .colorful(this.frame * 2)
-                .appearance(Bullet.Appearance.Ball)
-                .p(this.p.clone())
-                .r(6)
-                .radian(T / 4 + Math.sin(T * (i / num)) * T * 0.25)
-                .fire()
-            yield
-        }
+        remodel()
+            .colorful(this.frame * 2)
+            .appearance(Bullet.Appearance.Ball)
+            .p(this.p.clone())
+            .r(6)
+            .ex(13)
+            .g((me) => Remodel.reaccel(me, 15, 15, 15))
+            .fire()
 
         yield* Array(50)
     }
@@ -87,7 +84,6 @@ class Child1 extends Enemy {
             .colorful(this.frame * 2)
             .p(this.p.clone())
             .radian(T / 4)
-            .nway(5, T / 24)
             .fire()
 
         yield* Array(40)
@@ -103,8 +99,8 @@ class Child2 extends Enemy {
     *G() {
         remodel()
             .colorful(this.frame * 2)
-            .collision(Bullet.Collision.Line)
-            .appearance(Bullet.Appearance.Line)
+            .collision(Bullet.Collision.Arrow)
+            .appearance(Bullet.Appearance.Arrow)
             .speed(12)
             .p(this.p.clone())
             .r(28)

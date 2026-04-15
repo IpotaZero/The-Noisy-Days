@@ -9,6 +9,7 @@ export class BulletDrawer {
         let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r * 10) / 10}`
 
         if (
+            bullet.appearance === Bullet.Appearance.Arrow ||
             bullet.appearance === Bullet.Appearance.Score ||
             bullet.appearance === Bullet.Appearance.Line
         ) {
@@ -21,6 +22,9 @@ export class BulletDrawer {
                 this.cache.set(hash, cvs)
             } else if (bullet.appearance === Bullet.Appearance.Score) {
                 const cvs = this.drawLaser(bullet)
+                this.cache.set(hash, cvs)
+            } else if (bullet.appearance === Bullet.Appearance.Arrow) {
+                const cvs = this.drawArrow(bullet)
                 this.cache.set(hash, cvs)
             } else if (bullet.appearance === Bullet.Appearance.Line) {
                 const cvs = this.drawLine(bullet)
@@ -88,7 +92,7 @@ export class BulletDrawer {
         context.fillStyle = "white"
 
         context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r * 0.9, 0, Math.PI * 2)
+        context.arc(bullet.r * 2, bullet.r * 2, bullet.r * 0.8, 0, Math.PI * 2)
         context.fill()
 
         return canvas
@@ -141,6 +145,37 @@ export class BulletDrawer {
         context.beginPath()
         context.moveTo(-bullet.r, 0)
         context.lineTo(bullet.r, 0)
+
+        context.strokeStyle = bullet.color
+        context.lineWidth = 3
+        context.stroke()
+
+        context.strokeStyle = "white"
+        context.lineWidth = 2
+        context.stroke()
+
+        context.restore()
+
+        return canvas
+    }
+
+    private drawArrow(bullet: Bullet) {
+        const canvas = document.createElement("canvas")
+        canvas.width = bullet.r * 4
+        canvas.height = bullet.r * 4
+
+        const context = canvas.getContext("2d")!
+
+        context.save()
+        context.translate(bullet.r * 2, bullet.r * 2)
+        context.rotate(bullet.radian)
+        context.beginPath()
+        context.moveTo(-bullet.r, 0)
+        context.lineTo(bullet.r, 0)
+        context.moveTo(bullet.r, 0)
+        context.lineTo(bullet.r * (1 - Math.SQRT1_2), bullet.r * Math.SQRT1_2)
+        context.moveTo(bullet.r, 0)
+        context.lineTo(bullet.r * (1 - Math.SQRT1_2), -bullet.r * Math.SQRT1_2)
 
         context.strokeStyle = bullet.color
         context.lineWidth = 3

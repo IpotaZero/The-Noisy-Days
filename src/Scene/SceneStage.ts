@@ -252,6 +252,7 @@ export default class SceneStage implements Scene {
     private draw() {
         this.ctx.clearRect(0, 0, g.width, g.height)
 
+        this.ctx.globalCompositeOperation = "lighter"
         this.ctx.fillStyle = "black"
         this.ctx.fillRect(0, 0, g.width, g.height)
 
