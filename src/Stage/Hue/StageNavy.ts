@@ -38,13 +38,7 @@ class E extends Enemy {
     }
 
     *G() {
-        remodel()
-            .colorful(this.frame)
-            .p(this.p.clone())
-            .speed(8)
-            .aim(g.player.p)
-            .ex(13)
-            .fire()
+        remodel().colorful(this.frame).p(this.p.clone()).speed(8).aim(g.player.p).ex(13).fire()
 
         yield* Array(30)
     }

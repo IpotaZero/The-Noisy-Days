@@ -31,12 +31,7 @@ export default class extends Stage {
 
 class E extends Enemy {
     protected margin: number = 60
-    private readonly curve = Curves.lissajous(
-        g.width * 0.6,
-        g.height / 3,
-        13,
-        12,
-    )
+    private readonly curve = Curves.lissajous(g.width * 0.6, g.height / 3, 13, 12)
 
     constructor() {
         super(600, 64)
@@ -77,9 +72,7 @@ class Child extends Enemy {
         private readonly index: number,
     ) {
         super(200, 48, new EnemyRendererMob())
-        this.setParent(parent, () =>
-            vec.arg(this.frame / 30 + T * (index / 3)).scaled(150),
-        )
+        this.setParent(parent, () => vec.arg(this.frame / 30 + T * (index / 3)).scaled(150))
     }
 
     *G() {
@@ -94,6 +87,6 @@ class Child extends Enemy {
             //
             .fire()
 
-        yield* Array(10)
+        yield* Array(30)
     }
 }

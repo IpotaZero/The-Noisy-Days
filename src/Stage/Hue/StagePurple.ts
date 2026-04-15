@@ -68,8 +68,7 @@ class Child extends Enemy {
     }
 
     *G() {
-        const x =
-            this.index === 0 ? -g.width - g.player.p.x : g.width - g.player.p.x
+        const x = this.index === 0 ? -g.width - g.player.p.x : g.width - g.player.p.x
 
         remodel()
             .appearance(Bullet.Appearance.Ball)

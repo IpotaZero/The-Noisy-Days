@@ -1,4 +1,4 @@
-import { Stage } from "./Stage"
+import { Stage } from "../Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -15,15 +15,21 @@ export default class extends Stage {
         yield* this.text("シオン・シマ 第二世代合成人")
         yield* this.text("東アジア自治体、ニッポンのトウキョウという町に暮らす戦争孤児である。")
 
-        yield* this.text("「よーお、お手柄じゃあないの。さっすが、合成人。」", { name: "マス" })
+        yield* this.text("「よーお、お手柄じゃあないの。さっすが、合成人。」", {
+            name: "マス",
+        })
         yield* this.text("「そういう言い方、好きじゃないし嫌いだよ。何の用かな、新聞屋さん。」", { name: "シオン" })
         yield* this.text("作戦から帰還した恰好のまま、少女は床で伸びている。")
-        yield* this.text("「悪ぃ悪ぃ。で、此度の戦闘はどうだったんです?」", { name: "マス" })
+        yield* this.text("「悪ぃ悪ぃ。で、此度の戦闘はどうだったんです?」", {
+            name: "マス",
+        })
         yield* this.text("俺が懐から煙草を取り出し火を付けると、少女は俺の隣へ距離を詰めた。")
         yield* this.text("「あたしにもくれない?」", { name: "シオン" })
         yield* this.text("「あんた何歳だっけ。」", { name: "マス" })
         yield* this.text("「十三。」", { name: "シオン" })
-        yield* this.text("「へぇー。サーティーン。世も末だね。」", { name: "マス" })
+        yield* this.text("「へぇー。サーティーン。世も末だね。」", {
+            name: "マス",
+        })
         yield* this.text("テントの中で二本の紫煙が立ち昇る。")
     }
 }

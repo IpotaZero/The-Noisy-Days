@@ -6,34 +6,17 @@ export default class extends Stage {
 
         // 佐々木 碧
 
-        yield* this.text(
-            "「いやー、どうも。まさかササキさん本人にお話を伺えるとは。」",
-            { name: "マス" },
-        )
-        yield* this.text(
-            "「こちらこそ、我々の意見を表明する機会をいただけてありがたいです。」",
-            { name: "ササキ" },
-        )
+        yield* this.text("「いやー、どうも。まさかササキさん本人にお話を伺えるとは。」", { name: "マス" })
+        yield* this.text("「こちらこそ、我々の意見を表明する機会をいただけてありがたいです。」", { name: "ササキ" })
 
-        yield* this.text("（テロ組織のトップにしては若すぎるな。）", {
-            name: "マス",
-        })
+        yield* this.text("（テロ組織のトップにしては若すぎるな。）", { name: "マス" })
         yield* this.text("俺は手帳を開きながら固い椅子に腰かける。")
         yield* this.text("アオ・ササキ 第二世代合成人")
         yield* this.text("反SILO組織 TAMAMUSHIの代表")
 
-        yield* this.text(
-            "「では、早速質問に入らせていただきます。貴方方は何故、SILO政策に反対するのでしょう?」",
-            { name: "マス" },
-        )
-        yield* this.text(
-            "「それは実は個々人によって違うんですよね。ただ、SILOは『SILOに反対する』人をも集めてしまう自己矛盾を抱えています。」",
-            { name: "ササキ" },
-        )
-        yield* this.text(
-            "「我々のような集団が現れるのは構造的に必然でしょう。」",
-            { name: "ササキ" },
-        )
+        yield* this.text("「では、早速質問に入らせていただきます。貴方方は何故、SILO政策に反対するのでしょう?」", { name: "マス" })
+        yield* this.text("「それは実は個々人によって違うんですよね。ただ、SILOは『SILOに反対する』人をも集めてしまう自己矛盾を抱えています。」", { name: "ササキ" })
+        yield* this.text("「我々のような集団が現れるのは構造的に必然でしょう。」", { name: "ササキ" })
         yield* this.text("ササキはきっぱりとした口調で答える。")
 
         // 生々しすぎるので書かない
@@ -50,23 +33,15 @@ export default class extends Stage {
         //     { name: "ササキ" },
         // )
 
-        yield* this.text(
-            "「なるほど、で、もう一つ聞きたいことがあります。構いませんね?」",
-            { name: "マス" },
-        )
+        yield* this.text("「なるほど、で、もう一つ聞きたいことがあります。構いませんね?」", { name: "マス" })
         yield* this.text("「どうぞ。」", { name: "ササキ" })
         yield* this.text("ササキは指を組みながら俺を見る。")
         yield* this.text("「あの子、何なんです?」", { name: "マス" })
         yield* this.text("ササキは一瞬目を逸らしたが、すぐにまた俺の目を見た。")
-        yield* this.text(
-            "「彼女は……希望です。僕たちの。そしてSILOに反対する理由でもある。」",
-            { name: "ササキ" },
-        )
+        yield* this.text("「彼女は……希望です。僕たちの。そしてSILOに反対する理由でもある。」", { name: "ササキ" })
         yield* this.text("「どういうことです?」", { name: "マス" })
         yield* this.text("「合成人の未来、ですよ。」", { name: "ササキ" })
-        yield* this.text("（じゃあなんで前線に送り出すんだよ。）", {
-            name: "マス",
-        })
+        yield* this.text("（じゃあなんで前線に送り出すんだよ。）", { name: "マス" })
         yield* this.text("俺は益々分からなくなった。")
 
         // 誰もが善意で動いている
