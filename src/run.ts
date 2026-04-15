@@ -73,6 +73,10 @@ window.addEventListener("keydown", (e) => {
             "ArrowDown",
             "ArrowRight",
             "ArrowLeft",
+            "ControlLeft",
+            "ControlRight",
+            "ShiftLeft",
+            "ShiftRight",
             "Tab",
         ].includes(e.code)
     )

@@ -1,19 +1,25 @@
 import { IInput, Operation } from "./Input"
 
-/** キーコードと Operation のマッピング */
+/** キーと Operation のマッピング */
 const KEY_MAP: Record<string, Operation> = {
     ArrowUp: Operation.Up,
     ArrowDown: Operation.Down,
     ArrowLeft: Operation.Left,
     ArrowRight: Operation.Right,
-    KeyW: Operation.Up,
-    KeyS: Operation.Down,
-    KeyA: Operation.Left,
-    KeyD: Operation.Right,
-    ShiftLeft: Operation.Slow,
-    ShiftRight: Operation.Slow,
-    ControlLeft: Operation.Dash,
-    ControlRight: Operation.Dash,
+    w: Operation.Up,
+    s: Operation.Down,
+    a: Operation.Left,
+    d: Operation.Right,
+    Shift: Operation.Slow,
+    Control: Operation.Dash,
+}
+
+/**
+ * Shift などの修飾キーと同時押しすると e.key が大文字になるため、
+ * まず元のキーで検索し、見つからなければ小文字に正規化して再検索する。
+ */
+function resolveOperation(key: string): Operation | undefined {
+    return KEY_MAP[key] ?? KEY_MAP[key.toLowerCase()]
 }
 
 export class InputKeyboard implements IInput {
@@ -28,8 +34,11 @@ export class InputKeyboard implements IInput {
         window.addEventListener(
             "keydown",
             (e: KeyboardEvent) => {
-                const operation = KEY_MAP[e.code]
+                const operation = resolveOperation(e.key)
                 if (operation === undefined) return
+
+                // ブラウザのデフォルト動作（Ctrl+W でタブを閉じるなど）を抑制する
+                e.preventDefault()
 
                 if (!this.pressed.has(operation)) {
                     this.pushed.add(operation)
@@ -43,7 +52,7 @@ export class InputKeyboard implements IInput {
         window.addEventListener(
             "keyup",
             (e: KeyboardEvent) => {
-                const operation = KEY_MAP[e.code]
+                const operation = resolveOperation(e.key)
                 if (operation === undefined) return
 
                 this.pushed.delete(operation)
