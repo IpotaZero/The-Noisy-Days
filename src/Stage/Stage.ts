@@ -93,6 +93,9 @@ export abstract class Stage {
             (e) => {
                 if (e.code === "Enter" || e.code === "Space" || e.code === "KeyZ") {
                     clicked = true
+                } else if (e.code === "KeyS") {
+                    this.skip = true
+                    this.hideSkipButton()
                 }
             },
             { signal: abort.signal },
