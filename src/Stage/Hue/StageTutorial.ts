@@ -41,7 +41,7 @@ export default class extends Stage {
         yield* this.text("「……敵飛行体の殲滅ッ！」", { name: "シオン" })
 
         // 操作説明
-        if (isSmartPhone()) {
+        if (isSmartPhone) {
             yield* this.text("画面をスライドして移動(自機自体を触る必要はない)")
             yield* this.text("速く動かすと弾をすり抜けられる")
             yield* this.text("3本指タップで自爆")

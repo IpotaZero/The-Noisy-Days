@@ -1,4 +1,4 @@
-export function isSmartPhone() {
+export function checkSmartPhone() {
     const ua = navigator.userAgent
     const isIOS =
         !!ua.match(/iPhone|iPad/) ||
@@ -6,3 +6,5 @@ export function isSmartPhone() {
     const isAndroid = !!ua.match(/Android/)
     return isIOS || isAndroid
 }
+
+export const isSmartPhone = checkSmartPhone()

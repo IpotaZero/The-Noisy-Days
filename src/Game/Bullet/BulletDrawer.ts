@@ -86,14 +86,14 @@ export class BulletDrawer {
         context.fillStyle = bullet.color
 
         context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
+        context.arc(bullet.r * 2, bullet.r * 2, bullet.r + 1, 0, Math.PI * 2)
         context.fill()
 
         context.shadowColor = "white"
         context.fillStyle = "white"
 
         context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r * 0.8, 0, Math.PI * 2)
+        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
         context.fill()
 
         return canvas

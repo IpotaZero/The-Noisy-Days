@@ -15,9 +15,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
     Focuses.init()
 
-    const smaho = isSmartPhone()
-
-    if (smaho) {
+    if (isSmartPhone) {
         Focuses.pause("all")
     }
 
@@ -34,7 +32,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     Pages.onTransitionEnd = (pages) => {
-        if (!smaho) {
+        if (!isSmartPhone) {
             Focuses.update(pages.getCurrentPage())
         }
         Focuses.resume("page-change")
