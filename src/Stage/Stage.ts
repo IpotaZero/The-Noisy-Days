@@ -73,7 +73,6 @@ export abstract class Stage {
         if (this.skip) return
         yield* Array(frame)
     }
-
     protected *ok(): Generator<void, void, unknown> {
         if (this.skip) return
 
@@ -101,7 +100,32 @@ export abstract class Stage {
             { signal: abort.signal },
         )
 
+        // --- Gamepad対応 ---
+        // 呼び出し時のボタン状態を取得（既読として扱うことで、開始時の押しっぱなしを無視）
+        let prevButtons: boolean[] = navigator.getGamepads()[0]?.buttons.map((b) => b.pressed) ?? []
+
         while (!clicked && !this.skip) {
+            const pad = navigator.getGamepads()[0]
+            if (pad) {
+                const currentButtons = pad.buttons.map((b) => b.pressed)
+
+                for (let i = 0; i < currentButtons.length; i++) {
+                    // 「前回押されておらず、今回押された」ボタンがあるかチェック
+                    if (currentButtons[i] && !prevButtons[i]) {
+                        // A, B, X, Yボタン (index 0~3)
+                        if (i < 4) clicked = true
+
+                        // STARTボタン (index 9) 等をスキップに割り当て
+                        if (i === 9) {
+                            this.skip = true
+                            this.hideSkipButton()
+                        }
+                    }
+                }
+                prevButtons = currentButtons
+            }
+            // ------------------
+
             yield
         }
 

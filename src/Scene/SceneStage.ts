@@ -8,6 +8,7 @@ import { explosion, fireDeleteField, g, T } from "../global"
 import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { Stage } from "../Stage/Stage"
+import { GamepadTracker } from "../utils/GamepadTracker"
 import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
@@ -85,6 +86,7 @@ export default class SceneStage implements Scene {
 
         g.player = new Player(
             new InputKeyboard(),
+            new GamepadTracker(),
             new TouchTracker(Dom.container),
             (g.width / rect.width) * LocalStorage.getSwipeRatio(),
         )
@@ -157,6 +159,11 @@ export default class SceneStage implements Scene {
     private tick() {
         this.logic()
         this.draw()
+
+        navigator.getGamepads().forEach((gp) => {
+            if (!gp) return
+            if ([8, 9].some((index) => gp.buttons[index].pressed)) this.selfDestruct()
+        })
     }
 
     private logic() {

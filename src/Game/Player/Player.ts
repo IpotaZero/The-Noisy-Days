@@ -8,6 +8,7 @@ import { vec } from "../../utils/Vec"
 import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
+import { GamepadTracker } from "../../utils/GamepadTracker"
 
 export class Player {
     life = 8
@@ -27,6 +28,7 @@ export class Player {
 
     private readonly renderer = new PlayerRenderer()
     private readonly input: IInput
+    private readonly gamepadTracker: GamepadTracker
     private readonly touchTracker: TouchTracker
 
     private gs: Generator[] = []
@@ -36,10 +38,12 @@ export class Player {
 
     constructor(
         input: IInput,
+        gamepadTracker: GamepadTracker,
         touchTracker: TouchTracker,
         private readonly scale: number,
     ) {
         this.input = input
+        this.gamepadTracker = gamepadTracker
         this.touchTracker = touchTracker
     }
 
@@ -98,11 +102,7 @@ export class Player {
         }
     }
 
-    private drawChargeRings(
-        ctx: CanvasRenderingContext2D,
-        i: number,
-        frame: number,
-    ) {
+    private drawChargeRings(ctx: CanvasRenderingContext2D, i: number, frame: number) {
         const r = Ease.Out(i / frame) * this.GRAZE_R * 3 + this.GRAZE_R * 3
         ctx.globalAlpha = 1 - i / frame
         Ctx.arc(ctx, this.p.l, r, "#ffffff80", { lineWidth: 2 })
@@ -112,17 +112,11 @@ export class Player {
         Ctx.arc(ctx, this.p.l, r / 2, "#ffffff80", { lineWidth: 2 })
     }
 
-    private drawChargeText(
-        ctx: CanvasRenderingContext2D,
-        i: number,
-        frame: number,
-    ) {
+    private drawChargeText(ctx: CanvasRenderingContext2D, i: number, frame: number) {
         ctx.globalAlpha = 1 - i / frame
         const text = [..."CHARGED"]
         text.forEach((c, index) => {
-            const p = this.p.plus(
-                vec.arg(T * (index / text.length)).scaled(this.GRAZE_R * 3),
-            )
+            const p = this.p.plus(vec.arg(T * (index / text.length)).scaled(this.GRAZE_R * 3))
             Ctx.text(ctx, p.l, "#ffffff80", c, {
                 fontFamily: "fraktur",
                 fontSize: this.GRAZE_R,
@@ -136,10 +130,12 @@ export class Player {
 
     private move() {
         this.applyInput()
+        this.applyGamepad()
         this.applyTouch()
         this.clampPosition()
         this.updateRenderer()
         this.input.tick()
+        this.gamepadTracker.tick()
     }
 
     private applyInput() {
@@ -158,10 +154,28 @@ export class Player {
         this.p.add(this.v)
     }
 
-    private applySpeedModifier(
-        pressed: Set<Operation>,
-        pushed: Set<Operation>,
-    ) {
+    private applyGamepad() {
+        const { axis, isSlow, isDashPushed } = this.gamepadTracker
+        if (axis.x === 0 && axis.y === 0 && !isDashPushed) return
+
+        let v = axis.clone()
+        if (v.magnitude() > 1) v.normalize()
+
+        // 速度補正（デジタル入力側の dashFrame 等と干渉しないよう注意）
+        if (isSlow) v.scale(0.5)
+
+        if (isDashPushed && this.dashCoolDown === 0) {
+            SE.dash.play()
+            this.dashFrame = this.DASH_FRAME
+            this.dashCoolDown = this.DASH_COOL_DOWN
+        }
+
+        if (this.dashFrame > 0) v.scale(7)
+
+        this.p.add(v.scaled(this.BASE_SPEED))
+    }
+
+    private applySpeedModifier(pressed: Set<Operation>, pushed: Set<Operation>) {
         if (pressed.has(Operation.Slow)) {
             this.v.scale(0.5)
             return
@@ -191,14 +205,7 @@ export class Player {
     }
 
     private updateRenderer() {
-        this.renderer.tick(
-            this.v.x > 0,
-            this.v.x < 0,
-            this.isSneaking(),
-            this.dashFrame > 0,
-            this.p.x,
-            this.p.y,
-        )
+        this.renderer.tick(this.v.x > 0, this.v.x < 0, this.isSneaking(), this.dashFrame > 0, this.p.x, this.p.y)
     }
 
     // ----------------------------------------------------------------
@@ -237,6 +244,6 @@ export class Player {
     }
 
     private isSneaking() {
-        return this.input.pressed.has(Operation.Slow)
+        return this.input.pressed.has(Operation.Slow) || this.gamepadTracker.isSlow
     }
 }

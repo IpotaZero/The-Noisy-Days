@@ -28,7 +28,7 @@ export class GamepadOperator {
             this.add("left", gp.axes[0] < -0.5)
         })
 
-        if (!this.removed) return
+        if (this.removed) return
 
         requestAnimationFrame(this.update)
     }
