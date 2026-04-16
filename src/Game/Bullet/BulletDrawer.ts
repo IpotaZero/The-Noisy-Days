@@ -1,3 +1,4 @@
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 import { Bullet } from "./Bullet"
 
 export class BulletDrawer {
@@ -62,14 +63,15 @@ export class BulletDrawer {
         context.lineWidth = 3
         context.stroke()
 
-        context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r / 2
-        context.strokeStyle = "white"
-        context.lineWidth = 2
-
-        context.stroke()
-        context.lineWidth = 1
-        context.stroke()
+        if (!isSmartPhone) {
+            context.shadowColor = bullet.color
+            context.shadowBlur = bullet.r / 2
+            context.strokeStyle = "white"
+            context.lineWidth = 2
+            context.stroke()
+            context.lineWidth = 1
+            context.stroke()
+        }
 
         return canvas
     }
@@ -81,19 +83,19 @@ export class BulletDrawer {
 
         const context = canvas.getContext("2d")!
 
+        context.beginPath()
+        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
+
         context.shadowColor = bullet.color
         context.shadowBlur = bullet.r
         context.fillStyle = bullet.color
+        context.fill()
 
         context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r + 1, 0, Math.PI * 2)
-        context.fill()
+        context.arc(bullet.r * 2, bullet.r * 2, bullet.r * 0.85, 0, Math.PI * 2)
 
         context.shadowColor = "white"
         context.fillStyle = "white"
-
-        context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
         context.fill()
 
         return canvas
@@ -107,8 +109,10 @@ export class BulletDrawer {
         const context = canvas.getContext("2d")!
         context.fillStyle = bullet.color
 
-        context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r * 2
+        if (!isSmartPhone) {
+            context.shadowColor = bullet.color
+            context.shadowBlur = bullet.r * 2
+        }
 
         context.save()
         context.translate(bullet.r * 2, bullet.r * 2)
@@ -143,8 +147,10 @@ export class BulletDrawer {
 
         const context = canvas.getContext("2d")!
 
-        context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r * 2
+        if (!isSmartPhone) {
+            context.shadowColor = bullet.color
+            context.shadowBlur = bullet.r * 2
+        }
 
         context.save()
         context.translate(bullet.r * 2, bullet.r * 2)
@@ -173,8 +179,10 @@ export class BulletDrawer {
 
         const context = canvas.getContext("2d")!
 
-        context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r * 2
+        if (!isSmartPhone) {
+            context.shadowColor = bullet.color
+            context.shadowBlur = bullet.r * 2
+        }
 
         context.save()
         context.translate(bullet.r * 2, bullet.r * 2)

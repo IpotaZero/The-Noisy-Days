@@ -1,4 +1,4 @@
-import { Stage } from "../Stage"
+import { Stage } from "./Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {

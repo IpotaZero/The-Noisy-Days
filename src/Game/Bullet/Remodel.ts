@@ -30,7 +30,7 @@ export class Remodel {
         g.bullets.push(...this.bullets)
     }
 
-    static *appear(me: Bullet, frame: number) {
+    static *appear(me: Bullet, frame: number = 30) {
         const r = me.r
 
         for (let i = 1; i < frame + 1; i++) {

@@ -79,6 +79,7 @@ class Child extends Enemy {
         remodel()
             .appearance(Bullet.Appearance.Ball)
             .colorful(this.frame + this.index * 30)
+            .g((me) => Remodel.appear(me, 15))
             .r(6)
             .p(this.p.clone())
             .radian(T / 4)
