@@ -4,12 +4,40 @@ import { g } from "../global"
 export abstract class Stage {
     private generator!: Generator<void, void, unknown>
 
+    private skip = false
+
+    private skipButton: HTMLButtonElement | null = null
+
     constructor() {
         this.reset()
     }
 
     reset() {
         this.generator = this.G()
+        this.skip = false
+    }
+
+    stopSkip() {
+        this.skip = false
+    }
+
+    private showSkipButton() {
+        if (this.skipButton) return
+
+        const button = document.createElement("button")
+        button.textContent = "SKIP"
+        button.classList.add("stage-skip-button")
+        button.addEventListener("click", () => {
+            this.skip = true
+            this.hideSkipButton()
+        })
+        Dom.container.appendChild(button)
+        this.skipButton = button
+    }
+
+    private hideSkipButton() {
+        this.skipButton?.remove()
+        this.skipButton = null
     }
 
     tick() {
@@ -20,10 +48,17 @@ export abstract class Stage {
 
     protected abstract G(): Generator<void, void, unknown>
 
-    protected *text(text: string, option: { name?: string } = {}): Generator<void, void, unknown> {
+    protected *text(
+        text: string,
+        option: { name?: string } = {},
+    ): Generator<void, void, unknown> {
+        if (this.skip) return
+
         const div = document.createElement("div")
 
-        const name = option.name ? `<div class="stage-text-name">${option.name}</div>` : ""
+        const name = option.name
+            ? `<div class="stage-text-name">${option.name}</div>`
+            : ""
 
         div.innerHTML = `
             ${name}
@@ -32,16 +67,21 @@ export abstract class Stage {
         div.classList.add("stage-text-container")
         Dom.container.appendChild(div)
 
+        this.showSkipButton()
         yield* this.ok()
+        this.hideSkipButton()
 
         div.remove()
     }
 
     protected *wait(frame: number): Generator<void, void, unknown> {
+        if (this.skip) return
         yield* Array(frame)
     }
 
     protected *ok(): Generator<void, void, unknown> {
+        if (this.skip) return
+
         const abort = new AbortController()
 
         let clicked = false
@@ -56,14 +96,18 @@ export abstract class Stage {
         window.addEventListener(
             "keydown",
             (e) => {
-                if (e.code === "Enter" || e.code === "Space" || e.code === "KeyZ") {
+                if (
+                    e.code === "Enter" ||
+                    e.code === "Space" ||
+                    e.code === "KeyZ"
+                ) {
                     clicked = true
                 }
             },
             { signal: abort.signal },
         )
 
-        while (!clicked) {
+        while (!clicked && !this.skip) {
             yield
         }
 
@@ -85,7 +129,9 @@ export abstract class Stage {
             Dom.container.appendChild(img)
         } else {
             Dom.container.querySelectorAll(".stage-background").forEach((i) => {
-                i.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1000 }).finished.then(() => {
+                i.animate([{ opacity: 1 }, { opacity: 0 }], {
+                    duration: 1000,
+                }).finished.then(() => {
                     i.remove()
                 })
             })
