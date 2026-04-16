@@ -12,7 +12,7 @@ import { g } from "../global"
 import { MathEx } from "../utils/Functions/MathEx"
 import { Awaits } from "../utils/Functions/Awaits"
 
-const FINISHED = 19
+const FINISHED = 21
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -42,14 +42,10 @@ export default class implements Scene {
         const html = createPage()
         Dom.container.insertAdjacentHTML("beforeend", html)
 
-        await this.pages.loadFromFile(
-            Dom.container,
-            "./asset/page/title/title.html",
-            {
-                history: this.config.history ?? ["title"],
-                override: false,
-            },
-        )
+        await this.pages.loadFromFile(Dom.container, "./asset/page/title/title.html", {
+            history: this.config.history ?? ["title"],
+            override: false,
+        })
 
         Dom.container.style.opacity = "1"
 
@@ -67,10 +63,7 @@ export default class implements Scene {
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
         this.unlockStage()
-        this.lock(
-            this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED],
-            "unimplemented",
-        )
+        this.lock(this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED], "unimplemented")
     }
 
     private setupUnlockAnimation() {
@@ -90,8 +83,7 @@ export default class implements Scene {
         const firstUncleared = LocalStorage.getFirstUncleared()
         if (this.config.clear + 1 < firstUncleared) return
 
-        const targetChapterPageId =
-            chapterList[Math.floor(this.config.clear / 16)] // クリアしたステージのChapterページIDを計算
+        const targetChapterPageId = chapterList[Math.floor(this.config.clear / 16)] // クリアしたステージのChapterページIDを計算
         const pageId = this.pages.getCurrentPageId()
         if (pageId !== "chapter-" + targetChapterPageId) return
 
@@ -142,19 +134,13 @@ export default class implements Scene {
     }
 
     private setupSetting() {
-        const swipeRatio = this.selector.getFirst(
-            "swipe-ratio",
-            HTMLNumberElement,
-        )
+        const swipeRatio = this.selector.getFirst("swipe-ratio", HTMLNumberElement)
 
         swipeRatio.oninput = () => {
             LocalStorage.setSwipeRatio(swipeRatio.value)
         }
 
-        const volumeBGM = this.selector.getFirst(
-            "volume-bgm",
-            HTMLNumberElement,
-        )
+        const volumeBGM = this.selector.getFirst("volume-bgm", HTMLNumberElement)
 
         volumeBGM.oninput = () => {
             LocalStorage.setVolumeBGM(volumeBGM.value)
@@ -187,43 +173,30 @@ export default class implements Scene {
         const firstUnclearedAct = Math.floor(firstUnclearedStage / 4)
         const firstUnclearedChapter = Math.floor(firstUnclearedAct / 4)
 
-        this.selector
-            .getAll("stage-button", HTMLButtonElement)
-            .forEach((button, index) => {
-                if (index > firstUnclearedStage) {
-                    this.lock(button)
-                }
-            })
+        this.selector.getAll("stage-button", HTMLButtonElement).forEach((button, index) => {
+            if (index > firstUnclearedStage) {
+                this.lock(button)
+            }
+        })
 
-        this.selector
-            .getAll("act-button", HTMLButtonElement)
-            .forEach((button, index) => {
-                if (index > firstUnclearedAct) {
-                    this.lock(button)
-                }
-            })
+        this.selector.getAll("act-button", HTMLButtonElement).forEach((button, index) => {
+            if (index > firstUnclearedAct) {
+                this.lock(button)
+            }
+        })
 
-        this.selector
-            .getAll("chapter-button", HTMLButtonElement)
-            .forEach((button, index) => {
-                if (index > firstUnclearedChapter) {
-                    this.lock(button)
-                }
-            })
+        this.selector.getAll("chapter-button", HTMLButtonElement).forEach((button, index) => {
+            if (index > firstUnclearedChapter) {
+                this.lock(button)
+            }
+        })
     }
 
-    private lock(
-        button: HTMLButtonElement,
-        reason: "normal" | "unimplemented" = "normal",
-    ) {
+    private lock(button: HTMLButtonElement, reason: "normal" | "unimplemented" = "normal") {
         const text = reason === "normal" ? "--:: 封 ::--" : "×=× 未 ×=×"
-        const className =
-            reason === "normal" ? "lock-normal" : "lock-unimplemented"
+        const className = reason === "normal" ? "lock-normal" : "lock-unimplemented"
 
-        button.insertAdjacentHTML(
-            "beforeend",
-            `<div class="lock ${className}">${text}</div>`,
-        )
+        button.insertAdjacentHTML("beforeend", `<div class="lock ${className}">${text}</div>`)
         button.disabled = true
     }
 
@@ -268,10 +241,7 @@ export default class implements Scene {
             const chapterIndex = index
             const actIndex = chapterIndex * 4
             const stageIndex = actIndex * 4
-            const chapterStages: number[] = stages.slice(
-                stageIndex,
-                stageIndex + 16,
-            )
+            const chapterStages: number[] = stages.slice(stageIndex, stageIndex + 16)
 
             const progress = Math.floor((MathEx.sum(chapterStages) / 32) * 100)
 
@@ -308,12 +278,7 @@ export default class implements Scene {
 
                 const stage = new Stage()
                 const scene = await import(`./SceneStage`).then(
-                    (module) =>
-                        new module.default(
-                            stageIndex,
-                            stage,
-                            this.pages.getHistory(),
-                        ),
+                    (module) => new module.default(stageIndex, stage, this.pages.getHistory()),
                 )
                 return scene
             },
@@ -356,9 +321,7 @@ function createPage(): string {
                 </div>
             `
 
-            const actPages = chapter["acts"]
-                .map((act) => createActPage(chapter["chapter-name"], act))
-                .join("")
+            const actPages = chapter["acts"].map((act) => createActPage(chapter["chapter-name"], act)).join("")
 
             return chapterPage + actPages
         })

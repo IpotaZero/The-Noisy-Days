@@ -55,25 +55,17 @@ export class SE {
     static unlock: Sound
 
     static async init() {
-        ;[
-            this.start,
-            this.graze,
-            this.u,
-            this.hit,
-            this.crush,
-            this.dash,
-            this.charge,
-            this.unlock,
-        ] = await Promise.all([
-            Sound.new("asset/se/mushi.mp3", 0.5),
-            Sound.new("asset/se/graze.wav", 0.1),
-            Sound.new("asset/se/u.mp3"),
-            Sound.new("asset/se/player_hit.mp3"),
-            Sound.new("asset/se/crush.mp3"),
-            Sound.new("asset/se/dash.mp3"),
-            Sound.new("asset/se/se_charge.mp3"),
-            Sound.new("asset/se/ドアを開ける2.mp3"),
-        ])
+        ;[this.start, this.graze, this.u, this.hit, this.crush, this.dash, this.charge, this.unlock] =
+            await Promise.all([
+                Sound.new("asset/se/mushi.mp3", 0.5),
+                Sound.new("asset/se/graze.wav", 0.1),
+                Sound.new("asset/se/u.mp3"),
+                Sound.new("asset/se/player_hit.mp3"),
+                Sound.new("asset/se/crush.mp3"),
+                Sound.new("asset/se/dash.mp3"),
+                Sound.new("asset/se/se_charge.mp3"),
+                Sound.new("asset/se/ドアを開ける2.mp3"),
+            ])
     }
 
     static setVolume(volume: number) {

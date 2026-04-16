@@ -48,17 +48,12 @@ export abstract class Stage {
 
     protected abstract G(): Generator<void, void, unknown>
 
-    protected *text(
-        text: string,
-        option: { name?: string } = {},
-    ): Generator<void, void, unknown> {
+    protected *text(text: string, option: { name?: string } = {}): Generator<void, void, unknown> {
         if (this.skip) return
 
         const div = document.createElement("div")
 
-        const name = option.name
-            ? `<div class="stage-text-name">${option.name}</div>`
-            : ""
+        const name = option.name ? `<div class="stage-text-name">${option.name}</div>` : ""
 
         div.innerHTML = `
             ${name}
@@ -96,11 +91,7 @@ export abstract class Stage {
         window.addEventListener(
             "keydown",
             (e) => {
-                if (
-                    e.code === "Enter" ||
-                    e.code === "Space" ||
-                    e.code === "KeyZ"
-                ) {
+                if (e.code === "Enter" || e.code === "Space" || e.code === "KeyZ") {
                     clicked = true
                 }
             },

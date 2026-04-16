@@ -52,12 +52,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         console.warn("フォントの読み込みに時間がかかりすぎ。スキップします。")
     }
 
-    SceneChanger.init(
-        Dom.container,
-        await import("./Scene/SceneTitle").then(
-            (module) => new module.default(),
-        ),
-    )
+    SceneChanger.init(Dom.container, await import("./Scene/SceneTitle").then((module) => new module.default()))
 
     loading.remove()
 })

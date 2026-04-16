@@ -4,8 +4,8 @@ import { KeyboardOperator } from "./KeyboardOperator"
 import { buildGrid, hidePointerTemporarily } from "./util"
 
 export type Operation = "right" | "left" | "up" | "down" | "ok" | "cancel"
-export type Grid = HTMLElement[][]
-export type FocusKey = [number, number]
+export type Grid = readonly (readonly HTMLElement[])[]
+export type FocusKey = readonly [number, number]
 
 export class Focuses {
     private static readonly FOCUS_CLASS = "nav-focus"
@@ -40,6 +40,17 @@ export class Focuses {
         this.blur()
         this.gridHandler.setGrid(buildGrid(page))
         this.focus()
+    }
+
+    static setUnitButton(button: HTMLElement | undefined) {
+        this.blur()
+
+        if (button) {
+            this.gridHandler.setGrid([[button]])
+            this.focus()
+        } else {
+            this.gridHandler.setGrid([[]])
+        }
     }
 
     private static focus() {
@@ -109,7 +120,7 @@ export class Focuses {
         current.classList.add(this.FOCUS_CLASS)
 
         if (!noScroll) {
-            current.scrollIntoView({ "behavior": "smooth", "block": "center" })
+            current.scrollIntoView({ behavior: "smooth", block: "center" })
         }
     }
 }
