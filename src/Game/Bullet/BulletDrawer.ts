@@ -82,7 +82,7 @@ export class BulletDrawer {
         const context = canvas.getContext("2d")!
 
         context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r * 2
+        context.shadowBlur = bullet.r
         context.fillStyle = bullet.color
 
         context.beginPath()
