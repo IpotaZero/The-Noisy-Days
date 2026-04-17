@@ -36,19 +36,20 @@ class E extends Enemy {
     private readonly curve = Curves.lissajous(g.width * 0.6, g.height / 3, 5, 12)
 
     constructor() {
-        super(1200, 64)
+        super(900, 64)
 
         this.moveTo(vec(0, -g.height / 4), 60)
     }
 
     *G() {
         remodel()
-            .appearance(Bullet.Appearance.Line)
-            .collision(Bullet.Collision.Line)
+            .appearance(Bullet.Appearance.Arrow)
+            .collision(Bullet.Collision.Arrow)
             .colorful(this.frame)
             .p(this.p.clone())
             .speed(6)
             .radian(T * (this.frame / 360))
+            .r(28)
             .ex(2)
             .fire()
 
@@ -70,14 +71,12 @@ class Child0 extends Enemy {
     *G() {
         remodel()
             .colorful(this.frame * 2)
-            .appearance(Bullet.Appearance.Ball)
             .p(this.p.clone())
-            .r(6)
-            .ex(13)
-            .g((me) => Remodel.reaccel(me, 15, 15, 15))
+            .radian(T / 4)
+            .sim(3, 6, 12)
             .fire()
 
-        yield* Array(50)
+        yield* Array(30)
     }
 }
 
@@ -89,30 +88,36 @@ class Child1 extends Enemy {
 
     *G() {
         remodel()
+            .appearance(Bullet.Appearance.Ball)
+            .r(6)
             .colorful(this.frame * 2)
             .p(this.p.clone())
-            .radian(T / 4)
+            .ex(13)
+            .g(function* (me) {
+                yield* Remodel.stop(me, 15)
+                me.radian = T / 4
+                yield* Remodel.accel(me, 15, 12)
+            })
             .fire()
 
-        yield* Array(40)
+        yield* Array(120)
     }
 }
 
 class Child2 extends Enemy {
     constructor(parent: Enemy, index: number) {
         super(200, 32, new EnemyRendererMob())
-        this.setParent(parent, () => vec(200 * (2 * index - 1), 0))
+        this.setParent(parent, () => vec.arg(T * (this.frame / 720) + index * (T / 2)).scaled(200))
     }
 
     *G() {
         remodel()
             .colorful(this.frame * 2)
-            .collision(Bullet.Collision.Arrow)
-            .appearance(Bullet.Appearance.Arrow)
+            .appearance(Bullet.Appearance.Ball)
             .speed(12)
             .p(this.p.clone())
             .r(28)
-            .aim(g.player.p)
+            .radian(T / 4)
             .fire()
 
         yield* Array(60)
