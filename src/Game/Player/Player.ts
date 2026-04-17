@@ -1,5 +1,5 @@
 import { g, T } from "../../global"
-import { TouchTracker } from "../../utils/TouchTracker"
+import { TouchTracker } from "../../utils/UnifiedInput/TouchTracker"
 import { Bullet } from "../Bullet/Bullet"
 import { IInput, Operation } from "./Input"
 import { PlayerRenderer } from "./PlayerRenderer"
@@ -155,7 +155,9 @@ export class Player {
     }
 
     private applyGamepad() {
-        const { axis, isSlow, isDashPushed } = this.gamepadTracker
+        const { isSlow, isDashPushed } = this.gamepadTracker
+        const axis = this.gamepadTracker.getAxis()
+
         if (axis.x === 0 && axis.y === 0 && !isDashPushed) return
 
         let v = axis.clone()

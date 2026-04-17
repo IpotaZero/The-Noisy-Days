@@ -42,9 +42,17 @@ class E extends Enemy {
     }
 
     *G() {
-        remodel().colorful(this.frame).p(this.p.clone()).speed(6).aim(g.player.p).ex(13).fire()
+        remodel()
+            .appearance(Bullet.Appearance.Line)
+            .collision(Bullet.Collision.Line)
+            .colorful(this.frame)
+            .p(this.p.clone())
+            .speed(6)
+            .radian(T * (this.frame / 360))
+            .ex(2)
+            .fire()
 
-        yield* Array(30)
+        yield* Array(10)
     }
 
     *H() {

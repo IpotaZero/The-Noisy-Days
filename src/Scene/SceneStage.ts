@@ -13,7 +13,7 @@ import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
-import { TouchTracker } from "../utils/TouchTracker"
+import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
 import { vec } from "../utils/Vec"
 import { Scene } from "./Scene"
 
@@ -86,7 +86,7 @@ export default class SceneStage implements Scene {
 
         g.player = new Player(
             new InputKeyboard(),
-            new GamepadTracker(),
+            new GamepadTracker(0),
             new TouchTracker(Dom.container),
             (g.width / rect.width) * LocalStorage.getSwipeRatio(),
         )

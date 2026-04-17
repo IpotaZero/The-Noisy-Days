@@ -63,14 +63,14 @@ const HueActs = [
 
 // Chapter 1: Saturation
 const VividStages = [
-    { "stage-name": "アオ", "description": "" },
+    { "stage-name": "アオ", "description": "アオ・ササキに対するインタビュー" },
     { "stage-name": "Scarlet", "description": "" },
     { "stage-name": "Cobalt", "description": "" },
     { "stage-name": "Gold", "description": "" },
 ]
 
 const MutedStages = [
-    { "stage-name": "ヤナガワ", "description": "" },
+    { "stage-name": "ヤナガワ", "description": "シュンスケ・ヤナガワとの密談" },
     { "stage-name": "Rust", "description": "" },
     { "stage-name": "Khaki", "description": "" },
     { "stage-name": "Olive", "description": "" },

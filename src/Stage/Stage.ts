@@ -112,14 +112,7 @@ export abstract class Stage {
                 for (let i = 0; i < currentButtons.length; i++) {
                     // 「前回押されておらず、今回押された」ボタンがあるかチェック
                     if (currentButtons[i] && !prevButtons[i]) {
-                        // A, B, X, Yボタン (index 0~3)
-                        if (i < 4) clicked = true
-
-                        // STARTボタン (index 9) 等をスキップに割り当て
-                        if (i === 9) {
-                            this.skip = true
-                            this.hideSkipButton()
-                        }
+                        clicked = true
                     }
                 }
                 prevButtons = currentButtons
