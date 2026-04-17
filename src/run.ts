@@ -8,11 +8,13 @@ import { SceneChanger } from "./utils/SceneChanger"
 import { SE } from "./SE"
 import { LocalStorage } from "./LocalStorage"
 import { Awaits } from "./utils/Functions/Awaits"
+import { g } from "./global"
 HTMLNumberElement
 HTMLRadioElement
 
 window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
+
     Focuses.init()
 
     if (isSmartPhone) {

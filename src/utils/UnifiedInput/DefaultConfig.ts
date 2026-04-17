@@ -85,11 +85,10 @@ export const DEFAULT_CONFIG: ConfigMap = {
     ],
     [Action.Skip]: [
         { device: "keyboard", code: "KeyS" },
-        { device: "gamepadButton", index: 1 },
+        { device: "gamepadButton", index: 8 }, // Select/Share
     ],
     [Action.Pause]: [
         { device: "keyboard", code: "Escape" },
-        { device: "gamepadButton", index: 8 }, // Select/Share
         { device: "gamepadButton", index: 9 }, // Start/Options
     ],
 }
