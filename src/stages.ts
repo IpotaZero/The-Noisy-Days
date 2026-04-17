@@ -30,11 +30,11 @@ const NeutralStages = [
 
 const AchromaticStages = [
     { "stage-name": "機械大戦", "description": "歴史" },
-    { "stage-name": "White", "description": "" },
-    { "stage-name": "Gray", "description": "" },
+    { "stage-name": "White", "description": "単純に数の多い自機狙い" },
+    { "stage-name": "Gray", "description": "真下に小粒をばらまく" },
     {
         "stage-name": "Black",
-        "description": "",
+        "description": "スナガワ",
     },
 ]
 
