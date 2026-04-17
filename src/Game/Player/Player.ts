@@ -1,14 +1,12 @@
 import { g, T } from "../../global"
-import { TouchTracker } from "../../utils/UnifiedInput/TouchTracker"
 import { Bullet } from "../Bullet/Bullet"
-import { IInput, Operation } from "./Input"
 import { PlayerRenderer } from "./PlayerRenderer"
 import { remodel } from "../Bullet/Remodel"
 import { vec } from "../../utils/Vec"
 import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
-import { GamepadTracker } from "../../utils/GamepadTracker"
+import { Action, IUnifiedInput } from "../../utils/UnifiedInput/Input"
 
 export class Player {
     life = 8
@@ -27,9 +25,6 @@ export class Player {
     readonly BASE_SPEED = 20
 
     private readonly renderer = new PlayerRenderer()
-    private readonly input: IInput
-    private readonly gamepadTracker: GamepadTracker
-    private readonly touchTracker: TouchTracker
 
     private gs: Generator[] = []
 
@@ -37,15 +32,9 @@ export class Player {
     isDead = false
 
     constructor(
-        input: IInput,
-        gamepadTracker: GamepadTracker,
-        touchTracker: TouchTracker,
+        private readonly input: IUnifiedInput,
         private readonly scale: number,
-    ) {
-        this.input = input
-        this.gamepadTracker = gamepadTracker
-        this.touchTracker = touchTracker
-    }
+    ) {}
 
     damage() {
         this.deadFrame = this.DASH_COOL_DOWN
@@ -54,7 +43,6 @@ export class Player {
 
     remove() {
         this.input.remove()
-        this.touchTracker.remove()
         this.isDead = true
         this.p.y = -g.height
     }
@@ -130,59 +118,41 @@ export class Player {
 
     private move() {
         this.applyInput()
-        this.applyGamepad()
         this.applyTouch()
         this.clampPosition()
         this.updateRenderer()
         this.input.tick()
-        this.gamepadTracker.tick()
     }
 
     private applyInput() {
-        const { pressed, pushed } = this.input
         this.v = vec(0, 0)
 
-        if (pressed.has(Operation.Right)) this.v.x += 1
-        if (pressed.has(Operation.Left)) this.v.x -= 1
-        if (pressed.has(Operation.Down)) this.v.y += 1
-        if (pressed.has(Operation.Up)) this.v.y -= 1
+        // Analog 優先（スティックが入力中ならそちらを使う）
+        const axisX = this.input.getAxis(Action.MoveX)
+        const axisY = this.input.getAxis(Action.MoveY)
 
-        this.v.normalize()
-        this.applySpeedModifier(pressed, pushed)
+        if (axisX !== 0 || axisY !== 0) {
+            this.v = vec(axisX, axisY)
+        } else {
+            // Digital フォールバック
+            if (this.input.isPressed(Action.MoveRight)) this.v.x += 1
+            if (this.input.isPressed(Action.MoveLeft)) this.v.x -= 1
+            if (this.input.isPressed(Action.MoveDown)) this.v.y += 1
+            if (this.input.isPressed(Action.MoveUp)) this.v.y -= 1
+        }
 
+        if (this.v.magnitude() > 1) this.v.normalize()
+        this.applySpeedModifier()
         this.v.scale(this.BASE_SPEED)
         this.p.add(this.v)
     }
 
-    private applyGamepad() {
-        const { isSlow, isDashPushed } = this.gamepadTracker
-        const axis = this.gamepadTracker.getAxis()
-
-        if (axis.x === 0 && axis.y === 0 && !isDashPushed) return
-
-        let v = axis.clone()
-        if (v.magnitude() > 1) v.normalize()
-
-        // 速度補正（デジタル入力側の dashFrame 等と干渉しないよう注意）
-        if (isSlow) v.scale(0.5)
-
-        if (isDashPushed && this.dashCoolDown === 0) {
-            SE.dash.play()
-            this.dashFrame = this.DASH_FRAME
-            this.dashCoolDown = this.DASH_COOL_DOWN
-        }
-
-        if (this.dashFrame > 0) v.scale(7)
-
-        this.p.add(v.scaled(this.BASE_SPEED))
-    }
-
-    private applySpeedModifier(pressed: Set<Operation>, pushed: Set<Operation>) {
-        if (pressed.has(Operation.Slow)) {
+    private applySpeedModifier() {
+        if (this.input.isPressed(Action.Slow)) {
             this.v.scale(0.5)
             return
         }
-        if (pushed.has(Operation.Dash) && this.dashCoolDown === 0) {
+        if (this.input.isPushed(Action.Dash) && this.dashCoolDown === 0) {
             SE.dash.play()
             this.dashFrame = this.DASH_FRAME
             this.dashCoolDown = this.DASH_COOL_DOWN
@@ -191,7 +161,7 @@ export class Player {
     }
 
     private applyTouch() {
-        const delta = this.touchTracker.getDelta()
+        const delta = this.input.getPointerDelta()
         if (delta) {
             this.p.x += delta.dx * this.scale
             this.p.y += delta.dy * this.scale
@@ -246,6 +216,6 @@ export class Player {
     }
 
     private isSneaking() {
-        return this.input.pressed.has(Operation.Slow) || this.gamepadTracker.isSlow
+        return this.input.isPressed(Action.Slow)
     }
 }

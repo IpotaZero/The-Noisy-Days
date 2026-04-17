@@ -39,7 +39,7 @@ export type GamepadAxisDigitalBinding = {
     device: "gamepadAxisDigital"
     axis: number
     direction: "+" | "-"
-    threshold?: number // デフォルト 0.5
+    threshold?: number // デフォルト 0.1
 }
 
 /**

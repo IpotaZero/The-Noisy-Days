@@ -4,7 +4,7 @@
  *
  * - rAFループは呼び出し側が管理する
  * - getDelta() を毎フレーム呼ぶことで、前フレームからの変化量を取得する
- * - AbortController はクラス内部で保持し、destroy() で一括解除する
+ * - AbortController はクラス内部で保持し、remove() で一括解除する
  */
 
 export interface TouchDelta {

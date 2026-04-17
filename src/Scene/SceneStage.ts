@@ -2,19 +2,18 @@ import { Dom } from "../Dom"
 import { Bullet } from "../Game/Bullet/Bullet"
 import { BulletDrawer } from "../Game/Bullet/BulletDrawer"
 import { Collision } from "../Game/Collision"
-import { InputKeyboard } from "../Game/Player/InputKeyboard"
 import { Player } from "../Game/Player/Player"
 import { explosion, fireDeleteField, g, T } from "../global"
 import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { Stage } from "../Stage/Stage"
-import { GamepadTracker } from "../utils/GamepadTracker"
 import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
-import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
-import { vec } from "../utils/Vec"
+import { DEFAULT_CONFIG } from "../utils/UnifiedInput/DefaultConfig"
+import { Action } from "../utils/UnifiedInput/Input"
+import { UnifiedInput } from "../utils/UnifiedInput/UnifiedInput"
 import { Scene } from "./Scene"
 
 export default class SceneStage implements Scene {
@@ -28,7 +27,7 @@ export default class SceneStage implements Scene {
 
     private isFinished = false
 
-    private readonly ac = new AbortController()
+    private readonly input
 
     constructor(
         private readonly stageIndex: number,
@@ -49,6 +48,8 @@ export default class SceneStage implements Scene {
             ".back": { alias: "back", expectedCount: 2 },
             ".retry": { alias: "retry", expectedCount: 2 },
         })
+
+        this.input = new UnifiedInput(DEFAULT_CONFIG, 0, Dom.container)
     }
 
     private onClear() {
@@ -67,7 +68,6 @@ export default class SceneStage implements Scene {
         this.selector.load(Dom.container)
         this.selector.onClick("back", () => this.backScene())
         this.selector.onClick("retry", () => this.retry())
-        this.setupSelfDestruct()
         this.setupCanvas()
 
         this.looper.start()
@@ -84,39 +84,7 @@ export default class SceneStage implements Scene {
 
         this.ctx = cvs.getContext("2d", { alpha: false })!
 
-        g.player = new Player(
-            new InputKeyboard(),
-            new GamepadTracker(0),
-            new TouchTracker(Dom.container),
-            (g.width / rect.width) * LocalStorage.getSwipeRatio(),
-        )
-    }
-
-    private setupSelfDestruct() {
-        const { signal } = this.ac
-
-        window.addEventListener(
-            "keydown",
-            (e) => {
-                if (e.code === "Escape") this.selfDestruct()
-
-                if (e.code === "Delete") {
-                    const e = g.enemies.at(-1)
-                    if (e) {
-                        e.life = 0
-                    }
-                }
-            },
-            { signal },
-        )
-
-        Dom.container.addEventListener(
-            "touchstart",
-            (e) => {
-                if (e.touches.length >= 3) this.selfDestruct()
-            },
-            { passive: true, signal },
-        )
+        g.player = new Player(this.input, (g.width / rect.width) * LocalStorage.getSwipeRatio())
     }
 
     private backScene() {
@@ -153,17 +121,16 @@ export default class SceneStage implements Scene {
         g.bullets = []
         g.enemies = []
         g.player.remove()
-        this.ac.abort()
+        this.input.remove()
     }
 
     private tick() {
         this.logic()
         this.draw()
 
-        navigator.getGamepads().forEach((gp) => {
-            if (!gp) return
-            if ([8, 9].some((index) => gp.buttons[index].pressed)) this.selfDestruct()
-        })
+        if (this.input.isPressed(Action.Pause)) {
+            this.selfDestruct()
+        }
     }
 
     private logic() {

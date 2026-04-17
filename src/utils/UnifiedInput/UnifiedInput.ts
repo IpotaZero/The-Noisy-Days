@@ -14,7 +14,7 @@ import { ActionId, IUnifiedInput, PointerDelta } from "./Input"
 import { Binding, ConfigMap } from "./Binding"
 import { TouchTracker } from "./TouchTracker"
 
-const DEFAULT_THRESHOLD = 0.5
+const DEFAULT_THRESHOLD = 0.1
 const DEAD_ZONE = 0.1
 
 export class UnifiedInput implements IUnifiedInput {
