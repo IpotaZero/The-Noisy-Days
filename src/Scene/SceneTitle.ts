@@ -13,7 +13,7 @@ import { MathEx } from "../utils/Functions/MathEx"
 import { Awaits } from "../utils/Functions/Awaits"
 import { createPage } from "./createPage"
 
-const FINISHED = 22
+const FINISHED = 23
 
 export default class implements Scene {
     private readonly pages = new Pages()
