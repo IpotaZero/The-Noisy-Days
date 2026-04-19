@@ -49,7 +49,7 @@ export default class SceneStage implements Scene {
             ".retry": { alias: "retry", expectedCount: 2 },
         })
 
-        this.input = new UnifiedInput(DEFAULT_CONFIG, 0)
+        this.input = g.input
     }
 
     private onClear() {
@@ -125,7 +125,6 @@ export default class SceneStage implements Scene {
         g.bullets = []
         g.enemies = []
         g.player.remove()
-        this.input.remove()
     }
 
     private tick() {
@@ -135,6 +134,8 @@ export default class SceneStage implements Scene {
         if (this.input.isPressed(Action.Pause)) {
             this.selfDestruct()
         }
+
+        this.input.tick()
     }
 
     private logic() {

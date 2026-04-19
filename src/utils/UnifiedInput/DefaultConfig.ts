@@ -51,24 +51,28 @@ export const DEFAULT_CONFIG: ConfigMap<MyActionId> = {
         { device: "keyboard", code: "KeyW" },
         { device: "gamepadAxisDigital", axis: 1, direction: "-", threshold: 0.5 },
         { device: "gamepadAxisDigital", axis: 3, direction: "-", threshold: 0.5 },
+        { device: "gamepadButton", index: 12 },
     ],
     [Action.MoveDown]: [
         { device: "keyboard", code: "ArrowDown" },
         { device: "keyboard", code: "KeyS" },
         { device: "gamepadAxisDigital", axis: 1, direction: "+", threshold: 0.5 },
         { device: "gamepadAxisDigital", axis: 3, direction: "+", threshold: 0.5 },
+        { device: "gamepadButton", index: 13 },
     ],
     [Action.MoveLeft]: [
         { device: "keyboard", code: "ArrowLeft" },
         { device: "keyboard", code: "KeyA" },
         { device: "gamepadAxisDigital", axis: 0, direction: "-", threshold: 0.5 },
         { device: "gamepadAxisDigital", axis: 2, direction: "-", threshold: 0.5 },
+        { device: "gamepadButton", index: 14 },
     ],
     [Action.MoveRight]: [
         { device: "keyboard", code: "ArrowRight" },
         { device: "keyboard", code: "KeyD" },
         { device: "gamepadAxisDigital", axis: 0, direction: "+", threshold: 0.5 },
         { device: "gamepadAxisDigital", axis: 2, direction: "+", threshold: 0.5 },
+        { device: "gamepadButton", index: 15 },
     ],
 
     // ----------------------------------------------------------------

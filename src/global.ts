@@ -17,7 +17,7 @@ export const g = {
     width: 630,
     height: 1120,
 
-    input: new UnifiedInput(DEFAULT_CONFIG, 0),
+    input: new UnifiedInput(DEFAULT_CONFIG),
 }
 
 export const T = Math.PI * 2

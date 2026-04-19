@@ -45,7 +45,6 @@ export class Player {
     }
 
     remove() {
-        this.input.remove()
         this.isDead = true
         this.p.y = -g.height
     }
@@ -120,11 +119,13 @@ export class Player {
     // ----------------------------------------------------------------
 
     private move() {
-        this.applyInput()
-        this.applyTouch()
+        if (!this.isDead) {
+            this.applyInput()
+            this.applyTouch()
+        }
+
         this.clampPosition()
         this.updateRenderer()
-        this.input.tick()
     }
 
     private applyInput() {
