@@ -10,14 +10,14 @@
  *   4. 次の tick() でフレーム単位のセット (pushed / released) がリセットされる
  */
 
-import { ActionId, IUnifiedInput, PointerDelta } from "./Input"
+import { IUnifiedInput, PointerDelta } from "./Input"
 import { Binding, ConfigMap } from "./Binding"
 import { TouchTracker } from "./TouchTracker"
 
 const DEFAULT_THRESHOLD = 0.1
 const DEAD_ZONE = 0.1
 
-export class UnifiedInput implements IUnifiedInput {
+export class UnifiedInput<ActionId extends string> implements IUnifiedInput<ActionId> {
     private readonly ac = new AbortController()
     private readonly touch: TouchTracker
 
@@ -45,7 +45,7 @@ export class UnifiedInput implements IUnifiedInput {
      * @param touchElement タッチ追跡対象の HTML 要素
      */
     constructor(
-        private readonly config: ConfigMap,
+        private readonly config: ConfigMap<ActionId>,
         private readonly gamepadIndex: number,
         touchElement: HTMLElement,
     ) {
@@ -139,7 +139,7 @@ export class UnifiedInput implements IUnifiedInput {
 
         for (const [id, bindings] of Object.entries(this.config)) {
             const action = id as ActionId
-            this.evaluateAction(action, bindings, currentButtons, currentAxes)
+            this.evaluateAction(action, bindings as Binding[], currentButtons, currentAxes)
         }
 
         this.prevButtons = currentButtons
@@ -233,7 +233,7 @@ export class UnifiedInput implements IUnifiedInput {
      */
     private isTrackedCode(code: string): boolean {
         for (const bindings of Object.values(this.config)) {
-            for (const b of bindings) {
+            for (const b of bindings as Binding[]) {
                 if (b.device === "keyboard" && b.code === code) return true
                 if (b.device === "keyboardAxis") {
                     if (b.negative === code || b.positive === code) return true

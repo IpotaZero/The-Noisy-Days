@@ -6,34 +6,6 @@
  */
 
 // ----------------------------------------------------------------
-// Action
-// ----------------------------------------------------------------
-
-/** ゲームが扱う操作の意味。物理デバイスには依存しない。 */
-export const Action = {
-    // 移動（Digital: キーボード/D-pad 向け）
-    MoveUp: "move_up",
-    MoveDown: "move_down",
-    MoveLeft: "move_left",
-    MoveRight: "move_right",
-
-    // 移動（Analog: スティック/キー昇格 向け）
-    MoveX: "move_x",
-    MoveY: "move_y",
-
-    // アクション
-    Slow: "slow",
-    Dash: "dash",
-
-    // UI
-    Confirm: "confirm",
-    Skip: "skip",
-    Pause: "pause",
-} as const
-
-export type ActionId = (typeof Action)[keyof typeof Action]
-
-// ----------------------------------------------------------------
 // IUnifiedInput
 // ----------------------------------------------------------------
 
@@ -53,7 +25,7 @@ export interface PointerDelta {
  *
  * 呼び出し側は毎フレーム tick() → 読み取り の順で使う。
  */
-export interface IUnifiedInput {
+export interface IUnifiedInput<ActionId extends string> {
     /** アクションが押し続けられているか */
     isPressed(action: ActionId): boolean
 

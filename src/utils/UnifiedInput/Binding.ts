@@ -79,4 +79,4 @@ export type Binding =
  * 1 つのアクションに複数 Binding を登録でき、OR 条件で評価される。
  * JSON シリアライズ可能なため、localStorage への永続化に対応する。
  */
-export type ConfigMap = Record<string, Binding[]>
+export type ConfigMap<ActionId extends string> = Record<ActionId, Binding[]>

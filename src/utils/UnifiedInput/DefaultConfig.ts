@@ -11,10 +11,38 @@
  *   軸: 0=左X  1=左Y  2=右X  3=右Y
  */
 
-import { Action } from "./Input"
+// ----------------------------------------------------------------
+// Action
+// ----------------------------------------------------------------
+
+/** ゲームが扱う操作の意味。物理デバイスには依存しない。 */
+export const Action = {
+    // 移動（Digital: キーボード/D-pad 向け）
+    MoveUp: "move_up",
+    MoveDown: "move_down",
+    MoveLeft: "move_left",
+    MoveRight: "move_right",
+
+    // 移動（Analog: スティック/キー昇格 向け）
+    MoveX: "move_x",
+    MoveY: "move_y",
+
+    // アクション
+    Slow: "slow",
+    Dash: "dash",
+
+    // UI
+    Confirm: "confirm",
+    Cancel: "cancel",
+    Skip: "skip",
+    Pause: "pause",
+} as const
+
 import { ConfigMap } from "./Binding"
 
-export const DEFAULT_CONFIG: ConfigMap = {
+export type MyActionId = (typeof Action)[keyof typeof Action]
+
+export const DEFAULT_CONFIG: ConfigMap<MyActionId> = {
     // ----------------------------------------------------------------
     // 移動 (Digital) - キーボード矢印 / WASD / スティック倒しきり
     // ----------------------------------------------------------------
@@ -82,6 +110,12 @@ export const DEFAULT_CONFIG: ConfigMap = {
         { device: "keyboard", code: "KeyZ" },
         { device: "keyboard", code: "Enter" },
         { device: "gamepadButton", index: 0 },
+    ],
+    [Action.Cancel]: [
+        { device: "keyboard", code: "Backspace" },
+        { device: "keyboard", code: "KeyX" },
+        { device: "keyboard", code: "Escape" },
+        { device: "gamepadButton", index: 1 },
     ],
     [Action.Skip]: [
         { device: "keyboard", code: "KeyS" },

@@ -6,7 +6,8 @@ import { vec } from "../../utils/Vec"
 import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
-import { Action, IUnifiedInput } from "../../utils/UnifiedInput/Input"
+import { IUnifiedInput } from "../../utils/UnifiedInput/Input"
+import { Action, MyActionId } from "../../utils/UnifiedInput/DefaultConfig"
 
 export class Player {
     life = 8
@@ -32,7 +33,7 @@ export class Player {
     isDead = false
 
     constructor(
-        private readonly input: IUnifiedInput,
+        private readonly input: IUnifiedInput<MyActionId>,
         private readonly scale: number,
     ) {}
 
