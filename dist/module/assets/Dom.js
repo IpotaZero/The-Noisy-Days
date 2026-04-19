@@ -1,2 +1,0 @@
-var e=class{static container;static init(){if(this.container=document.querySelector(`#container`),!this.container)throw Error(`Container element not found`)}};export{e as t};
-//# sourceMappingURL=Dom.js.map

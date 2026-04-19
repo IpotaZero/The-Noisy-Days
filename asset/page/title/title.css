@@ -205,6 +205,12 @@ button {
         border-bottom: 1px solid var(--white);
     }
 
+    h3 {
+        padding-bottom: 0.125em;
+        margin-bottom: 0.5em;
+        border-bottom: 1px var(--white-vale) solid;
+    }
+
     .setting-container {
         width: 100%;
     }
@@ -214,8 +220,7 @@ button {
         width: 100%;
         gap: 0.5em;
 
-        padding-bottom: 0.2em;
-        border-bottom: 1px var(--white-vale) solid;
+        padding-bottom: 0.25em;
 
         .input {
             display: flex;

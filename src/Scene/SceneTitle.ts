@@ -12,6 +12,10 @@ import { g } from "../global"
 import { MathEx } from "../utils/Functions/MathEx"
 import { Awaits } from "../utils/Functions/Awaits"
 import { createPage } from "./createPage"
+import { downLoadString } from "../utils/Functions/downLoadString"
+import typia from "typia"
+import { ConfigMap } from "../utils/UnifiedInput/Binding"
+import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
 
 const FINISHED = 23
 
@@ -29,10 +33,13 @@ export default class implements Scene {
             "[data-stage]": { alias: "stage-button", expectedCount: 64 },
             ".act-button": { alias: "act-button", expectedCount: 16 },
             ".chapter-button": { alias: "chapter-button", expectedCount: 4 },
+
             "#swipe-ratio": { alias: "swipe-ratio" },
             "#volume-bgm": { alias: "volume-bgm" },
             "#volume-se": { alias: "volume-se" },
             "#delete-data": { alias: "delete-data" },
+            "#download-template": { alias: "download-template" },
+            "#load-template": { alias: "load-template" },
         })
     }
 
@@ -165,6 +172,27 @@ export default class implements Scene {
                 this.setupSetting()
                 this.lockButtons()
                 this.evaluateStageCleared()
+            }
+        })
+
+        this.selector.onClick("download-template", () => {
+            downLoadString(JSON.stringify(LocalStorage.getConfig(), null, 4), "key-config")
+        })
+
+        this.selector.onClick("load-template", async () => {
+            const file = await Awaits.inputFile(".json")
+            if (!file) return
+
+            const text = await file.text()
+
+            try {
+                const obj = JSON.parse(text)
+                const config = typia.assert<ConfigMap<MyActionId>>(obj)
+                LocalStorage.setConfig(config)
+                g.input.updateConfig(config)
+            } catch (error) {
+                alert("えらー！")
+                console.error(error)
             }
         })
     }

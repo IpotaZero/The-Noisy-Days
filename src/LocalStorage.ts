@@ -1,4 +1,6 @@
 import * as lzstring from "lz-string"
+import { DEFAULT_CONFIG, MyActionId } from "./utils/UnifiedInput/DefaultConfig"
+import { Binding } from "./utils/UnifiedInput/Binding"
 
 export class LocalStorage {
     private static readonly KEY = "The Noisy Days!"
@@ -8,6 +10,8 @@ export class LocalStorage {
         swipeRatio: 1,
         volumeBGM: 9,
         volumeSE: 9,
+
+        config: DEFAULT_CONFIG,
     }
 
     private static get(): Data {
@@ -83,6 +87,16 @@ export class LocalStorage {
         this.set(data)
     }
 
+    static getConfig() {
+        return this.get().config ?? DEFAULT_CONFIG
+    }
+
+    static setConfig(value: Record<MyActionId, readonly Binding[]>) {
+        const data = this.get()
+        data.config = value
+        this.set(data)
+    }
+
     static clear() {
         localStorage.removeItem(this.KEY)
     }
@@ -93,5 +107,7 @@ type Data = {
     swipeRatio: number
     volumeBGM: number
     volumeSE: number
+
+    config: Record<MyActionId, readonly Binding[]>
 }
 ;(window as any).LocalStorage = LocalStorage

@@ -42,7 +42,7 @@ export class UnifiedInput<ActionId extends string> implements IUnifiedInput<Acti
      * @param gamepadIndex 使用するゲームパッドのインデックス (通常 0)
      */
     constructor(
-        private readonly config: ConfigMap<ActionId>,
+        private config: ConfigMap<ActionId>,
         private readonly gamepadIndex: number,
     ) {
         const { signal } = this.ac
@@ -77,6 +77,10 @@ export class UnifiedInput<ActionId extends string> implements IUnifiedInput<Acti
             },
             { signal },
         )
+    }
+
+    updateConfig(config: ConfigMap<ActionId>) {
+        this.config = config
     }
 
     // ----------------------------------------------------------------
