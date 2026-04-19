@@ -6,6 +6,8 @@ import { remodel } from "./Game/Bullet/Remodel"
 import { Ease } from "./utils/Functions/Ease"
 import { shake } from "./utils/shake"
 import { Vec } from "./utils/Vec"
+import { UnifiedInput } from "./utils/UnifiedInput/UnifiedInput"
+import { DEFAULT_CONFIG } from "./utils/UnifiedInput/DefaultConfig"
 
 export const g = {
     enemies: [] as Enemy[],
@@ -14,6 +16,8 @@ export const g = {
 
     width: 630,
     height: 1120,
+
+    input: new UnifiedInput(DEFAULT_CONFIG, 0),
 }
 
 export const T = Math.PI * 2

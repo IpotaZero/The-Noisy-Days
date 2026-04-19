@@ -1,25 +1,24 @@
 import { FocusesGridHandler } from "./FocusesGridHandler"
-import { GamepadOperator } from "./GamepadOperator"
-import { KeyboardOperator } from "./KeyboardOperator"
 import { buildGrid, hidePointerTemporarily } from "./util"
+import { UIInputOperator } from "./UIInputOperator"
+import { IUnifiedInput } from "../UnifiedInput/Input"
 
-export type Operation = "right" | "left" | "up" | "down" | "ok" | "cancel"
+export type Operation = "right" | "left" | "up" | "down" | "confirm" | "cancel"
 export type Grid = readonly (readonly HTMLElement[])[]
 export type FocusKey = readonly [number, number]
 
 export class Focuses {
     private static readonly FOCUS_CLASS = "nav-focus"
 
-    private static readonly gamepadOperator = new GamepadOperator(this.operate.bind(this))
-    private static readonly keyboardOperator = new KeyboardOperator(this.operate.bind(this))
+    // GamepadOperator + KeyboardOperator を UIInputOperator 1 本に統合
+    private static inputOperator: UIInputOperator
 
     private static readonly gridHandler = new FocusesGridHandler()
 
     private static readonly disabledReasons = new Set<string>()
 
     static remove() {
-        this.gamepadOperator.remove()
-        this.keyboardOperator.remove()
+        this.inputOperator.remove()
     }
 
     static pause(reason: string) {
@@ -30,10 +29,19 @@ export class Focuses {
         this.disabledReasons.delete(reason)
     }
 
-    static init(): void {
+    static init(input: IUnifiedInput<Operation>): void {
+        this.inputOperator = new UIInputOperator(input, this.operate.bind(this))
+
         window.addEventListener("pointerdown", this.onPointerDown.bind(this))
         window.addEventListener("pointerover", this.onPointerOver.bind(this))
-        window.addEventListener("gamepadconnected", () => this.gamepadOperator.start(), { once: true })
+
+        // ゲームパッドが接続されたタイミングで rAF ループを開始する
+        window.addEventListener("gamepadconnected", () => this.inputOperator.start(), { once: true })
+
+        // キーボードは UnifiedInput 内部のイベントリスナーで即時対応済みのため、
+        // ここでは start() を呼ばなくてよい。
+        // ただしキーボードのみの環境向けに start() しておく。
+        this.inputOperator.start()
     }
 
     static update(page: HTMLElement) {
@@ -78,10 +86,10 @@ export class Focuses {
         const element = this.gridHandler.getFocusedElement()
 
         if (element instanceof HTMLButtonElement) {
-            if (operation === "ok") this.gridHandler.getFocusedElement()?.click()
+            if (operation === "confirm") this.gridHandler.getFocusedElement()?.click()
             else if (operation === "cancel") this.gridHandler.getCancelButton()?.click()
         } else if (element instanceof HTMLSelectElement) {
-            if (operation === "ok") element.showPicker()
+            if (operation === "confirm") element.showPicker()
         }
 
         hidePointerTemporarily()

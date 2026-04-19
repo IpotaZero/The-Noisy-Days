@@ -12,6 +12,7 @@ import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
 import { Action, DEFAULT_CONFIG } from "../utils/UnifiedInput/DefaultConfig"
+import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
 import { UnifiedInput } from "../utils/UnifiedInput/UnifiedInput"
 import { Scene } from "./Scene"
 
@@ -48,7 +49,7 @@ export default class SceneStage implements Scene {
             ".retry": { alias: "retry", expectedCount: 2 },
         })
 
-        this.input = new UnifiedInput(DEFAULT_CONFIG, 0, Dom.container)
+        this.input = new UnifiedInput(DEFAULT_CONFIG, 0)
     }
 
     private onClear() {
@@ -83,7 +84,11 @@ export default class SceneStage implements Scene {
 
         this.ctx = cvs.getContext("2d", { alpha: false })!
 
-        g.player = new Player(this.input, (g.width / rect.width) * LocalStorage.getSwipeRatio())
+        g.player = new Player(
+            this.input,
+            new TouchTracker(Dom.container),
+            (g.width / rect.width) * LocalStorage.getSwipeRatio(),
+        )
     }
 
     private backScene() {

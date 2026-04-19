@@ -8,6 +8,7 @@ import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
 import { IUnifiedInput } from "../../utils/UnifiedInput/Input"
 import { Action, MyActionId } from "../../utils/UnifiedInput/DefaultConfig"
+import { TouchTracker } from "../../utils/UnifiedInput/TouchTracker"
 
 export class Player {
     life = 8
@@ -34,6 +35,7 @@ export class Player {
 
     constructor(
         private readonly input: IUnifiedInput<MyActionId>,
+        private readonly touch: TouchTracker,
         private readonly scale: number,
     ) {}
 
@@ -162,7 +164,7 @@ export class Player {
     }
 
     private applyTouch() {
-        const delta = this.input.getPointerDelta()
+        const delta = this.touch.getDelta()
         if (delta) {
             this.p.x += delta.dx * this.scale
             this.p.y += delta.dy * this.scale

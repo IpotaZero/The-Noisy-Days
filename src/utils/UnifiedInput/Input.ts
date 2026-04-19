@@ -41,13 +41,6 @@ export interface IUnifiedInput<ActionId extends string> {
      */
     getAxis(action: ActionId): number
 
-    /**
-     * タッチ入力の移動量を返す。
-     * タッチ中でなければ null。
-     * tick() を呼ぶたびにリセットされる（TouchTracker と同じ意味論）。
-     */
-    getPointerDelta(): PointerDelta | null
-
     /** フレーム終端で呼ぶ。gamepad をポーリングしアクション状態を更新する。 */
     tick(): void
 

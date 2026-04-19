@@ -18,10 +18,10 @@
 /** ゲームが扱う操作の意味。物理デバイスには依存しない。 */
 export const Action = {
     // 移動（Digital: キーボード/D-pad 向け）
-    MoveUp: "move_up",
-    MoveDown: "move_down",
-    MoveLeft: "move_left",
-    MoveRight: "move_right",
+    MoveUp: "up",
+    MoveDown: "down",
+    MoveLeft: "left",
+    MoveRight: "right",
 
     // 移動（Analog: スティック/キー昇格 向け）
     MoveX: "move_x",

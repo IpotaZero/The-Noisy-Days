@@ -10,16 +10,14 @@
  *   4. 次の tick() でフレーム単位のセット (pushed / released) がリセットされる
  */
 
-import { IUnifiedInput, PointerDelta } from "./Input"
+import { IUnifiedInput } from "./Input"
 import { Binding, ConfigMap } from "./Binding"
-import { TouchTracker } from "./TouchTracker"
 
 const DEFAULT_THRESHOLD = 0.1
 const DEAD_ZONE = 0.1
 
 export class UnifiedInput<ActionId extends string> implements IUnifiedInput<ActionId> {
     private readonly ac = new AbortController()
-    private readonly touch: TouchTracker
 
     // ---- キーボード生状態 ----
     /** 現在押し続けられているキー (code) */
@@ -42,14 +40,11 @@ export class UnifiedInput<ActionId extends string> implements IUnifiedInput<Acti
     /**
      * @param config       ConfigMap (DEFAULT_CONFIG またはユーザー設定)
      * @param gamepadIndex 使用するゲームパッドのインデックス (通常 0)
-     * @param touchElement タッチ追跡対象の HTML 要素
      */
     constructor(
         private readonly config: ConfigMap<ActionId>,
         private readonly gamepadIndex: number,
-        touchElement: HTMLElement,
     ) {
-        this.touch = new TouchTracker(touchElement)
         const { signal } = this.ac
 
         window.addEventListener(
@@ -104,12 +99,6 @@ export class UnifiedInput<ActionId extends string> implements IUnifiedInput<Acti
         return this.actionAxis.get(action) ?? 0
     }
 
-    getPointerDelta(): PointerDelta | null {
-        const delta = this.touch.getDelta()
-        if (delta === null) return null
-        return { dx: delta.dx, dy: delta.dy }
-    }
-
     tick(): void {
         this.computeActionStates()
         // フレーム単位のキーボード状態をリセット
@@ -120,7 +109,6 @@ export class UnifiedInput<ActionId extends string> implements IUnifiedInput<Acti
     remove(): void {
         this.ac.abort()
         this.keyPressed.clear()
-        this.touch.remove()
     }
 
     // ----------------------------------------------------------------

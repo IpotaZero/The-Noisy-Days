@@ -15,7 +15,7 @@ HTMLRadioElement
 window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
 
-    Focuses.init()
+    Focuses.init(g.input)
 
     if (isSmartPhone) {
         Focuses.pause("all")
