@@ -50,21 +50,25 @@ export const DEFAULT_CONFIG: ConfigMap<MyActionId> = {
         { device: "keyboard", code: "ArrowUp" },
         { device: "keyboard", code: "KeyW" },
         { device: "gamepadAxisDigital", axis: 1, direction: "-", threshold: 0.5 },
+        { device: "gamepadAxisDigital", axis: 3, direction: "-", threshold: 0.5 },
     ],
     [Action.MoveDown]: [
         { device: "keyboard", code: "ArrowDown" },
         { device: "keyboard", code: "KeyS" },
         { device: "gamepadAxisDigital", axis: 1, direction: "+", threshold: 0.5 },
+        { device: "gamepadAxisDigital", axis: 3, direction: "+", threshold: 0.5 },
     ],
     [Action.MoveLeft]: [
         { device: "keyboard", code: "ArrowLeft" },
         { device: "keyboard", code: "KeyA" },
         { device: "gamepadAxisDigital", axis: 0, direction: "-", threshold: 0.5 },
+        { device: "gamepadAxisDigital", axis: 2, direction: "-", threshold: 0.5 },
     ],
     [Action.MoveRight]: [
         { device: "keyboard", code: "ArrowRight" },
         { device: "keyboard", code: "KeyD" },
         { device: "gamepadAxisDigital", axis: 0, direction: "+", threshold: 0.5 },
+        { device: "gamepadAxisDigital", axis: 2, direction: "+", threshold: 0.5 },
     ],
 
     // ----------------------------------------------------------------
@@ -75,11 +79,13 @@ export const DEFAULT_CONFIG: ConfigMap<MyActionId> = {
         { device: "keyboardAxis", negative: "ArrowLeft", positive: "ArrowRight" },
         { device: "keyboardAxis", negative: "KeyA", positive: "KeyD" },
         { device: "gamepadAxisAnalog", axis: 0 },
+        { device: "gamepadAxisAnalog", axis: 2 },
     ],
     [Action.MoveY]: [
         { device: "keyboardAxis", negative: "ArrowUp", positive: "ArrowDown" },
         { device: "keyboardAxis", negative: "KeyW", positive: "KeyS" },
         { device: "gamepadAxisAnalog", axis: 1 },
+        { device: "gamepadAxisAnalog", axis: 3 },
     ],
 
     // ----------------------------------------------------------------
