@@ -152,16 +152,17 @@ export class Player {
     }
 
     private applySpeedModifier() {
-        if (this.input.isPressed(Action.Slow)) {
-            this.v.scale(0.5)
-            return
-        }
         if (this.input.isPushed(Action.Dash) && this.dashCoolDown === 0) {
             SE.dash.play()
             this.dashFrame = this.DASH_FRAME
             this.dashCoolDown = this.DASH_COOL_DOWN
         }
+
         if (this.dashFrame > 0) this.v.scale(7)
+
+        if (this.input.isPressed(Action.Slow)) {
+            this.v.scale(0.5)
+        }
     }
 
     private applyTouch() {

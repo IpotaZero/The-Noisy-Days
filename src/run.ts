@@ -76,6 +76,8 @@ window.addEventListener("keydown", (e) => {
         ].includes(e.code)
     )
         e.preventDefault()
+
+    console.log(e.code)
 })
 
 window.addEventListener("contextmenu", (e) => {

@@ -1,6 +1,6 @@
 import * as lzstring from "lz-string"
 import { DEFAULT_CONFIG, MyActionId } from "./utils/UnifiedInput/DefaultConfig"
-import { Binding } from "./utils/UnifiedInput/Binding"
+import { Binding, ConfigMap } from "./utils/UnifiedInput/Binding"
 
 export class LocalStorage {
     private static readonly KEY = "The Noisy Days!"
@@ -91,7 +91,7 @@ export class LocalStorage {
         return this.get().config ?? DEFAULT_CONFIG
     }
 
-    static setConfig(value: Record<MyActionId, readonly Binding[]>) {
+    static setConfig(value: ConfigMap<MyActionId>) {
         const data = this.get()
         data.config = value
         this.set(data)
@@ -108,6 +108,6 @@ type Data = {
     volumeBGM: number
     volumeSE: number
 
-    config: Record<MyActionId, readonly Binding[]>
+    config: ConfigMap<MyActionId>
 }
 ;(window as any).LocalStorage = LocalStorage

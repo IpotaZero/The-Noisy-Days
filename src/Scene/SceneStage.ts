@@ -49,7 +49,7 @@ export default class SceneStage implements Scene {
             ".retry": { alias: "retry", expectedCount: 2 },
         })
 
-        this.input = g.input
+        this.input = new UnifiedInput(LocalStorage.getConfig())
     }
 
     private onClear() {
