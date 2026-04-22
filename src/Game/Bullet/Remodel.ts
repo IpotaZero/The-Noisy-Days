@@ -39,13 +39,7 @@ export class Remodel {
         }
     }
 
-    static *reaccel(
-        me: Bullet,
-        stopFrame: number,
-        waitFrame: number,
-        accelFrame: number,
-        finalSpeed?: number,
-    ) {
+    static *reaccel(me: Bullet, stopFrame: number, waitFrame: number, accelFrame: number, finalSpeed?: number) {
         const initialSpeed = me.speed
         yield* this.stop(me, stopFrame)
         yield* Array(waitFrame)
@@ -61,6 +55,17 @@ export class Remodel {
 
         for (let i = 1; i < frame + 1; i++) {
             me.speed = (finalSpeed - start) * (i / frame) + start
+            yield
+        }
+    }
+
+    static *fadeout(me: Bullet, frame: number) {
+        const alpha = me.alpha
+
+        me.type = Bullet.Type.Effect
+
+        for (let i = 1; i < frame + 1; i++) {
+            me.alpha = alpha * (1 - i / frame)
             yield
         }
     }
@@ -91,9 +96,7 @@ export class Remodel {
 
     shift(num: number, shift: number) {
         return this.duplicate(num, (b, i) => {
-            const shiftVec = vec
-                .arg(b.radian + T / 4)
-                .scaled(shift * (i - (num - 1) / 2))
+            const shiftVec = vec.arg(b.radian + T / 4).scaled(shift * (i - (num - 1) / 2))
             b.p = b.p.plus(shiftVec)
             return b
         })
