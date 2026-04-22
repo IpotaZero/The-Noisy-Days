@@ -77,8 +77,8 @@ const MutedStages = [
 ]
 
 const PaleStages = [
-    { "stage-name": "レイ", "description": "" },
-    { "stage-name": "Blush", "description": "" },
+    { "stage-name": "レイ", "description": "クラスメイト" },
+    { "stage-name": "Blush", "description": "花と虫" },
     { "stage-name": "Sage", "description": "" },
     { "stage-name": "Lavender", "description": "" },
 ]
