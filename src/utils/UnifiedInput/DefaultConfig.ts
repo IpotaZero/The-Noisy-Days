@@ -119,13 +119,13 @@ export const DEFAULT_CONFIG: ConfigMap<MyActionId> = {
         { device: "keyboard", code: "Space" },
         { device: "keyboard", code: "KeyZ" },
         { device: "keyboard", code: "Enter" },
-        { device: "gamepadButton", index: 0 },
+        { device: "gamepadButton", index: 1 },
     ],
     [Action.Cancel]: [
         { device: "keyboard", code: "Backspace" },
         { device: "keyboard", code: "KeyX" },
         { device: "keyboard", code: "Escape" },
-        { device: "gamepadButton", index: 1 },
+        { device: "gamepadButton", index: 0 },
     ],
     [Action.Skip]: [
         { device: "keyboard", code: "KeyS" },
