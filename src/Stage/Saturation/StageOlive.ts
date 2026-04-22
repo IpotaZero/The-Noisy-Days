@@ -69,12 +69,12 @@ class Child0 extends Enemy {
     }
 
     *G() {
-        // remodel()
-        //     .colorful(this.frame * 2)
-        //     .p(this.p.clone())
-        //     .radian(T / 4)
-        //     .sim(3, 6, 12)
-        //     .fire()
+        remodel()
+            .colorful(this.frame * 2)
+            .p(this.p.clone())
+            .radian(T / 4)
+            .sim(3, 6, 12)
+            .fire()
 
         yield* Array(30)
     }
@@ -87,14 +87,14 @@ class Child1 extends Enemy {
     }
 
     *G() {
-        // remodel()
-        //     .appearance(Bullet.Appearance.Ball)
-        //     .r(6)
-        //     .colorful(this.frame * 2)
-        //     .p(this.p.clone())
-        //     .radian(T / 4)
-        //     .sim(3, 6, 12)
-        //     .fire()
+        remodel()
+            .appearance(Bullet.Appearance.Ball)
+            .colorful(this.frame * 2)
+            .r(28)
+            .p(this.p.clone())
+            .radian(T / 4)
+            .sim(3, 4, 8)
+            .fire()
 
         yield* Array(50)
     }
