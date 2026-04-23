@@ -62,12 +62,25 @@ export class Remodel {
     static *fadeout(me: Bullet, frame: number) {
         const alpha = me.alpha
 
-        me.type = Bullet.Type.Effect
+        me.type = Bullet.Type.Neutral
 
         for (let i = 1; i < frame + 1; i++) {
             me.alpha = alpha * (1 - i / frame)
             yield
         }
+
+        me.life = 0
+    }
+
+    delayByIndex(scalar = 1) {
+        return this.forEach((me, index) => {
+            me.alpha = 0
+            me.type = Bullet.Type.Neutral
+            me.delay += index * scalar
+        }).g(function* (me) {
+            me.alpha = 1
+            me.type = Bullet.Type.Enemy
+        })
     }
 
     colorful(seed: number) {
@@ -102,7 +115,7 @@ export class Remodel {
         })
     }
 
-    duplicate(num: number, map: (bullet: Bullet, index: number) => Bullet) {
+    duplicate(num: number, map: (me: Bullet, index: number) => Bullet) {
         this.bullets = this.bullets.flatMap((bullet) =>
             Array.from({ length: num }, (_, i) => {
                 return map(bullet.clone(), i)
@@ -133,15 +146,15 @@ export class Remodel {
         })
     }
 
-    g(g: (me: Bullet) => Generator) {
-        this.bullets.forEach((b) => {
-            b.G(g)
+    g(g: (me: Bullet, index: number) => Generator) {
+        this.bullets.forEach((b, index) => {
+            b.G({ g, index })
         })
 
         return this
     }
 
-    forEach(handler: (b: Bullet) => void) {
+    forEach(handler: (me: Bullet, index: number) => void) {
         this.bullets.forEach(handler)
         return this
     }

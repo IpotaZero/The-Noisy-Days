@@ -2,7 +2,7 @@ import { Dom } from "./Dom"
 import { Bullet } from "./Game/Bullet/Bullet"
 import { Enemy } from "./Game/Enemy/Enemy"
 import { Player } from "./Game/Player/Player"
-import { remodel } from "./Game/Bullet/Remodel"
+import { Remodel, remodel } from "./Game/Bullet/Remodel"
 import { Ease } from "./utils/Functions/Ease"
 import { shake } from "./utils/shake"
 import { Vec } from "./utils/Vec"
@@ -24,7 +24,7 @@ export const T = Math.PI * 2
 
 export function scorenize() {
     g.bullets
-        .filter((b) => b.type === Bullet.Type.Enemy)
+        .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
         .forEach((b) => {
             b.scorenize(g.player)
         })
@@ -76,15 +76,7 @@ export function explosion(p: Vec) {
             b.radian = Math.random() * T
             return b
         })
-        .g(function* (me) {
-            const frame = 60
-
-            for (let i = 1; i < frame + 1; i++) {
-                me.alpha = (1 - i / frame) * 0.5
-                yield
-            }
-
-            me.life = 0
-        })
+        .alpha(0.5)
+        .g((me) => Remodel.fadeout(me, 60))
         .fire()
 }

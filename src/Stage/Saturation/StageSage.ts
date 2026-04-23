@@ -40,22 +40,26 @@ class E extends Enemy {
     private readonly curve = Curves.lissajous(g.width * 0.6, g.height / 3, 7, 12)
 
     constructor() {
-        super(900, 64)
+        super(500, 64)
 
         this.moveTo(vec(0, -g.height / 4), 60)
     }
 
     *G() {
         remodel()
-            .colorful(this.frame)
+            .colorful(this.frame * 2)
+            .appearance(Bullet.Appearance.Ball)
+            .speed(12)
+            .radian(T / 4)
             .p(this.p.clone())
-            .speed(6)
-            .radian(T * (this.frame / 24))
-            .ex(3)
-            .nway(4, T / 96)
+            .r(4)
+            .radian(T / 4)
+            .nway(13, T / 24)
+            .delayByIndex(2)
+            .sim(4, 4, 8)
             .fire()
 
-        yield* Array(10)
+        yield* Array(60)
     }
 
     *H() {
@@ -71,31 +75,19 @@ class Child0 extends Enemy {
         parent: Enemy,
         private readonly index: number,
     ) {
-        super(300, 48, new EnemyRendererMob())
+        super(200, 48, new EnemyRendererMob())
         this.setParent(parent, () => vec.arg(T * (this.frame / 360) + (T / 4) * index).scaled(150))
     }
 
     *G() {
-        if (!this.waited) {
-            yield* Array(this.index * 10)
-            this.waited = true
+        for (let i = 0; i < 90; i++) {
+            remodel()
+                .colorful(this.frame * 2)
+                .p(this.p.clone())
+                .radian(T * (this.frame / 360) + (T / 4) * this.index)
+                .fire()
+            yield* Array(10)
         }
-
-        remodel()
-            .appearance(Bullet.Appearance.Ball)
-            .colorful(this.frame * 2)
-            .r(6)
-            .p(this.p.clone())
-            // .radian(T / 4)
-            // .shift(5, 100)
-            .aim(g.player.p)
-            .sim(13, 16, 32)
-            .g(function* (me) {
-                const speed = me.speed
-                yield* Remodel.accel(me, 15, 5)
-                yield* Remodel.accel(me, 15, speed)
-            })
-            .fire()
 
         yield* Array(90)
     }
@@ -103,21 +95,21 @@ class Child0 extends Enemy {
 
 class Child2 extends Enemy {
     constructor(parent: Enemy, index: number) {
-        super(100, 32, new EnemyRendererMob())
+        super(50, 32, new EnemyRendererMob())
         this.setParent(parent, () => Curves.hypotrochoid(300, 180, 300)(this.frame / 18 + (T / 4) * index))
     }
 
     *G() {
         remodel()
             .colorful(this.frame * 2)
-            .appearance(Bullet.Appearance.Arrow)
-            .collision(Bullet.Collision.Arrow)
+            .appearance(Bullet.Appearance.Ball)
             .speed(12)
             .radian(T / 4)
             .p(this.p.clone())
             .r(28)
+            .g((me) => Remodel.appear(me, 15))
             .fire()
 
-        yield* Array(30)
+        yield* Array(60)
     }
 }

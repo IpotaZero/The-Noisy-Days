@@ -2,6 +2,11 @@ import { g } from "../../global"
 import { vec } from "../../utils/Vec"
 import { Player } from "./../Player/Player"
 
+type GS = {
+    g: (me: Bullet, index: number) => Generator
+    index: number
+}
+
 export class Bullet {
     life = 1
 
@@ -10,6 +15,8 @@ export class Bullet {
     speed = 8
     radian = 0
 
+    delay = 0
+
     alpha = 1
     color = "yellow"
     appearance = Bullet.Appearance.Donut
@@ -17,36 +24,37 @@ export class Bullet {
     type = Bullet.Type.Enemy
 
     private g: Generator[] = []
-    private gs: ((me: Bullet) => Generator)[] = []
+    private gs: GS[] = []
 
     scorenize(player: Player) {
         this.r = 16
         this.color = "lightcyan"
         this.type = Bullet.Type.Score
         this.alpha = 0.6
+        this.delay = 0
         this.appearance = Bullet.Appearance.Score
         this.g = [this.move(), this.boundary(), this.homing(player)]
     }
 
     init() {
-        this.g = [this.move(), this.boundary(), ...this.gs.map((g) => g(this))]
+        this.g = [
+            this.move(),
+            this.boundary(),
+            ...this.gs.map(({ g, index }) =>
+                function* (this: Bullet) {
+                    yield* Array(this.delay)
+                    yield* g(this, index)
+                }.bind(this)(),
+            ),
+        ]
     }
 
     tick() {
         this.g = this.g.filter((g) => !g.next().done)
     }
 
-    G(g: (me: Bullet) => Generator) {
-        this.gs.push(g)
-    }
-
-    F(f: (me: Bullet) => void, count = Infinity) {
-        this.G(function* (me) {
-            while (count--) {
-                f(me)
-                yield
-            }
-        })
+    G(gs: GS) {
+        this.gs.push(gs)
     }
 
     clone(): Bullet {
@@ -61,6 +69,8 @@ export class Bullet {
     }
 
     private *move() {
+        yield* Array(this.delay)
+
         while (1) {
             this.p.x += Math.cos(this.radian) * this.speed
             this.p.y += Math.sin(this.radian) * this.speed
@@ -111,6 +121,7 @@ export namespace Bullet {
     }
     export enum Type {
         Enemy,
+        Neutral,
         Friend,
         Score,
         Effect,
