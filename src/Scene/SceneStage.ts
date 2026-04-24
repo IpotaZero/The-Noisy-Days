@@ -85,22 +85,33 @@ export default class SceneStage implements Scene {
         this.looper.start()
     }
 
+    private resizeObserver!: ResizeObserver
+
     private setupCanvas() {
-        const rect = Dom.container.getClientRects()[0]
-
-        g.height = g.width * (rect.height / rect.width)
-
         const cvs = this.selector.getFirst("canvas") as HTMLCanvasElement
-        cvs.width = g.width
-        cvs.height = g.height
-
         this.ctx = cvs.getContext("2d", { alpha: false })!
+
+        const applySize = (rect: { width: number; height: number }) => {
+            g.height = g.width * (rect.height / rect.width)
+            cvs.width = g.width
+            cvs.height = g.height
+        }
+
+        const initialRect = Dom.container.getClientRects()[0]
+        applySize(initialRect)
 
         g.player = new Player(
             this.input,
             new TouchTracker(Dom.container),
-            (g.width / rect.width) * LocalStorage.getSwipeRatio(),
+            (g.width / initialRect.width) * LocalStorage.getSwipeRatio(),
         )
+
+        this.resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                applySize(entry.contentRect)
+            }
+        })
+        this.resizeObserver.observe(Dom.container)
     }
 
     private backScene() {
@@ -138,6 +149,7 @@ export default class SceneStage implements Scene {
         g.enemies = []
         g.player.remove()
         this.ac.abort()
+        this.resizeObserver.disconnect()
     }
 
     private tick() {
