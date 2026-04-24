@@ -120,6 +120,6 @@ class Child2 extends Enemy {
             .ex(13)
             .fire()
 
-        yield* Array(10)
+        yield* Array(30)
     }
 }
