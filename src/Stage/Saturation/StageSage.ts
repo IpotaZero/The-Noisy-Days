@@ -52,7 +52,7 @@ class E extends Enemy {
             .speed(12)
             .radian(T / 4)
             .p(this.p.clone())
-            .r(4)
+            .r(6)
             .radian(T / 4)
             .nway(13, T / 24)
             .delayByIndex(2)
