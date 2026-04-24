@@ -29,6 +29,8 @@ export default class SceneStage implements Scene {
 
     private readonly input
 
+    private readonly ac = new AbortController()
+
     constructor(
         private readonly stageIndex: number,
         private readonly stage: Stage,
@@ -69,6 +71,16 @@ export default class SceneStage implements Scene {
         this.selector.onClick("back", () => this.backScene())
         this.selector.onClick("retry", () => this.retry())
         this.setupCanvas()
+
+        Dom.container.addEventListener(
+            "touchstart",
+            (e) => {
+                if (e.touches.length >= 3) {
+                    this.selfDestruct()
+                }
+            },
+            { signal: this.ac.signal },
+        )
 
         this.looper.start()
     }
@@ -125,6 +137,7 @@ export default class SceneStage implements Scene {
         g.bullets = []
         g.enemies = []
         g.player.remove()
+        this.ac.abort()
     }
 
     private tick() {
