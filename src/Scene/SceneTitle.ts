@@ -40,6 +40,8 @@ export default class implements Scene {
             "#delete-data": { alias: "delete-data" },
             "#download-template": { alias: "download-template" },
             "#load-template": { alias: "load-template" },
+
+            ".fullscreen": { alias: "fullscreen" },
         })
     }
 
@@ -64,6 +66,14 @@ export default class implements Scene {
             if (!stageName) throw new Error("Stage name is missing")
 
             this.gotoStage(index, stageName)
+        })
+
+        this.selector.onClick("fullscreen", () => {
+            if (!document.fullscreenElement) {
+                document.body.requestFullscreen()
+            } else {
+                document.exitFullscreen()
+            }
         })
 
         this.setupSetting()

@@ -146,6 +146,31 @@ button {
     }
 }
 
+#title {
+    .flow {
+        position: absolute;
+        top: 2em;
+        right: 2em;
+
+        width: fit-content;
+        height: fit-content;
+
+        font-size: 0.5em;
+
+        button {
+            padding: 0.125em 0.25em;
+            display: flex;
+            align-items: center;
+        }
+
+        img {
+            width: 1em;
+            height: 1em;
+            image-rendering: pixelated;
+        }
+    }
+}
+
 #credit {
     font-size: 3.5cqw;
     justify-content: space-between;
