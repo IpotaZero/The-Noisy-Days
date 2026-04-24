@@ -57,10 +57,8 @@ export class BulletDrawer {
         context.beginPath()
         context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
 
-        if (!isSmartPhone) {
-            context.shadowColor = bullet.color
-            context.shadowBlur = bullet.r
-        }
+        context.shadowColor = bullet.color
+        context.shadowBlur = bullet.r
         context.strokeStyle = bullet.color
         context.lineWidth = 3
         context.stroke()
