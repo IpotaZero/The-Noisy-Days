@@ -161,6 +161,7 @@ button {
             padding: 0.125em 0.25em;
             display: flex;
             align-items: center;
+            border: none;
         }
 
         img {
