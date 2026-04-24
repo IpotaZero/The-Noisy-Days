@@ -36,14 +36,20 @@ export default class SceneStage implements Scene {
         private readonly stage: Stage,
         private readonly history: readonly string[],
     ) {
-        this.looper = new Looper(30, () => {
-            const done = stage.tick()
-            this.tick()
+        this.looper = new Looper(
+            30,
+            () => {
+                const done = stage.tick()
+                this.tick()
 
-            if (done && !this.isFinished) {
-                this.onClear()
-            }
-        })
+                if (done && !this.isFinished) {
+                    this.onClear()
+                }
+            },
+            () => {
+                this.draw()
+            },
+        )
 
         this.selector = new Selector({
             "canvas#canvas": { alias: "canvas" },
@@ -154,7 +160,6 @@ export default class SceneStage implements Scene {
 
     private tick() {
         this.logic()
-        this.draw()
 
         if (this.input.isPressed(Action.Pause)) {
             this.selfDestruct()

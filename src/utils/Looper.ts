@@ -7,6 +7,7 @@ export class Looper {
     constructor(
         fps: number,
         private readonly handler: () => void,
+        private readonly drawer?: () => void,
     ) {
         this.interval = 1000 / fps
     }
@@ -46,6 +47,8 @@ export class Looper {
                 return
             }
         }
+
+        this.drawer?.()
 
         // 次のフレームを予約
         requestAnimationFrame(() => this.loop())
