@@ -55,7 +55,7 @@ export function* fireDeleteField(ctx: CanvasRenderingContext2D) {
         ctx.restore()
 
         g.bullets
-            .filter((b) => b.type === Bullet.Type.Enemy)
+            .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
             .filter((b) => b.p.minus(p).magnitude() <= r)
             .forEach((b) => {
                 b.scorenize(g.player)
