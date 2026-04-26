@@ -31,6 +31,8 @@ export default class SceneStage implements Scene {
 
     private readonly ac = new AbortController()
 
+    private g: Generator[] = []
+
     constructor(
         private readonly stageIndex: number,
         private readonly stage: Stage,
@@ -48,6 +50,9 @@ export default class SceneStage implements Scene {
             },
             () => {
                 this.draw()
+            },
+            () => {
+                this.g = this.g.filter((g) => !g.next().done)
             },
         )
 
@@ -212,7 +217,7 @@ export default class SceneStage implements Scene {
                         SE.u.play()
                         SE.hit.play()
 
-                        fireDeleteField()
+                        this.g.push(fireDeleteField(this.ctx))
                     }
                 })
 
@@ -243,7 +248,7 @@ export default class SceneStage implements Scene {
         SE.u.play()
         SE.hit.play()
         g.player.life = -1
-        fireDeleteField()
+        this.g.push(fireDeleteField(this.ctx))
     }
 
     private draw() {

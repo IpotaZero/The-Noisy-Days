@@ -30,7 +30,7 @@ export function scorenize() {
         })
 }
 
-export function fireDeleteField() {
+export function* fireDeleteField(ctx: CanvasRenderingContext2D) {
     shake(Dom.container, 1000, 12)
 
     if (g.player.life < 0) {
@@ -38,31 +38,31 @@ export function fireDeleteField() {
         return
     }
 
-    remodel()
-        .type(Bullet.Type.Effect)
-        .color("white")
-        .p(g.player.p.clone())
-        .speed(0.001)
-        .g(function* (me) {
-            const frame = 45
+    const frame = 45
 
-            for (let i = 1; i < frame + 1; i++) {
-                me.r = Ease.Out(i / frame) * g.width
-                me.alpha = 1 - Ease.Out(i / frame)
+    const p = g.player.p.clone()
 
-                g.bullets
-                    .filter((b) => b.type === Bullet.Type.Enemy)
-                    .filter((b) => b.p.minus(me.p).magnitude() <= me.r)
-                    .forEach((b) => {
-                        b.scorenize(g.player)
-                    })
+    for (let i = 1; i < frame + 1; i++) {
+        const r = Ease.Out(i / frame) * g.width
+        const alpha = 1 - i / frame
 
-                yield
-            }
+        ctx.save()
+        ctx.translate(g.width / 2, g.height / 2)
+        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, r, 0, T)
+        ctx.stroke()
+        ctx.restore()
 
-            me.life = 0
-        })
-        .fire()
+        g.bullets
+            .filter((b) => b.type === Bullet.Type.Enemy)
+            .filter((b) => b.p.minus(p).magnitude() <= r)
+            .forEach((b) => {
+                b.scorenize(g.player)
+            })
+
+        yield
+    }
 }
 
 export function explosion(p: Vec) {

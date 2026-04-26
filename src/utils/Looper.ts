@@ -8,6 +8,7 @@ export class Looper {
         fps: number,
         private readonly handler: () => void,
         private readonly drawer?: () => void,
+        private readonly afterDraw?: () => void,
     ) {
         this.interval = 1000 / fps
     }
@@ -38,6 +39,8 @@ export class Looper {
             return
         }
 
+        let count = 0
+
         while (this.lastRunTime <= currentTime - this.interval) {
             this.handler()
             // lastRunTimeを正確な間隔分だけ進める（誤差の蓄積を防ぐ）
@@ -46,9 +49,15 @@ export class Looper {
             if (this.isFinished) {
                 return
             }
+
+            count++
         }
 
         this.drawer?.()
+
+        for (let i = 0; i < count; i++) {
+            this.afterDraw?.()
+        }
 
         // 次のフレームを予約
         requestAnimationFrame(() => this.loop())
