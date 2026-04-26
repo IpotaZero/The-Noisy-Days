@@ -10,6 +10,8 @@ const GOLD = "rgba(255, 215, 0, 0.6)"
 const RED = "rgba(255, 60, 60, 0.6)"
 const CYAN = "rgba(0, 255, 255, 0.4)"
 const BLACK_VALE = "rgba(255, 255, 255, 0.2)"
+const BLUE = "rgba(60, 140, 255, 0.8)"
+const CHARGE_FILL = "rgba(140, 200, 255, 0.95)"
 
 export class EnemyRendererBoss implements IEnemyRenderer {
     draw(ctx: CanvasRenderingContext2D, e: Enemy): void {
@@ -18,55 +20,67 @@ export class EnemyRendererBoss implements IEnemyRenderer {
 
         this.drawBossHpBar(ctx, e)
         this.drawMagicCircle(ctx, e, orbitTheta, pulse)
-        // --- 追加: 中層の巨大幾何学フレーム ---
         this.drawMiddleFrame(ctx, e, orbitTheta)
 
         this.drawCoreComplex(ctx, e, orbitTheta, pulse)
 
-        // --- 追加: コア周りの高速ビット ---
         this.drawCoreBits(ctx, e, orbitTheta)
         this.drawRoundBits(ctx, e, orbitTheta)
-        // 最後に当たり判定を描画（最前面に表示）
         this.drawHitBox(ctx, e, pulse)
     }
 
     /**
-     * 上部に大きく表示されるボス専用HPゲージ
+     * 上部に大きく表示されるボス専用HPゲージ。
+     * 充電中はHPバーを青くし、直下に充電進捗バーを表示する。
      */
     private drawBossHpBar(ctx: CanvasRenderingContext2D, e: Enemy): void {
-        const hpRatio = e.life / e.maxLife
+        const isCharging = e.chargeRemaining > 0
         const width = g.width * 0.8
         const height = 24
         const x = -width / 2
-        const y = -g.height / 2 + 30 // 画面上部固定想定（または e.p からのオフセット）
+        const y = -g.height / 2 + 30
 
-        // 外枠と背景
         ctx.save()
-        ctx.translate(0, y) // 画面中央上部に固定する場合
+        ctx.translate(0, y)
+
+        // 外枠と背景（共通）
         Ctx.rect(ctx, [x, 0], [width, height], "rgba(255, 255, 255, 0.1)", {
             lineWidth: 2,
         })
 
-        const color = e.damaged || e.isInvincible ? RED : CYAN
+        if (isCharging && e.chargeMax > 0) {
+            // 充電中：充電進捗バーのみ表示
+            const chargeRatio = 1 - e.chargeRemaining / e.chargeMax
 
-        // HPバー本体（グラデーション風に2色重ねる）
-        Ctx.rect(ctx, [x, 0], [width * hpRatio, height], color)
-        Ctx.rect(
-            ctx,
-            [x, height * 0.7],
-            [width * hpRatio, height * 0.3],
-            "rgba(255, 255, 255, 0.3)",
-        )
+            Ctx.rect(ctx, [x, 0], [width * chargeRatio, height], CHARGE_FILL)
+            Ctx.rect(ctx, [x, height * 0.7], [width * chargeRatio, height * 0.3], "rgba(255, 255, 255, 0.3)")
 
-        // 装飾の目盛り
-        for (let i = 0; i <= 10; i++) {
-            const mx = x + (width / 10) * i
-            ctx.strokeStyle = WHITE
-            ctx.beginPath()
-            ctx.moveTo(mx, -4)
-            ctx.lineTo(mx, height + 4)
-            ctx.stroke()
+            for (let i = 0; i <= 10; i++) {
+                const mx = x + (width / 10) * i
+                ctx.strokeStyle = BLUE
+                ctx.beginPath()
+                ctx.moveTo(mx, -4)
+                ctx.lineTo(mx, height + 4)
+                ctx.stroke()
+            }
+        } else {
+            // 通常時：HPバーを表示
+            const hpRatio = e.life / e.maxLife
+            const color = e.damaged || e.isInvincible ? RED : CYAN
+
+            Ctx.rect(ctx, [x, 0], [width * hpRatio, height], color)
+            Ctx.rect(ctx, [x, height * 0.7], [width * hpRatio, height * 0.3], "rgba(255, 255, 255, 0.3)")
+
+            for (let i = 0; i <= 10; i++) {
+                const mx = x + (width / 10) * i
+                ctx.strokeStyle = WHITE
+                ctx.beginPath()
+                ctx.moveTo(mx, -4)
+                ctx.lineTo(mx, height + 4)
+                ctx.stroke()
+            }
         }
+
         ctx.restore()
     }
 
@@ -79,17 +93,15 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         theta: number,
         pulse: number,
     ): void {
-        const radii = [1.5, 1.8, 2.2] // 敵半径 e.r に対する倍率
+        const radii = [1.5, 1.8, 2.2]
 
         radii.forEach((rMul, idx) => {
             const r = e.r * rMul * (1 + pulse * (idx + 1))
             const dir = idx % 2 === 0 ? 1 : -1
             const currentTheta = theta * dir * (0.5 + idx * 0.2)
 
-            // メインの環
             Ctx.arc(ctx, e.p.l, r, idx === 1 ? GOLD : CYAN, { lineWidth: 1 })
 
-            // 環の上の刻み目（ルーン文字の代わり）
             const count = 12 + idx * 6
             for (let i = 0; i < count; i++) {
                 const angle = (i * T) / count + currentTheta
@@ -112,7 +124,7 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         theta: number,
     ): void {
         Ctx.polygon(ctx, 8, 2, e.p.l, e.r * 2, BLACK_VALE, {
-            theta: theta * 0.2, // 非常にゆっくり回転
+            theta: theta * 0.2,
             lineWidth: 3,
         })
         Ctx.polygon(ctx, 13, 3, e.p.l, e.r * 4, BLACK_VALE, {
@@ -127,17 +139,14 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         theta: number,
     ): void {
         const bitCount = 5
-
         const curve = Curves.lissajous(e.r * 4, e.r * 4, 12, 17)
 
         for (let i = 0; i < bitCount; i++) {
-            // コアの周囲を高速で回るビット
             const angle = (i * T) / bitCount + theta / 2
             const bitPos = e.p.plus(curve(angle))
 
-            // 小さな菱形（四角形）
             Ctx.polygon(ctx, 4, 1, bitPos.l, e.r / 3, WHITE, {
-                theta: theta * 5, // ビット自体も高速自転
+                theta: theta * 5,
                 lineWidth: 1,
             })
         }
@@ -151,13 +160,11 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         const bitCount = 7
 
         for (let i = 0; i < bitCount; i++) {
-            // コアの周囲を高速で回るビット
             const angle = (i * T) / bitCount + theta / 3
             const bitPos = e.p.plus(vec.arg(angle).scaled(e.r * 3.5))
 
-            // 小さな菱形（四角形）
             Ctx.polygon(ctx, 5, 1, bitPos.l, e.r / 3, CYAN, {
-                theta: theta * 5, // ビット自体も高速自転
+                theta: theta * 5,
                 lineWidth: 1,
             })
         }
@@ -200,7 +207,6 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         e: Enemy,
         puls: number,
     ): void {
-        // 境界線
         Ctx.arc(ctx, e.p.l, e.r, WHITE, { lineWidth: 2 })
         Ctx.arc(ctx, e.p.l, e.r * (1 + puls * 2), WHITE, { lineWidth: 1 })
     }

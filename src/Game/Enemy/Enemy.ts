@@ -8,6 +8,9 @@ export class Enemy {
     damaged = false
     life = 100
     maxLife = 100
+    chargeRemaining = 0
+    chargeMax = 0 // waitCharge() 呼び出し時の初期値。レンダラーが進捗計算に使う
+
     r = 64
     p = vec(g.width / 2, -g.height)
     frame = 0
@@ -18,17 +21,15 @@ export class Enemy {
 
     protected margin = 30
 
-    constructor(
-        life: number,
-        r: number,
-        renderer: IEnemyRenderer = new EnemyRendererCore(),
-    ) {
+    constructor(life: number, r: number, renderer: IEnemyRenderer = new EnemyRendererCore(), remainingCharge = 0) {
         this.renderer = renderer
 
         this.r = r
 
         this.life = life
         this.maxLife = life
+        this.chargeRemaining = remainingCharge
+        this.chargeMax = remainingCharge
 
         if ("G" in this) {
             this.g.push(
@@ -48,7 +49,23 @@ export class Enemy {
         }
     }
 
+    hit(damage: number) {
+        if (this.isInvincible) return
+
+        // 充電中はダメージを受けるたびに充電を早める
+        if (this.chargeRemaining > 0) {
+            this.chargeRemaining -= damage
+        } else {
+            this.life -= damage
+        }
+
+        this.damaged = true
+    }
+
     tick() {
+        // 充電カウントダウン
+        if (this.chargeRemaining > 0) this.chargeRemaining--
+
         const done = this.g.map((g) => g.next().done)
         this.g = this.g.filter((_, i) => !done[i])
         this.frame++
@@ -57,6 +74,10 @@ export class Enemy {
     draw(ctx: CanvasRenderingContext2D) {
         this.renderer.draw(ctx, this)
         this.damaged = false
+    }
+
+    protected *waitCharge(): Generator<void, void, unknown> {
+        while (this.chargeRemaining > 0) yield
     }
 
     protected setParent(enemy: Enemy, position: () => Vec) {
@@ -81,9 +102,7 @@ export class Enemy {
         this.g.push(
             function* (this: Enemy) {
                 for (let i = 1; i < frame + 1; i++) {
-                    this.p = start.plus(
-                        target.minus(start).scaled(easing(i / frame)),
-                    )
+                    this.p = start.plus(target.minus(start).scaled(easing(i / frame)))
                     yield
                 }
             }.bind(this)(),

@@ -87,8 +87,6 @@ class Child0 extends Enemy {
             .colorful(this.frame * 2)
             .r(28)
             .p(this.p.clone())
-            // .radian(T / 4)
-            // .shift(5, 100)
             .aim(g.player.p)
             .sim(4, 16, 32)
             .g((me) => Remodel.appear(me, 15))

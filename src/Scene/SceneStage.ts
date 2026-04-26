@@ -182,8 +182,7 @@ export default class SceneStage implements Scene {
                 .filter((b) => b.p.minus(e.p).magnitude() <= b.r + e.r)
                 .forEach((b) => {
                     b.life = 0
-                    e.life -= Math.ceil(b.p.minus(e.p).magnitude() / g.width)
-                    e.damaged = true
+                    e.hit(Math.ceil(b.p.minus(e.p).magnitude() / g.width))
                 })
 
             if (e.life <= 0) {
