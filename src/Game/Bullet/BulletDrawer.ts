@@ -9,12 +9,12 @@ export class BulletDrawer {
 
         let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r * 10) / 10}`
 
-        if (
-            bullet.appearance === Bullet.Appearance.Arrow ||
-            bullet.appearance === Bullet.Appearance.Score ||
-            bullet.appearance === Bullet.Appearance.Line
-        ) {
+        if (bullet.appearance === Bullet.Appearance.Arrow || bullet.appearance === Bullet.Appearance.Line) {
             hash += `,${bullet.radian}`
+        }
+
+        if (bullet.appearance === Bullet.Appearance.Score) {
+            hash += `,${Math.floor(bullet.radian * 10)}`
         }
 
         if (!this.cache.has(hash)) {
