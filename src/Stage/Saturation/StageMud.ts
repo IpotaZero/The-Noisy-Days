@@ -49,7 +49,7 @@ class E extends Enemy {
     private readonly curve = Curves.lissajous(g.width * 0.55, g.height / 3, 3, 8)
 
     constructor() {
-        super(800, 64)
+        super(600, 64)
         this.moveTo(vec(0, -g.height / 4), 60)
     }
 
