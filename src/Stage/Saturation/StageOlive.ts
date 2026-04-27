@@ -93,7 +93,6 @@ class Child1 extends Enemy {
             .r(28)
             .p(this.p.clone())
             .radian(T / 4)
-            .sim(3, 4, 8)
             .fire()
 
         yield* Array(50)
