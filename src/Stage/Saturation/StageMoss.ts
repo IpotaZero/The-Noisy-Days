@@ -131,14 +131,6 @@ class Child1 extends Enemy {
             .g(function* (me) {
                 yield* Remodel.stop(me, 20) // 20フレームで停止
                 yield* Array(5) // 10フレーム静止
-                const frame = 15
-
-                const radian = me.radian
-                for (let i = 0; i < frame; i++) {
-                    me.radian = radian + (T / 2) * Ease.InOut(i / frame)
-                    yield
-                }
-
                 yield* Remodel.accel(me, 20, 18) // 高速で再加速
             })
             .fire()

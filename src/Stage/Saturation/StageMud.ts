@@ -166,6 +166,6 @@ class Child2 extends Enemy {
             })
             .fire()
 
-        yield* Array(45)
+        yield* Array(90)
     }
 }
