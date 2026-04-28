@@ -10,6 +10,7 @@ import { Dom } from "../../Dom"
 import * as Curves from "../../utils/Functions/Curves"
 import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { Ease } from "../../utils/Functions/Ease"
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -131,6 +132,18 @@ class Child1 extends Enemy {
             .g(function* (me) {
                 yield* Remodel.stop(me, 20) // 20フレームで停止
                 yield* Array(5) // 10フレーム静止
+
+                // スマホだと描画が重すぎた
+                if (!isSmartPhone) {
+                    const frame = 15
+
+                    const radian = me.radian
+                    for (let i = 0; i < frame; i++) {
+                        me.radian = radian + (T / 2) * Ease.InOut(i / frame)
+                        yield
+                    }
+                }
+
                 yield* Remodel.accel(me, 20, 18) // 高速で再加速
             })
             .fire()
