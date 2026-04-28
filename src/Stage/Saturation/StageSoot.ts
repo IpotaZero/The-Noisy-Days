@@ -207,7 +207,7 @@ class Star extends Enemy {
         for (let i = 0; i < 17; i++) {
             remodel()
                 .appearance(Bullet.Appearance.Ball)
-                .colorful(this.frame * 4)
+                .colorful(this.frame * 2)
                 .r(28)
                 .p(this.p.clone())
                 .radian((this.frame / 120) ** 2)
