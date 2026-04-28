@@ -41,7 +41,7 @@ export default class extends Stage {
 /**
  * ボス本体
  * - 8方向均等放射の小ボール(r=6)をばらまく
- * - ゆっくり回転するので次の弾がどこに来るか読める
+ * - ゆっくり回転するので次の弾がどこに来るか読める（読めるわけないだろ！！！！！！！！！！）
  * - 間隔55フレーム
  */
 class E extends Enemy {
@@ -57,13 +57,13 @@ class E extends Enemy {
             .appearance(Bullet.Appearance.Ball)
             .colorful(this.frame)
             .p(this.p.clone())
-            .speed(8)
             .radian(T * (this.frame / 360))
             .r(6)
-            .ex(17)
+            .speed(6)
+            .ex(31)
             .fire()
 
-        yield* Array(25)
+        yield* Array(40)
     }
 
     *H() {
@@ -87,16 +87,34 @@ class Child0 extends Enemy {
     ) {
         super(200, 48, new EnemyRendererMob())
         this.setParent(parent, () => vec.arg(T * (this.frame / 480) + (T / 3) * index).scaled(180))
-        this.interval = 40 + index * 15 // 40 / 55 / 70
+        this.interval = 240 + index * 15 // 40 / 55 / 70
     }
 
     *G() {
         remodel()
-            .appearance(Bullet.Appearance.Ball)
-            .colorful(this.frame * 3)
-            .r(28)
+            .appearance(Bullet.Appearance.Arrow)
+            .collision(Bullet.Collision.Arrow)
+            .colorful(this.frame * 2 + 120)
             .p(this.p.clone())
-            .radian(T / 4)
+            .r(28)
+            .ex(13)
+            .g(function* (me) {
+                yield* Remodel.stop(me, 20) // 20フレームで停止
+                yield* Array(5) // 10フレーム静止
+
+                // スマホだと描画が重すぎた
+                if (!isSmartPhone) {
+                    const frame = 15
+
+                    const radian = me.radian
+                    for (let i = 1; i < frame + 1; i++) {
+                        me.radian = radian + (T / 2) * Ease.InOut(i / frame)
+                        yield
+                    }
+                }
+
+                yield* Remodel.accel(me, 20, 18) // 高速で再加速
+            })
             .fire()
 
         yield* Array(this.interval)
@@ -123,29 +141,11 @@ class Child1 extends Enemy {
 
     *G() {
         remodel()
-            .appearance(Bullet.Appearance.Arrow)
-            .collision(Bullet.Collision.Arrow)
-            .colorful(this.frame * 2 + 120)
-            .p(this.p.clone())
+            .appearance(Bullet.Appearance.Ball)
+            .colorful(this.frame * 3)
             .r(28)
-            .ex(13)
-            .g(function* (me) {
-                yield* Remodel.stop(me, 20) // 20フレームで停止
-                yield* Array(5) // 10フレーム静止
-
-                // スマホだと描画が重すぎた
-                if (!isSmartPhone) {
-                    const frame = 15
-
-                    const radian = me.radian
-                    for (let i = 0; i < frame; i++) {
-                        me.radian = radian + (T / 2) * Ease.InOut(i / frame)
-                        yield
-                    }
-                }
-
-                yield* Remodel.accel(me, 20, 18) // 高速で再加速
-            })
+            .p(this.p.clone())
+            .radian(T / 4)
             .fire()
 
         yield* Array(this.interval)
