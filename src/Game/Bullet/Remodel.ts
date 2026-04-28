@@ -2,6 +2,7 @@ import { g, T } from "../../global"
 import { Bullet } from "./Bullet"
 import { Vec, vec } from "../../utils/Vec"
 import { Ease } from "../../utils/Functions/Ease"
+import { Enemy } from "../Enemy/Enemy"
 
 export const remodel = () =>
     new Proxy(new Remodel([new Bullet()]), {
@@ -125,6 +126,15 @@ export class Remodel {
         return this
     }
 
+    circle(distance: number, radius: number) {
+        const num = Math.ceil((T * radius) / distance)
+        return this.duplicate(num, (b, i) => {
+            const angle = (T / num) * i
+            b.p = b.p.plus(vec.arg(angle).scaled(radius))
+            return b
+        })
+    }
+
     ex(num: number) {
         return this.duplicate(num, (b, i) => {
             const clone = b
@@ -146,7 +156,14 @@ export class Remodel {
         })
     }
 
-    g(g: (me: Bullet, index: number) => Generator) {
+    delete(frame: number = 0) {
+        return this.g(function* (b) {
+            for (let i = 0; i < frame; i++) yield
+            b.life = 0
+        })
+    }
+
+    g(g: (this: Enemy, me: Bullet, index: number) => Generator) {
         this.bullets.forEach((b, index) => {
             b.G({ g, index })
         })

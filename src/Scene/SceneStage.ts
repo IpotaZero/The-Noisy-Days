@@ -123,6 +123,16 @@ export default class SceneStage implements Scene {
             }
         })
         this.resizeObserver.observe(Dom.container)
+
+        window.addEventListener(
+            "keydown",
+            (e) => {
+                if (e.key === "Delete") {
+                    g.enemies.at(-1)?.hit(9999)
+                }
+            },
+            { signal: this.ac.signal },
+        )
     }
 
     private backScene() {
@@ -203,6 +213,8 @@ export default class SceneStage implements Scene {
                 .values()
                 .filter((b) => b.type === Bullet.Type.Enemy)
                 .forEach((b) => {
+                    if (g.player.isInvincible()) return
+
                     const distance = b.p.minus(g.player.p).magnitude()
 
                     if (distance <= b.r + g.player.GRAZE_R) {
