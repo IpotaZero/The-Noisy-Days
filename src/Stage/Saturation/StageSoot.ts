@@ -27,6 +27,18 @@ export default class extends Stage {
 
         g.enemies.push(star, planet0, planet1, satellite00, satellite01, satellite10, satellite11)
 
+        yield* this.text("「ちょいちょいちょおいっ!<br>自律兵器は条約違反でしょおっ!?」", { name: "イシカワ" })
+        yield* this.text("「生憎あたしはロボットじゃあない。」", { name: "シオン" })
+        yield* this.text("「って、にゃるへそ<br>『当たらなければどうということはない』<br>……ってかぁ?」", { name: "イシカワ" })
+
+        star.started = true
+        planet0.started = true
+        planet1.started = true
+        satellite00.started = true
+        satellite01.started = true
+        satellite10.started = true
+        satellite11.started = true
+
         while (satellite00.life > 0 || satellite01.life > 0 || satellite10.life > 0 || satellite11.life > 0) yield
 
         planet0.isInvincible = false
@@ -54,6 +66,8 @@ class Star extends Enemy {
     private readonly curve = Curves.lissajous(g.width * 0.3, g.height / 5, 3, 2)
     phase = 0
 
+    started = false
+
     constructor() {
         super(600, 96, new EnemyRendererBoss())
         this.isInvincible = true
@@ -66,6 +80,8 @@ class Star extends Enemy {
     }
 
     *H() {
+        while (!this.started) yield
+
         if (this.phase === 0) yield* this.phase0()
         else if (this.phase === 1) yield* this.phase1()
         else {
@@ -240,6 +256,8 @@ class Star extends Enemy {
 class Planet extends Enemy {
     private readonly interval: number
 
+    started = false
+
     constructor(
         star: Star,
         private readonly index: number,
@@ -251,6 +269,8 @@ class Planet extends Enemy {
     }
 
     *G() {
+        while (!this.started) yield
+
         // 11方向回転小ボール、出現後に加速
         remodel()
             .colorful(this.frame)
@@ -273,6 +293,8 @@ class Planet extends Enemy {
 class Satellite extends Enemy {
     private readonly interval: number
 
+    started = false
+
     constructor(
         planet: Planet,
         private readonly index: number,
@@ -283,6 +305,8 @@ class Satellite extends Enemy {
     }
 
     *G() {
+        while (!this.started) yield
+
         remodel()
             .appearance(Bullet.Appearance.Arrow)
             .collision(Bullet.Collision.Arrow)
