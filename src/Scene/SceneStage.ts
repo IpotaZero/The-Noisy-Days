@@ -1,9 +1,6 @@
 import { Dom } from "../Dom"
 import { Bullet } from "../Game/Bullet/Bullet"
-import { BulletDrawer } from "../Game/Bullet/BulletDrawer"
-import { Collision } from "../Game/Collision"
-import { Player } from "../Game/Player/Player"
-import { explosion, fireDeleteField, g, T } from "../global"
+import { fireDeleteField, g } from "../global"
 import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { Stage } from "../Stage/Stage"
@@ -11,19 +8,23 @@ import { Looper } from "../utils/Looper"
 import { Pages } from "../utils/Pages/Pages"
 import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
-import { Action, DEFAULT_CONFIG } from "../utils/UnifiedInput/DefaultConfig"
-import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
+import { Action } from "../utils/UnifiedInput/DefaultConfig"
 import { UnifiedInput } from "../utils/UnifiedInput/UnifiedInput"
 import { Scene } from "./Scene"
+import { GameLogic } from "./Game/GameLogic"
+import { GameRenderer } from "./Game/GameRenderer"
+import { CanvasSetup } from "./Game/CanvasSetup"
+import { Player } from "../Game/Player/Player"
+import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
 
 export default class SceneStage implements Scene {
     private readonly pages = new Pages()
     private readonly selector
     private readonly looper: Looper
 
-    private ctx!: CanvasRenderingContext2D
-    private readonly drawer = new BulletDrawer()
-    private readonly collision = new Collision()
+    private canvasSetup!: CanvasSetup
+    private gameLogic!: GameLogic
+    private renderer!: GameRenderer
 
     private isFinished = false
 
@@ -81,7 +82,23 @@ export default class SceneStage implements Scene {
         this.selector.load(Dom.container)
         this.selector.onClick("back", () => this.backScene())
         this.selector.onClick("retry", () => this.retry())
-        this.setupCanvas()
+        this.initCanvas()
+
+        g.player = new Player(
+            this.input,
+            new TouchTracker(Dom.container),
+            (g.width / this.canvasSetup.initialRect.width) * LocalStorage.getSwipeRatio(),
+        )
+
+        window.addEventListener(
+            "keydown",
+            (e) => {
+                if (e.key === "Delete") {
+                    g.enemies.at(-1)?.hit(9999)
+                }
+            },
+            { signal: this.ac.signal },
+        )
 
         Dom.container.addEventListener(
             "touchstart",
@@ -96,43 +113,13 @@ export default class SceneStage implements Scene {
         this.looper.start()
     }
 
-    private resizeObserver!: ResizeObserver
+    private initCanvas() {
+        const canvas = this.selector.getFirst("canvas") as HTMLCanvasElement
+        this.canvasSetup = new CanvasSetup(canvas)
 
-    private setupCanvas() {
-        const cvs = this.selector.getFirst("canvas") as HTMLCanvasElement
-        this.ctx = cvs.getContext("2d", { alpha: false })!
-
-        const applySize = (rect: { width: number; height: number }) => {
-            g.height = g.width * (rect.height / rect.width)
-            cvs.width = g.width
-            cvs.height = g.height
-        }
-
-        const initialRect = Dom.container.getClientRects()[0]
-        applySize(initialRect)
-
-        g.player = new Player(
-            this.input,
-            new TouchTracker(Dom.container),
-            (g.width / initialRect.width) * LocalStorage.getSwipeRatio(),
-        )
-
-        this.resizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-                applySize(entry.contentRect)
-            }
-        })
-        this.resizeObserver.observe(Dom.container)
-
-        window.addEventListener(
-            "keydown",
-            (e) => {
-                if (e.key === "Delete") {
-                    g.enemies.at(-1)?.hit(9999)
-                }
-            },
-            { signal: this.ac.signal },
-        )
+        const ctx = this.canvasSetup.ctx
+        this.gameLogic = new GameLogic(ctx, this.g, () => this.onPlayerDead())
+        this.renderer = new GameRenderer(ctx)
     }
 
     private backScene() {
@@ -170,11 +157,14 @@ export default class SceneStage implements Scene {
         g.enemies = []
         g.player.remove()
         this.ac.abort()
-        this.resizeObserver.disconnect()
+        this.canvasSetup.disconnect()
     }
 
     private tick() {
-        this.logic()
+        if (!this.isFinished) {
+            g.player.tick(this.canvasSetup.ctx)
+            this.gameLogic.tick()
+        }
 
         if (this.input.isPressed(Action.Pause)) {
             this.selfDestruct()
@@ -183,75 +173,11 @@ export default class SceneStage implements Scene {
         this.input.tick()
     }
 
-    private logic() {
-        g.player.tick(this.ctx)
-
-        g.enemies.forEach((e) => {
-            e.tick()
-
-            if (e.isInvincible) return
-
-            g.bullets
-                .values()
-                .filter((b) => b.type === Bullet.Type.Friend)
-                .filter((b) => b.p.minus(e.p).magnitude() <= b.r + e.r)
-                .forEach((b) => {
-                    b.life = 0
-                    e.hit(Math.ceil(b.p.minus(e.p).magnitude() / g.width))
-                })
-
-            if (e.life <= 0) {
-                explosion(e.p.clone())
-                SE.crush.play()
-            }
-        })
-
-        g.bullets.forEach((b) => b.tick())
-
-        if (!g.player.isInvincible())
-            g.bullets
-                .values()
-                .filter((b) => b.type === Bullet.Type.Enemy)
-                .forEach((b) => {
-                    if (g.player.isInvincible()) return
-
-                    const distance = b.p.minus(g.player.p).magnitude()
-
-                    if (distance <= b.r + g.player.GRAZE_R) {
-                        SE.graze.play()
-                    }
-
-                    const isColliding = this.collision.isColliding(b, g.player)
-
-                    if (isColliding) {
-                        b.life = 0
-                        g.player.damage()
-                        SE.u.play()
-                        SE.hit.play()
-
-                        this.g.push(fireDeleteField(this.ctx))
-                    }
-                })
-
-        g.bullets
-            .values()
-            .filter((b) => b.type === Bullet.Type.Score)
-            .filter((b) => b.p.minus(g.player.p).magnitude() <= b.r + g.player.GRAZE_R)
-            .forEach((b) => {
-                b.life = 0
-                SE.graze.play()
-            })
-
-        g.bullets = g.bullets.filter((b) => b.life > 0)
-        g.enemies = g.enemies.filter((e) => e.life > 0)
-
+    private onPlayerDead() {
         if (this.isFinished) return
-
-        if (g.player.life <= -1) {
-            this.isFinished = true
-            this.pages.enter("retry")
-            g.player.remove()
-        }
+        this.isFinished = true
+        this.pages.enter("retry")
+        g.player.remove()
     }
 
     private selfDestruct() {
@@ -260,30 +186,10 @@ export default class SceneStage implements Scene {
         SE.u.play()
         SE.hit.play()
         g.player.life = -1
-        this.g.push(fireDeleteField(this.ctx))
+        this.g.push(fireDeleteField(this.canvasSetup.ctx))
     }
 
     private draw() {
-        this.ctx.clearRect(0, 0, g.width, g.height)
-
-        this.ctx.globalCompositeOperation = "lighter"
-        this.ctx.fillStyle = "black"
-        this.ctx.fillRect(0, 0, g.width, g.height)
-
-        this.ctx.save()
-
-        this.ctx.translate(g.width / 2, g.height / 2)
-
-        g.player.draw(this.ctx)
-
-        g.bullets.forEach((b) => {
-            this.drawer.draw(b, this.ctx)
-        })
-
-        g.enemies.forEach((e) => {
-            e.draw(this.ctx)
-        })
-
-        this.ctx.restore()
+        this.renderer.draw()
     }
 }
