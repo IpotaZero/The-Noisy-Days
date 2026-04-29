@@ -31,6 +31,7 @@ export function scorenize() {
 }
 
 export function* fireDeleteField(ctx: CanvasRenderingContext2D) {
+    console.log("Player dead! Activating fire delete field.")
     shake(Dom.container, 1000, 12)
 
     if (g.player.life < 0) {

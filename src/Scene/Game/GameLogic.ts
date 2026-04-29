@@ -10,7 +10,7 @@ export class GameLogic {
 
     constructor(
         private readonly ctx: CanvasRenderingContext2D,
-        private readonly effects: Generator[],
+        private readonly effects: () => Generator[],
         private readonly onPlayerDead: () => void,
     ) {}
 
@@ -46,7 +46,7 @@ export class GameLogic {
 
     private defeatEnemy(e: Enemy) {
         if (e.renderer instanceof EnemyRendererBoss) {
-            this.effects.push(bossDefeat(this.ctx, e.p.clone()))
+            this.effects().push(bossDefeat(this.ctx, e.p.clone()))
         } else {
             explosion(e.p.clone())
         }
@@ -74,11 +74,12 @@ export class GameLogic {
                 }
 
                 if (this.collision.isColliding(b, g.player)) {
+                    console.log("Player hit!")
                     b.life = 0
                     g.player.damage()
                     SE.u.play()
                     SE.hit.play()
-                    this.effects.push(fireDeleteField(this.ctx))
+                    this.effects().push(fireDeleteField(this.ctx))
                 }
             })
     }

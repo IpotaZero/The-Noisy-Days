@@ -117,7 +117,11 @@ export default class SceneStage implements Scene {
         this.canvasSetup = new CanvasSetup(canvas)
 
         const ctx = this.canvasSetup.ctx
-        this.gameLogic = new GameLogic(ctx, this.g, () => this.onPlayerDead())
+        this.gameLogic = new GameLogic(
+            ctx,
+            () => this.g,
+            () => this.onPlayerDead(),
+        )
         this.renderer = new GameRenderer(ctx)
     }
 
