@@ -5,7 +5,7 @@ import { Player } from "./Game/Player/Player"
 import { Remodel, remodel } from "./Game/Bullet/Remodel"
 import { Ease } from "./utils/Functions/Ease"
 import { shake } from "./utils/shake"
-import { Vec } from "./utils/Vec"
+import { Vec, vec } from "./utils/Vec"
 import { UnifiedInput } from "./utils/UnifiedInput/UnifiedInput"
 import { DEFAULT_CONFIG } from "./utils/UnifiedInput/DefaultConfig"
 
@@ -82,65 +82,138 @@ export function explosion(p: Vec) {
         .fire()
 }
 
+// 並行ジェネレータをまとめて走らせるユーティリティ
+function* parallel(...gens: Generator[]) {
+    while (true) {
+        const results = gens.map((g) => g.next())
+        if (results.every((r) => r.done)) break
+        yield
+    }
+}
+
 export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
-    shake(Dom.container, 1500, 16)
-
-    // 3段階の波紋を少しずつ遅らせて発射
-    const waves = [
-        { delay: 0, color: "255,255,255", speed: 1.2 },
-        { delay: 8, color: "160,220,255", speed: 1.5 },
-        { delay: 16, color: "255,200,100", speed: 1.8 },
-    ]
-
     const maxR = Math.hypot(g.width, g.height)
-    const frame = 50
 
-    const generators = waves.map(({ delay, color, speed }) =>
+    // ===== 第一波: スロー中に炸裂（FPS10でゆっくり見える）=====
+
+    // パーティクルをまず叩き込む
+    remodel()
+        .p(bossP)
+        .type(Bullet.Type.Effect)
+        .color("white")
+        .duplicate(96, (b) => {
+            b.r = Math.random() * 20 + 8
+            b.speed = Math.random() * 18 + 4
+            b.radian = Math.random() * T
+            return b
+        })
+        .alpha(0.9)
+        .g((me) => Remodel.fadeout(me, 150))
+        .fire()
+
+    // 5色波紋 + 光の柱を同時展開（スロー中に映える）
+    yield* parallel(
+        ...[
+            { delay: 0, color: "255,255,255", lw: 12, speed: 1.4 },
+            { delay: 4, color: "255,255,255", lw: 8, speed: 1.7 },
+            { delay: 8, color: "255,255,255", lw: 6, speed: 2.0 },
+            { delay: 12, color: "255,255,255", lw: 5, speed: 2.3 },
+            { delay: 16, color: "255,255,255", lw: 4, speed: 2.6 },
+        ].map(({ delay, color, lw, speed }) =>
+            (function* () {
+                yield* Array(delay)
+                const frame = 60
+                for (let i = 1; i < frame + 1; i++) {
+                    const r = Ease.Out(i / frame) * maxR * speed
+                    const alpha = (1 - i / frame) * 0.9
+
+                    ctx.save()
+                    ctx.translate(g.width / 2, g.height / 2)
+                    ctx.strokeStyle = `rgba(${color}, ${alpha})`
+                    ctx.lineWidth = lw
+                    ctx.beginPath()
+                    ctx.arc(bossP.x, bossP.y, r, 0, T)
+                    ctx.stroke()
+                    ctx.restore()
+
+                    g.bullets
+                        .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
+                        .filter((b) => b.p.minus(bossP).magnitude() <= r)
+                        .forEach((b) => b.scorenize(g.player))
+
+                    yield
+                }
+            })(),
+        ),
+
+        // 8本の光の柱（スローで回転がドラマチックに見える）
         (function* () {
-            yield* Array(delay)
-            for (let i = 1; i < frame + 1; i++) {
-                const r = (i / frame) * maxR * speed
-                const alpha = 1 - i / frame
-
+            const frame = 60
+            for (let i = 0; i < frame; i++) {
                 ctx.save()
                 ctx.translate(g.width / 2, g.height / 2)
-                ctx.strokeStyle = `rgba(${color}, ${alpha})`
-                ctx.lineWidth = 4
-                ctx.beginPath()
-                ctx.arc(bossP.x, bossP.y, r, 0, T)
-                ctx.stroke()
+                const alpha = i < frame / 2 ? i / (frame / 2) : (frame - i) / (frame / 2)
+                for (let j = 0; j < 13; j++) {
+                    const angle = (j / 13) * T + (i / frame) * T * 2 * 0.5
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.5})`
+                    ctx.lineWidth = 8
+                    ctx.beginPath()
+                    ctx.moveTo(bossP.x, bossP.y)
+                    ctx.lineTo(bossP.x + Math.cos(angle) * maxR, bossP.y + Math.sin(angle) * maxR)
+                    ctx.stroke()
+                }
                 ctx.restore()
-
-                // 波紋が通過した弾をスコアに変換
-                g.bullets
-                    .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
-                    .filter((b) => b.p.minus(bossP).magnitude() <= r)
-                    .forEach((b) => b.scorenize(g.player))
-
                 yield
             }
         })(),
     )
 
-    // 爆発パーティクルをボス位置から大量に
+    // ===== 大爆発: FPSが戻りきったところで炸裂 =====
+
+    shake(Dom.container, 250, 32)
+
+    // 128個の超巨大パーティクル
     remodel()
         .p(bossP)
         .type(Bullet.Type.Effect)
         .color("white")
-        .duplicate(48, (b) => {
-            b.r = Math.random() * 12 + 4
-            b.speed = Math.random() * 10 + 2
+        .duplicate(128, (b) => {
+            b.r = Math.random() * 24 + 8
+            b.speed = Math.random() * 22 + 6
             b.radian = Math.random() * T
             return b
         })
-        .alpha(0.8)
-        .g((me) => Remodel.fadeout(me, 90))
+        .alpha(1.0)
+        .g((me) => Remodel.fadeout(me, 180))
         .fire()
 
-    // 全波紋を並行して走らせる
-    while (true) {
-        const results = generators.map((gen) => gen.next())
-        if (results.every((r) => r.done)) break
-        yield
-    }
+    // 超巨大5連波紋、画面全体を何度も覆い尽くす
+    yield* parallel(
+        ...[
+            { delay: 0, color: "0 50% 50%", lw: 14, speed: 2.0 },
+            { delay: 5, color: "72 50% 50%", lw: 10, speed: 2.5 },
+            { delay: 10, color: "144 50% 50%", lw: 8, speed: 3.0 },
+            { delay: 15, color: "216 50% 50%", lw: 6, speed: 3.5 },
+            { delay: 20, color: "288 50% 50%", lw: 5, speed: 4.0 },
+        ].map(({ delay, color, lw, speed }) =>
+            (function* () {
+                yield* Array(delay)
+                const frame = 90
+                for (let i = 1; i < frame + 1; i++) {
+                    const r = Ease.Out(i / frame) * maxR * speed * 0.2
+                    const alpha = 1 - i / frame
+
+                    ctx.save()
+                    ctx.translate(g.width / 2, g.height / 2)
+                    ctx.strokeStyle = `hsl(${color}/${alpha})`
+                    ctx.lineWidth = lw
+                    ctx.beginPath()
+                    ctx.arc(bossP.x, bossP.y, r, 0, T)
+                    ctx.stroke()
+                    ctx.restore()
+                    yield
+                }
+            })(),
+        ),
+    )
 }

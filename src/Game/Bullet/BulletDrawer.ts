@@ -7,14 +7,14 @@ export class BulletDrawer {
     draw(bullet: Bullet, ctx: CanvasRenderingContext2D) {
         if (Math.floor(bullet.r) === 0) return
 
-        let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r * 10) / 10}`
+        let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
 
         if (bullet.appearance === Bullet.Appearance.Arrow || bullet.appearance === Bullet.Appearance.Line) {
             hash += `,${bullet.radian}`
         }
 
         if (bullet.appearance === Bullet.Appearance.Score) {
-            hash += `,${Math.floor(bullet.radian * 10)}`
+            hash += `,${Math.floor(bullet.radian)}`
         }
 
         if (!this.cache.has(hash)) {
@@ -41,10 +41,9 @@ export class BulletDrawer {
 
         const cvs = this.cache.get(hash)!
 
-        ctx.save()
         ctx.globalAlpha = bullet.alpha
         ctx.drawImage(cvs, bullet.p.x - bullet.r * 2, bullet.p.y - bullet.r * 2)
-        ctx.restore()
+        ctx.globalAlpha = 1
     }
 
     private drawDonut(bullet: Bullet) {
