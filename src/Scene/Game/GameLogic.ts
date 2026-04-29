@@ -1,6 +1,8 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Collision } from "../../Game/Collision"
-import { explosion, fireDeleteField, g } from "../../global"
+import { Enemy } from "../../Game/Enemy/Enemy"
+import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
+import { bossDefeat, explosion, fireDeleteField, g } from "../../global"
 import { SE } from "../../SE"
 
 export class GameLogic {
@@ -37,10 +39,19 @@ export class GameLogic {
                 })
 
             if (e.life <= 0) {
-                explosion(e.p.clone())
-                SE.crush.play()
+                this.defeatEnemy(e)
             }
         })
+    }
+
+    private defeatEnemy(e: Enemy) {
+        if (e.renderer instanceof EnemyRendererBoss) {
+            this.effects.push(bossDefeat(this.ctx, e.p.clone()))
+        } else {
+            explosion(e.p.clone())
+        }
+
+        SE.crush.play()
     }
 
     private updateBullets() {

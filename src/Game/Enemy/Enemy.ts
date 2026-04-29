@@ -16,7 +16,7 @@ export class Enemy {
     frame = 0
     isInvincible = false
 
-    private readonly renderer: IEnemyRenderer
+    readonly renderer: IEnemyRenderer
     private g: Generator[] = []
 
     protected margin = 30

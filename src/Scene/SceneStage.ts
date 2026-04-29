@@ -1,5 +1,4 @@
 import { Dom } from "../Dom"
-import { Bullet } from "../Game/Bullet/Bullet"
 import { fireDeleteField, g } from "../global"
 import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
@@ -161,16 +160,14 @@ export default class SceneStage implements Scene {
     }
 
     private tick() {
-        if (!this.isFinished) {
-            g.player.tick(this.canvasSetup.ctx)
-            this.gameLogic.tick()
-        }
+        this.input.tick()
+
+        g.player.tick(this.canvasSetup.ctx)
+        this.gameLogic.tick()
 
         if (this.input.isPressed(Action.Pause)) {
             this.selfDestruct()
         }
-
-        this.input.tick()
     }
 
     private onPlayerDead() {
