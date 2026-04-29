@@ -93,7 +93,10 @@ export default class SceneStage implements Scene {
             "keydown",
             (e) => {
                 if (e.key === "Delete") {
-                    g.enemies.at(-1)?.hit(9999)
+                    g.enemies
+                        .filter((e) => !e.isInvincible)
+                        .at(-1)
+                        ?.hit(9999)
                 }
             },
             { signal: this.ac.signal },
@@ -120,6 +123,18 @@ export default class SceneStage implements Scene {
         this.gameLogic = new GameLogic(
             ctx,
             () => this.g,
+            () => {
+                this.g.push(
+                    function* (this: SceneStage) {
+                        this.looper.setFPS(10)
+                        yield* Array(10)
+                        for (let i = 0; i < 10; i++) {
+                            this.looper.setFPS(10 + i * 3)
+                            yield* Array(6)
+                        }
+                    }.bind(this)(),
+                )
+            },
             () => this.onPlayerDead(),
         )
         this.renderer = new GameRenderer(ctx)

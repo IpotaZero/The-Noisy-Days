@@ -11,6 +11,7 @@ export class GameLogic {
     constructor(
         private readonly ctx: CanvasRenderingContext2D,
         private readonly effects: () => Generator[],
+        private readonly slowFPS: () => void,
         private readonly onPlayerDead: () => void,
     ) {}
 
@@ -47,6 +48,7 @@ export class GameLogic {
     private defeatEnemy(e: Enemy) {
         if (e.renderer instanceof EnemyRendererBoss) {
             this.effects().push(bossDefeat(this.ctx, e.p.clone()))
+            this.slowFPS()
         } else {
             explosion(e.p.clone())
         }

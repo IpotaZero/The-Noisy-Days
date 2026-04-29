@@ -47,7 +47,7 @@ export default class extends Stage {
         yield* this.waitDefeatEnemy()
         scorenize()
         flash(Dom.container)
-        shake(Dom.container, 750, 8)
+        shake(Dom.container, 3000, 8)
     }
 }
 

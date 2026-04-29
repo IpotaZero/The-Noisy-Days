@@ -41,25 +41,26 @@ export class Looper {
 
         let count = 0
 
+        // 1. ロジック更新（handler）を指定回数実行[cite: 8]
         while (this.lastRunTime <= currentTime - this.interval) {
-            this.handler()
-            // lastRunTimeを正確な間隔分だけ進める（誤差の蓄積を防ぐ）
+            this.handler() // SceneStageのtickなど[cite: 3]
             this.lastRunTime += this.interval
-
-            if (this.isFinished) {
-                return
-            }
-
+            if (this.isFinished) return
             count++
         }
 
-        this.drawer?.()
+        // 修正ポイント: 更新（処理）が発生した時のみ描画を実行する
+        if (count > 0) {
+            // 2. 描画処理（画面クリアと基本描画）を1回だけ実行[cite: 5]
+            this.drawer?.()
 
-        for (let i = 0; i < count; i++) {
-            this.afterDraw?.()
+            // 3. ジェネレーターの進行とエフェクトの描画
+            // count回分回すことで、ラグ発生時もアニメーション速度を維持します
+            for (let i = 0; i < count; i++) {
+                this.afterDraw?.()
+            }
         }
 
-        // 次のフレームを予約
         requestAnimationFrame(() => this.loop())
     }
 }

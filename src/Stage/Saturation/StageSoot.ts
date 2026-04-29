@@ -12,6 +12,7 @@ import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { EnemyRendererCore } from "../../Game/Enemy/EnemyRendererCore"
 import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
 import { Ease } from "../../utils/Functions/Ease"
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -52,7 +53,7 @@ export default class extends Stage {
         yield* this.waitDefeatEnemy()
         scorenize()
         flash(Dom.container)
-        shake(Dom.container, 750, 8)
+        shake(Dom.container, 3000, 12)
     }
 }
 
@@ -319,12 +320,14 @@ class Satellite extends Enemy {
             .g(function* (me) {
                 yield* Remodel.stop(me, 15)
 
-                const frame = 15
-                const target = Math.atan2(g.player.p.y - me.p.y, g.player.p.x - me.p.x) + T
-                const start = me.radian
-                for (let i = 1; i < frame + 1; i++) {
-                    me.radian = start + (target - start) * Ease.InOut(i / frame)
-                    yield
+                if (!isSmartPhone) {
+                    const frame = 15
+                    const target = Math.atan2(g.player.p.y - me.p.y, g.player.p.x - me.p.x) + T
+                    const start = me.radian
+                    for (let i = 1; i < frame + 1; i++) {
+                        me.radian = start + (target - start) * Ease.InOut(i / frame)
+                        yield
+                    }
                 }
 
                 yield* Remodel.accel(me, 15, 32)
