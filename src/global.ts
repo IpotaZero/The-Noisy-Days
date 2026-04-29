@@ -147,6 +147,7 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
         ),
 
         // 8本の光の柱（スローで回転がドラマチックに見える）
+        // しばくぞ
         (function* () {
             const frame = 60
             for (let i = 0; i < frame; i++) {
@@ -156,7 +157,7 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
                 for (let j = 0; j < 13; j++) {
                     const angle = (j / 13) * T + (i / frame) * T * 2 * 0.5
                     ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.5})`
-                    ctx.lineWidth = 8
+                    ctx.lineWidth = 3
                     ctx.beginPath()
                     ctx.moveTo(bossP.x, bossP.y)
                     ctx.lineTo(bossP.x + Math.cos(angle) * maxR, bossP.y + Math.sin(angle) * maxR)
