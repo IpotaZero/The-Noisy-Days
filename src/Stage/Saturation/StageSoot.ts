@@ -34,7 +34,8 @@ export default class extends Stage {
         yield* this.text("「てゆーか、なんで君は戦ってるのかな?」", { name: "イシカワ" })
         yield* this.text("「SILOは悪意を増幅させる!」", { name: "シオン" })
         yield* this.text("「それは建前だ。本当は誰も悪意なんて持ってない事、分かってんでしょう?」", { name: "イシカワ" })
-        yield* this.text("「悪意があるから人が死ぬんでしょっ!?」", { name: "シオン" })
+        yield* this.text("「悪意があるから人が死ぬんだろっ!?」", { name: "シオン" })
+        yield* this.text("「それにはハンロンさせてもらうよっ!」", { name: "イシカワ" })
 
         star.started = true
         planet0.started = true
