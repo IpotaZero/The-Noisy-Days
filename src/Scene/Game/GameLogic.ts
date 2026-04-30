@@ -76,7 +76,6 @@ export class GameLogic {
                 }
 
                 if (this.collision.isColliding(b, g.player)) {
-                    console.log("Player hit!")
                     b.life = 0
                     g.player.damage()
                     SE.u.play()

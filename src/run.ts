@@ -42,6 +42,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     SE.setVolume(LocalStorage.getVolumeSE() / 9)
 
+    const url = new URL(location.href)
+    if (url.searchParams.has("cleared")) {
+        const stageIndex = Number(url.searchParams.get("cleared"))
+
+        for (let i = 0; i <= stageIndex; i++) {
+            LocalStorage.updateClearedStage(i, 2)
+        }
+    }
+
     const loading = document.createElement("p")
     loading.textContent = "Loading..."
     loading.classList.add("loading")

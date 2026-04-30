@@ -92,6 +92,23 @@ export default class implements Scene {
         this.pages.onEnter("chapter-.*", async () => {
             this.unlockAct()
         })
+
+        this.pages.onEnter("chapters", async () => {
+            this.unlockChapter()
+        })
+    }
+
+    private async unlockChapter() {
+        if (this.config.clear === undefined) return
+        if (this.config.clear % 16 !== 15) return // Chapterは16ステージクリアごとにアンロックされるので、16で割った余りが15でない場合はアンロックされない
+        const firstUncleared = LocalStorage.getFirstUncleared()
+        if (this.config.clear + 1 < firstUncleared) return
+
+        const targetChapterIndex = Math.floor(this.config.clear / 16) + 1
+        const buttons = this.selector.getAll("chapter-button", HTMLButtonElement)
+        const button = buttons[targetChapterIndex]
+        if (!button) return
+        await this.unlockButtonAnimation(button)
     }
 
     private async unlockAct() {
@@ -101,8 +118,9 @@ export default class implements Scene {
         const firstUncleared = LocalStorage.getFirstUncleared()
         if (this.config.clear + 1 < firstUncleared) return
 
-        const targetChapterPageId = chapterList[Math.floor(this.config.clear / 16)] // クリアしたステージのChapterページIDを計算
+        const targetChapterPageId = chapterList[Math.floor((this.config.clear + 1) / 16)] // クリアしたステージのChapterページIDを計算
         const pageId = this.pages.getCurrentPageId()
+        console.log(pageId, targetChapterPageId)
         if (pageId !== "chapter-" + targetChapterPageId) return
 
         const targetActIndex = Math.floor(this.config.clear / 4) + 1
