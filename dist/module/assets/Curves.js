@@ -1,2 +1,0 @@
-import{m as e}from"./global.js";function t(t,n,r,i){return a=>e(t/2*Math.sin(r*a),n/2*Math.sin(i*a))}function n(t,n,r){return i=>e((t-n)*Math.cos(i)-r*Math.cos((t-n)/n*i),(t-n)*Math.sin(i)-r*Math.sin((t-n)/n*i))}export{t as n,n as t};
-//# sourceMappingURL=Curves.js.map

@@ -247,7 +247,7 @@ class Star extends Enemy {
                 .r(28)
                 .p(this.p.clone())
                 .radian((this.frame / 12) ** 2)
-                .ex(3)
+                .ex(2)
                 .fire()
             yield
         }
@@ -334,8 +334,8 @@ class Satellite extends Enemy {
                         yield
                     }
                 } else {
-                    yield* Array(15)
                     me.radian = g.player.p.minus(me.p).arg()
+                    yield* Array(15)
                 }
 
                 yield* Remodel.accel(me, 15, 32)
