@@ -16,7 +16,7 @@ export default class extends Stage {
         yield* this.text("「直接的な原因は治安の悪化なのである!」", { name: "ヤナガワ" })
         yield* this.text("「想像できるだろうか。昨日まで透明だった隣人が、敵に見える世界が!」", { name: "ヤナガワ" })
         yield* this.text("「戦争は終わった。だが、我々は反省しなければならないのだ!」", { name: "ヤナガワ" })
-        yield* this.text("「回復期にある今こそ、棲み分けが必要なのである!」", { name: "ヤナガワ" })
+        yield* this.text('「回復期にある今こそ、<span style="color:red">棲み分け</span>が必要なのである!」', { name: "ヤナガワ" })
         yield* this.text("「もう二度と、憎しみが戦争になる前に。」", { name: "ヤナガワ" })
 
         // SILOが必要だった理由を説明
