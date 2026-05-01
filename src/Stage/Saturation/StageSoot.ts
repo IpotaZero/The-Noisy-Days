@@ -333,6 +333,9 @@ class Satellite extends Enemy {
                         me.radian = start + (target - start) * Ease.InOut(i / frame)
                         yield
                     }
+                } else {
+                    yield* Array(15)
+                    me.radian = g.player.p.minus(me.p).arg()
                 }
 
                 yield* Remodel.accel(me, 15, 32)
