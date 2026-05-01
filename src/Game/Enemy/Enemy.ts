@@ -21,15 +21,22 @@ export class Enemy {
 
     protected margin = 30
 
-    constructor(life: number, r: number, renderer: IEnemyRenderer = new EnemyRendererCore(), remainingCharge = 0) {
+    constructor(
+        life: number,
+        r: number,
+        renderer: IEnemyRenderer = new EnemyRendererCore(),
+        { remainingCharge, margin }: { remainingCharge?: number; margin?: number } = {},
+    ) {
+        this.margin = margin ?? 30
+
         this.renderer = renderer
 
         this.r = r
 
         this.life = life
         this.maxLife = life
-        this.chargeRemaining = remainingCharge
-        this.chargeMax = remainingCharge
+        this.chargeRemaining = remainingCharge ?? 0
+        this.chargeMax = remainingCharge ?? 0
 
         if ("G" in this) {
             this.g.push(
@@ -96,7 +103,7 @@ export class Enemy {
         )
     }
 
-    protected moveTo(target: Vec, frame: number, easing: Ease.Type = Ease.Out) {
+    protected moveTo(target: Vec, frame: number, easing: Ease.Type = Ease.Out): void[] {
         const start = this.p.clone()
 
         this.g.push(
