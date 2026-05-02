@@ -1,4 +1,4 @@
-import { Stage } from "./Stage"
+import { Stage } from "../Stage"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -25,10 +25,7 @@ export default class extends Stage {
         // 背景変更
 
         // 先生
-        yield* this.text(
-            "『……と云うことで、ついに我々の町にもSILOがやってくるわけです。皆さん、大いに喜びましょう!』",
-            { name: "先生" },
-        )
+        yield* this.text("『……と云うことで、ついに我々の町にもSILOがやってくるわけです。皆さん、大いに喜びましょう!』", { name: "先生" })
         yield* this.text("大人たちが拍手を始める。それを真似して子供たちも手を叩く。")
         // 子どもたちはよく分かっていない
         // 分かり合えない人というものを理解していないから

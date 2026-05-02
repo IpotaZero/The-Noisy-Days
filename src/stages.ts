@@ -106,21 +106,21 @@ const LightStages = [
 ]
 
 const DarkStages = [
-    { "stage-name": "", "description": "" },
+    { "stage-name": "一ヶ月前その1", "description": "" },
     { "stage-name": "Obsidian", "description": "" },
     { "stage-name": "Noir", "description": "" },
     { "stage-name": "Pitch", "description": "" },
 ]
 
 const HighStages = [
-    { "stage-name": "", "description": "" },
+    { "stage-name": "一ヶ月前その2", "description": "" },
     { "stage-name": "Amber", "description": "" },
     { "stage-name": "Vermilion", "description": "" },
     { "stage-name": "Lime", "description": "" },
 ]
 
 const LowStages = [
-    { "stage-name": "一か月前その3", "description": "レイ・コウダ" },
+    { "stage-name": "", "description": "レイ・コウダ" },
     { "stage-name": "Fog", "description": "" },
     { "stage-name": "Stone", "description": "" },
     { "stage-name": "Dust", "description": "" },
