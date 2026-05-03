@@ -105,8 +105,6 @@ class WaveTurret extends Enemy {
                 .speed(0)
                 .r(28) // Arrow制限: 28
                 .g(function* (me) {
-                    if (isSmartPhone) return
-
                     const baseRadian = me.radian
                     const shift = 0
                     for (let i = 0; i < 200; i++) {

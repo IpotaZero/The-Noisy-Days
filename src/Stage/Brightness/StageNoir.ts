@@ -136,11 +136,10 @@ class TacticalDrone extends Enemy {
                 const baseRadian = me.radian
                 const shift = 0
 
-                if (!isSmartPhone)
-                    for (let i = 0; i < 200; i++) {
-                        me.radian = Math.floor((baseRadian + Math.sin(i / 10 + shift) * 0.8) * 4) / 4
-                        yield
-                    }
+                for (let i = 0; i < 200; i++) {
+                    me.radian = Math.floor((baseRadian + Math.sin(i / 10 + shift) * 0.8) * 4) / 4
+                    yield
+                }
             })
             .g(function* (me) {
                 while (1) {
