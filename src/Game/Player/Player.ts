@@ -191,6 +191,7 @@ export class Player {
 
     private fire() {
         if (this.frame % 3 !== 0) return
+        if (this.isDead) return
         this.isSneaking() ? this.fireSneakShot() : this.fireNormalShot()
     }
 

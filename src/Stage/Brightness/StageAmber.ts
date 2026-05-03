@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { Vec, vec } from "../../utils/Vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -32,9 +32,23 @@ export default class extends Stage {
 
         g.enemies.push(head, ...segments)
 
-        for (let i = SEGMENT_COUNT - 1; i >= 0; i--) {
+        // 尻尾を倒す → 分離体が発生、次のセグメントへ
+        const tail = segments[SEGMENT_COUNT - 1]
+        tail.isInvincible = false
+        while (tail.life > 0) yield
+
+        // 尻尾が倒れた場所から分離体が出現
+        const detached = new DetachedTail(head, tail.p.clone())
+        g.enemies.push(detached)
+
+        // 残りのセグメントを尻尾側から順に無敵解除
+        for (let i = SEGMENT_COUNT - 2; i >= 0; i--) {
             segments[i].isInvincible = false
             while (segments[i].life > 0) yield
+
+            // 尻尾が倒れた場所から分離体が出現
+            const detached = new DetachedTail(head, segments[i].p.clone())
+            g.enemies.push(detached)
         }
 
         head.isInvincible = false
@@ -70,13 +84,14 @@ class SnakeHead extends Enemy {
         yield
         remodel().colorful(this.frame).r(64).p(this.p.clone()).delete(1).fire()
 
-        remodel()
-            .colorful(this.frame * 2)
-            .appearance(Bullet.Appearance.Ball)
-            .r(6)
-            .radian(this.frame ** 2)
-            .p(this.p.clone())
-            .fire()
+        if (!this.isChasing)
+            remodel()
+                .colorful(this.frame * 2)
+                .appearance(Bullet.Appearance.Ball)
+                .r(6)
+                .radian(this.frame ** 2)
+                .p(this.p.clone())
+                .fire()
     }
 
     private *patternSweep() {
@@ -118,7 +133,7 @@ class SnakeHead extends Enemy {
 
     private *patternChase() {
         this.isChasing = true
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 4; i++) {
             const target = this.p.plus(g.player.p.minus(this.p).scaled(0.95))
             yield* this.moveTo(target, 30)
 
@@ -158,7 +173,7 @@ class SnakeSegment extends Enemy {
         private readonly isTail: boolean,
     ) {
         const ratio = 1 - index / SEGMENT_COUNT
-        const hp = Math.round(100 * ratio + 100)
+        const hp = Math.round(50 * ratio + 100)
         const r = Math.round(18 * ratio + 32)
         super(hp, r, new EnemyRendererCore())
         this.isInvincible = true
@@ -207,5 +222,121 @@ class SnakeSegment extends Enemy {
         } else {
             yield
         }
+    }
+}
+
+/**
+ * 分離した尻尾
+ *
+ * 尻尾が撃破された座標から出現し、蛇の頭を中心に公転する。
+ * 頭が動くたびに公転中心も動くため、予測しにくい軌道になる。
+ * プレイヤーが頭を狙おうとするたびに割り込んでくる番犬的な役割。
+ *
+ * G(): 頭の周囲を楕円公転。公転半径は時間で変動し、
+ *      頭に引き寄せられたり離れたりを繰り返す
+ * H(): 2種類の攻撃を交互に使う
+ *      - 追尾フェーズ: 自機へ急接近 → すれ違いざまに扇形弾
+ *      - 牽制フェーズ: 大ボール(r=28)を11方向放射
+ */
+class DetachedTail extends Enemy {
+    private attackPhase = 0
+
+    constructor(
+        private readonly head: SnakeHead,
+        spawnP: Vec,
+    ) {
+        super(400, 28, new EnemyRendererMob(), { margin: 30 })
+        this.p = spawnP
+        this.moveTo(head.p, 30)
+        this.isInvincible = true
+
+        this.setParent(head, () => {
+            // 公転半径を150〜280の間で波打たせる
+            const radius = 215 + Math.sin(this.frame / 90) * 65
+            const angle = (this.frame / 150) * T
+            return vec(Math.cos(angle) * radius, Math.sin(angle) * radius * 0.7)
+        })
+    }
+
+    *G() {
+        if (this.attackPhase % 2 === 0) {
+            yield* this.attackDash()
+        } else {
+            yield* this.attackSpread()
+        }
+        this.attackPhase++
+    }
+
+    private *attackDash() {
+        remodel(this)
+            .appearance(Bullet.Appearance.Ball)
+            .color("white")
+            .p(this.p.clone())
+            .speed(0)
+            .r(28)
+            .g(function* (this: DetachedTail, me: Bullet) {
+                yield* Array(60)
+                yield* Remodel.ease(me, "r", 0, 30, Ease.In)
+                yield* this.hatch(me.p.clone())
+                me.life = 0
+            } as any)
+            .fire()
+
+        yield* Array(120)
+    }
+
+    private *hatch(p: Vec) {
+        const target = g.player.p.clone()
+
+        for (let i = 0; i < 4; i++) {
+            remodel()
+                .appearance(Bullet.Appearance.Arrow)
+                .collision(Bullet.Collision.Arrow)
+                .color("white")
+                .p(p)
+                .aim(target)
+                .speed(0)
+                .r(28) // Arrow制限: 28
+                .ex(7)
+                .g(function* (me) {
+                    const baseRadian = me.radian
+                    const shift = 0
+                    for (let i = 0; i < 200; i++) {
+                        me.radian = Math.floor((baseRadian + Math.sin(i / 10 + shift) * 0.4) * 4) / 4
+                        yield
+                    }
+                })
+                .g(function* (me) {
+                    while (1) {
+                        me.p = me.p.plus(vec.arg(me.radian).scaled(12))
+                        yield* Array(2)
+                    }
+                })
+                .fire()
+
+            yield* Array(4)
+        }
+    }
+
+    /**
+     * 11方向大ボール放射（牽制）
+     * 公転しながらゆっくり放射するので、頭への接近ルートを塞ぐ
+     */
+    private *attackSpread() {
+        remodel()
+            .colorful(this.frame + 120)
+            .r(28)
+            .p(this.p.clone())
+            .speed(6)
+            .radian(T * (this.frame / 240))
+            .ex(11)
+            .g(function* (me) {
+                yield* Remodel.appear(me, 10)
+                yield* Remodel.stop(me, 20)
+                yield* Remodel.accel(me, 20, 9)
+            })
+            .fire()
+
+        yield* Array(60)
     }
 }
