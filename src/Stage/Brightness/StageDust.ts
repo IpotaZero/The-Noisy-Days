@@ -32,6 +32,28 @@ export default class extends Stage {
 
         g.enemies.push(head, ...segments)
 
+        yield* this.text("「あなた、合成人でしょう。」", { name: "サカイ" })
+        yield* this.text("「誰だアンタは。」", { name: "シオン" })
+        yield* this.text("「トウキョウ警察機動隊アルファのサカイです。」", { name: "サカイ" })
+        yield* this.text("「……シオン・シマ。」", { name: "シオン" })
+        yield* this.text("「それで、あなたしかも、子供でしょう。」", { name: "サカイ" })
+        yield* this.text("「ハタチを大人とするなら、そう。」", { name: "シオン" })
+        yield* this.text("「可哀相に。」", { name: "サカイ" })
+        yield* this.text("「……。」", { name: "シオン" })
+        yield* this.text("「SILOの中に居れば、傷付く事なんて無かったのに。」", { name: "サカイ" })
+        yield* this.text("「その代わりに絶滅しろと?」", { name: "シオン" })
+        yield* this.text("「そんなこと言ってないでしょう!? あなた、TAMAMUSHIの洗脳を受けてるのね。」", {
+            name: "サカイ",
+        })
+        yield* this.text("「可哀相に!」", { name: "サカイ" })
+        yield* this.text("「本当に、100%の善意で、そんなことを。」", { name: "シオン" })
+        yield* this.text("「そうよ! 全て、あなたたちの為にやってるんじゃない!」", { name: "サカイ" })
+        // 本当に分かり合えない人がいるという絶望
+        yield* this.text("「……ッ!!」", { name: "シオン" })
+        yield* this.text("「もう、やるしかないのよっ!」", { name: "サカイ" })
+
+        head.start()
+
         // 尻尾を倒す → 分離体が発生、次のセグメントへ
         const tail = segments[SEGMENT_COUNT - 1]
         tail.isInvincible = false
@@ -57,12 +79,19 @@ export default class extends Stage {
         scorenize()
         flash(Dom.container)
         shake(Dom.container, 750, 8)
+
+        yield* this.wait(30)
+
+        yield* this.text("「……はは、はははっ!」", { name: "シオン" })
+        yield* this.text("「善意が、傍から見ればこんなにも滑稽だなんて!」", { name: "シオン" })
     }
 }
 
 class SnakeHead extends Enemy {
     // H() から参照するためにパターン状態を公開
     isChasing = false
+
+    isStarted = false
 
     constructor() {
         super(400, 80, new EnemyRendererBoss(), { margin: 120 })
@@ -71,7 +100,13 @@ class SnakeHead extends Enemy {
         this.moveTo(vec(0, 0), 120)
     }
 
+    start() {
+        this.isStarted = true
+    }
+
     *G() {
+        while (!this.isStarted) yield
+
         const patterns = [() => this.patternSweep(), () => this.patternFigure8(), () => this.patternSpiral(), () => this.patternChase()]
         let i = 0
         while (true) {
@@ -81,6 +116,8 @@ class SnakeHead extends Enemy {
     }
 
     *H() {
+        while (!this.isStarted) yield
+
         yield
         remodel().colorful(this.frame).r(64).p(this.p.clone()).delete(1).fire()
 
