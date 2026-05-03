@@ -89,7 +89,6 @@ class Child0 extends Enemy {
             .p(this.p.clone())
             .aim(g.player.p)
             .sim(4, 16, 32)
-            .g((me) => Remodel.appear(me, 15))
             .g(function* (me) {
                 yield* Remodel.accel(me, 15, 5)
                 yield* Remodel.accel(me, 15, 64)

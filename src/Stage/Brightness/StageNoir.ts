@@ -129,7 +129,7 @@ class TacticalDrone extends Enemy {
             .collision(Bullet.Collision.Arrow)
             .color("white")
             .p(this.p.clone())
-            .speed(9)
+            .speed(0)
             .r(28) // Arrow制限: 28
             .aim(g.player.p)
             .g(function* (me) {
@@ -138,9 +138,15 @@ class TacticalDrone extends Enemy {
 
                 if (!isSmartPhone)
                     for (let i = 0; i < 200; i++) {
-                        me.radian = baseRadian + Math.sin(i / 10 + shift) * 0.8
+                        me.radian = Math.floor((baseRadian + Math.sin(i / 10 + shift) * 0.8) * 4) / 4
                         yield
                     }
+            })
+            .g(function* (me) {
+                while (1) {
+                    me.p = me.p.plus(vec.arg(me.radian).scaled(18))
+                    yield* Array(2)
+                }
             })
             .fire()
 

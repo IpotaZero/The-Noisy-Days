@@ -11,6 +11,7 @@ import * as Curves from "../../utils/Functions/Curves"
 import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { EnemyRendererCore } from "../../Game/Enemy/EnemyRendererCore"
 import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
+import { Ease } from "../../utils/Functions/Ease"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -101,7 +102,7 @@ class WaveTurret extends Enemy {
                 .color("white")
                 .p(p.clone())
                 .aim(target)
-                .speed(6)
+                .speed(0)
                 .r(28) // Arrow制限: 28
                 .g(function* (me) {
                     if (isSmartPhone) return
@@ -109,8 +110,14 @@ class WaveTurret extends Enemy {
                     const baseRadian = me.radian
                     const shift = 0
                     for (let i = 0; i < 200; i++) {
-                        me.radian = baseRadian + Math.sin(i / 10 + shift) * 0.4
+                        me.radian = Math.floor((baseRadian + Math.sin(i / 10 + shift) * 0.4) * 4) / 4
                         yield
+                    }
+                })
+                .g(function* (me) {
+                    while (1) {
+                        me.p = me.p.plus(vec.arg(me.radian).scaled(12))
+                        yield* Array(2)
                     }
                 })
                 .fire()
@@ -149,7 +156,7 @@ class ClusterGun extends Enemy {
 
                 const frame = 15
                 for (let i = 1; i < frame + 1; i++) {
-                    me.r = 28 * (1 - i / frame) // 徐々に小さく
+                    me.r = 28 * Ease.In(1 - i / frame) // 徐々に小さく
                     yield
                 }
 
