@@ -3,6 +3,7 @@ import { Bullet } from "./Bullet"
 import { Vec, vec } from "../../utils/Vec"
 import { Ease } from "../../utils/Functions/Ease"
 import { Enemy } from "../Enemy/Enemy"
+import { NumberKeys } from "../../utils/UtilTypes"
 
 export const remodel = (e?: Enemy) =>
     new Proxy(new Remodel([new Bullet()], e), {
@@ -61,8 +62,8 @@ export class Remodel {
         me.life = 0
     }
 
-    static *ease(me: Bullet, key: keyof Bullet, target: number, frame: number, easing: Ease.Type) {
-        const start = me[key] as unknown as number
+    static *ease(me: Bullet, key: NumberKeys<Bullet>, target: number, frame: number, easing: Ease.Type) {
+        const start = me[key]
         for (let i = 1; i < frame + 1; i++) {
             ;(me as any)[key] = (target - start) * easing(i / frame) + start
             yield
