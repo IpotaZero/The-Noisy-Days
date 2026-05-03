@@ -149,7 +149,7 @@ export class BulletDrawer {
         ctx.fill()
 
         ctx.beginPath()
-        const innerR = bullet.r > 1 ? Math.min(bullet.r - 1, bullet.r * 0.85) : bullet.r * 0.85
+        const innerR = bullet.r > 1 ? Math.min(bullet.r - 1, bullet.r * 0.9) : bullet.r * 0.9
         ctx.arc(center, center, innerR, 0, Math.PI * 2)
         ctx.shadowColor = "white"
         ctx.fillStyle = "white"
