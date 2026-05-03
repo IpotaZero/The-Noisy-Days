@@ -5,231 +5,233 @@ import { Bullet } from "./Bullet"
 export class BulletDrawer {
     private readonly cache = new Map<string, HTMLCanvasElement>()
 
-    draw(bullet: Bullet, ctx: CanvasRenderingContext2D) {
+    private getHalfCanvasSize(bullet: Bullet) {
+        switch (bullet.appearance) {
+            case Bullet.Appearance.Player:
+                return bullet.r
+
+            case Bullet.Appearance.Donut:
+            case Bullet.Appearance.Score:
+                return bullet.r * 2
+
+            case Bullet.Appearance.Arrow:
+            case Bullet.Appearance.Line:
+                return bullet.r * 3
+
+            case Bullet.Appearance.Ball:
+                return bullet.r + 16
+
+            default:
+                return bullet.r * 2
+        }
+    }
+
+    /**
+     * メインの描画処理
+     */
+    public draw(bullet: Bullet, ctx: CanvasRenderingContext2D): void {
         if (Math.floor(bullet.r) === 0) return
 
+        // Beamはキャッシュせず直接描画（特殊ケース）
         if (bullet.appearance === Bullet.Appearance.Beam) {
-            ctx.save()
-            ctx.globalAlpha = bullet.alpha
-            ctx.translate(bullet.p.x, bullet.p.y)
-            ctx.rotate(bullet.radian)
-
-            ctx.shadowBlur = bullet.r
-            ctx.shadowColor = bullet.color
-            ctx.fillStyle = bullet.color
-            ctx.fillRect(0, -bullet.r, bullet.length, bullet.r * 2)
-
-            ctx.shadowBlur = bullet.r
-            ctx.shadowColor = "white"
-            ctx.fillStyle = "white"
-            ctx.fillRect(0, -bullet.r * 0.8, bullet.length, bullet.r * 1.6)
-
-            ctx.globalAlpha = 0.5 * bullet.alpha
-            ctx.beginPath()
-            ctx.arc(0, 0, bullet.r * 2, 0, T)
-            ctx.fill()
-
-            ctx.restore()
+            this.drawBeamDirectly(bullet, ctx)
             return
         }
 
-        let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
+        const hash = this.generateCacheKey(bullet)
+        let offscreenCanvas = this.cache.get(hash)
 
-        if (bullet.appearance === Bullet.Appearance.Arrow || bullet.appearance === Bullet.Appearance.Line) {
-            hash += `,${bullet.radian}`
+        const halfCanvasSize = this.getHalfCanvasSize(bullet)
+
+        if (!offscreenCanvas) {
+            offscreenCanvas = this.drawToOffscreen(bullet, halfCanvasSize)
+            this.cache.set(hash, offscreenCanvas)
         }
-
-        if (bullet.appearance === Bullet.Appearance.Score) {
-            hash += `,${Math.floor(bullet.radian)}`
-        }
-
-        if (!this.cache.has(hash)) {
-            if (bullet.appearance === Bullet.Appearance.Donut) {
-                const cvs = this.drawDonut(bullet)
-                this.cache.set(hash, cvs)
-            } else if (bullet.appearance === Bullet.Appearance.Score) {
-                const cvs = this.drawLaser(bullet)
-                this.cache.set(hash, cvs)
-            } else if (bullet.appearance === Bullet.Appearance.Arrow) {
-                const cvs = this.drawArrow(bullet)
-                this.cache.set(hash, cvs)
-            } else if (bullet.appearance === Bullet.Appearance.Line) {
-                const cvs = this.drawLine(bullet)
-                this.cache.set(hash, cvs)
-            } else if (bullet.appearance === Bullet.Appearance.Ball) {
-                const cvs = this.drawBall(bullet)
-                this.cache.set(hash, cvs)
-            } else {
-                const cvs = this.drawPlayer(bullet)
-                this.cache.set(hash, cvs)
-            }
-        }
-
-        const cvs = this.cache.get(hash)!
 
         ctx.globalAlpha = bullet.alpha
-        ctx.drawImage(cvs, bullet.p.x - bullet.r * 2, bullet.p.y - bullet.r * 2)
+        const offset = halfCanvasSize
+        ctx.drawImage(offscreenCanvas, bullet.p.x - offset, bullet.p.y - offset)
         ctx.globalAlpha = 1
     }
 
-    private drawDonut(bullet: Bullet) {
-        const canvas = document.createElement("canvas")
-        canvas.width = bullet.r * 4
-        canvas.height = bullet.r * 4
-
-        const context = canvas.getContext("2d")!
-
-        context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
-
-        context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r
-        context.strokeStyle = bullet.color
-        context.lineWidth = 3
-        context.stroke()
-
-        if (!isSmartPhone) {
-            context.shadowColor = bullet.color
-            context.shadowBlur = bullet.r / 2
+    /**
+     * 各タイプに応じたオフスクリーンキャンバスの生成
+     */
+    private drawToOffscreen(bullet: Bullet, halfCanvasSize: number): HTMLCanvasElement {
+        switch (bullet.appearance) {
+            case Bullet.Appearance.Donut:
+                return this.drawDonut(bullet, halfCanvasSize)
+            case Bullet.Appearance.Score:
+                return this.drawScore(bullet, halfCanvasSize)
+            case Bullet.Appearance.Arrow:
+                return this.drawArrow(bullet, halfCanvasSize)
+            case Bullet.Appearance.Line:
+                return this.drawLine(bullet, halfCanvasSize)
+            case Bullet.Appearance.Ball:
+                return this.drawBall(bullet, halfCanvasSize)
+            default:
+                return this.drawPlayer(bullet, halfCanvasSize)
         }
-        context.strokeStyle = "white"
-        context.lineWidth = 2
-        context.stroke()
-        context.lineWidth = 1
-        context.stroke()
-
-        return canvas
     }
 
-    private drawBall(bullet: Bullet) {
-        const canvas = document.createElement("canvas")
-        canvas.width = bullet.r * 4
-        canvas.height = bullet.r * 4
+    private generateCacheKey(bullet: Bullet): string {
+        const parts = [bullet.appearance, bullet.color, Math.floor(bullet.r)]
+        const isRotationSensitive = [Bullet.Appearance.Arrow, Bullet.Appearance.Line].includes(bullet.appearance)
 
-        const context = canvas.getContext("2d")!
-
-        context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
-
-        context.shadowColor = bullet.color
-        context.shadowBlur = bullet.r
-        context.fillStyle = bullet.color
-        context.fill()
-
-        context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r * 0.85, 0, Math.PI * 2)
-
-        context.shadowColor = "white"
-        context.fillStyle = "white"
-        context.fill()
-
-        return canvas
-    }
-
-    private drawLaser(bullet: Bullet) {
-        const canvas = document.createElement("canvas")
-        canvas.width = bullet.r * 4
-        canvas.height = bullet.r * 4
-
-        const context = canvas.getContext("2d")!
-        context.fillStyle = bullet.color
-
-        if (!isSmartPhone) {
-            context.shadowColor = bullet.color
-            context.shadowBlur = bullet.r * 2
+        if (isRotationSensitive) {
+            parts.push(bullet.radian)
+        } else if (bullet.appearance === Bullet.Appearance.Score) {
+            parts.push(Math.floor(bullet.radian))
         }
+        return parts.join(",")
+    }
 
-        context.save()
-        context.translate(bullet.r * 2, bullet.r * 2)
-        context.rotate(bullet.radian)
-        context.beginPath()
-        context.rect(-bullet.r, -bullet.r, bullet.r * 2, bullet.r * 2)
-        context.fill()
-        context.restore()
+    private createOffscreenCanvas(halfCanvasSize: number) {
+        const canvas = document.createElement("canvas")
+        const size = halfCanvasSize * 2
+        canvas.width = size
+        canvas.height = size
+        const ctx = canvas.getContext("2d")!
+        return { canvas, ctx, center: halfCanvasSize }
+    }
 
+    // --- 各外見の描画ロジック ---
+
+    private drawBeamDirectly(bullet: Bullet, ctx: CanvasRenderingContext2D) {
+        ctx.save()
+        ctx.globalAlpha = bullet.alpha
+        ctx.translate(bullet.p.x, bullet.p.y)
+        ctx.rotate(bullet.radian)
+
+        ctx.shadowBlur = bullet.r
+        ctx.shadowColor = bullet.color
+        ctx.fillStyle = bullet.color
+        ctx.fillRect(0, -bullet.r, bullet.length, bullet.r * 2)
+
+        ctx.shadowBlur = bullet.r
+        ctx.shadowColor = "white"
+        ctx.fillStyle = "white"
+        ctx.fillRect(0, -bullet.r * 0.8, bullet.length, bullet.r * 1.6)
+
+        ctx.globalAlpha = 0.5 * bullet.alpha
+        ctx.beginPath()
+        ctx.arc(0, 0, bullet.r * 2, 0, T)
+        ctx.fill()
+        ctx.restore()
+    }
+
+    private drawDonut(bullet: Bullet, halfCanvasSize: number) {
+        const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
+        ctx.beginPath()
+        ctx.arc(center, center, bullet.r, 0, Math.PI * 2)
+        ctx.shadowColor = bullet.color
+        ctx.shadowBlur = bullet.r
+        ctx.strokeStyle = bullet.color
+        ctx.lineWidth = 3
+        ctx.stroke()
+
+        if (!isSmartPhone) ctx.shadowBlur = bullet.r / 2
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.stroke()
+        ctx.lineWidth = 1
+        ctx.stroke()
         return canvas
     }
 
-    private drawPlayer(bullet: Bullet) {
-        const canvas = document.createElement("canvas")
-        canvas.width = bullet.r * 4
-        canvas.height = bullet.r * 4
+    private drawBall(bullet: Bullet, halfCanvasSize: number) {
+        const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
+        ctx.beginPath()
+        ctx.arc(center, center, bullet.r, 0, Math.PI * 2)
+        ctx.shadowColor = bullet.color
+        ctx.shadowBlur = 14
+        ctx.fillStyle = bullet.color
+        ctx.fill()
 
-        const context = canvas.getContext("2d")!
-        context.fillStyle = bullet.color
-
-        context.beginPath()
-        context.arc(bullet.r * 2, bullet.r * 2, bullet.r, 0, Math.PI * 2)
-        context.fill()
-
+        ctx.beginPath()
+        const innerR = bullet.r > 1 ? Math.min(bullet.r - 1, bullet.r * 0.85) : bullet.r * 0.85
+        ctx.arc(center, center, innerR, 0, Math.PI * 2)
+        ctx.shadowColor = "white"
+        ctx.fillStyle = "white"
+        ctx.fill()
         return canvas
     }
 
-    private drawLine(bullet: Bullet) {
-        const canvas = document.createElement("canvas")
-        canvas.width = bullet.r * 4
-        canvas.height = bullet.r * 4
-
-        const context = canvas.getContext("2d")!
-
+    private drawScore(bullet: Bullet, halfCanvasSize: number) {
+        const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
         if (!isSmartPhone) {
-            context.shadowColor = bullet.color
-            context.shadowBlur = bullet.r * 2
+            ctx.shadowColor = bullet.color
+            ctx.shadowBlur = bullet.r * 2
         }
-
-        context.save()
-        context.translate(bullet.r * 2, bullet.r * 2)
-        context.rotate(bullet.radian)
-        context.beginPath()
-        context.moveTo(-bullet.r, 0)
-        context.lineTo(bullet.r, 0)
-
-        context.strokeStyle = bullet.color
-        context.lineWidth = 3
-        context.stroke()
-
-        context.strokeStyle = "white"
-        context.lineWidth = 2
-        context.stroke()
-
-        context.restore()
-
+        ctx.save()
+        ctx.translate(center, center)
+        ctx.rotate(bullet.radian)
+        ctx.fillStyle = bullet.color
+        ctx.fillRect(-bullet.r, -bullet.r, bullet.r * 2, bullet.r * 2)
+        ctx.restore()
         return canvas
     }
 
-    private drawArrow(bullet: Bullet) {
-        const canvas = document.createElement("canvas")
-        canvas.width = bullet.r * 4
-        canvas.height = bullet.r * 4
+    private drawPlayer(bullet: Bullet, halfCanvasSize: number) {
+        const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
+        ctx.fillStyle = bullet.color
+        ctx.beginPath()
+        ctx.arc(center, center, bullet.r, 0, Math.PI * 2)
+        ctx.fill()
+        return canvas
+    }
 
-        const context = canvas.getContext("2d")!
-
+    private drawLine(bullet: Bullet, halfCanvasSize: number) {
+        const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
         if (!isSmartPhone) {
-            context.shadowColor = bullet.color
-            context.shadowBlur = bullet.r * 2
+            ctx.shadowColor = bullet.color
+            ctx.shadowBlur = bullet.r * 2
         }
+        ctx.save()
+        ctx.translate(center, center)
+        ctx.rotate(bullet.radian)
+        ctx.beginPath()
+        ctx.moveTo(-bullet.r, 0)
+        ctx.lineTo(bullet.r, 0)
 
-        context.save()
-        context.translate(bullet.r * 2, bullet.r * 2)
-        context.rotate(bullet.radian)
-        context.beginPath()
-        context.moveTo(-bullet.r, 0)
-        context.lineTo(bullet.r, 0)
-        context.moveTo(bullet.r, 0)
-        context.lineTo(bullet.r * (1 - Math.SQRT1_2), bullet.r * Math.SQRT1_2)
-        context.moveTo(bullet.r, 0)
-        context.lineTo(bullet.r * (1 - Math.SQRT1_2), -bullet.r * Math.SQRT1_2)
+        ctx.strokeStyle = bullet.color
+        ctx.lineWidth = 3
+        ctx.stroke()
 
-        context.strokeStyle = bullet.color
-        context.lineWidth = 3
-        context.stroke()
+        ctx.shadowBlur = 0
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.stroke()
+        ctx.restore()
+        return canvas
+    }
 
-        context.strokeStyle = "white"
-        context.lineWidth = 2
-        context.stroke()
-
-        context.restore()
-
+    private drawArrow(bullet: Bullet, halfCanvasSize: number) {
+        const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
+        if (!isSmartPhone) {
+            ctx.shadowColor = bullet.color
+            ctx.shadowBlur = bullet.r * 2
+        }
+        ctx.save()
+        ctx.translate(center, center)
+        ctx.rotate(bullet.radian)
+        ctx.beginPath()
+        ctx.moveTo(-bullet.r, 0)
+        ctx.lineTo(bullet.r, 0)
+        const tipSize = bullet.r * (1 - Math.SQRT1_2)
+        const tipWidth = bullet.r * Math.SQRT1_2
+        ctx.moveTo(bullet.r, 0)
+        ctx.lineTo(tipSize, tipWidth)
+        ctx.moveTo(bullet.r, 0)
+        ctx.lineTo(tipSize, -tipWidth)
+        ctx.strokeStyle = bullet.color
+        ctx.lineWidth = 3
+        ctx.stroke()
+        ctx.shadowBlur = 0
+        ctx.strokeStyle = "white"
+        ctx.lineWidth = 2
+        ctx.stroke()
+        ctx.restore()
         return canvas
     }
 }

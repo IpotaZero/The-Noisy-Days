@@ -16,9 +16,9 @@ export class GameLogic {
     ) {}
 
     tick() {
+        this.checkPlayerHit()
         this.updateEnemies()
         this.updateBullets()
-        this.checkPlayerHit()
         this.collectScoreBullets()
         this.cleanup()
         this.checkDead()
