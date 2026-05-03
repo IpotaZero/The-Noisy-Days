@@ -1,4 +1,3 @@
-import { build } from "vite"
 import { vec, Vec } from "../utils/Vec"
 import { Bullet } from "./Bullet/Bullet"
 import { Player } from "./Player/Player"
@@ -17,10 +16,7 @@ type Line = {
 export class Collision {
     isColliding(b: Bullet, e: Player) {
         if (b.collision === Bullet.Collision.Ball) {
-            return this.isCollidingCircle(
-                { p: b.p, r: b.r },
-                { p: e.p, r: e.r },
-            )
+            return this.isCollidingCircle({ p: b.p, r: b.r }, { p: e.p, r: e.r })
         } else if (b.collision === Bullet.Collision.Line) {
             const circle: Circle = e
             const line = {
@@ -34,16 +30,11 @@ export class Collision {
             const 右端 = b.p.plus(vec.arg(b.radian).scaled(b.r))
             const 左端 = b.p.minus(vec.arg(b.radian).scaled(b.r))
 
-            const line0 = {
-                start: 右端,
-                end: 左端,
-            }
-
+            const line0 = { start: 右端, end: 左端 }
             const line1 = {
                 start: 右端,
                 end: 右端.plus(vec.arg((-3 / 8) * T + b.radian).scaled(b.r)),
             }
-
             const line2 = {
                 start: 右端,
                 end: 右端.plus(vec.arg((-5 / 8) * T + b.radian).scaled(b.r)),
@@ -54,32 +45,52 @@ export class Collision {
                 this.isCollidingLine(circle, line1) ||
                 this.isCollidingLine(circle, line2)
             )
+        } else if (b.collision === Bullet.Collision.Rect) {
+            // ビーム判定: 始点を b.p に固定するため、中心を進行方向に length/2 だけオフセットする
+            return this.isCollidingRect(e, {
+                p: b.p.plus(vec.arg(b.radian).scaled(b.length / 2)),
+                w: b.length, // radian方向（ローカルX軸）の長さ
+                h: b.r * 2, // 垂直方向（ローカルY軸）の太さ
+                rad: b.radian,
+            })
         }
     }
 
-    private isCollidingCircle(
-        { p: p1, r: r1 }: Circle,
-        { p: p2, r: r2 }: Circle,
-    ) {
+    private isCollidingCircle({ p: p1, r: r1 }: Circle, { p: p2, r: r2 }: Circle) {
         const distance = p1.minus(p2).magnitude()
         const radiusSum = r1 + r2
         return distance <= radiusSum
     }
 
     private isCollidingLine({ p, r }: Circle, { start, end }: Line) {
-        // 線分ベクトルと、線分始点から円中心へのベクトル
         const segment = end.minus(start)
         const toCircle = p.minus(start)
 
-        // 線分上への射影（0〜1にクランプで線分内に収める）
         const segLenSq = segment.magnitudeSquared()
         const t = Math.max(0, Math.min(1, toCircle.dot(segment) / segLenSq))
 
-        // 線分上の最近接点
         const closest = start.plus(segment.scaled(t))
-
-        // 最近接点と円中心の距離が半径以下なら衝突
         const distSq = p.minus(closest).magnitudeSquared()
-        return distSq <= r * r
+        return distSq <= r ** 2
+    }
+
+    /**
+     * 回転した矩形と円の当たり判定
+     */
+    private isCollidingRect(circle: Circle, rect: { p: Vec; w: number; h: number; rad: number }) {
+        // 円の中心を矩形の中心相対に移動し、逆回転させて矩形のローカル座標（AABB状態）に合わせる
+        // Vec.ts の rotated メソッドを使用して逆回転を適用
+        const localP = circle.p.minus(rect.p).rotated(-rect.rad)
+
+        const halfW = rect.w / 2
+        const halfH = rect.h / 2
+
+        // ローカル空間上のAABBに対して、最も円に近い点をクランプで求める
+        const closestX = Math.max(-halfW, Math.min(localP.x, halfW))
+        const closestY = Math.max(-halfH, Math.min(localP.y, halfH))
+        const closest = vec(closestX, closestY)
+
+        // 最近接点と円の中心の距離が半径以内なら衝突
+        return localP.minus(closest).magnitudeSquared() <= circle.r ** 2
     }
 }

@@ -53,6 +53,13 @@ export class Vec {
         return vec(n.y, -n.x)
     }
 
+    /**
+     * 各成分を指定した範囲内に収めた新しいベクトルを返す
+     */
+    clamp(min: Vec, max: Vec) {
+        return vec(Math.max(min.x, Math.min(this.x, max.x)), Math.max(min.y, Math.min(this.y, max.y)))
+    }
+
     clone() {
         return vec(this.x, this.y)
     }

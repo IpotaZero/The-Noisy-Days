@@ -46,7 +46,7 @@ export class Player {
 
     remove() {
         this.isDead = true
-        this.p.y = -g.height
+        this.p.y = -g.height * 2
     }
 
     isInvincible() {

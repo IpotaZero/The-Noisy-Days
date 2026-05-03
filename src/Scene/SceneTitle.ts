@@ -17,7 +17,7 @@ import typia from "typia"
 import { ConfigMap } from "../utils/UnifiedInput/Binding"
 import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
 
-const FINISHED = 39
+const FINISHED = 41
 
 export default class implements Scene {
     private readonly pages = new Pages()

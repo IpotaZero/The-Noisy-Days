@@ -118,7 +118,7 @@ class Turret extends Enemy {
                 const target = g.player.p.minus(me.p).arg() + T
                 // 停止中に再照準
                 if (isSmartPhone) {
-                    me.radian = target
+                    // me.radian = target
                     yield* Array(15)
                 } else {
                     const first = me.radian

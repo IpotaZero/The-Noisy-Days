@@ -25,6 +25,7 @@ export const T = Math.PI * 2
 export function scorenize() {
     g.bullets
         .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
+        .filter((b) => b.scorenizable)
         .forEach((b) => {
             b.scorenize(g.player)
         })
@@ -56,6 +57,7 @@ export function* fireDeleteField(ctx: CanvasRenderingContext2D) {
 
         g.bullets
             .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
+            .filter((b) => b.scorenizable)
             .filter((b) => b.p.minus(p).magnitude() <= r)
             .forEach((b) => {
                 b.scorenize(g.player)

@@ -10,6 +10,7 @@ type GS = {
 export class Bullet {
     life = 1
 
+    length = 0
     r = 16
     p = vec(0, 0)
     speed = 8
@@ -22,6 +23,7 @@ export class Bullet {
     appearance = Bullet.Appearance.Donut
     collision = Bullet.Collision.Ball
     type = Bullet.Type.Enemy
+    scorenizable = true
 
     private g: Generator[] = []
     private gs: GS[] = []
@@ -110,6 +112,7 @@ export namespace Bullet {
         Ball,
         Line,
         Arrow,
+        Beam,
 
         Player,
         Score,
@@ -118,6 +121,7 @@ export namespace Bullet {
         Ball,
         Line,
         Arrow,
+        Rect,
     }
     export enum Type {
         Enemy,

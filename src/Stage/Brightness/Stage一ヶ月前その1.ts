@@ -44,17 +44,5 @@ export default class extends Stage {
         yield* this.text("『ああ、良かった。さあ、親御さんの所へ……』", { name: "警察" })
         yield* this.text("『大人なんてっ、話し合うことを諦めた馬鹿ばっかだ!』", { name: "レイ" })
         yield* this.text("『やめて! さよならなんて言わせないで!』", { name: "レイ" })
-
-        // 背景変更
-
-        yield* this.text("「シオン。もう、時間が無くなってしまった。」", { name: "ササキ" })
-        yield* this.text("「……。」", { name: "ササキ" })
-        yield* this.text("「分かってるよ。私はここの希望なんでしょ。」", { name: "シオン" })
-        yield* this.text("「……本当に申し訳ない。」", { name: "ササキ" })
-        yield* this.text("「私が一番上手く扱えるのは、どうしようもない現実だし。」", { name: "シオン" })
-        yield* this.text("「それに、私には、もうこれしか無いんだよ。」", { name: "シオン" })
-        yield* this.text("シオンはレイの顔を思い出したが、それがどうしてかは分からなかった。")
-
-        yield* this.text("2XXX年 夏 重ね着を思い出す季節 トウキョウ内乱 発生")
     }
 }

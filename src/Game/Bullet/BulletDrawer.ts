@@ -1,3 +1,4 @@
+import { T } from "../../global"
 import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 import { Bullet } from "./Bullet"
 
@@ -6,6 +7,31 @@ export class BulletDrawer {
 
     draw(bullet: Bullet, ctx: CanvasRenderingContext2D) {
         if (Math.floor(bullet.r) === 0) return
+
+        if (bullet.appearance === Bullet.Appearance.Beam) {
+            ctx.save()
+            ctx.globalAlpha = bullet.alpha
+            ctx.translate(bullet.p.x, bullet.p.y)
+            ctx.rotate(bullet.radian)
+
+            ctx.shadowBlur = bullet.r
+            ctx.shadowColor = bullet.color
+            ctx.fillStyle = bullet.color
+            ctx.fillRect(0, -bullet.r, bullet.length, bullet.r * 2)
+
+            ctx.shadowBlur = bullet.r
+            ctx.shadowColor = "white"
+            ctx.fillStyle = "white"
+            ctx.fillRect(0, -bullet.r * 0.8, bullet.length, bullet.r * 1.6)
+
+            ctx.globalAlpha = 0.5 * bullet.alpha
+            ctx.beginPath()
+            ctx.arc(0, 0, bullet.r * 2, 0, T)
+            ctx.fill()
+
+            ctx.restore()
+            return
+        }
 
         let hash = `${bullet.appearance},${bullet.color},${Math.floor(bullet.r)}`
 

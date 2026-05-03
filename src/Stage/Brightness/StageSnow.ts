@@ -10,6 +10,7 @@ import { Dom } from "../../Dom"
 import * as Curves from "../../utils/Functions/Curves"
 import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { EnemyRendererCore } from "../../Game/Enemy/EnemyRendererCore"
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -59,10 +60,12 @@ class HeavyCruiser extends Enemy {
             .r(6) // Ball制限: 6
             .circle(40, 100)
             .radian(T / 4)
-            .speed(-2)
+            .speed(-4)
             .g(function* (me) {
-                yield* Remodel.appear(me, 10)
-                yield* Remodel.reaccel(me, 30, 0, 30, 24)
+                while (me.life > 0) {
+                    me.speed += 0.5
+                    yield
+                }
             })
             .fire()
 
@@ -101,6 +104,8 @@ class WaveTurret extends Enemy {
                 .speed(6)
                 .r(28) // Arrow制限: 28
                 .g(function* (me) {
+                    if (isSmartPhone) return
+
                     const baseRadian = me.radian
                     const shift = 0
                     for (let i = 0; i < 200; i++) {

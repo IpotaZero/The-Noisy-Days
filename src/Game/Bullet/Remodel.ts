@@ -4,8 +4,8 @@ import { Vec, vec } from "../../utils/Vec"
 import { Ease } from "../../utils/Functions/Ease"
 import { Enemy } from "../Enemy/Enemy"
 
-export const remodel = () =>
-    new Proxy(new Remodel([new Bullet()]), {
+export const remodel = (e?: Enemy) =>
+    new Proxy(new Remodel([new Bullet()], e), {
         get(target, key) {
             if (key in target) return (target as any)[key]
 
@@ -20,7 +20,10 @@ type Mod = Remodel & {
 }
 
 export class Remodel {
-    constructor(private bullets: Bullet[]) {}
+    constructor(
+        private bullets: Bullet[],
+        private readonly e?: Enemy,
+    ) {}
 
     fire() {
         this.bullets.forEach((b) => {
@@ -33,11 +36,8 @@ export class Remodel {
 
     static *appear(me: Bullet, frame: number = 30) {
         const r = me.r
-
-        for (let i = 1; i < frame + 1; i++) {
-            me.r = r * Ease.Out(i / frame)
-            yield
-        }
+        me.r = 0
+        yield* this.ease(me, "r", r, frame, Ease.Out)
     }
 
     static *reaccel(me: Bullet, stopFrame: number, waitFrame: number, accelFrame: number, finalSpeed?: number) {
@@ -52,25 +52,21 @@ export class Remodel {
     }
 
     static *accel(me: Bullet, frame: number, finalSpeed: number) {
-        const start = me.speed
-
-        for (let i = 1; i < frame + 1; i++) {
-            me.speed = (finalSpeed - start) * (i / frame) + start
-            yield
-        }
+        yield* this.ease(me, "speed", finalSpeed, frame, Ease.Linear)
     }
 
     static *fadeout(me: Bullet, frame: number) {
-        const alpha = me.alpha
-
         me.type = Bullet.Type.Neutral
+        yield* this.ease(me, "alpha", 0, frame, Ease.Linear)
+        me.life = 0
+    }
 
+    static *ease(me: Bullet, key: keyof Bullet, target: number, frame: number, easing: Ease.Type) {
+        const start = me[key] as unknown as number
         for (let i = 1; i < frame + 1; i++) {
-            me.alpha = alpha * (1 - i / frame)
+            ;(me as any)[key] = (target - start) * easing(i / frame) + start
             yield
         }
-
-        me.life = 0
     }
 
     delayByIndex(scalar = 1) {
@@ -116,14 +112,43 @@ export class Remodel {
         })
     }
 
-    duplicate(num: number, map: (me: Bullet, index: number) => Bullet) {
+    beam(e: Enemy, length: number) {
+        return (this as unknown as Mod)
+            .length(length)
+            .speed(0)
+            .r(12)
+            .appearance(Bullet.Appearance.Beam)
+            .collision(Bullet.Collision.Rect)
+            .color("cyan")
+            .scorenizable(false)
+            .g(function* (me) {
+                let i = 0
+
+                while (1) {
+                    i++
+                    me.alpha = 0.8 * (Math.sin(i / 10) + 1) + 0.8
+
+                    me.p = e.p
+
+                    if (e.life <= 0) {
+                        break
+                    }
+
+                    yield
+                }
+
+                yield* Remodel.fadeout(me, 15)
+            })
+    }
+
+    duplicate(num: number, map: (me: Bullet, index: number) => Bullet): Mod {
         this.bullets = this.bullets.flatMap((bullet) =>
             Array.from({ length: num }, (_, i) => {
                 return map(bullet.clone(), i)
             }),
         )
 
-        return this
+        return this as unknown as Mod
     }
 
     circle(distance: number, radius: number) {
@@ -164,9 +189,15 @@ export class Remodel {
     }
 
     g(g: (this: Enemy, me: Bullet, index: number) => Generator) {
-        this.bullets.forEach((b, index) => {
-            b.G({ g, index })
-        })
+        if (this.e) {
+            this.bullets.forEach((b, index) => {
+                b.G({ g: g.bind(this.e!), index })
+            })
+        } else {
+            this.bullets.forEach((b, index) => {
+                b.G({ g, index })
+            })
+        }
 
         return this
     }
