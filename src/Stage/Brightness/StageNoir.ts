@@ -10,6 +10,7 @@ import { Dom } from "../../Dom"
 import * as Curves from "../../utils/Functions/Curves"
 import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { EnemyRendererCore } from "../../Game/Enemy/EnemyRendererCore"
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
@@ -134,10 +135,12 @@ class TacticalDrone extends Enemy {
             .g(function* (me) {
                 const baseRadian = me.radian
                 const shift = 0
-                for (let i = 0; i < 200; i++) {
-                    me.radian = baseRadian + Math.sin(i / 10 + shift) * 0.8
-                    yield
-                }
+
+                if (!isSmartPhone)
+                    for (let i = 0; i < 200; i++) {
+                        me.radian = baseRadian + Math.sin(i / 10 + shift) * 0.8
+                        yield
+                    }
             })
             .fire()
 
