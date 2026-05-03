@@ -124,7 +124,7 @@ class Turret extends Enemy {
         wingIndex: number,
         private readonly index: number, // 0=上 1=下
     ) {
-        super(150, 30, new EnemyRendererMob(), { remainingCharge: 600 })
+        super(50, 30, new EnemyRendererMob(), { remainingCharge: 600 })
         this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scaled(90))
         this.interval = Math.floor((Math.sin(index) + 1) * 30) + 30
     }
