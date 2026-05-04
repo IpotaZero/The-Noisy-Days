@@ -120,7 +120,7 @@ const HighStages = [
 ]
 
 const LowStages = [
-    { "stage-name": "", "description": "レイ・コウダ" },
+    { "stage-name": "隣", "description": "レイ・コウダ" },
     { "stage-name": "Fog", "description": "" },
     { "stage-name": "Stone", "description": "" },
     { "stage-name": "Dust", "description": "" },
@@ -135,7 +135,7 @@ const BrightnessActs = [
 
 // Chapter 3: Alpha
 const ClearStages = [
-    { "stage-name": "隣", "description": "" },
+    { "stage-name": "勇気", "description": "" },
     { "stage-name": "Glass", "description": "" },
     { "stage-name": "Ice", "description": "" },
     { "stage-name": "Haze", "description": "" },
