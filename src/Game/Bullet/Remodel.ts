@@ -152,11 +152,18 @@ export class Remodel {
         return this as unknown as Mod
     }
 
-    circle(distance: number, radius: number) {
+    circle(distance: number, radius: number, { direction = "none" }: { direction?: "inner" | "outer" | "none" } = {}) {
         const num = Math.ceil((T * radius) / distance)
         return this.duplicate(num, (b, i) => {
             const angle = (T / num) * i
             b.p = b.p.plus(vec.arg(angle).scaled(radius))
+
+            if (direction === "inner") {
+                b.radian = T * (i / num + 0.5)
+            } else if (direction === "outer") {
+                b.radian = T * (i / num)
+            }
+
             return b
         })
     }

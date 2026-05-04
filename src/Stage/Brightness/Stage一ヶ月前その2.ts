@@ -4,6 +4,18 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
+        yield* this.text("「やあ、こんにちは、僕はアオ。アオ・ササキ。」", { name: "ササキ" })
+        yield* this.text("アオは髪を耳に掛ける。")
+        yield* this.text("「……。」", { name: "シオン" })
+        yield* this.text("シオンはアオの顔を睨め付けながらも少し警戒を解く。")
+        yield* this.text("「僕らはTAMAMUSHIという、合成人の為のデモ団体を運営しているんだ。」", { name: "ササキ" })
+        yield* this.text("「……SILOを止めたいってわけ。」", { name: "シオン" })
+        yield* this.text("「うん、そうだね。SILOは必要悪なんだろうけど、現状は行き過ぎている。止めたいのは僕らの民族的な理由だけど……。」", { name: "ササキ" })
+
+        yield* this.wait(30)
+
+        // 背景変更
+
         yield* this.text("「シオン。もう、時間が無くなってしまった。」", { name: "ササキ" })
         yield* this.text("「……。」", { name: "ササキ" })
         yield* this.text("「分かってるよ。私はここの希望なんでしょ。」", { name: "シオン" })
