@@ -40,7 +40,7 @@ class HeavyCruiser extends Enemy {
     protected margin: number = 60
 
     constructor() {
-        super(600, 80, new EnemyRendererCore(), { remainingCharge: 2400 })
+        super(400, 80, new EnemyRendererCore(), { remainingCharge: 2400 })
         this.p = vec(-g.width * 2, -g.height)
         this.moveTo(vec(0, -g.height / 4), 60)
     }
@@ -85,7 +85,7 @@ class WaveTurret extends Enemy {
         ship: Enemy,
         private readonly turretIndex: number,
     ) {
-        super(400, 44, new EnemyRendererMob(), { remainingCharge: 960 })
+        super(200, 44, new EnemyRendererMob(), { remainingCharge: 960 })
         this.setParent(ship, () => WaveTurret.OFFSETS[turretIndex])
     }
 
