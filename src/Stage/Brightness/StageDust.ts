@@ -136,11 +136,11 @@ class SnakeHead extends Enemy {
     private *patternSweep() {
         this.isChasing = false
         const y = 0
-        yield* this.moveTo(vec(g.width * 0.42, y), 50, Ease.InOut)
+        yield* this.moveTo(vec(g.width * 0.42, y), 60, Ease.InOut)
         yield* this.moveTo(vec(g.width * 0.42, y + g.height * 0.2), 30, Ease.InOut)
         yield* this.moveTo(vec(-g.width * 0.42, y - g.height * 0.2), 60, Ease.InOut)
-        yield* this.moveTo(vec(-g.width * 0.42, y), 100, Ease.InOut)
-        yield* this.moveTo(vec(0, y), 50, Ease.InOut)
+        yield* this.moveTo(vec(-g.width * 0.42, y), 120, Ease.InOut)
+        yield* this.moveTo(vec(0, y), 60, Ease.InOut)
     }
 
     private *patternFigure8() {
@@ -149,7 +149,7 @@ class SnakeHead extends Enemy {
         const step = 20
         for (let i = 0; i <= step; i++) {
             const t = (i / step) * T
-            yield* this.moveTo(vec(cx + Math.sin(t) * g.width * 0.38, -g.height / 5 + Math.sin(2 * t) * g.height * 0.8), 12)
+            yield* this.moveTo(vec(cx + Math.sin(t) * g.width * 0.38, -g.height / 5 + Math.sin(2 * t) * g.height * 0.8), 15)
         }
     }
 
@@ -198,7 +198,7 @@ class SnakeHead extends Enemy {
         const target = this.p.plus(away.scaled((1.8 / away.magnitude()) * g.width * 0.4))
         const clamped = vec(Math.max(-g.width * 0.42, Math.min(g.width * 0.42, target.x)), Math.max(-g.height * 0.45, Math.min(0, target.y)))
         this.isChasing = false
-        yield* this.moveTo(clamped, 80, Ease.Out)
+        yield* this.moveTo(clamped, 90, Ease.Out)
         yield* Array(30)
     }
 }
