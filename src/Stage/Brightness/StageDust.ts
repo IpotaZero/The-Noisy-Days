@@ -289,6 +289,15 @@ class DetachedTail extends Enemy {
         this.moveTo(head.p, 30)
         this.isInvincible = true
 
+        this.g.push(
+            function* (this: Enemy) {
+                for (let i = 1; i < 31; i++) {
+                    this.r = (i / 30) * 28
+                    yield
+                }
+            }.bind(this)(),
+        )
+
         this.setParent(head, () => {
             // 公転半径を150〜280の間で波打たせる
             const radius = 215 + Math.sin(this.frame / 90) * 65
@@ -336,7 +345,7 @@ class DetachedTail extends Enemy {
                 .aim(target)
                 .speed(0)
                 .r(28) // Arrow制限: 28
-                .ex(7)
+                .ex(5)
                 .g(function* (me) {
                     const baseRadian = me.radian
                     const shift = 0
