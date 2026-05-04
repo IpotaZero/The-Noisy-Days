@@ -38,7 +38,7 @@ class FortressCore extends Enemy {
     private readonly moveDuration = 90
 
     constructor() {
-        super(1000, 80, new EnemyRendererCore(), { remainingCharge: 1200 })
+        super(800, 80, new EnemyRendererCore(), { remainingCharge: 1200 })
         this.p = vec(0, -g.height)
         this.moveTo(vec(0, -g.height / 3), this.moveDuration)
     }

@@ -20,10 +20,10 @@ export default class extends Stage {
         const anchor = new Anchor()
 
         // 2. 元の振り子アーム構造（4段の数珠つなぎ）
-        const arm1 = new Arm(anchor, { hp: 400, r: 48 })
-        const arm2 = new Arm(arm1, { hp: 300, r: 40 })
-        const arm3 = new Arm(arm2, { hp: 200, r: 32 })
-        const arm4 = new Arm(arm3, { hp: 150, r: 26 })
+        const arm1 = new Arm(anchor, { hp: 100, r: 48 })
+        const arm2 = new Arm(arm1, { hp: 100, r: 40 })
+        const arm3 = new Arm(arm2, { hp: 100, r: 32 })
+        const arm4 = new Arm(arm3, { hp: 100, r: 26 })
 
         // 3. 追加の衛星システム
         // コア（anchor）の周りをまわる 4基の子機
@@ -110,7 +110,7 @@ class Satellite extends Enemy {
         parent: Enemy,
         private readonly index: number,
     ) {
-        super(300, 64, new EnemyRendererMob(), { remainingCharge: 600 })
+        super(200, 64, new EnemyRendererMob(), { remainingCharge: 600 })
         this.setParent(parent, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scaled(280))
     }
 
@@ -134,7 +134,7 @@ class SubSatellite extends Enemy {
         parent: Enemy,
         private readonly index: number,
     ) {
-        super(80, 48, new EnemyRendererMob())
+        super(50, 48, new EnemyRendererMob())
         this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 3).scaled(96))
     }
 

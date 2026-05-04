@@ -82,6 +82,8 @@ export default class extends Stage {
 
         yield* this.wait(30)
 
+        this.stopSkip()
+
         yield* this.text("「……はは、はははっ!」", { name: "シオン" })
         yield* this.text("「善意が、傍から見ればこんなにも滑稽だなんて!」", { name: "シオン" })
     }
