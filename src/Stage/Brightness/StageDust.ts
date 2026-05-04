@@ -80,10 +80,8 @@ export default class extends Stage {
         flash(Dom.container)
         shake(Dom.container, 750, 8)
 
-        yield* this.wait(30)
-
         this.stopSkip()
-
+        yield* this.wait(30)
         yield* this.text("「……はは、はははっ!」", { name: "シオン" })
         yield* this.text("「善意が、傍から見ればこんなにも滑稽だなんて!」", { name: "シオン" })
     }
