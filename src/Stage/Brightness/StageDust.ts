@@ -96,7 +96,7 @@ class SnakeHead extends Enemy {
     isStarted = false
 
     constructor() {
-        super(400, 80, new EnemyRendererBoss(), { margin: 120 })
+        super(300, 80, new EnemyRendererBoss(), { margin: 120 })
         this.isInvincible = true
         this.p = vec(0, -g.height * 2)
         this.moveTo(vec(0, 0), 120)
@@ -212,7 +212,7 @@ class SnakeSegment extends Enemy {
         private readonly isTail: boolean,
     ) {
         const ratio = 1 - index / SEGMENT_COUNT
-        const hp = Math.round(50 * ratio + 100)
+        const hp = Math.round(30 * ratio + 100)
         const r = Math.round(18 * ratio + 32)
         super(hp, r, new EnemyRendererCore())
         this.isInvincible = true
