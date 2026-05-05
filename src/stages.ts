@@ -5,7 +5,7 @@
 
 // Chapter 0: Hue
 const WarmStages = [
-    { "stage-name": "Test", "description": "チュートリアル" },
+    { "stage-name": "Tutorial", "description": "チュートリアル" },
     { "stage-name": "Yellow", "description": "やや拡大する弾を撃つ衛星を持つ" },
     { "stage-name": "Orange", "description": "速射する衛星を持つ" },
     {
