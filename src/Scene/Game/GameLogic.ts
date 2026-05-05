@@ -4,6 +4,8 @@ import { Enemy } from "../../Game/Enemy/Enemy"
 import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
 import { bossDefeat, explosion, fireDeleteField, g } from "../../global"
 import { SE } from "../../SE"
+import { Ctx } from "../../utils/Functions/Ctx"
+import { vec } from "../../utils/Vec"
 
 export class GameLogic {
     private readonly collision = new Collision()
@@ -36,7 +38,26 @@ export class GameLogic {
                 .filter((b) => b.p.minus(e.p).magnitude() <= b.r + e.r)
                 .forEach((b) => {
                     b.life = 0
-                    e.hit(Math.ceil(b.p.minus(e.p).magnitude() / g.width))
+
+                    const damage = Math.ceil(b.p.minus(e.p).magnitude() / g.width)
+
+                    e.hit(damage)
+                    g.effects.push(
+                        (function* () {
+                            const p = b.p.clone()
+
+                            const frame = 15
+                            for (let i = 1; i < frame + 1; i++) {
+                                Ctx.rect(
+                                    g.ctx,
+                                    p.minus(vec(b.r, b.r)).l,
+                                    [damage * 24, damage * 24],
+                                    `rgba(255,255,255,${(1 - i / frame) * 0.1})`,
+                                )
+                                yield
+                            }
+                        })(),
+                    )
                 })
 
             if (e.life <= 0) {

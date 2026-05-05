@@ -29,8 +29,8 @@ export class Bullet {
     private gs: GS[] = []
 
     scorenize(player: Player) {
-        this.r = 16
-        this.color = "lightcyan"
+        this.r = 12
+        this.color = "#abf0ff"
         this.type = Bullet.Type.Score
         this.alpha = 0.6
         this.delay = 0

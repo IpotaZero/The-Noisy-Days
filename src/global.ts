@@ -8,11 +8,14 @@ import { shake } from "./utils/shake"
 import { Vec, vec } from "./utils/Vec"
 import { UnifiedInput } from "./utils/UnifiedInput/UnifiedInput"
 import { DEFAULT_CONFIG } from "./utils/UnifiedInput/DefaultConfig"
+import { Ctx } from "./utils/Functions/Ctx"
 
 export const g = {
     enemies: [] as Enemy[],
     bullets: [] as Bullet[],
     player: undefined as unknown as Player,
+    effects: [] as Generator[],
+    ctx: undefined as unknown as CanvasRenderingContext2D,
 
     width: 630,
     height: 1120,
@@ -28,6 +31,21 @@ export function scorenize() {
         .filter((b) => b.scorenizable)
         .forEach((b) => {
             b.scorenize(g.player)
+
+            // const p = b.p.clone()
+
+            // g.effects.push(
+            //     (function* () {
+            //         const frame = 30
+
+            //         for (let i = 1; i < frame + 1; i++) {
+            //             Ctx.arc(g.ctx, p.l, 32, `rgba(255, 255, 255, ${(1 - i / frame) * 0.5})`, {
+            //                 lineWidth: 2,
+            //             })
+            //             yield
+            //         }
+            //     })(),
+            // )
         })
 }
 
@@ -47,13 +65,10 @@ export function* fireDeleteField(ctx: CanvasRenderingContext2D) {
         const r = Ease.Out(i / frame) * g.width
         const alpha = 1 - i / frame
 
-        ctx.save()
-        ctx.translate(g.width / 2, g.height / 2)
         ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`
         ctx.beginPath()
         ctx.arc(p.x, p.y, r, 0, T)
         ctx.stroke()
-        ctx.restore()
 
         g.bullets
             .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
@@ -128,14 +143,11 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
                     const r = Ease.Out(i / frame) * maxR * speed
                     const alpha = (1 - i / frame) * 0.9
 
-                    ctx.save()
-                    ctx.translate(g.width / 2, g.height / 2)
                     ctx.strokeStyle = `rgba(${color}, ${alpha})`
                     ctx.lineWidth = lw
                     ctx.beginPath()
                     ctx.arc(bossP.x, bossP.y, r, 0, T)
                     ctx.stroke()
-                    ctx.restore()
 
                     g.bullets
                         .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
@@ -152,8 +164,6 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
         (function* () {
             const frame = 60
             for (let i = 0; i < frame; i++) {
-                ctx.save()
-                ctx.translate(g.width / 2, g.height / 2)
                 const alpha = i < frame / 2 ? i / (frame / 2) : (frame - i) / (frame / 2)
                 for (let j = 0; j < 13; j++) {
                     const angle = (j / 13) * T + (i / frame) * T * 2 * 0.5
@@ -164,7 +174,6 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
                     ctx.lineTo(bossP.x + Math.cos(angle) * maxR, bossP.y + Math.sin(angle) * maxR)
                     ctx.stroke()
                 }
-                ctx.restore()
                 yield
             }
         })(),
@@ -205,14 +214,11 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
                     const r = Ease.Out(i / frame) * maxR * speed * 0.2
                     const alpha = 1 - i / frame
 
-                    ctx.save()
-                    ctx.translate(g.width / 2, g.height / 2)
                     ctx.strokeStyle = `hsl(${color}/${alpha})`
                     ctx.lineWidth = lw
                     ctx.beginPath()
                     ctx.arc(bossP.x, bossP.y, r, 0, T)
                     ctx.stroke()
-                    ctx.restore()
                     yield
                 }
             })(),

@@ -31,8 +31,6 @@ export default class SceneStage implements Scene {
 
     private readonly ac = new AbortController()
 
-    private g: Generator[] = []
-
     constructor(
         private readonly stageIndex: number,
         private readonly stage: Stage,
@@ -52,7 +50,10 @@ export default class SceneStage implements Scene {
                 this.draw()
             },
             () => {
-                this.g = this.g.filter((g) => !g.next().done)
+                g.ctx.save()
+                g.ctx.translate(g.width / 2, g.height / 2)
+                g.effects = g.effects.filter((g) => !g.next().done)
+                g.ctx.restore()
             },
         )
 
@@ -119,12 +120,12 @@ export default class SceneStage implements Scene {
         const canvas = this.selector.getFirst("canvas") as HTMLCanvasElement
         this.canvasSetup = new CanvasSetup(canvas)
 
-        const ctx = this.canvasSetup.ctx
+        g.ctx = this.canvasSetup.ctx
         this.gameLogic = new GameLogic(
-            ctx,
-            () => this.g,
+            g.ctx,
+            () => g.effects,
             () => {
-                this.g.push(
+                g.effects.push(
                     function* (this: SceneStage) {
                         this.looper.setFPS(10)
                         yield* Array(10)
@@ -137,7 +138,7 @@ export default class SceneStage implements Scene {
             },
             () => this.onPlayerDead(),
         )
-        this.renderer = new GameRenderer(ctx)
+        this.renderer = new GameRenderer(g.ctx)
     }
 
     private backScene() {
@@ -173,6 +174,7 @@ export default class SceneStage implements Scene {
         this.looper.stop()
         g.bullets = []
         g.enemies = []
+        g.effects = []
         g.player.remove()
         this.ac.abort()
         this.canvasSetup.disconnect()
@@ -202,7 +204,7 @@ export default class SceneStage implements Scene {
         SE.u.play()
         SE.hit.play()
         g.player.life = -1
-        this.g.push(fireDeleteField(this.canvasSetup.ctx))
+        g.effects.push(fireDeleteField(this.canvasSetup.ctx))
     }
 
     private draw() {
