@@ -1,6 +1,7 @@
 import { g } from "../../global"
 import { Ease } from "../../utils/Functions/Ease"
 import { Vec, vec } from "../../utils/Vec"
+import { remodel } from "../Bullet/Remodel"
 import { EnemyRendererCore } from "./EnemyRendererCore"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
@@ -116,5 +117,50 @@ export class Enemy {
         )
 
         return Array(frame)
+    }
+
+    protected funnel(v: Vec) {
+        this.g.push(
+            function* (this: Enemy) {
+                while (1) {
+                    if (this.p.x < -g.width / 2 || g.width / 2 < this.p.x) {
+                        v.x *= -1
+                    }
+
+                    if (this.p.y < -g.height / 2 || g.height / 2 < this.p.y) {
+                        v.y *= -1
+                    }
+
+                    this.p.add(v)
+
+                    yield
+                }
+            }.bind(this)(),
+        )
+    }
+
+    protected mine(timeoutFrame: number, callback: () => void) {
+        this.g.push(
+            function* (this: Enemy) {
+                const r = this.r
+
+                for (let i = 1; i < 15 + 1; i++) {
+                    this.r = r * Ease.InOut(i / 15)
+                    yield
+                }
+
+                let i = 0
+
+                while (1) {
+                    if (i > timeoutFrame || this.p.minus(g.player.p).magnitude() < this.r * 3) {
+                        callback()
+                        this.life = 0
+                    }
+
+                    i++
+                    yield
+                }
+            }.bind(this)(),
+        )
     }
 }

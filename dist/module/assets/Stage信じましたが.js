@@ -1,0 +1,2 @@
+import"./global.js";import{t as e}from"./Stage.js";var t=class extends e{*G(){yield*this.wait(30),yield*this.text(`「ササキさん。」`),yield*this.text(`「あなたは───待ってください!」`,{name:`ササキ`}),yield*this.text(`何の変哲もない主婦が、その手に光線銃を構えている。`),yield*this.text(`「どうして、本当に、戦争なんて!」`),yield*this.text(`「我々は話せば分かる!」`,{name:`ササキ`}),yield*this.text(`「私にも子供が居るのよ!」`),yield*this.wait(30),yield*this.text(`(熱い。)`,{name:`ササキ`}),yield*this.wait(30),yield*this.text(`2XXX年 9月 アオ・ササキ 死亡`),yield*this.text(`容疑者は合成人の主婦であった。`)}};export{t as default};
+//# sourceMappingURL=Stage信じましたが.js.map
