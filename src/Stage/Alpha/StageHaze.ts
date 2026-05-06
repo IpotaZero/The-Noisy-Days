@@ -87,13 +87,10 @@ class MineMasterCore extends Enemy {
     private *attackBarrage() {
         for (let i = 0; i < 100; i++) {
             remodel()
-                .appearance(Bullet.Appearance.Arrow)
-                .collision(Bullet.Collision.Arrow)
-                .color("white")
+                .colorful(this.frame)
                 .p(this.p.clone())
                 .radian(Math.floor((i / 23) * T * 8) / 8)
                 .ex(3)
-                .r(28)
                 .speed(9)
                 .g(function* (me) {
                     yield* Remodel.reaccel(me, 30, 30, 30)
