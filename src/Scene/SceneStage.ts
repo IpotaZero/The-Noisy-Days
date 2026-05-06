@@ -144,13 +144,15 @@ export default class SceneStage implements Scene {
     private backScene() {
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 
+        const index = g.player.life >= 0 ? this.stageIndex : undefined
+
         SceneChanger.goto(
             () =>
                 import("./SceneTitle").then(
                     (module) =>
                         new module.default({
                             history: this.history,
-                            clear: this.stageIndex,
+                            clear: index,
                         }),
                 ),
             {
