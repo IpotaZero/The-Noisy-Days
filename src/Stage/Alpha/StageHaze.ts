@@ -89,7 +89,7 @@ class MineMasterCore extends Enemy {
             remodel()
                 .colorful(this.frame)
                 .p(this.p.clone())
-                .radian(Math.floor((i / 23) * T * 8) / 8)
+                .radian((i / 31) * T)
                 .ex(3)
                 .speed(9)
                 .g(function* (me) {
