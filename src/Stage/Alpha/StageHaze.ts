@@ -91,7 +91,7 @@ class MineMasterCore extends Enemy {
                 .collision(Bullet.Collision.Arrow)
                 .color("white")
                 .p(this.p.clone())
-                .radian(Math.floor((i / 31) * T * 8) / 8)
+                .radian(Math.floor((i / 23) * T * 8) / 8)
                 .ex(3)
                 .r(28)
                 .speed(9)
