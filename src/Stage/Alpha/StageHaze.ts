@@ -41,7 +41,7 @@ class MineMasterCore extends Enemy {
     private readonly curve = Curves.lissajous(g.width * 0.45, g.height / 6, 5, 6)
 
     constructor() {
-        super(700, 56, new EnemyRendererCore(), { remainingCharge: 1200 })
+        super(350, 56, new EnemyRendererCore(), { remainingCharge: 1200 })
         this.p = vec(0, -g.height)
         this.moveTo(vec(0, -g.height / 5), 60)
     }
