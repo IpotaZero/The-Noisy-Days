@@ -137,7 +137,7 @@ class Arm extends Enemy {
  */
 class ThrowingFunnel extends Enemy {
     constructor(private readonly parent: Enemy) {
-        super(250, 24, new EnemyRendererFunnel(), { remainingCharge: 360 })
+        super(100, 24, new EnemyRendererFunnel(), { remainingCharge: 360 })
         this.p = vec(0, 0)
         this.g.push(this.movement())
     }

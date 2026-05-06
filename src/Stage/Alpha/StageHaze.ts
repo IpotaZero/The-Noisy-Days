@@ -89,9 +89,9 @@ class MineMasterCore extends Enemy {
             remodel()
                 .appearance(Bullet.Appearance.Arrow)
                 .collision(Bullet.Collision.Arrow)
-                .colorful(this.frame + 120)
+                .color("white")
                 .p(this.p.clone())
-                .radian((i / 31) * T)
+                .radian(Math.floor((i / 31) * T * 8) / 8)
                 .ex(3)
                 .r(28)
                 .speed(9)
@@ -131,7 +131,7 @@ class Arm extends Enemy {
  */
 class ThrowingFunnel extends Enemy {
     constructor(private readonly parent: Enemy) {
-        super(250, 24, new EnemyRendererFunnel(), { remainingCharge: 360 })
+        super(100, 24, new EnemyRendererFunnel(), { remainingCharge: 360 })
         this.p = vec(0, 0)
         this.g.push(this.movement())
     }
