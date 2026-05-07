@@ -156,7 +156,7 @@ class TacticalMine extends Enemy {
         super(20, 32, new EnemyRendererMine(), { margin: 0 })
         this.p = pos
 
-        this.mine(180, () => {
+        this.mine(300, () => {
             remodel()
                 .appearance(Bullet.Appearance.Ball)
                 .r(6)
