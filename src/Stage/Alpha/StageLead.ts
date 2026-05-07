@@ -120,11 +120,12 @@ class Escort2 extends Enemy {
         remodel()
             .appearance(Bullet.Appearance.Line)
             .collision(Bullet.Collision.Line)
-            .colorful(this.frame + 10)
+            .color("white")
             .r(28)
             .p(this.p.clone())
             .speed(6)
             .ex(31)
+            //
             .fire()
         yield* Array(120)
     }
