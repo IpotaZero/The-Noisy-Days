@@ -225,3 +225,28 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
         ),
     )
 }
+
+/**
+ * コアの位置 p から angle 方向に伸ばした半直線が
+ * 画面端（矩形）に当たる交点座標を返す。
+ */
+export function raycastToEdge(p: Vec, angle: number): Vec {
+    const dx = Math.cos(angle)
+    const dy = Math.sin(angle)
+
+    const half_w = g.width / 2
+    const half_h = g.height / 2
+
+    // 各辺との交差パラメータ t を計算（t > 0 のものだけ有効）
+    const candidates: number[] = []
+
+    if (dx > 0) candidates.push((half_w - p.x) / dx) // 右辺
+    if (dx < 0) candidates.push((-half_w - p.x) / dx) // 左辺
+    if (dy > 0) candidates.push((half_h - p.y) / dy) // 下辺
+    if (dy < 0) candidates.push((-half_h - p.y) / dy) // 上辺
+
+    // 最小の正の t が実際の交点
+    const t = Math.min(...candidates.filter((t) => t > 0))
+
+    return vec(p.x + dx * t, p.y + dy * t)
+}
