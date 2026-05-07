@@ -7,29 +7,26 @@ import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
 import { Dom } from "../../Dom"
 
-import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { EnemyRendererCore } from "../../Game/Enemy/EnemyRendererCore"
-import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
+import { EnemyRendererFunnel } from "../../Game/Enemy/EnemyRendererFunnel"
+import { EnemyRendererMine } from "../../Game/Enemy/EnemyRendererMine"
+import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import * as Curves from "../../utils/Functions/Curves"
 import { Ease } from "../../utils/Functions/Ease"
-
-// 重力の強さ定数（大きいほど強く引き寄せる）
-const GRAVITY_STRENGTH = 10000
 
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        const core = new GravityCore()
+        // 1. 双子の指揮官機：互いに反転したリサージュを描く
+        const alpha = new CommandUnit("Alpha", 1)
+        const beta = new CommandUnit("Beta", -1)
 
-        const wells = [
-            new GravityWell(core, vec(-g.width * 0.3, g.height * 0.3)),
-            new GravityWell(core, vec(g.width * 0.3, g.height * 0.3)),
-            new GravityWell(core, vec(0, g.height * 0.6)),
-            //
-        ]
+        // 3. 随伴機：各コアを護衛するファンネル
+        const units = [...Array.from({ length: 3 }, (_, i) => new Escort(alpha, i)), ...Array.from({ length: 3 }, (_, i) => new Escort(beta, i))]
+        const units2 = [...Array.from({ length: 4 }, (_, i) => new Escort2(alpha, i)), ...Array.from({ length: 4 }, (_, i) => new Escort2(beta, i))]
 
-        g.enemies.push(core, ...wells)
+        g.enemies.push(alpha, beta, ...units, ...units2)
 
         yield* this.waitDefeatEnemy()
         scorenize()
@@ -39,128 +36,123 @@ export default class extends Stage {
 }
 
 /**
- * 重力コア
- * リサージュ曲線で移動しながら2種の弾幕を交互に撃つ。
- * 重力井戸によって弾道が曲がるため、
- * プレイヤー側は軌道の予測が難しくなる。
+ * 指揮官機：鏡像のように左右対称の動きを見せる
  */
-class GravityCore extends Enemy {
-    private readonly curve = Curves.lissajous(g.width * 0.35, g.height / 6, 3, 4)
+class CommandUnit extends Enemy {
+    private readonly curve = Curves.lissajous(g.width * 0.4, g.height / 5, 2, 3)
 
-    constructor() {
-        super(800, 56, new EnemyRendererCore(), { remainingCharge: 600, margin: 60 })
-        this.p = vec(0, -g.height)
-        this.moveTo(vec(0, -g.height / 4), 60)
+    constructor(
+        public readonly id: string,
+        public readonly side: number,
+    ) {
+        super(600, 56, new EnemyRendererCore(), { remainingCharge: 600 })
+        this.p = vec(side * g.width, -g.height)
+        this.moveTo(vec(side * g.width * 0.3, -g.height / 4), 60)
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 600).plus(vec(0, -g.height / 4))
+        // side(1 or -1) を掛けることで左右反転の軌道を作る
+        const basePos = this.curve((this.frame - 60) / 480)
+        this.p = vec(basePos.x * this.side, basePos.y).plus(vec(this.side * g.width * 0.3, -g.height / 4))
         yield
     }
 
     *H() {
         yield* this.waitCharge()
+        remodel()
+            .appearance(Bullet.Appearance.Arrow)
+            .collision(Bullet.Collision.Arrow)
+            .color("white")
+            .r(28)
+            .p(this.p.clone())
+            .radian(T * (this.frame / 360))
+            .speed(8)
+            .ex(7)
+            .ex(2)
+            .g(function* (me, i) {
+                yield* Array(15)
+                yield* Remodel.ease(me, "radian", me.radian + (T / 4) * (2 * (i % 2) - 1), 120, Ease.Linear)
+            })
+            .fire()
 
-        let count = 0
-        while (true) {
-            if (count % 2 === 0) {
-                yield* this.attackSpiral()
-            } else {
-                yield* this.attackAimed()
-            }
-            count++
-        }
-    }
-
-    /**
-     * 螺旋弾
-     * 均等放射なので「発射直後は読みやすい」が、
-     * 重力井戸に引き寄せられるうちに軌道が複雑になる。
-     */
-    private *attackSpiral() {
-        for (let i = 0; i < 12; i++) {
-            remodel()
-                .appearance(Bullet.Appearance.Ball)
-                .colorful(this.frame + i * 15)
-                .p(this.p.clone())
-                .speed(6)
-                .radian(T * (this.frame / 240) + i * (T / 12))
-                .r(6)
-                .g((me) => Remodel.appear(me, 8))
-                .fire()
-
-            yield* Array(15)
-        }
-        yield* Array(60)
-    }
-
-    /**
-     * 狙い矢印
-     * 発射時は自機を狙っているが、重力に曲げられて
-     * 意外な方向から来ることがある。
-     */
-    private *attackAimed() {
-        for (let i = 0; i < 8; i++) {
-            remodel()
-                .color("white")
-                .p(this.p.clone())
-                .aim(g.player.p)
-                .ex(53)
-                //
-                .fire()
-
-            yield* Array(25)
-        }
-        yield* Array(60)
+        yield* Array(80)
     }
 }
 
 /**
- * 重力井戸
- * 毎フレーム全弾（敵弾・友軍弾どちらも）に重力を適用する。
- * 重力は逆二乗則: strength / dist^2
- * 物理的に正確にするため (radian, speed) を速度ベクトルに
- * 変換してから加速度を加え、また戻す。
- *
- * プレイヤーの弾も曲がるので、重力井戸を考慮した
- * エイムが必要になる。井戸を破壊すると引力がなくなり
- * 弾道が変化する。
+ * 護衛：コアの周囲を旋回し、機雷を設置して安地を潰す
  */
-class GravityWell extends Enemy {
-    constructor(parent: Enemy, pos: Vec) {
-        super(1200, 40, new EnemyRendererMob())
-        this.setParent(parent, () => pos)
-        this.isInvincible = true
+class Escort extends Enemy {
+    constructor(
+        parent: CommandUnit,
+        private index: number,
+    ) {
+        super(100, 24, new EnemyRendererMob())
+        this.setParent(parent, () => {
+            const angle = (this.frame / 360) * T * parent.side + (this.index / 3) * T
+            return vec.arg(angle).scaled(150)
+        })
     }
 
     *G() {
-        g.bullets.forEach((b) => {
-            // エフェクト弾は影響しない
-            if (b.type === Bullet.Type.Effect) return
+        // 150フレームごとに、その場に機雷を「遺棄」する
+        g.enemies.push(new TacticalMine(this.p.clone()))
+        yield* Array(150)
+    }
+}
 
-            const diff = this.p.minus(b.p)
-            const dist = diff.magnitude()
-            if (dist < this.r * 0.9) {
-                b.life = 0
-                return
-            }
-
-            // 逆二乗則で引力を計算
-            const force = GRAVITY_STRENGTH / (dist * dist)
-
-            // (radian, speed) → 速度ベクトル
-            let vx = Math.cos(b.radian) * b.speed
-            let vy = Math.sin(b.radian) * b.speed
-
-            // 引力を速度に加算
-            vx += (diff.x / dist) * force
-            vy += (diff.y / dist) * force
-
-            // 速度ベクトル → (radian, speed)
-            b.speed = Math.min(Math.sqrt(vx * vx + vy * vy), 48)
-            b.radian = Math.atan2(vy, vx)
+/**
+ * 護衛：コアの周囲を旋回し、機雷を設置して安地を潰す
+ */
+class Escort2 extends Enemy {
+    constructor(
+        parent: CommandUnit,
+        private index: number,
+    ) {
+        super(100, 32, new EnemyRendererMob(), { margin: 30 + index * 30 })
+        this.setParent(parent, () => {
+            const angle = -(this.frame / 360) * T * parent.side + (this.index / 4) * T
+            return vec.arg(angle).scaled(200)
         })
+    }
 
+    *G() {
+        remodel()
+            .appearance(Bullet.Appearance.Line)
+            .collision(Bullet.Collision.Line)
+            .colorful(this.frame + 10)
+            .r(28)
+            .p(this.p.clone())
+            .speed(6)
+            .ex(31)
+            .fire()
+        yield* Array(120)
+    }
+}
+
+/**
+ * 戦術機雷：静止し、一定時間後に美しい幾何学弾幕を展開
+ */
+class TacticalMine extends Enemy {
+    constructor(pos: Vec) {
+        super(20, 32, new EnemyRendererMine(), { margin: 0 })
+        this.p = pos
+
+        this.mine(180, () => {
+            remodel()
+                .appearance(Bullet.Appearance.Ball)
+                .r(6)
+                .p(this.p.clone())
+                .colorful(this.frame)
+                .speed(5)
+                .ex(53)
+                //
+                .fire()
+        })
+    }
+
+    *G() {
+        this.p.y += 6
         yield
     }
 }

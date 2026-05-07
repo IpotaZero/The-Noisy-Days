@@ -152,10 +152,12 @@ export class Enemy {
     }
 
     protected mine(timeoutFrame: number, callback: () => void) {
+        const r = this.r
+
+        this.r = 0
+
         this.g.push(
             function* (this: Enemy) {
-                const r = this.r
-
                 for (let i = 1; i < 15 + 1; i++) {
                     this.r = r * Ease.InOut(i / 15)
                     yield
@@ -166,6 +168,10 @@ export class Enemy {
                 while (1) {
                     if (i > timeoutFrame || this.p.minus(g.player.p).magnitude() < this.r * 3) {
                         callback()
+                        this.life = 0
+                    }
+
+                    if (g.height / 2 + this.r < this.p.y) {
                         this.life = 0
                     }
 
