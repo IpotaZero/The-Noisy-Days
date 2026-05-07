@@ -90,7 +90,7 @@ class Core extends Enemy {
 
         for (let i = 1; i < frame + 1; i++) {
             remodel()
-                .colorful(this.frame)
+                .color("white")
                 .p(raycastToEdge(this.p, (T * 5) / 4 + T * Ease.Linear(i / frame)))
                 .duplicate(3, (me, i) => {
                     me.radian = Math.sin(this.frame ** 2 + i) * T
