@@ -123,12 +123,24 @@ export class Enemy {
         this.g.push(
             function* (this: Enemy) {
                 while (1) {
-                    if (this.p.x < -g.width / 2 || g.width / 2 < this.p.x) {
+                    if (this.p.x < -g.width / 2) {
                         v.x *= -1
+                        this.p.x = -g.width / 2
                     }
 
-                    if (this.p.y < -g.height / 2 || g.height / 2 < this.p.y) {
+                    if (g.width / 2 < this.p.x) {
+                        v.x *= -1
+                        this.p.x = g.width / 2
+                    }
+
+                    if (this.p.y < -g.height / 2) {
                         v.y *= -1
+                        this.p.y = -g.height / 2
+                    }
+
+                    if (g.height / 2 < this.p.y) {
+                        v.y *= -1
+                        this.p.y = g.height / 2
                     }
 
                     this.p.add(v)
