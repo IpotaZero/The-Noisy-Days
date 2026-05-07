@@ -66,12 +66,19 @@ class CommandUnit extends Enemy {
             .r(28)
             .p(this.p.clone())
             .radian(T * (this.frame / 360))
-            .speed(8)
+            .speed(0)
             .ex(7)
             .ex(2)
             .g(function* (me, i) {
                 yield* Array(15)
-                yield* Remodel.ease(me, "radian", me.radian + (T / 4) * (2 * (i % 2) - 1), 120, Ease.Linear)
+                yield* Remodel.ease(me, "radian", me.radian + (T / 4) * (2 * (i % 2) - 1), 120, Ease.Linear, 4)
+            })
+            .g(function* (me) {
+                while (1) {
+                    me.p.add(vec.arg(me.radian).scaled(16))
+                    yield
+                    yield
+                }
             })
             .fire()
 
@@ -123,8 +130,18 @@ class Escort2 extends Enemy {
             .color("white")
             .r(28)
             .p(this.p.clone())
-            .speed(6)
-            .ex(31)
+            .speed(0)
+            .duplicate(31, (me, i) => {
+                me.radian = Math.floor((i / 31) * T * 4) / 4
+                return me
+            })
+            .g(function* (me) {
+                while (1) {
+                    me.p.add(vec.arg(me.radian).scaled(12))
+                    yield
+                    yield
+                }
+            })
             //
             .fire()
         yield* Array(120)

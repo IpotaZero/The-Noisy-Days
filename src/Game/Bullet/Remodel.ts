@@ -62,11 +62,26 @@ export class Remodel {
         me.life = 0
     }
 
-    static *ease(me: Bullet, key: NumberKeys<Bullet>, target: number, frame: number, easing: Ease.Type) {
+    static *ease(
+        me: Bullet,
+        key: NumberKeys<Bullet>,
+        target: number,
+        frame: number,
+        easing: Ease.Type,
+        floor?: number,
+    ) {
         const start = me[key]
-        for (let i = 1; i < frame + 1; i++) {
-            ;(me as any)[key] = (target - start) * easing(i / frame) + start
-            yield
+
+        if (floor) {
+            for (let i = 1; i < frame + 1; i++) {
+                ;(me as any)[key] = Math.floor(((target - start) * easing(i / frame) + start) * floor) / floor
+                yield
+            }
+        } else {
+            for (let i = 1; i < frame + 1; i++) {
+                ;(me as any)[key] = (target - start) * easing(i / frame) + start
+                yield
+            }
         }
     }
 
