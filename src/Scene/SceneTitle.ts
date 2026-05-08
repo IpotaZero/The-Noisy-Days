@@ -155,6 +155,8 @@ export default class implements Scene {
     }
 
     private async unlockButtonAnimation(button: HTMLButtonElement) {
+        button.querySelectorAll(".lock").forEach((e) => e.remove())
+
         this.lock(button) // いったんロック（アニメーションのため）
         button.disabled = false
 
