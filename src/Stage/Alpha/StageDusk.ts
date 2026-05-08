@@ -72,7 +72,7 @@ class Core extends Enemy {
             })
             .fire()
 
-        yield* Array(120)
+        yield* Array(360)
 
         remodel()
             .p(vec(this.p.x, g.height / 2 - 10))
