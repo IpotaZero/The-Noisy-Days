@@ -30,7 +30,7 @@ export class BulletDrawer {
      * メインの描画処理
      */
     public draw(bullet: Bullet, ctx: CanvasRenderingContext2D): void {
-        if (Math.floor(bullet.r) === 0) return
+        if (Math.floor(bullet.r) === 0 || bullet.alpha === 0) return
 
         // Beamはキャッシュせず直接描画（特殊ケース）
         if (bullet.appearance === Bullet.Appearance.Beam) {
@@ -163,12 +163,10 @@ export class BulletDrawer {
             ctx.shadowColor = bullet.color
             ctx.shadowBlur = bullet.r * 2
         }
-        ctx.save()
         ctx.translate(center, center)
         ctx.rotate(bullet.radian)
         ctx.fillStyle = bullet.color
         ctx.fillRect(-bullet.r, -bullet.r, bullet.r * 2, bullet.r * 2)
-        ctx.restore()
         return canvas
     }
 
@@ -187,7 +185,6 @@ export class BulletDrawer {
             ctx.shadowColor = bullet.color
             ctx.shadowBlur = bullet.r * 2
         }
-        ctx.save()
         ctx.translate(center, center)
         ctx.rotate(bullet.radian)
         ctx.beginPath()
@@ -202,7 +199,6 @@ export class BulletDrawer {
         ctx.strokeStyle = "white"
         ctx.lineWidth = 2
         ctx.stroke()
-        ctx.restore()
         return canvas
     }
 
@@ -212,7 +208,6 @@ export class BulletDrawer {
             ctx.shadowColor = bullet.color
             ctx.shadowBlur = bullet.r * 2
         }
-        ctx.save()
         ctx.translate(center, center)
         ctx.rotate(bullet.radian)
         ctx.beginPath()
@@ -231,7 +226,6 @@ export class BulletDrawer {
         ctx.strokeStyle = "white"
         ctx.lineWidth = 2
         ctx.stroke()
-        ctx.restore()
         return canvas
     }
 }
