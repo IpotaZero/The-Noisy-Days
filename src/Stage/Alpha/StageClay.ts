@@ -116,7 +116,6 @@ class Escort2 extends Enemy {
             .colorful(this.frame + this.index * 30)
             .r(28)
             .p(this.p.clone())
-            .aim(g.player.p)
             .speed(24)
             .ex(31)
             .delayByIndex()
@@ -130,7 +129,6 @@ class Escort2 extends Enemy {
             .colorful(this.frame + this.index * 30)
             .r(28)
             .p(this.p.clone())
-            .aim(g.player.p)
             .speed(16)
             .ex(31)
             .forEach((me) => {
