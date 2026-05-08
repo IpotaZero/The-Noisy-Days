@@ -107,9 +107,9 @@ button {
     }
 
     /* 解除アニメーション用クラス */
-    .lock.unlocking {
+    /* .lock.unlocking {
         animation: unlock-pop 1s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
+    } */
 
     .title {
         display: flex;
@@ -118,10 +118,9 @@ button {
 
         .rank {
             display: flex;
-            align-items:center;
+            align-items: center;
             font-size: 4cqw;
-            
-            
+
             span {
                 background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -139,7 +138,7 @@ button {
         border-left: 0.25cqw solid var(--white-vale);
     }
 }
-@keyframes unlock-pop {
+/* @keyframes unlock-pop {
     0% {
         transform: translateX(0);
     }
@@ -148,7 +147,7 @@ button {
         transform: translateX(20%);
         opacity: 0;
     }
-}
+} */
 
 #title {
     .flow {

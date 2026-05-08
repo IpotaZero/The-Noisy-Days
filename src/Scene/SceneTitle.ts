@@ -158,15 +158,20 @@ export default class implements Scene {
         this.lock(button) // いったんロック（アニメーションのため）
         button.disabled = false
 
-        const lockLayer = button.querySelector(".lock.lock-normal")!
-        // 1. アニメーションクラスを付与
-        lockLayer.classList.add("unlocking")
+        const lock = button.querySelector(".lock.lock-normal")!
+
+        lock.animate([{ transform: "translateX(0)" }, { transform: "translateX(20%)", opacity: 0 }], {
+            duration: 1000,
+            delay: 200,
+            easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+            fill: "forwards",
+        })
 
         SE.unlock.play()
 
-        await Awaits.sleep(1000) // アニメーションの長さに合わせて待機（CSSのanimation-duration + animation-delayの合計）
+        await Awaits.sleep(1000)
 
-        lockLayer.remove()
+        lock.remove()
     }
 
     private setupSetting() {
