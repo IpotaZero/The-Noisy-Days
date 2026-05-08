@@ -29,7 +29,6 @@ export class Remodel {
     fire() {
         this.bullets.forEach((b) => {
             b.init()
-            return b
         })
 
         g.bullets.push(...this.bullets)
@@ -158,11 +157,19 @@ export class Remodel {
     }
 
     duplicate(num: number, map: (me: Bullet, index: number) => Bullet): Mod {
-        this.bullets = this.bullets.flatMap((bullet) =>
-            Array.from({ length: num }, (_, i) => {
-                return map(bullet.clone(), i)
-            }),
-        )
+        const result: Bullet[] = []
+
+        const length = this.bullets.length
+
+        for (let i = 0; i < length; i++) {
+            const bullet = this.bullets[i]
+
+            for (let j = 0; j < num; j++) {
+                result.push(map(bullet.clone(), j))
+            }
+        }
+
+        this.bullets = result
 
         return this as unknown as Mod
     }
