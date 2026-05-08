@@ -171,7 +171,7 @@ export default class implements Scene {
 
         await Awaits.sleep(1000)
 
-        lock.remove()
+        button.querySelectorAll(".lock").forEach((e) => e.remove())
     }
 
     private setupSetting() {
