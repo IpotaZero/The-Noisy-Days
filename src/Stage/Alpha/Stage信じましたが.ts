@@ -14,7 +14,7 @@ export default class extends Stage {
         yield* this.text("(熱い。)", { name: "ササキ" })
         yield* this.wait(30)
         yield* this.text("2XXX年 9月 アオ・ササキ 死亡")
-        yield* this.text("容疑者は合成人の主婦であった。")
+        yield* this.text("実行犯は合成人の主婦であった。")
 
         // 信じましたが死んじまいました、ね
         // 分かり合えない、ということ

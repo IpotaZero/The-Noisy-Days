@@ -156,21 +156,23 @@ class TacticalMine extends Enemy {
         super(20, 32, new EnemyRendererMine(), { margin: 0 })
         this.p = pos
 
-        this.mine(300, () => {
-            remodel()
-                .appearance(Bullet.Appearance.Ball)
-                .r(6)
-                .p(this.p.clone())
-                .colorful(this.frame)
-                .speed(5)
-                .ex(53)
-                //
-                .fire()
-        })
+        this.mine(300, () => this.explosion())
     }
 
     *G() {
         this.p.y += 6
         yield
+    }
+
+    private *explosion() {
+        remodel()
+            .appearance(Bullet.Appearance.Ball)
+            .r(6)
+            .p(this.p.clone())
+            .colorful(this.frame)
+            .speed(5)
+            .ex(53)
+            //
+            .fire()
     }
 }

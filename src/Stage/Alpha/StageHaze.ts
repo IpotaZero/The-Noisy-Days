@@ -169,7 +169,7 @@ class ThrownMine extends Enemy {
         this.g.push(this.physics())
 
         // 静止 → 機雷として起爆待ち
-        this.mine(300, () => {
+        this.mine(300, function* () {
             remodel().colorful(this.frame).appearance(Bullet.Appearance.Ball).r(6).p(this.p.clone()).ex(53).fire()
         })
     }
