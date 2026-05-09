@@ -75,7 +75,7 @@ export class BulletDrawer {
     }
 
     private generateCacheKey(bullet: Bullet): string {
-        const parts = [bullet.appearance, bullet.color, Math.floor(bullet.r)]
+        const parts = [bullet.appearance, bullet.color, bullet.r]
         const isRotationSensitive = [Bullet.Appearance.Arrow, Bullet.Appearance.Line].includes(bullet.appearance)
 
         if (isRotationSensitive) {

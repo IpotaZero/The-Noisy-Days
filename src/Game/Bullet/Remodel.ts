@@ -67,20 +67,13 @@ export class Remodel {
         target: number,
         frame: number,
         easing: Ease.Type,
-        floor?: number,
+        floor: number = 32,
     ) {
         const start = me[key]
 
-        if (floor) {
-            for (let i = 1; i < frame + 1; i++) {
-                ;(me as any)[key] = Math.floor(((target - start) * easing(i / frame) + start) * floor) / floor
-                yield
-            }
-        } else {
-            for (let i = 1; i < frame + 1; i++) {
-                ;(me as any)[key] = (target - start) * easing(i / frame) + start
-                yield
-            }
+        for (let i = 1; i < frame + 1; i++) {
+            ;(me as any)[key] = Math.floor(((target - start) * easing(i / frame) + start) * floor) / floor
+            yield
         }
     }
 
@@ -115,6 +108,7 @@ export class Remodel {
     nway(num: number, angle: number) {
         return this.duplicate(num, (b, i) => {
             b.radian += angle * (i - (num - 1) / 2)
+            b.radian = Math.floor((b.radian % T) * 128) / 128
             return b
         })
     }
@@ -125,35 +119,6 @@ export class Remodel {
             b.p = b.p.plus(shiftVec)
             return b
         })
-    }
-
-    beam(e: Enemy, length: number) {
-        return (this as unknown as Mod)
-            .length(length)
-            .speed(0)
-            .r(12)
-            .appearance(Bullet.Appearance.Beam)
-            .collision(Bullet.Collision.Rect)
-            .color("cyan")
-            .scorenizable(false)
-            .g(function* (me) {
-                let i = 0
-
-                while (1) {
-                    i++
-                    me.alpha = 0.8 * (Math.sin(i / 10) + 1) + 0.8
-
-                    me.p = e.p
-
-                    if (e.life <= 0) {
-                        break
-                    }
-
-                    yield
-                }
-
-                yield* Remodel.fadeout(me, 15)
-            })
     }
 
     duplicate(num: number, map: (me: Bullet, index: number) => Bullet): Mod {
@@ -192,9 +157,9 @@ export class Remodel {
 
     ex(num: number) {
         return this.duplicate(num, (b, i) => {
-            const clone = b
-            clone.radian = b.radian + Math.PI * 2 * (i / num)
-            return clone
+            b.radian = b.radian + Math.PI * 2 * (i / num)
+            b.radian = Math.floor((b.radian % T) * 128) / 128
+            return b
         })
     }
 
@@ -209,6 +174,35 @@ export class Remodel {
                 }
             }
         })
+    }
+
+    beam(e: Enemy, length: number) {
+        return (this as unknown as Mod)
+            .length(length)
+            .speed(0)
+            .r(12)
+            .appearance(Bullet.Appearance.Beam)
+            .collision(Bullet.Collision.Rect)
+            .color("cyan")
+            .scorenizable(false)
+            .g(function* (me) {
+                let i = 0
+
+                while (1) {
+                    i++
+                    me.alpha = 0.8 * (Math.sin(i / 10) + 1) + 0.8
+
+                    me.p = e.p
+
+                    if (e.life <= 0) {
+                        break
+                    }
+
+                    yield
+                }
+
+                yield* Remodel.fadeout(me, 15)
+            })
     }
 
     delete(frame: number = 0) {
