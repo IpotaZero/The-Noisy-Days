@@ -9,6 +9,7 @@ import { Vec, vec } from "./utils/Vec"
 import { UnifiedInput } from "./utils/UnifiedInput/UnifiedInput"
 import { DEFAULT_CONFIG } from "./utils/UnifiedInput/DefaultConfig"
 import { Ctx } from "./utils/Functions/Ctx"
+import { SE } from "./SE"
 
 export const g = {
     enemies: [] as Enemy[],
@@ -110,6 +111,8 @@ function* parallel(...gens: Generator[]) {
 export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
     const maxR = Math.hypot(g.width, g.height)
 
+    SE.boss_defeat_pre.play()
+
     // ===== 第一波: スロー中に炸裂（FPS10でゆっくり見える）=====
 
     // パーティクルをまず叩き込む
@@ -182,6 +185,8 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
     // ===== 大爆発: FPSが戻りきったところで炸裂 =====
 
     shake(Dom.container, 250, 32)
+
+    SE.boss_defeat.play()
 
     // 128個の超巨大パーティクル
     remodel()

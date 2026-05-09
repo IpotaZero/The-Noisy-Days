@@ -67,13 +67,20 @@ export class Remodel {
         target: number,
         frame: number,
         easing: Ease.Type,
-        floor: number = 32,
+        floor?: number,
     ) {
         const start = me[key]
 
-        for (let i = 1; i < frame + 1; i++) {
-            ;(me as any)[key] = Math.floor(((target - start) * easing(i / frame) + start) * floor) / floor
-            yield
+        if (floor) {
+            for (let i = 1; i < frame + 1; i++) {
+                ;(me as any)[key] = Math.floor(((target - start) * easing(i / frame) + start) * floor) / floor
+                yield
+            }
+        } else {
+            for (let i = 1; i < frame + 1; i++) {
+                ;(me as any)[key] = (target - start) * easing(i / frame) + start
+                yield
+            }
         }
     }
 
