@@ -17,7 +17,7 @@ import typia from "typia"
 import { ConfigMap } from "../utils/UnifiedInput/Binding"
 import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
 
-const FINISHED = 64
+const FINISHED = 63
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -81,7 +81,7 @@ export default class implements Scene {
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
         this.unlockStage()
-        // this.lock(this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED], "unimplemented")
+        this.lock(this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED], "unimplemented")
     }
 
     private setupUnlockAnimation() {
