@@ -225,7 +225,7 @@ class TacticalMine extends Enemy {
         super(20, 32, new EnemyRendererMine(), { margin: 0 })
         this.p = pos
 
-        this.mine(300, () => this.explosion())
+        this.mine(400, () => this.explosion())
     }
 
     *G() {
