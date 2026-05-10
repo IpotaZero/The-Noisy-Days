@@ -55,7 +55,7 @@ class ResonanceCore extends Enemy {
     private prevPlayerP = vec(0, 0)
 
     constructor() {
-        super(2500, 64, new EnemyRendererCore(), { remainingCharge: 600, margin: 120 })
+        super(1800, 64, new EnemyRendererCore(), { remainingCharge: 600, margin: 120 })
         this.p = vec(0, -g.height)
         this.moveTo(vec(0, -g.height / 4), 120)
     }
@@ -129,7 +129,7 @@ class ResonanceShield extends Enemy {
         private readonly index: number,
     ) {
         // 充電 300 / 450 / 600 / 750f でずらす
-        super(600, 40, new EnemyRendererMob(), { remainingCharge: 300 + index * 150 })
+        super(500, 40, new EnemyRendererMob(), { remainingCharge: 300 + index * 150 })
         this.setParent(core, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scaled(240))
     }
 
@@ -162,7 +162,7 @@ class ResonanceDrone extends Enemy {
         parent: Enemy,
         private readonly index: number,
     ) {
-        super(150, 24, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 20 })
+        super(50, 24, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 20 })
         this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 4).scaled(80))
     }
 
@@ -209,7 +209,7 @@ class ResonanceRing extends Enemy {
         core: Enemy,
         private readonly index: number,
     ) {
-        super(100, 18, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 15 })
+        super(50, 18, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 15 })
         this.setParent(core, () => vec.arg((this.frame / 180) * T + (this.index * T) / 8).scaled(130))
     }
 
@@ -250,7 +250,7 @@ class Sweeper extends Enemy {
         core: Enemy,
         private readonly index: number,
     ) {
-        super(250, 24, new EnemyRendererFunnel(), { remainingCharge: 100, margin: 120 + 20 * index })
+        super(50, 24, new EnemyRendererFunnel(), { remainingCharge: 100, margin: 120 + 20 * index })
         this.p = vec(0, -g.height)
         this.moveTo(vec(-g.width * 0.48, g.height * 0.1), 120)
     }
