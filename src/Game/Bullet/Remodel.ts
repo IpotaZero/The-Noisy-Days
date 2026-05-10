@@ -171,13 +171,20 @@ export class Remodel {
     }
 
     bounce(count: number) {
+        let c = count
+
         return this.g(function* (b) {
-            while (count > 0) {
+            while (c > 0) {
                 yield
 
-                if (b.p.x < -g.width / 2 || b.p.x > g.width / 2) {
+                if (b.p.x < -g.width / 2) {
+                    b.p.x = -g.width / 2
                     b.radian = Math.PI - b.radian
-                    count--
+                    c--
+                } else if (b.p.x > g.width / 2) {
+                    b.p.x = g.width / 2
+                    b.radian = Math.PI - b.radian
+                    c--
                 }
             }
         })

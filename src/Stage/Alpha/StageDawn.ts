@@ -23,7 +23,8 @@ export default class extends Stage {
         const rei = new Rei()
         const core0 = new Core0(rei)
         const core1 = new Core1(rei)
-        g.enemies.push(rei, core0, core1)
+        const core2 = new Core2(rei)
+        g.enemies.push(rei, core0, core1, core2)
 
         yield* this.text("「こんにちは、<br>シオン・シマ。」", { name: "レイ" })
         yield* this.text("「なっ……なんでアンタが。」", { name: "シオン" })
@@ -37,8 +38,17 @@ export default class extends Stage {
         core0.isInvincible = false
 
         while (core0.life > 0) yield
+        scorenize()
+        yield* this.wait(30)
         core1.isInvincible = false
+
         while (core1.life > 0) yield
+        scorenize()
+        yield* this.wait(30)
+        core2.isInvincible = false
+
+        while (core2.life > 0) yield
+        scorenize()
 
         yield* this.waitDefeatEnemy()
         scorenize()
@@ -72,7 +82,7 @@ class Core0 extends Enemy {
     private readonly curve2 = Curves.lissajous(g.width * 0.8, g.height * 0.8, 5, 6)
 
     constructor(parent: Enemy) {
-        super(600, 60, new EnemyRendererCore(), { margin: 60 })
+        super(400, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
         this.setParent(parent, () => vec.arg(T / 4).scaled(200))
         this.isInvincible = true
@@ -138,9 +148,9 @@ class Core0 extends Enemy {
  */
 class Core1 extends Enemy {
     constructor(private readonly parent: Enemy) {
-        super(600, 60, new EnemyRendererCore(), { margin: 60 })
+        super(400, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + T / 4).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + T / 8).scaled(200))
         this.isInvincible = true
     }
 
@@ -186,5 +196,48 @@ class Core1 extends Enemy {
         }
 
         yield* Array(150)
+    }
+}
+
+/**
+ *
+ */
+class Core2 extends Enemy {
+    constructor(private readonly parent: Enemy) {
+        super(400, 60, new EnemyRendererCore(), { margin: 60 })
+        this.p = vec(0, -g.height)
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * 2).scaled(200))
+        this.isInvincible = true
+    }
+
+    *G() {
+        while (this.isInvincible) yield
+
+        yield* Array(150)
+    }
+
+    *H() {
+        while (this.isInvincible) yield
+
+        const p = this.parent.p.clone()
+
+        remodel()
+            .appearance(Bullet.Appearance.Ball)
+            .r(6)
+            .p(p.clone())
+            .speed(6)
+            .radian(T / 4)
+            .nway(2, T / 4)
+            .nway(7, T / 30)
+            .delayByIndex()
+            .sim(15, 1, 32)
+            .g((me) => Remodel.reaccel(me, 15, 15, 15, 6))
+            .forEach((me, i) => {
+                me.color = `hsl(${(i * 2 + this.frame) % 360} 100% 50%)`
+            })
+            .bounce(Infinity)
+            .fire()
+
+        yield* Array(90)
     }
 }

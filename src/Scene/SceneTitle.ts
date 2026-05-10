@@ -81,7 +81,7 @@ export default class implements Scene {
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
         this.unlockStage()
-        this.lock(this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED], "unimplemented")
+        // this.lock(this.selector.getAll("stage-button", HTMLButtonElement)[FINISHED], "unimplemented")
     }
 
     private setupUnlockAnimation() {
