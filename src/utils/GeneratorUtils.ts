@@ -57,9 +57,12 @@ export namespace GenUtils {
      * @example
      * yield* repeat(3, () => this.attackPattern())
      */
-    export function* repeat(n: number, gen: () => Generator<void, void, unknown>): Generator<void, void, unknown> {
+    export function* repeat(
+        n: number,
+        gen: (index: number) => Generator<void, void, unknown>,
+    ): Generator<void, void, unknown> {
         for (let i = 0; i < n; i++) {
-            yield* gen()
+            yield* gen(i)
         }
     }
 

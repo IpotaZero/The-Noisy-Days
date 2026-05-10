@@ -22,9 +22,10 @@ export default class extends Stage {
 
         const rei = new Rei()
         const core0 = new Core0(rei)
-        g.enemies.push(rei, core0)
+        const core1 = new Core1(rei)
+        g.enemies.push(rei, core0, core1)
 
-        yield* this.text("「こんにちは、シオン・シマ。」", { name: "レイ" })
+        yield* this.text("「こんにちは、<br>シオン・シマ。」", { name: "レイ" })
         yield* this.text("「なっ……なんでアンタが。」", { name: "シオン" })
         yield* this.text("「あなたの気持ちが知りたくて。」", { name: "レイ" })
         yield* this.text("「……家へ帰るんだ。子供が使いこなせるものじゃあない。そもそも誰が……」", { name: "シオン" })
@@ -34,6 +35,10 @@ export default class extends Stage {
 
         rei.isStarted = true
         core0.isInvincible = false
+
+        while (core0.life > 0) yield
+        core1.isInvincible = false
+        while (core1.life > 0) yield
 
         yield* this.waitDefeatEnemy()
         scorenize()
@@ -60,13 +65,16 @@ class Rei extends Enemy {
     }
 }
 
+/**
+ * レーザーで画面を分割し、そこに自機狙いを打ち込む
+ */
 class Core0 extends Enemy {
     private readonly curve2 = Curves.lissajous(g.width * 0.8, g.height * 0.8, 5, 6)
 
     constructor(parent: Enemy) {
         super(600, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 12).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4).scaled(200))
         this.isInvincible = true
     }
 
@@ -101,10 +109,10 @@ class Core0 extends Enemy {
             remodel()
                 .appearance(Bullet.Appearance.Arrow)
                 .collision(Bullet.Collision.Arrow)
+                .r(28)
                 .color("white")
                 .p(this.curve2(this.frame + i * 200).plus(vec(0, -g.height / 4)))
                 .radian(T / 4 + i * 5)
-                .r(28)
                 .g(function* (me) {
                     yield* Array(35 - i * 2)
                     yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 15, Ease.InOut)
@@ -122,5 +130,60 @@ class Core0 extends Enemy {
         while (this.isInvincible) yield
         remodel().appearance(Bullet.Appearance.Ball).r(6).colorful(this.frame).p(this.p.clone()).speed(7).ex(17).fire()
         yield* Array(23)
+    }
+}
+
+/**
+ *
+ */
+class Core1 extends Enemy {
+    constructor(parent: Enemy) {
+        super(600, 60, new EnemyRendererCore(), { margin: 60 })
+        this.p = vec(0, -g.height)
+        this.setParent(parent, () => vec.arg(T / 4 + T / 4).scaled(200))
+        this.isInvincible = true
+    }
+
+    *G() {
+        while (this.isInvincible) yield
+
+        for (let i = 0; i < 120; i++) {
+            remodel()
+                .appearance(Bullet.Appearance.Ball)
+                .r(6)
+                .colorful(this.frame * 2 + i)
+                .p(vec((Math.sin(i + this.frame) * g.width) / 2, -g.height / 2))
+                .aim(vec((Math.sin(i ** 2 + this.frame) * g.width) / 2, g.height / 2))
+                .speed(0)
+                .g(function* (me) {
+                    yield* Remodel.accel(me, 30, 12 + Math.sin(i) * 4)
+                })
+                .fire()
+            yield
+        }
+
+        yield* Array(30)
+
+        for (let i = 0; i < 15; i++) {
+            remodel()
+                .appearance(Bullet.Appearance.Line)
+                .collision(Bullet.Collision.Line)
+                .r(28)
+                .colorful(this.frame + i)
+                .p(this.p.plus(vec.arg(i).scaled(300)))
+                .ex(31)
+                .delayByIndex()
+                .g(function* (me, i) {
+                    yield* Remodel.reaccel(me, 15, 30 - i, 30, 16)
+                })
+                .sim(2, 8, 16)
+                .forEach((me, i) => {
+                    if (i % 2 === 0) me.radian += T / 2
+                })
+                .fire()
+            yield* Array(5)
+        }
+
+        yield* Array(150)
     }
 }
