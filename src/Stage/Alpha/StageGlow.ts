@@ -250,7 +250,7 @@ class Sweeper extends Enemy {
         core: Enemy,
         private readonly index: number,
     ) {
-        super(350, 24, new EnemyRendererFunnel(), { remainingCharge: 100, margin: 120 + 20 * index })
+        super(250, 24, new EnemyRendererFunnel(), { remainingCharge: 100, margin: 120 + 20 * index })
         this.p = vec(0, -g.height)
         this.moveTo(vec(-g.width * 0.48, g.height * 0.1), 120)
     }
