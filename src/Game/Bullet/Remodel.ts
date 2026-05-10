@@ -212,6 +212,30 @@ export class Remodel {
             })
     }
 
+    laser(e: Enemy) {
+        return (this as unknown as Mod)
+            .length(g.height)
+            .speed(0)
+            .type(Bullet.Type.Neutral)
+            .alpha(0)
+            .r(4)
+            .color("yellow")
+            .appearance(Bullet.Appearance.Beam)
+            .collision(Bullet.Collision.Rect)
+            .scorenizable(false)
+            .g(function* (me) {
+                while (1) {
+                    if (e.life <= 0) {
+                        break
+                    }
+
+                    yield
+                }
+
+                yield* Remodel.fadeout(me, 15)
+            })
+    }
+
     delete(frame: number = 0) {
         return this.g(function* (b) {
             for (let i = 0; i < frame; i++) yield

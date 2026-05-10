@@ -17,7 +17,7 @@ import typia from "typia"
 import { ConfigMap } from "../utils/UnifiedInput/Binding"
 import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
 
-const FINISHED = 63
+const FINISHED = 64
 
 export default class implements Scene {
     private readonly pages = new Pages()
@@ -160,7 +160,8 @@ export default class implements Scene {
         this.lock(button) // いったんロック（アニメーションのため）
         button.disabled = false
 
-        const lock = button.querySelector(".lock.lock-normal")!
+        const lock = button.querySelector(".lock.lock-normal")
+        if (!lock) return
 
         lock.animate([{ transform: "translateX(0)" }, { transform: "translateX(20%)", opacity: 0 }], {
             duration: 1000,
@@ -234,6 +235,8 @@ export default class implements Scene {
 
     private lockButtons() {
         const firstUnclearedStage = LocalStorage.getFirstUncleared()
+        if (firstUnclearedStage === -1) return
+
         const firstUnclearedAct = Math.floor(firstUnclearedStage / 4)
         const firstUnclearedChapter = Math.floor(firstUnclearedAct / 4)
 

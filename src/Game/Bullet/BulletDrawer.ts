@@ -113,10 +113,10 @@ export class BulletDrawer {
         ctx.fillStyle = "white"
         ctx.fillRect(0, -bullet.r * 0.8, bullet.length, bullet.r * 1.6)
 
-        ctx.globalAlpha = 0.5 * bullet.alpha
-        ctx.beginPath()
-        ctx.arc(0, 0, bullet.r * 2, 0, T)
-        ctx.fill()
+        // ctx.globalAlpha = 0.5 * bullet.alpha
+        // ctx.beginPath()
+        // ctx.arc(0, 0, bullet.r * 2, 0, T)
+        // ctx.fill()
         ctx.restore()
     }
 

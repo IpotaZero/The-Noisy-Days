@@ -55,6 +55,14 @@ export class Enemy {
                 }.bind(this)(),
             )
         }
+        if ("I" in this) {
+            this.g.push(
+                function* (this: any) {
+                    yield* Array(this.margin)
+                    while (1) yield* this.I()
+                }.bind(this)(),
+            )
+        }
     }
 
     hit(damage: number) {

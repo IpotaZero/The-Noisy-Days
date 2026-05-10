@@ -1,0 +1,2 @@
+var e;(function(e){function*t(...e){for(;!e.map(e=>e.next()).every(e=>e.done);)yield}e.parallel=t;function*n(...e){for(;!e.map(e=>e.next()).some(e=>e.done);)yield}e.race=n;function*r(e){yield*Array(e)}e.waitFrames=r;function*i(e,t){for(let n=0;n<e;n++)yield*t()}e.repeat=i;function*a(e){for(let t of e)yield*t}e.sequence=a})(e||={});export{e as t};
+//# sourceMappingURL=GeneratorUtils.js.map
