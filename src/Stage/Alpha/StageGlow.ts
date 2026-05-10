@@ -162,7 +162,7 @@ class ResonanceDrone extends Enemy {
         parent: Enemy,
         private readonly index: number,
     ) {
-        super(50, 24, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 20 })
+        super(100, 24, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 20 })
         this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 4).scaled(80))
     }
 
@@ -209,7 +209,7 @@ class ResonanceRing extends Enemy {
         core: Enemy,
         private readonly index: number,
     ) {
-        super(50, 18, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 15 })
+        super(100, 18, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 15 })
         this.setParent(core, () => vec.arg((this.frame / 180) * T + (this.index * T) / 8).scaled(130))
     }
 
@@ -250,7 +250,7 @@ class Sweeper extends Enemy {
         core: Enemy,
         private readonly index: number,
     ) {
-        super(50, 24, new EnemyRendererFunnel(), { remainingCharge: 100, margin: 120 + 20 * index })
+        super(100, 24, new EnemyRendererFunnel(), { remainingCharge: 100, margin: 120 + 20 * index })
         this.p = vec(0, -g.height)
         this.moveTo(vec(-g.width * 0.48, g.height * 0.1), 120)
     }
