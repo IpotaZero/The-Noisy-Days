@@ -130,7 +130,7 @@ class ResonanceShield extends Enemy {
     ) {
         // 充電 300 / 450 / 600 / 750f でずらす
         super(600, 40, new EnemyRendererMob(), { remainingCharge: 300 + index * 150 })
-        this.setParent(core, () => vec.arg((this.frame / 200) * T + (this.index * T) / 4).scaled(240))
+        this.setParent(core, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scaled(240))
     }
 
     *G() {
@@ -163,7 +163,7 @@ class ResonanceDrone extends Enemy {
         private readonly index: number,
     ) {
         super(150, 24, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 20 })
-        this.setParent(parent, () => vec.arg((-this.frame / 60) * T + (this.index * T) / 4).scaled(80))
+        this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 4).scaled(80))
     }
 
     *G() {
@@ -210,7 +210,7 @@ class ResonanceRing extends Enemy {
         private readonly index: number,
     ) {
         super(100, 18, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 15 })
-        this.setParent(core, () => vec.arg((this.frame / 120) * T + (this.index * T) / 8).scaled(130))
+        this.setParent(core, () => vec.arg((this.frame / 180) * T + (this.index * T) / 8).scaled(130))
     }
 
     *G() {
