@@ -137,7 +137,7 @@ class Core0 extends Enemy {
  *
  */
 class Core1 extends Enemy {
-    constructor(parent: Enemy) {
+    constructor(private readonly parent: Enemy) {
         super(600, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
         this.setParent(parent, () => vec.arg(T / 4 + T / 4).scaled(200))
@@ -162,7 +162,7 @@ class Core1 extends Enemy {
             yield
         }
 
-        yield* Array(30)
+        yield* Array(60)
 
         for (let i = 0; i < 15; i++) {
             remodel()
@@ -170,11 +170,12 @@ class Core1 extends Enemy {
                 .collision(Bullet.Collision.Line)
                 .r(28)
                 .colorful(this.frame + i)
-                .p(this.p.plus(vec.arg(i).scaled(300)))
-                .ex(31)
+                .p(this.parent.p.plus(vec.arg(i).scaled(200)))
+                .ex(17)
                 .delayByIndex()
                 .g(function* (me, i) {
-                    yield* Remodel.reaccel(me, 15, 30 - i, 30, 16)
+                    yield* Remodel.reaccel(me, 15, 17 - i, 15, 16)
+                    yield* Remodel.accel(me, 5, 6)
                 })
                 .sim(2, 8, 16)
                 .forEach((me, i) => {
