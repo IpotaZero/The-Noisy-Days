@@ -184,7 +184,7 @@ class ResonanceDrone extends Enemy {
                 yield* Array(60)
 
                 if (isSmartPhone) {
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = Math.floor(g.player.p.minus(me.p).arg() * 8) / 8
                     yield* Array(15)
                 } else {
                     yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg() + T, 15, Ease.Out)
@@ -264,7 +264,7 @@ class Sweeper extends Enemy {
         yield* this.waitCharge()
 
         remodel()
-            .colorful(this.frame + this.index * 90)
+            .color("white")
             .r(28)
             .p(this.p.clone())
             .radian(T / 4)
