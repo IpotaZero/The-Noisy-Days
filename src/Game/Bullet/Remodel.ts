@@ -35,6 +35,13 @@ export class Remodel {
         g.bullets.push(...this.bullets)
     }
 
+    static *homing(me: Bullet, p: Vec, frame: number) {
+        for (let i = 0; i < frame; i++) {
+            me.radian = p.minus(me.p).arg()
+            yield
+        }
+    }
+
     static *appear(me: Bullet, frame: number = 30) {
         const r = me.r
         me.r = 0
@@ -67,7 +74,7 @@ export class Remodel {
         key: NumberKeys<Bullet>,
         target: number,
         frame: number,
-        easing: Ease.Type,
+        easing: Ease.Type = Ease.Out,
         floor?: number,
     ) {
         const start = me[key]
