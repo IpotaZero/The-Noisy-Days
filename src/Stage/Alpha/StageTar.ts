@@ -53,7 +53,7 @@ class CommandUnit extends Enemy {
         public readonly id: string,
         public readonly side: number,
     ) {
-        super(500, 56, new EnemyRendererCore(), { remainingCharge: 600 })
+        super(500, 56, new EnemyRendererCore(), { remainingCharge: 1200 })
         this.p = vec(side * g.width, -g.height)
         this.moveTo(vec(side * g.width * 0.3, -g.height / 4), 60)
     }
