@@ -67,10 +67,11 @@ export default class extends Stage {
         shake(Dom.container, 750, 8)
 
         this.stopSkip()
-        yield* this.wait(240)
+        yield* this.wait(210)
 
         // 背景変更
         this.changeBackground("asset/background/black.png")
+        yield* this.wait(30)
 
         yield* this.text("アオは死んだ。")
         yield* this.text("頭を失ったTAMAMUSHIは烏合の衆と化し瓦解した。")
