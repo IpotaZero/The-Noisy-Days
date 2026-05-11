@@ -23,13 +23,13 @@ export default class extends Stage {
 
         const rei = new Rei()
         const cores = [
-            // new Core7(rei, 0),
-            // new Core0(rei, 1),
-            // new Core1(rei, 2),
-            // new Core2(rei, 3),
-            // new Core3(rei, 4),
-            // new Core4(rei, 5),
-            // new Core6(rei, 6),
+            new Core7(rei, 0),
+            new Core0(rei, 1),
+            new Core1(rei, 2),
+            new Core2(rei, 3),
+            new Core3(rei, 4),
+            new Core4(rei, 5),
+            new Core6(rei, 6),
             new Core5(rei, 7),
             //
         ]
