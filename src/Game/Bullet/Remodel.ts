@@ -4,6 +4,7 @@ import { Vec, vec } from "../../utils/Vec"
 import { Ease } from "../../utils/Functions/Ease"
 import { Enemy } from "../Enemy/Enemy"
 import { NumberKeys } from "../../utils/UtilTypes"
+import { GenUtils } from "../../utils/GeneratorUtils"
 
 export const remodel = (e?: Enemy) =>
     new Proxy(new Remodel([new Bullet()], e), {
@@ -219,27 +220,32 @@ export class Remodel {
             })
     }
 
-    laser(e: Enemy) {
+    laser(e: Enemy, waitFrame: number, existsFrame: number) {
         return (this as unknown as Mod)
             .length(g.height)
             .speed(0)
             .type(Bullet.Type.Neutral)
             .alpha(0)
-            .r(4)
+            .r(2)
             .color("yellow")
             .appearance(Bullet.Appearance.Beam)
             .collision(Bullet.Collision.Rect)
             .scorenizable(false)
             .g(function* (me) {
-                while (1) {
-                    if (e.life <= 0) {
-                        break
-                    }
-
-                    yield
-                }
-
+                yield* Remodel.ease(me, "alpha", 0.1, 30, Ease.Out)
+                yield* Array(waitFrame)
+                me.type = Bullet.Type.Enemy
+                yield* GenUtils.parallel(
+                    Remodel.ease(me, "r", 8, 30, Ease.Out),
+                    Remodel.ease(me, "alpha", 1, 30, Ease.Out),
+                    //
+                )
+                yield* Array(existsFrame)
                 yield* Remodel.fadeout(me, 15)
+            })
+            .g(function* (me) {
+                while (e.life > 0) yield
+                yield* Remodel.fadeout(me, 30)
             })
     }
 
