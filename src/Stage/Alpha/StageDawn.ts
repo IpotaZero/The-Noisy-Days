@@ -67,12 +67,15 @@ export default class extends Stage {
         yield* this.wait(120)
 
         // 背景変更
+        this.changeBackground("asset/background/black.png")
 
         yield* this.text("アオは死んだ。")
         yield* this.text("頭を失ったTAMAMUSHIは烏合の衆と化し瓦解した。")
         yield* this.text("玉虫色が、黒く塗りつぶされていく。")
         yield* this.text("だが、一つだけ勝ち取ったものがあった。当局は反政府主義の凝集をリスクと認識し、一部地域でのSILOの導入を見送ったのだ。")
         yield* this.text("完全な単色化は起きなかった。")
+
+        this.changeBackground("asset/background/buildings.png")
 
         yield* this.text("「……。」", { name: "シオン" })
         yield* this.text("「……。」", { name: "レイ" })
@@ -261,7 +264,7 @@ class Core1 extends Enemy {
                 .appearance(Bullet.Appearance.Line)
                 .collision(Bullet.Collision.Line)
                 .r(28)
-                .colorful(this.frame2 + i)
+                .color("white")
                 .p(this.parent.p.plus(vec.arg(i).scaled(200)))
                 .ex(17)
                 .delayByIndex()
@@ -671,13 +674,13 @@ class DeployedMine extends Enemy {
                     .appearance(Bullet.Appearance.Ball)
                     .r(6)
                     .p(this.p.clone())
-                    .speed(16)
+                    .speed(12)
                     .duplicate(23, (me, i) => {
                         me.radian = i ** 3
                         return me
                     })
                     .g(function* (me) {
-                        yield* Array(60)
+                        yield* Array(30)
                         yield* Remodel.fadeout(me, 30)
                     })
                     .fire()
