@@ -22,15 +22,18 @@ export default class extends Stage {
         yield* this.wait(30)
 
         const rei = new Rei()
+
+        let i = 0
+
         const cores = [
-            new Core7(rei, 0),
-            new Core0(rei, 1),
-            new Core1(rei, 2),
-            new Core2(rei, 3),
-            new Core3(rei, 4),
-            new Core4(rei, 5),
-            new Core6(rei, 6),
-            new Core5(rei, 7),
+            new Core7(rei, i++),
+            new Core0(rei, i++),
+            new Core1(rei, i++),
+            new Core2(rei, i++),
+            new Core4(rei, i++),
+            new Core3(rei, i++),
+            new Core6(rei, i++),
+            new Core5(rei, i++),
             //
         ]
         g.enemies.push(rei, ...cores)
@@ -56,7 +59,7 @@ export default class extends Stage {
         this.stopSkip()
         rei.isInvincible = false
         yield* this.text("「どうしてっ分かり合えないのっ!?」", { name: "レイ" })
-        yield* this.text("「黙れ!」", { name: "シオン" })
+        yield* this.text("「邪魔だ! 黙れ!」", { name: "シオン" })
 
         yield* this.waitDefeatEnemy()
         scorenize()
@@ -64,7 +67,7 @@ export default class extends Stage {
         shake(Dom.container, 750, 8)
 
         this.stopSkip()
-        yield* this.wait(120)
+        yield* this.wait(240)
 
         // 背景変更
         this.changeBackground("asset/background/black.png")
@@ -132,7 +135,7 @@ class Rei extends Enemy {
             .ex(5)
             .nway(7, T / 24)
             .fire()
-        yield* Array(15)
+        yield* Array(30)
     }
 
     *I() {
@@ -156,7 +159,7 @@ class Rei extends Enemy {
             .ex(8)
             .fire()
 
-        yield* Array(4)
+        yield* Array(8)
     }
 }
 
@@ -306,6 +309,25 @@ class Core2 extends Enemy {
         this.isInvincible = true
     }
 
+    *G() {
+        while (this.isInvincible) yield
+
+        remodel()
+            .appearance(Bullet.Appearance.Ball)
+            .r(28)
+            .p(vec(Math.sin(this.frame2) * g.width, g.height / 2))
+            .radian(-T / 4)
+            .speed(4)
+            .color("silver")
+            .g(function* (me) {
+                yield* Array(30)
+                yield* Remodel.fadeout(me, 15)
+            })
+            .fire()
+
+        yield* Array(5)
+    }
+
     *H() {
         while (this.isInvincible) yield
 
@@ -322,9 +344,7 @@ class Core2 extends Enemy {
             .delayByIndex()
             .sim(15, 1, 32)
             .g((me) => Remodel.reaccel(me, 15, 15, 15, 6))
-            .forEach((me, i) => {
-                me.color = `hsl(${(i + this.frame2) % 360} 100% 50%)`
-            })
+            .color("yellow")
             .bounce(Infinity)
             .fire()
 
@@ -423,7 +443,7 @@ class Core4 extends Enemy {
             .p(this.parent.p.clone())
             .radian(T / 4 + T * (this.frame2 / 18))
             .ex(7)
-            .nway(7, T / 37)
+            .nway(3, T / 48)
             .fire()
         yield* Array(60)
     }
@@ -546,7 +566,7 @@ class Core5 extends Enemy {
  */
 class Core6 extends Enemy {
     private frame2 = 0
-    private readonly curve2 = Curves.lissajous(g.width * 0.8, g.height * 0.4, 5, 6)
+    private readonly curve2 = Curves.lissajous(g.width * 0.9, g.height * 0.4, 5, 6)
 
     constructor(
         private readonly parent: Enemy,
@@ -576,6 +596,7 @@ class Core6 extends Enemy {
 
         yield* GenUtils.parallel(
             this.musi(0),
+            this.musi(1),
             //
         )
 
@@ -585,7 +606,7 @@ class Core6 extends Enemy {
     private *musi(h: number) {
         const p = this.curve2(this.frame2 + h * 40).plus(vec(0, -g.height / 4))
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 8; i++) {
             remodel()
                 .appearance(Bullet.Appearance.Arrow)
                 .collision(Bullet.Collision.Arrow)
@@ -593,7 +614,7 @@ class Core6 extends Enemy {
                 .p(p.clone())
                 .radian(T / 4)
                 .speed(0)
-                .r(28) // Arrow制限: 28
+                .r(14) // Arrow制限: 28
                 .g(function* (me) {
                     const baseRadian = me.radian
                     const shift = 0
@@ -613,7 +634,7 @@ class Core6 extends Enemy {
                 })
                 .fire()
 
-            yield* Array(4)
+            yield* Array(2)
         }
     }
 
@@ -629,7 +650,7 @@ class Core6 extends Enemy {
  */
 class DeployedMine extends Enemy {
     constructor(pos: Vec, angle: number) {
-        super(50, 32, new EnemyRendererMine())
+        super(20, 32, new EnemyRendererMine())
         this.p = pos
 
         this.g.push(this.physics(angle))
@@ -725,20 +746,27 @@ class Core7 extends Enemy {
     *G() {
         while (this.isInvincible) yield
 
-        remodel()
-            .colorful(this.frame2)
-            .p(g.player.p.clone())
-            .speed(0)
-            .circle(150, 240, { direction: "inner" })
-            .g(function* (me) {
-                yield* Remodel.appear(me, 30)
-                yield* Remodel.accel(me, 60, 8)
-            })
-            .bounce(Infinity)
-            .fire()
+        for (let i = 0; i < 10; i++) {
+            remodel()
+                .p(vec(0, (i - 5) * 120))
+                .radian(0)
+                .ex(2)
+                .laser(this, 30 - i, 30)
+                .fire()
+            yield
+        }
 
-        yield* Array(this.a)
-        this.a = Math.max(this.a - 5, 10)
+        for (let i = 0; i < 10; i++) {
+            remodel()
+                .p(vec((i - 5) * 120, 0))
+                .radian(T / 4)
+                .ex(2)
+                .laser(this, 20 - i, 30)
+                .fire()
+            yield
+        }
+
+        yield* Array(120)
     }
 
     *I() {

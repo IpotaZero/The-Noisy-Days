@@ -136,6 +136,7 @@ export default class implements Scene {
         if (this.config.clear === undefined) return
 
         const firstUncleared = LocalStorage.getFirstUncleared()
+        if (firstUncleared === -1) return
         if (this.config.clear + 1 < firstUncleared) return
 
         const nextStageIndex = this.config.clear + 1
