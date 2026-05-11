@@ -159,7 +159,7 @@ export class Enemy {
         )
     }
 
-    protected mine(timeoutFrame: number, callback: (this: Enemy) => Generator) {
+    protected mine(timeoutFrame: number, callback: (this: Enemy) => Generator, scale = 3) {
         const r = this.r
 
         this.r = 0
@@ -174,7 +174,7 @@ export class Enemy {
                 let i = 0
 
                 while (1) {
-                    if (i > timeoutFrame || this.p.minus(g.player.p).magnitude() < this.r * 3) {
+                    if (i > timeoutFrame || this.p.minus(g.player.p).magnitude() < this.r * scale) {
                         break
                     }
 

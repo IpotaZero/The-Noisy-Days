@@ -144,7 +144,7 @@ class Escort extends Enemy {
         parent: CommandUnit,
         private index: number,
     ) {
-        super(100, 24, new EnemyRendererMob())
+        super(100, 24, new EnemyRendererMob(), { remainingCharge: 300 })
         this.setParent(parent, () => {
             const angle = (this.frame / 360) * T * parent.side + (this.index / 3) * T
             return vec.arg(angle).scaled(150)
