@@ -55,7 +55,7 @@ class ResonanceCore extends Enemy {
     private prevPlayerP = vec(0, 0)
 
     constructor() {
-        super(1800, 64, new EnemyRendererCore(), { remainingCharge: 600, margin: 120 })
+        super(900, 64, new EnemyRendererCore(), { remainingCharge: 600, margin: 120 })
         this.p = vec(0, -g.height)
         this.moveTo(vec(0, -g.height / 4), 120)
     }
