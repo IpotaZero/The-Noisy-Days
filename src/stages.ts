@@ -25,7 +25,7 @@ const NeutralStages = [
     { "stage-name": "SILO", "description": "逆説的措置" },
     { "stage-name": "Green", "description": "単純な自機狙い" },
     { "stage-name": "Purple", "description": "画面端で跳ね返る自機狙い" },
-    { "stage-name": "Violet", "description": "弾幕" },
+    { "stage-name": "Violet", "description": "区切られた領域に3-wayを打ち込む" },
 ]
 
 const AchromaticStages = [
@@ -64,35 +64,35 @@ const HueActs = [
 // Chapter 1: Saturation
 const VividStages = [
     { "stage-name": "アオ", "description": "アオ・ササキに対するインタビュー" },
-    { "stage-name": "Scarlet", "description": "" },
-    { "stage-name": "Cobalt", "description": "" },
-    { "stage-name": "Gold", "description": "" },
+    { "stage-name": "Scarlet", "description": "円環と自機狙い" },
+    { "stage-name": "Cobalt", "description": "絨毯爆撃と自機狙い" },
+    { "stage-name": "Gold", "description": "薄く区切られた領域と自機狙い" },
 ]
 
 const MutedStages = [
     { "stage-name": "ヤナガワ", "description": "シュンスケ・ヤナガワとの密談" },
-    { "stage-name": "Rust", "description": "" },
-    { "stage-name": "Khaki", "description": "" },
-    { "stage-name": "Olive", "description": "" },
+    { "stage-name": "Rust", "description": "中心に寄せる" },
+    { "stage-name": "Khaki", "description": "中心に寄せた" },
+    { "stage-name": "Olive", "description": "中心" },
 ]
 
 const PaleStages = [
     { "stage-name": "レイ", "description": "クラスメイト" },
     { "stage-name": "Blush", "description": "花と虫" },
-    { "stage-name": "Sage", "description": "" },
-    { "stage-name": "Lavender", "description": "" },
+    { "stage-name": "Sage", "description": "雨と花粉" },
+    { "stage-name": "Lavender", "description": "怖くない" },
 ]
 
 const DullStages = [
-    { "stage-name": "合成人", "description": "" },
-    { "stage-name": "Mud", "description": "" },
+    { "stage-name": "合成人", "description": "初対面" },
+    { "stage-name": "Mud", "description": "拳" },
     { "stage-name": "Moss", "description": "" },
-    { "stage-name": "Soot", "description": "" },
+    { "stage-name": "Soot", "description": "イシカワ" },
 ]
 
 const SaturationActs = [
-    { "act-name": "Vivid", "description": "", "stages": VividStages },
-    { "act-name": "Muted", "description": "", "stages": MutedStages },
+    { "act-name": "Vivid", "description": "矢印", "stages": VividStages },
+    { "act-name": "Muted", "description": "中心に寄せましょう", "stages": MutedStages },
     { "act-name": "Pale", "description": "", "stages": PaleStages },
     { "act-name": "Dull", "description": "", "stages": DullStages },
 ]
@@ -179,7 +179,7 @@ const chapters = [
         "description": "小さめの飛行兵器",
         "acts": HueActs,
     },
-    { "chapter-name": "Saturation", "description": "", "acts": SaturationActs },
+    { "chapter-name": "Saturation", "description": "砲塔数の多い飛行兵器", "acts": SaturationActs },
     { "chapter-name": "Brightness", "description": "", "acts": BrightnessActs },
     { "chapter-name": "Alpha", "description": "", "acts": AlphaActs },
 ] as const
