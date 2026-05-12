@@ -168,7 +168,7 @@ class Rei extends Enemy {
  * レーザーで画面を分割し、そこに自機狙いを打ち込む
  */
 class Core0 extends Enemy {
-    private readonly curve2 = Curves.lissajous(g.width * 0.8, g.height * 0.8, 5, 6)
+    private readonly curve2 = Curves.lissajous(g.width * 0.8, g.height * 0.4, 5, 6)
     private frame2 = 0
 
     constructor(parent: Enemy, index: number) {
@@ -208,8 +208,15 @@ class Core0 extends Enemy {
                 .p(this.curve2(this.frame2 + i * 200).plus(vec(0, -g.height / 4)))
                 .radian(T / 4 + i * 5)
                 .g(function* (me) {
-                    yield* Array(35 - i * 2)
-                    yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 15, Ease.InOut)
+                    yield* Remodel.stop(me, 35 - i * 2)
+
+                    if (isSmartPhone) {
+                        me.radian = g.player.p.minus(me.p).arg()
+                        yield* Array(15)
+                    } else {
+                        yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 15, Ease.InOut)
+                    }
+
                     yield* Remodel.accel(me, 30, 32)
                 })
                 .ex(3)
@@ -339,11 +346,11 @@ class Core2 extends Enemy {
             .r(6)
             .p(p.clone())
             .speed(6)
-            .radian(T / 4)
+            .aim(g.player.p)
             .nway(2, T / 4)
-            .nway(7, T / 30)
+            .nway(5, T / 30)
             .delayByIndex()
-            .sim(15, 1, 32)
+            .sim(12, 1, 32)
             .g((me) => Remodel.reaccel(me, 15, 15, 15, 6))
             .color("yellow")
             .bounce(Infinity)
@@ -459,7 +466,7 @@ class Core4 extends Enemy {
                 .p(this.curve2(this.frame2 * i * 4).plus(vec(0, -g.height / 4)))
                 .aim(g.player.p)
                 .nway(3, T / 12)
-                .sim(24, 6, 24)
+                .sim(18, 6, 18)
                 .fire()
             yield* Array(15)
         }
@@ -678,7 +685,7 @@ class DeployedMine extends Enemy {
                     .appearance(Bullet.Appearance.Ball)
                     .r(28)
                     .p(this.p.clone())
-                    .speed(8)
+                    .speed(3)
                     .duplicate(13, (me, i) => {
                         me.radian = i ** 2
                         return me
@@ -696,7 +703,7 @@ class DeployedMine extends Enemy {
                     .appearance(Bullet.Appearance.Ball)
                     .r(6)
                     .p(this.p.clone())
-                    .speed(12)
+                    .speed(6)
                     .duplicate(23, (me, i) => {
                         me.radian = i ** 3
                         return me
@@ -747,9 +754,11 @@ class Core7 extends Enemy {
     *G() {
         while (this.isInvincible) yield
 
+        const p = vec.arg(this.frame2).scaled(30)
+
         for (let i = 0; i < 10; i++) {
             remodel()
-                .p(vec(0, (i - 5) * 120))
+                .p(vec(0, (i - 5) * 120).plus(p))
                 .radian(0)
                 .ex(2)
                 .laser(this, 30 - i, 30)
@@ -757,9 +766,9 @@ class Core7 extends Enemy {
             yield
         }
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 11; i++) {
             remodel()
-                .p(vec((i - 5) * 120, 0))
+                .p(vec((i - 5) * 120, 0).plus(p))
                 .radian(T / 4)
                 .ex(2)
                 .laser(this, 20 - i, 30)
