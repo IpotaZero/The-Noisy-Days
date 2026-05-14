@@ -6,19 +6,19 @@
 // Chapter 0: Hue
 const WarmStages = [
     { "stage-name": "Tokyo", "description": "チュートリアル" },
-    { "stage-name": "Yellow", "description": "やや拡大する弾を撃つ衛星を持つ" },
-    { "stage-name": "Orange", "description": "速射する衛星を持つ" },
+    { "stage-name": "Yellow", "description": "やや拡大する" },
+    { "stage-name": "Orange", "description": "速射" },
     {
         "stage-name": "Crimson",
-        "description": "弾速の大きい弾を撃つ衛星を持つ",
+        "description": "弾速の大きい",
     },
 ]
 
 const CoolStages = [
     { "stage-name": "シオン", "description": "シオン・シマについて" },
-    { "stage-name": "Cyan", "description": "扇状に弾を撃つ衛星を持つ" },
-    { "stage-name": "Blue", "description": "針を飛ばす衛星を持つ" },
-    { "stage-name": "Navy", "description": "波状隘路攻撃" },
+    { "stage-name": "Cyan", "description": "扇状" },
+    { "stage-name": "Blue", "description": "針" },
+    { "stage-name": "Navy", "description": "隘路" },
 ]
 
 const NeutralStages = [
@@ -86,91 +86,91 @@ const PaleStages = [
 const DullStages = [
     { "stage-name": "合成人", "description": "初対面" },
     { "stage-name": "Mud", "description": "拳" },
-    { "stage-name": "Moss", "description": "" },
+    { "stage-name": "Moss", "description": "回る/回らない" },
     { "stage-name": "Soot", "description": "イシカワ" },
 ]
 
 const SaturationActs = [
     { "act-name": "Vivid", "description": "矢印", "stages": VividStages },
     { "act-name": "Muted", "description": "中心に寄せましょう", "stages": MutedStages },
-    { "act-name": "Pale", "description": "", "stages": PaleStages },
-    { "act-name": "Dull", "description": "", "stages": DullStages },
+    { "act-name": "Pale", "description": "生きている", "stages": PaleStages },
+    { "act-name": "Dull", "description": "痛み", "stages": DullStages },
 ]
 
 // Chapter 2: Brightness
 const LightStages = [
-    { "stage-name": "犠牲", "description": "" },
-    { "stage-name": "Pearl", "description": "" },
-    { "stage-name": "Ivory", "description": "" },
-    { "stage-name": "Snow", "description": "" },
+    { "stage-name": "犠牲", "description": "SILOの存在意義" },
+    { "stage-name": "Pearl", "description": "乱視" },
+    { "stage-name": "Ivory", "description": "二重" },
+    { "stage-name": "Snow", "description": "泳ぐ" },
 ]
 
 const DarkStages = [
-    { "stage-name": "一ヶ月前その1", "description": "" },
-    { "stage-name": "Obsidian", "description": "" },
-    { "stage-name": "Noir", "description": "" },
-    { "stage-name": "Pitch", "description": "" },
+    { "stage-name": "一ヶ月前その1", "description": "クラスメイト" },
+    { "stage-name": "Obsidian", "description": "オーソドックス" },
+    { "stage-name": "Noir", "description": "気にしない" },
+    { "stage-name": "Pitch", "description": "焼野原" },
 ]
 
 const HighStages = [
-    { "stage-name": "一ヶ月前その2", "description": "" },
-    { "stage-name": "Amber", "description": "" },
-    { "stage-name": "Vermilion", "description": "" },
-    { "stage-name": "Lime", "description": "" },
+    { "stage-name": "一ヶ月前その2", "description": "TAMAMUSHI" },
+    { "stage-name": "Amber", "description": "ねじ" },
+    { "stage-name": "Vermilion", "description": "死なないと思っていた" },
+    { "stage-name": "Lime", "description": "裏切る" },
 ]
 
 const LowStages = [
     { "stage-name": "隣", "description": "レイ・コウダ" },
-    { "stage-name": "Fog", "description": "" },
-    { "stage-name": "Stone", "description": "" },
-    { "stage-name": "Dust", "description": "" },
+    { "stage-name": "Fog", "description": "だめ" },
+    { "stage-name": "Stone", "description": "あわ" },
+    { "stage-name": "Dust", "description": "サカイ" },
 ]
 
 const BrightnessActs = [
-    { "act-name": "Light", "description": "", "stages": LightStages },
-    { "act-name": "Dark", "description": "", "stages": DarkStages },
-    { "act-name": "High", "description": "", "stages": HighStages },
-    { "act-name": "Low", "description": "", "stages": LowStages },
+    { "act-name": "Light", "description": "偏り", "stages": LightStages },
+    { "act-name": "Dark", "description": "仲間", "stages": DarkStages },
+    { "act-name": "High", "description": "金", "stages": HighStages },
+    { "act-name": "Low", "description": "知りえない", "stages": LowStages },
 ]
 
 // Chapter 3: Alpha
 const ClearStages = [
-    { "stage-name": "勇気", "description": "" },
-    { "stage-name": "Glass", "description": "" },
-    { "stage-name": "Ice", "description": "" },
-    { "stage-name": "Haze", "description": "" },
+    { "stage-name": "勇気", "description": "ではない" },
+    { "stage-name": "Glass", "description": "動かない" },
+    { "stage-name": "Ice", "description": "滑った" },
+    { "stage-name": "Haze", "description": "逆二乗" },
 ]
 
 const TranslucentStages = [
-    { "stage-name": "人", "description": "" },
-    { "stage-name": "Veil", "description": "" },
-    { "stage-name": "Frost", "description": "" },
-    { "stage-name": "Dusk", "description": "" },
+    { "stage-name": "人", "description": "とは" },
+    { "stage-name": "Veil", "description": "焦点" },
+    { "stage-name": "Frost", "description": "化身" },
+    { "stage-name": "Dusk", "description": "巡る" },
 ]
 
 const OpaqueStages = [
-    { "stage-name": "心", "description": "" },
-    { "stage-name": "Lead", "description": "" },
-    { "stage-name": "Clay", "description": "" },
-    { "stage-name": "Tar", "description": "" },
+    { "stage-name": "心", "description": "色即是空" },
+    { "stage-name": "Lead", "description": "ブレ" },
+    { "stage-name": "Clay", "description": "虹彩" },
+    { "stage-name": "Tar", "description": "協力" },
 ]
 
 const LuminousStages = [
-    { "stage-name": "信じましたが", "description": "" },
-    { "stage-name": "Phosphor", "description": "" },
-    { "stage-name": "Glow", "description": "" },
-    { "stage-name": "Dawn", "description": "" },
+    { "stage-name": "信じましたが", "description": "戦争" },
+    { "stage-name": "Phosphor", "description": "変わりゆく" },
+    { "stage-name": "Glow", "description": "拒絶" },
+    { "stage-name": "Dawn", "description": "言いたくなかったけれど" },
 ]
 
 const AlphaActs = [
-    { "act-name": "Clear", "description": "", "stages": ClearStages },
+    { "act-name": "Clear", "description": "遊撃機と機雷の試験用の機体", "stages": ClearStages },
     {
         "act-name": "Translucent",
-        "description": "",
+        "description": "曳航群体",
         "stages": TranslucentStages,
     },
-    { "act-name": "Opaque", "description": "", "stages": OpaqueStages },
-    { "act-name": "Luminous", "description": "", "stages": LuminousStages },
+    { "act-name": "Opaque", "description": "双子", "stages": OpaqueStages },
+    { "act-name": "Luminous", "description": "弩級", "stages": LuminousStages },
 ]
 
 const chapters = [
@@ -180,8 +180,8 @@ const chapters = [
         "acts": HueActs,
     },
     { "chapter-name": "Saturation", "description": "砲塔数の多い飛行兵器", "acts": SaturationActs },
-    { "chapter-name": "Brightness", "description": "", "acts": BrightnessActs },
-    { "chapter-name": "Alpha", "description": "", "acts": AlphaActs },
+    { "chapter-name": "Brightness", "description": "充電機能と高出力レーザーを持つ艦隊", "acts": BrightnessActs },
+    { "chapter-name": "Alpha", "description": "遊撃機と機雷を持ち得るほど巨大な艦隊", "acts": AlphaActs },
 ] as const
 
 export default chapters
