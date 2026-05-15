@@ -5,7 +5,7 @@
     "display": "fullscreen",
     "start_url": "index.html",
     "scope": "/The-Noisy-Days/",
-    "orientation": "landscape-primary",
+    "orientation": "portrait-primary",
     "icons": [
         {
             "src": "asset/image/background.png",
