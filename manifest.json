@@ -1,0 +1,19 @@
+{
+    "id": "The-Noisy-Days",
+    "short_name": "TND",
+    "name": "The Noisy Days!",
+    "display": "fullscreen",
+    "start_url": "index.html",
+    "scope": "/The-Noisy-Days/",
+    "orientation": "landscape-primary",
+    "icons": [
+        {
+            "src": "asset/image/background.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#111111",
+    "background_color": "#111111",
+    "display_override": ["fullscreen", "standalone", "window-controls-overlay"]
+}
