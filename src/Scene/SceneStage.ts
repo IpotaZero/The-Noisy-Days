@@ -15,6 +15,7 @@ import { GameRenderer } from "./Game/GameRenderer"
 import { CanvasSetup } from "./Game/CanvasSetup"
 import { Player } from "../Game/Player/Player"
 import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
+import { BGM } from "../utils/BGM"
 
 export default class SceneStage implements Scene {
     private readonly pages = new Pages()

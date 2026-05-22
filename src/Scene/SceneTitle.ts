@@ -16,6 +16,7 @@ import { downLoadString } from "../utils/Functions/downLoadString"
 import typia from "typia"
 import { ConfigMap } from "../utils/UnifiedInput/Binding"
 import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
+import { BGM } from "../utils/BGM"
 
 const FINISHED = 64
 
@@ -74,6 +75,11 @@ export default class implements Scene {
             } else {
                 document.exitFullscreen()
             }
+        })
+
+        this.pages.beforeEnter("chapters", async () => {
+            BGM.switchTo("asset/bgm/title.mp3")
+            return true
         })
 
         this.setupSetting()
@@ -191,6 +197,7 @@ export default class implements Scene {
 
         volumeBGM.oninput = () => {
             LocalStorage.setVolumeBGM(volumeBGM.value)
+            BGM.setVolume(LocalStorage.getVolumeBGM() / 9)
         }
 
         const volumeSE = this.selector.getFirst("volume-se", HTMLNumberElement)
@@ -334,6 +341,7 @@ export default class implements Scene {
 
     private gotoStage(stageIndex: number, stageName: string) {
         SE.start.play()
+        BGM.stop()
 
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 

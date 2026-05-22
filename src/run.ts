@@ -9,11 +9,13 @@ import { SE } from "./SE"
 import { LocalStorage } from "./LocalStorage"
 import { Awaits } from "./utils/Functions/Awaits"
 import { g } from "./global"
+import { BGM } from "./utils/BGM"
 HTMLNumberElement
 HTMLRadioElement
 
 window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
+    BGM.init()
 
     Focuses.init(g.input)
 
