@@ -116,16 +116,10 @@ class Turret extends Enemy {
                 yield* Remodel.stop(me, 15)
 
                 const target = g.player.p.minus(me.p).arg() + T
-                // 停止中に再照準
-                if (isSmartPhone) {
-                    // me.radian = target
-                    yield* Array(15)
-                } else {
-                    const first = me.radian
-                    for (let i = 1; i < 15 + 1; i++) {
-                        me.radian = first + (target - first) * Ease.InOut(i / 15)
-                        yield
-                    }
+                const first = me.radian
+                for (let i = 1; i < 15 + 1; i++) {
+                    me.radian = first + (target - first) * Ease.InOut(i / 15)
+                    yield
                 }
 
                 yield* Remodel.accel(me, 15, 12)

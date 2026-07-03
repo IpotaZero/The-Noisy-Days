@@ -1,4 +1,3 @@
-import { T } from "../../global"
 import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 import { Bullet } from "./Bullet"
 
@@ -48,10 +47,17 @@ export class BulletDrawer {
             this.cache.set(hash, offscreenCanvas)
         }
 
+        ctx.save()
         ctx.globalAlpha = bullet.alpha
-        const offset = halfCanvasSize
-        ctx.drawImage(offscreenCanvas, bullet.p.x - offset, bullet.p.y - offset)
-        ctx.globalAlpha = 1
+        ctx.translate(bullet.p.x, bullet.p.y)
+
+        // Donut と Ball は回転させない（見た目が変わらないため）
+        if (bullet.appearance !== Bullet.Appearance.Donut && bullet.appearance !== Bullet.Appearance.Ball) {
+            ctx.rotate(bullet.radian)
+        }
+
+        ctx.drawImage(offscreenCanvas, -halfCanvasSize, -halfCanvasSize)
+        ctx.restore()
     }
 
     /**
@@ -74,16 +80,9 @@ export class BulletDrawer {
         }
     }
 
+    // 角度情報をキャッシュキーから完全に除外
     private generateCacheKey(bullet: Bullet): string {
-        const parts = [bullet.appearance, bullet.color, bullet.r]
-        const isRotationSensitive = [Bullet.Appearance.Arrow, Bullet.Appearance.Line].includes(bullet.appearance)
-
-        if (isRotationSensitive) {
-            parts.push(bullet.radian)
-        } else if (bullet.appearance === Bullet.Appearance.Score) {
-            parts.push(Math.floor(bullet.radian))
-        }
-        return parts.join(",")
+        return [bullet.appearance, bullet.color, bullet.r].join(",")
     }
 
     private createOffscreenCanvas(halfCanvasSize: number) {
@@ -113,10 +112,6 @@ export class BulletDrawer {
         ctx.fillStyle = "white"
         ctx.fillRect(0, -bullet.r * 0.8, bullet.length, bullet.r * 1.6)
 
-        // ctx.globalAlpha = 0.5 * bullet.alpha
-        // ctx.beginPath()
-        // ctx.arc(0, 0, bullet.r * 2, 0, T)
-        // ctx.fill()
         ctx.restore()
     }
 
@@ -157,6 +152,7 @@ export class BulletDrawer {
         return canvas
     }
 
+    // オフスクリーン描画時の回転を削除（メインのdrawで回転させる）
     private drawScore(bullet: Bullet, halfCanvasSize: number) {
         const { canvas, ctx, center } = this.createOffscreenCanvas(halfCanvasSize)
         if (!isSmartPhone) {
@@ -164,7 +160,6 @@ export class BulletDrawer {
             ctx.shadowBlur = bullet.r * 2
         }
         ctx.translate(center, center)
-        ctx.rotate(bullet.radian)
         ctx.fillStyle = bullet.color
         ctx.fillRect(-bullet.r, -bullet.r, bullet.r * 2, bullet.r * 2)
         return canvas
@@ -186,7 +181,6 @@ export class BulletDrawer {
             ctx.shadowBlur = bullet.r * 2
         }
         ctx.translate(center, center)
-        ctx.rotate(bullet.radian)
         ctx.beginPath()
         ctx.moveTo(-bullet.r, 0)
         ctx.lineTo(bullet.r, 0)
@@ -209,7 +203,6 @@ export class BulletDrawer {
             ctx.shadowBlur = bullet.r * 2
         }
         ctx.translate(center, center)
-        ctx.rotate(bullet.radian)
         ctx.beginPath()
         ctx.moveTo(-bullet.r, 0)
         ctx.lineTo(bullet.r, 0)
