@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "@ipota/bgm-manager": "^1.0.3",
     "lz-string": "^1.5.0",
     "typia": "^12.0.2",
     "vite": "^8.0.0"

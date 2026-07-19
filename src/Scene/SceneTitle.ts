@@ -16,7 +16,7 @@ import { downLoadString } from "../utils/Functions/downLoadString"
 import typia from "typia"
 import { ConfigMap } from "../utils/UnifiedInput/Binding"
 import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
-import { BGM } from "../utils/BGM"
+import { bm } from "../bgm"
 
 const FINISHED = 64
 
@@ -78,7 +78,13 @@ export default class implements Scene {
         })
 
         this.pages.beforeEnter("chapters", async () => {
-            BGM.switchTo("asset/bgm/title.mp3")
+            if (bm.getCurrentBgmSrc() !== "asset/bgm/title.mp3") {
+                if (bm.isPlaying()) {
+                    bm.fadeOut(0.1)
+                }
+                await bm.load({ src: "asset/bgm/title.mp3" })
+                bm.play()
+            }
             return true
         })
 
@@ -197,7 +203,7 @@ export default class implements Scene {
 
         volumeBGM.oninput = () => {
             LocalStorage.setVolumeBGM(volumeBGM.value)
-            BGM.setVolume(LocalStorage.getVolumeBGM() / 9)
+            bm.setVolume(LocalStorage.getVolumeBGM() / 9)
         }
 
         const volumeSE = this.selector.getFirst("volume-se", HTMLNumberElement)
@@ -339,9 +345,9 @@ export default class implements Scene {
 
     async end(): Promise<void> {}
 
-    private gotoStage(stageIndex: number, stageName: string) {
+    private async gotoStage(stageIndex: number, stageName: string) {
         SE.start.play()
-        BGM.stop()
+        bm.fadeOut(1)
 
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 

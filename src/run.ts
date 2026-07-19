@@ -9,13 +9,12 @@ import { SE } from "./SE"
 import { LocalStorage } from "./LocalStorage"
 import { Awaits } from "./utils/Functions/Awaits"
 import { g } from "./global"
-import { BGM } from "./utils/BGM"
+import { bm } from "./bgm"
 HTMLNumberElement
 HTMLRadioElement
 
 window.addEventListener("DOMContentLoaded", async () => {
     Dom.init()
-    BGM.init()
 
     Focuses.init(g.input)
 
@@ -42,6 +41,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         Focuses.resume("page-change")
     }
 
+    bm.setVolume(LocalStorage.getVolumeBGM() / 9)
     SE.setVolume(LocalStorage.getVolumeSE() / 9)
 
     const url = new URL(location.href)
