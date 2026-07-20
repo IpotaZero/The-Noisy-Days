@@ -88,7 +88,7 @@ export abstract class Stage {
         while (1) {
             yield
 
-            if (di.isSomethingPressed()) break
+            if (di.isPushed("ok")) break
             if ((touch.getCurrentTouches()?.length ?? 0) >= 1) break
         }
     }
