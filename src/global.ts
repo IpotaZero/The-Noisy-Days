@@ -6,9 +6,6 @@ import { Remodel, remodel } from "./Game/Bullet/Remodel"
 import { Ease } from "./utils/Functions/Ease"
 import { shake } from "./utils/shake"
 import { Vec, vec } from "./utils/Vec"
-import { UnifiedInput } from "./utils/UnifiedInput/UnifiedInput"
-import { DEFAULT_CONFIG } from "./utils/UnifiedInput/DefaultConfig"
-import { Ctx } from "./utils/Functions/Ctx"
 import { SE } from "./SE"
 
 export const g = {
@@ -20,8 +17,6 @@ export const g = {
 
     width: 630,
     height: 1120,
-
-    input: new UnifiedInput(DEFAULT_CONFIG),
 }
 
 export const T = Math.PI * 2

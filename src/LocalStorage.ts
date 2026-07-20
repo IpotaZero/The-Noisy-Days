@@ -1,6 +1,6 @@
 import * as lzstring from "lz-string"
-import { DEFAULT_CONFIG, MyActionId } from "./utils/UnifiedInput/DefaultConfig"
-import { Binding, ConfigMap } from "./utils/UnifiedInput/Binding"
+import { defaultConfig, DigitalAction } from "./input"
+import { DigitalInput } from "@ipota/input"
 
 export class LocalStorage {
     private static readonly KEY = "The Noisy Days!"
@@ -11,7 +11,7 @@ export class LocalStorage {
         volumeBGM: 9,
         volumeSE: 9,
 
-        config: DEFAULT_CONFIG,
+        config: defaultConfig,
     }
 
     private static get(): Data {
@@ -88,10 +88,10 @@ export class LocalStorage {
     }
 
     static getConfig() {
-        return this.get().config ?? DEFAULT_CONFIG
+        return this.get().config ?? defaultConfig
     }
 
-    static setConfig(value: ConfigMap<MyActionId>) {
+    static setConfig(value: DigitalInput.Config<DigitalAction>) {
         const data = this.get()
         data.config = value
         this.set(data)
@@ -108,6 +108,6 @@ type Data = {
     volumeBGM: number
     volumeSE: number
 
-    config: ConfigMap<MyActionId>
+    config: DigitalInput.Config<DigitalAction>
 }
 ;(window as any).LocalStorage = LocalStorage

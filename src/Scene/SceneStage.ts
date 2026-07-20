@@ -3,23 +3,21 @@ import { fireDeleteField, g } from "../global"
 import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { Stage } from "../Stage/Stage"
-import { Looper } from "../utils/Looper"
-import { Pages } from "../utils/Pages/Pages"
-import { SceneChanger } from "../utils/SceneChanger"
 import { Selector } from "../utils/Selector"
-import { Action } from "../utils/UnifiedInput/DefaultConfig"
-import { UnifiedInput } from "../utils/UnifiedInput/UnifiedInput"
-import { Scene } from "./Scene"
 import { GameLogic } from "./Game/GameLogic"
 import { GameRenderer } from "./Game/GameRenderer"
 import { CanvasSetup } from "./Game/CanvasSetup"
 import { Player } from "../Game/Player/Player"
-import { TouchTracker } from "../utils/UnifiedInput/TouchTracker"
+import { Pages } from "@ipota/pages"
+import { Scene } from "../utils/Scene/Scene"
+import { ai, di, touch } from "../input"
+import { sc } from "../sceneChanger"
+import { looper } from "../looper"
+import { pageRefocus } from "../focuses"
 
-export default class SceneStage implements Scene {
+export default class SceneStage extends Scene {
     private readonly pages = new Pages()
     private readonly selector
-    private readonly looper: Looper
 
     private canvasSetup!: CanvasSetup
     private gameLogic!: GameLogic
@@ -27,43 +25,40 @@ export default class SceneStage implements Scene {
 
     private isFinished = false
 
-    private readonly input
+    update(): void {
+        if (touch.getCurrentTouches()?.length ?? 0 > 3) {
+            this.selfDestruct()
+            return
+        }
 
-    private readonly ac = new AbortController()
+        const done = this.stage.tick()
+        this.tick()
+
+        if (done && !this.isFinished) {
+            this.onClear()
+        }
+
+        this.draw()
+
+        g.ctx.save()
+        g.ctx.translate(g.width / 2, g.height / 2)
+        g.effects = g.effects.filter((g) => !g.next().done)
+        g.ctx.restore()
+    }
 
     constructor(
         private readonly stageIndex: number,
         private readonly stage: Stage,
         private readonly history: readonly string[],
     ) {
-        this.looper = new Looper(
-            30,
-            () => {
-                const done = stage.tick()
-                this.tick()
-
-                if (done && !this.isFinished) {
-                    this.onClear()
-                }
-            },
-            () => {
-                this.draw()
-            },
-            () => {
-                g.ctx.save()
-                g.ctx.translate(g.width / 2, g.height / 2)
-                g.effects = g.effects.filter((g) => !g.next().done)
-                g.ctx.restore()
-            },
-        )
-
+        super()
         this.selector = new Selector({
             "canvas#canvas": { alias: "canvas" },
             ".back": { alias: "back", expectedCount: 2 },
             ".retry": { alias: "retry", expectedCount: 2 },
         })
 
-        this.input = new UnifiedInput(LocalStorage.getConfig())
+        pageRefocus(this.pages)
     }
 
     private onClear() {
@@ -85,35 +80,13 @@ export default class SceneStage implements Scene {
         this.initCanvas()
 
         g.player = new Player(
-            this.input,
-            new TouchTracker(Dom.container),
+            di,
+            ai,
+            touch,
             (g.width / this.canvasSetup.initialRect.width) * LocalStorage.getSwipeRatio(),
         )
 
-        window.addEventListener(
-            "keydown",
-            (e) => {
-                if (e.key === "Delete") {
-                    g.enemies
-                        .filter((e) => !e.isInvincible)
-                        .at(-1)
-                        ?.hit(9999)
-                }
-            },
-            { signal: this.ac.signal },
-        )
-
-        Dom.container.addEventListener(
-            "touchstart",
-            (e) => {
-                if (e.touches.length >= 3) {
-                    this.selfDestruct()
-                }
-            },
-            { signal: this.ac.signal },
-        )
-
-        this.looper.start()
+        console.log("#jiu")
     }
 
     private initCanvas() {
@@ -127,10 +100,10 @@ export default class SceneStage implements Scene {
             () => {
                 g.effects.push(
                     function* (this: SceneStage) {
-                        this.looper.setFPS(10)
+                        looper.setFPS(10)
                         yield* Array(10)
                         for (let i = 0; i < 10; i++) {
-                            this.looper.setFPS(10 + i * 3)
+                            looper.setFPS(10 + i * 3)
                             yield* Array(6)
                         }
                     }.bind(this)(),
@@ -146,7 +119,7 @@ export default class SceneStage implements Scene {
 
         const index = g.player.life >= 0 ? this.stageIndex : undefined
 
-        SceneChanger.goto(
+        sc.goto(
             () =>
                 import("./SceneTitle").then(
                     (module) =>
@@ -166,29 +139,25 @@ export default class SceneStage implements Scene {
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 
         this.stage.reset()
-        SceneChanger.goto(async () => new SceneStage(this.stageIndex, this.stage, this.history), {
+        sc.goto(async () => new SceneStage(this.stageIndex, this.stage, this.history), {
             msIn: 500,
             msOut: 500,
         })
     }
 
     async end(): Promise<void> {
-        this.looper.stop()
         g.bullets = []
         g.enemies = []
         g.effects = []
         g.player.remove()
-        this.ac.abort()
         this.canvasSetup.disconnect()
     }
 
     private tick() {
-        this.input.tick()
-
         g.player.tick(this.canvasSetup.ctx)
         this.gameLogic.tick()
 
-        if (this.input.isPressed(Action.Pause)) {
+        if (di.isPressed("cancel")) {
             this.selfDestruct()
         }
     }

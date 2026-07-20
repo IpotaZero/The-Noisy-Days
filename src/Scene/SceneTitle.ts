@@ -1,26 +1,26 @@
-import { Scene } from "./Scene"
-import { Pages } from "../utils/Pages/Pages"
 import { Dom } from "../Dom"
 
 import { actList, chapterList } from "../stages"
 import { Selector } from "../utils/Selector"
-import { SceneChanger } from "../utils/SceneChanger"
 import { SE } from "../SE"
 import { HTMLNumberElement } from "../utils/HTMLNumberElement"
 import { LocalStorage } from "../LocalStorage"
-import { g } from "../global"
 import { MathEx } from "../utils/Functions/MathEx"
 import { Awaits } from "../utils/Functions/Awaits"
 import { createPage } from "./createPage"
 import { downLoadString } from "../utils/Functions/downLoadString"
 import typia from "typia"
-import { ConfigMap } from "../utils/UnifiedInput/Binding"
-import { MyActionId } from "../utils/UnifiedInput/DefaultConfig"
 import { bm } from "../bgm"
+import { Scene } from "../utils/Scene/Scene"
+import { Pages } from "@ipota/pages"
+import { DigitalInput } from "@ipota/input"
+import { di, DigitalAction } from "../input"
+import { sc } from "../sceneChanger"
+import { pageRefocus } from "../focuses"
 
 const FINISHED = 64
 
-export default class implements Scene {
+export default class extends Scene {
     private readonly pages = new Pages()
     private readonly selector
 
@@ -30,6 +30,8 @@ export default class implements Scene {
             clear?: number
         } = {},
     ) {
+        super()
+
         this.selector = new Selector({
             "[data-stage]": { alias: "stage-button", expectedCount: 64 },
             ".act-button": { alias: "act-button", expectedCount: 16 },
@@ -39,12 +41,16 @@ export default class implements Scene {
             "#volume-bgm": { alias: "volume-bgm" },
             "#volume-se": { alias: "volume-se" },
             "#delete-data": { alias: "delete-data" },
-            "#download-template": { alias: "download-template" },
-            "#load-template": { alias: "load-template" },
+            // "#download-template": { alias: "download-template" },
+            // "#load-template": { alias: "load-template" },
 
             ".fullscreen": { alias: "fullscreen" },
         })
+
+        pageRefocus(this.pages)
     }
+
+    update() {}
 
     async start(): Promise<void> {
         Dom.container.style.opacity = "0"
@@ -227,26 +233,26 @@ export default class implements Scene {
             }
         })
 
-        this.selector.onClick("download-template", () => {
-            downLoadString(JSON.stringify(LocalStorage.getConfig(), null, 4), "key-config")
-        })
+        // this.selector.onClick("download-template", () => {
+        //     downLoadString(JSON.stringify(LocalStorage.getConfig(), null, 4), "key-config")
+        // })
 
-        this.selector.onClick("load-template", async () => {
-            const file = await Awaits.inputFile(".json")
-            if (!file) return
+        // this.selector.onClick("load-template", async () => {
+        //     const file = await Awaits.inputFile(".json")
+        //     if (!file) return
 
-            const text = await file.text()
+        //     const text = await file.text()
 
-            try {
-                const obj = JSON.parse(text)
-                const config = typia.assert<ConfigMap<MyActionId>>(obj)
-                LocalStorage.setConfig(config)
-                g.input.updateConfig(config)
-            } catch (error) {
-                alert("えらー！")
-                console.error(error)
-            }
-        })
+        //     try {
+        //         const obj = JSON.parse(text)
+        //         const config = typia.assert<DigitalInput.Config<DigitalAction>>(obj)
+        //         LocalStorage.setConfig(config)
+        //         di.updateConfig(config)
+        //     } catch (error) {
+        //         alert("えらー！")
+        //         console.error(error)
+        //     }
+        // })
     }
 
     private lockButtons() {
@@ -353,7 +359,7 @@ export default class implements Scene {
 
         const chapter = chapterList[Math.floor(stageIndex / 16)]
 
-        SceneChanger.goto(
+        sc.goto(
             async () => {
                 // @ts-ignore
                 const modules = import.meta.glob("../Stage/*/*")

@@ -1,6 +1,6 @@
 import { Dom } from "../Dom"
 import { g } from "../global"
-import { Action } from "../utils/UnifiedInput/DefaultConfig"
+import { di, touch } from "../input"
 
 export abstract class Stage {
     private generator!: Generator<void, void, unknown>
@@ -44,7 +44,7 @@ export abstract class Stage {
     tick() {
         const result = this.generator.next()
 
-        if (g.input.isPushed(Action.Skip)) {
+        if (di.isPushed("skip")) {
             this.skip = true
             this.hideSkipButton()
         }
@@ -83,71 +83,14 @@ export abstract class Stage {
     protected *ok(): Generator<void, void, unknown> {
         if (this.skip) return
 
-        const abort = new AbortController()
-        let clicked = false
+        di.clear()
 
-        Dom.container.addEventListener(
-            "click",
-            () => {
-                clicked = true
-            },
-            { signal: abort.signal },
-        )
-
-        window.addEventListener(
-            "keydown",
-            (e) => {
-                if (e.code === "Enter" || e.code === "Space" || e.code === "KeyZ") {
-                    clicked = true
-                }
-            },
-            { signal: abort.signal },
-        )
-
-        // --- 全Gamepads対応 ---
-        // 各ゲームパッドの「前回の状態」を保存するMap
-        const prevPadsButtons = new Map<number, boolean[]>()
-
-        // 初回実行時の状態をキャプチャ（開始時の押しっぱなし防止）
-        for (const pad of navigator.getGamepads()) {
-            if (pad) {
-                prevPadsButtons.set(
-                    pad.index,
-                    pad.buttons.map((b) => b.pressed),
-                )
-            }
-        }
-
-        while (!clicked && !this.skip) {
-            // 常に最新のゲームパッドリストを取得
-            const pads = navigator.getGamepads()
-
-            for (const pad of pads) {
-                if (!pad) continue
-
-                const currentButtons = pad.buttons.map((b) => b.pressed)
-                const prevButtons = prevPadsButtons.get(pad.index)
-
-                if (prevButtons) {
-                    // 前回の状態が存在する場合のみ、新規の「押し」判定を行う
-                    for (let i = 0; i < currentButtons.length; i++) {
-                        if (currentButtons[i] && !prevButtons[i]) {
-                            clicked = true
-                            break
-                        }
-                    }
-                }
-
-                // 状態を更新（新しいパッドだった場合もここで登録される）
-                prevPadsButtons.set(pad.index, currentButtons)
-                if (clicked) break
-            }
-            // ------------------
-
+        while (1) {
             yield
-        }
 
-        abort.abort() // イベントリスナーの解除
+            if (di.isSomethingPressed()) break
+            if ((touch.getCurrentTouches()?.length ?? 0) >= 1) break
+        }
     }
 
     protected *waitDefeatEnemy() {

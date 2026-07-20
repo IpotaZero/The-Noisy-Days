@@ -6,9 +6,7 @@ import { vec } from "../../utils/Vec"
 import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
-import { IUnifiedInput } from "../../utils/UnifiedInput/Input"
-import { Action, MyActionId } from "../../utils/UnifiedInput/DefaultConfig"
-import { TouchTracker } from "../../utils/UnifiedInput/TouchTracker"
+import { AnalogInput, DigitalInput, TouchTracker } from "@ipota/input"
 
 export class Player {
     life = 8
@@ -34,7 +32,8 @@ export class Player {
     isDead = false
 
     constructor(
-        private readonly input: IUnifiedInput<MyActionId>,
+        private readonly di: DigitalInput.Reader<"slow" | "dash" | "cancel" | "ok">,
+        private readonly ai: AnalogInput.Reader<"horizontal" | "vertical">,
         private readonly touch: TouchTracker,
         private readonly scale: number,
     ) {}
@@ -132,17 +131,11 @@ export class Player {
         this.v = vec(0, 0)
 
         // Analog 優先（スティックが入力中ならそちらを使う）
-        const axisX = this.input.getAxis(Action.MoveX)
-        const axisY = this.input.getAxis(Action.MoveY)
+        const axisX = this.ai.getValue("horizontal")
+        const axisY = this.ai.getValue("vertical")
 
         if (axisX !== 0 || axisY !== 0) {
             this.v = vec(axisX, axisY)
-        } else {
-            // Digital フォールバック
-            if (this.input.isPressed(Action.MoveRight)) this.v.x += 1
-            if (this.input.isPressed(Action.MoveLeft)) this.v.x -= 1
-            if (this.input.isPressed(Action.MoveDown)) this.v.y += 1
-            if (this.input.isPressed(Action.MoveUp)) this.v.y -= 1
         }
 
         if (this.v.magnitude() > 1) this.v.normalize()
@@ -152,7 +145,7 @@ export class Player {
     }
 
     private applySpeedModifier() {
-        if (this.input.isPushed(Action.Dash) && this.dashCoolDown === 0) {
+        if (this.di.isPushed("dash") && this.dashCoolDown === 0) {
             SE.dash.play()
             this.dashFrame = this.DASH_FRAME
             this.dashCoolDown = this.DASH_COOL_DOWN
@@ -160,7 +153,7 @@ export class Player {
 
         if (this.dashFrame > 0) this.v.scale(7)
 
-        if (this.input.isPressed(Action.Slow)) {
+        if (this.di.isPressed("slow")) {
             this.v.scale(0.5)
         }
     }
@@ -168,8 +161,8 @@ export class Player {
     private applyTouch() {
         const delta = this.touch.getDelta()
         if (delta) {
-            this.p.x += delta.dx * this.scale
-            this.p.y += delta.dy * this.scale
+            this.p.x += delta.x * this.scale
+            this.p.y += delta.y * this.scale
         }
     }
 
@@ -222,6 +215,6 @@ export class Player {
     }
 
     private isSneaking() {
-        return this.input.isPressed(Action.Slow)
+        return this.di.isPressed("slow")
     }
 }

@@ -1,0 +1,2 @@
+var e=new class{lastRunTime=0;interval;handlers=[];constructor(e){this.interval=1e3/e}setFPS(e){this.interval=1e3/e}start(){this.lastRunTime=performance.now(),requestAnimationFrame(()=>this.loop())}addHandler(e){this.handlers.push(e)}loop(){let e=performance.now(),t=e-this.lastRunTime;this.interval-3<=t&&(this.handlers.forEach(e=>e()),this.lastRunTime=e),requestAnimationFrame(()=>this.loop())}}(30);export{e as t};
+//# sourceMappingURL=looper.js.map
