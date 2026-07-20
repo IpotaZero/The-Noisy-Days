@@ -89,7 +89,7 @@ export abstract class Stage {
             yield
 
             if (di.isPushed("ok")) break
-            if ((touch.getCurrentTouches()?.length ?? 0) >= 1) break
+            if (touch.touchesCount() >= 1) break
         }
     }
 

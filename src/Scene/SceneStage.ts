@@ -26,7 +26,7 @@ export default class SceneStage extends Scene {
     private isFinished = false
 
     update(): void {
-        if ((touch.getCurrentTouches()?.length ?? 0) > 3) {
+        if (touch.touchesCount() >= 3) {
             this.selfDestruct()
             return
         }
