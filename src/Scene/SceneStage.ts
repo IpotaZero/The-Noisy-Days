@@ -151,6 +151,7 @@ export default class SceneStage extends Scene {
         g.effects = []
         g.player.remove()
         this.canvasSetup.disconnect()
+        this.pages.dispose()
     }
 
     private tick() {

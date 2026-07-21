@@ -349,7 +349,9 @@ export default class extends Scene {
         })
     }
 
-    async end(): Promise<void> {}
+    async end(): Promise<void> {
+        this.pages.dispose()
+    }
 
     private async gotoStage(stageIndex: number, stageName: string) {
         SE.start.play()
