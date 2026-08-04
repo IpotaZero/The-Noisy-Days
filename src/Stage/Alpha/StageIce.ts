@@ -191,7 +191,7 @@ class ThrownMine extends Enemy {
 
         // 摩擦で減速しながら移動
         while (speed > 0.3) {
-            this.p.add(vec(dx * speed, dy * speed))
+            this.p = this.p.add(vec(dx * speed, dy * speed))
             speed *= friction
             yield
         }

@@ -66,8 +66,8 @@ export class EnemyRendererCore implements IEnemyRenderer {
     private drawOuterRing(ctx: CanvasRenderingContext2D, e: Enemy, orbitTheta: number): void {
         for (let i = 0; i < 12; i++) {
             const angle = (i * Math.PI) / 6 + orbitTheta / 2
-            const p1 = e.p.add(vec(e.r * 1.4, 0).rotated(angle))
-            const p2 = e.p.add(vec(e.r * 1.6, 0).rotated(angle))
+            const p1 = e.p.add(vec(e.r * 1.4, 0).rotate(angle))
+            const p2 = e.p.add(vec(e.r * 1.6, 0).rotate(angle))
             ctx.strokeStyle = BLACK_VALE
             ctx.lineWidth = 2
             ctx.beginPath()
@@ -93,7 +93,7 @@ export class EnemyRendererCore implements IEnemyRenderer {
     private drawSatellites(ctx: CanvasRenderingContext2D, e: Enemy, orbitTheta: number): void {
         for (let i = 0; i < 3; i++) {
             const bitAngle = orbitTheta * 1.5 + (i * Math.PI * 2) / 3
-            const bitPos = e.p.add(vec(e.r * 1.8, 0).rotated(bitAngle))
+            const bitPos = e.p.add(vec(e.r * 1.8, 0).rotate(bitAngle))
             Ctx.polygon(ctx, 4, 1, bitPos.l, 16, WHITE, { theta: bitAngle * 2 })
         }
     }

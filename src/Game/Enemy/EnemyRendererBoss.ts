@@ -100,8 +100,8 @@ export class EnemyRendererBoss implements IEnemyRenderer {
             const count = 12 + idx * 6
             for (let i = 0; i < count; i++) {
                 const angle = (i * T) / count + currentTheta
-                const p1 = e.p.add(vec(r, 0).rotated(angle))
-                const p2 = e.p.add(vec(r + 8, 0).rotated(angle))
+                const p1 = e.p.add(vec(r, 0).rotate(angle))
+                const p2 = e.p.add(vec(r + 8, 0).rotate(angle))
 
                 ctx.strokeStyle = idx === 1 ? GOLD : WHITE
                 ctx.lineWidth = 2

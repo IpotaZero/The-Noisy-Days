@@ -150,7 +150,8 @@ export class Enemy {
                         this.p.y = g.height / 2
                     }
 
-                    this.p.add(v)
+                    this.p.x += v.x
+                    this.p.y += v.y
 
                     yield
                 }

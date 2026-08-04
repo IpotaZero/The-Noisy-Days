@@ -219,7 +219,7 @@ export class PlayerRenderer {
         const { life, GRAZE_R, frame, p: playerPos } = player
 
         for (let i = 0; i < life; i++) {
-            const center = playerPos.add(vec(GRAZE_R * 3, 0).rotated(T * (i / 8) + frame / 24)).l
+            const center = playerPos.add(vec(GRAZE_R * 3, 0).rotate(T * (i / 8) + frame / 24)).l
             Ctx.polygon(ctx, 4, 1, center, GRAZE_R, "#ffffff80", {
                 theta: frame / 24,
             })

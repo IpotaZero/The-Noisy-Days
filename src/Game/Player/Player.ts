@@ -140,8 +140,9 @@ export class Player {
 
         if (this.v.magnitude() > 1) this.v.normalize()
         this.applySpeedModifier()
-        this.v.scale(this.BASE_SPEED)
-        this.p.add(this.v)
+        this.v = this.v.scale(this.BASE_SPEED)
+        this.p.x += this.v.x
+        this.p.y += this.v.y
     }
 
     private applySpeedModifier() {
@@ -151,10 +152,10 @@ export class Player {
             this.dashCoolDown = this.DASH_COOL_DOWN
         }
 
-        if (this.dashFrame > 0) this.v.scale(7)
+        if (this.dashFrame > 0) this.v = this.v.scale(7)
 
         if (this.di.isPressed("slow")) {
-            this.v.scale(0.5)
+            this.v = this.v.scale(0.5)
         }
     }
 

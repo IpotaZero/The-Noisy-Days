@@ -176,15 +176,15 @@ class ThrownMine extends Enemy {
 
     private *physics() {
         const friction = 0.97
-        const v = g.player.p.sub(this.p).normalize().scale(12)
+        let v = g.player.p.sub(this.p).normalize().scale(12)
 
         // 摩擦で減速しながら移動
         while (1) {
             const d = g.player.p.sub(this.p)
 
-            v.add(d.normalize().scale(2400 / d.magnitudeSquared()))
-            this.p.add(v)
-            v.scale(friction)
+            v = v.add(d.normalize().scale(2400 / d.magnitudeSquared()))
+            this.p = this.p.add(v)
+            v = v.scale(friction)
             yield
         }
     }

@@ -44,7 +44,7 @@ export class EnemyRendererFunnel implements IEnemyRenderer {
         Ctx.arc(ctx, e.p.l, coreSize, e.damaged ? RED : WHITE)
 
         // 後方の残像（推進力）
-        const tailPos = e.p.add(vec(-e.r * 0.8, 0).rotated(theta))
+        const tailPos = e.p.add(vec(-e.r * 0.8, 0).rotate(theta))
         Ctx.arc(ctx, tailPos.l, 2, color)
     }
 
