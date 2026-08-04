@@ -155,7 +155,7 @@ export class Player {
         if (this.dashFrame > 0) this.v = this.v.scale(7)
 
         if (this.di.isPressed("slow")) {
-            this.v = this.v.scale(0.5)
+            this.v = this.v.scale(0.4)
         }
     }
 
