@@ -1,6 +1,6 @@
 import { g, T } from "../../global"
 import { Bullet } from "./Bullet"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { Ease } from "../../utils/Functions/Ease"
 import { Enemy } from "../Enemy/Enemy"
 import { NumberKeys } from "../../utils/UtilTypes"
@@ -37,7 +37,7 @@ export class Remodel {
 
     static *homing(me: Bullet, p: Vec, frame: number) {
         for (let i = 0; i < frame; i++) {
-            me.radian = p.minus(me.p).arg()
+            me.radian = p.sub(me.p).radian()
             yield
         }
     }
@@ -109,7 +109,7 @@ export class Remodel {
 
     aim(target: Vec) {
         return this.forEach((b) => {
-            b.radian = target.minus(b.p).arg()
+            b.radian = target.sub(b.p).radian()
         })
     }
 
@@ -130,8 +130,8 @@ export class Remodel {
 
     shift(num: number, shift: number) {
         return this.duplicate(num, (b, i) => {
-            const shiftVec = vec.arg(b.radian + T / 4).scaled(shift * (i - (num - 1) / 2))
-            b.p = b.p.plus(shiftVec)
+            const shiftVec = vec.arg(b.radian + T / 4).scale(shift * (i - (num - 1) / 2))
+            b.p = b.p.add(shiftVec)
             return b
         })
     }
@@ -158,7 +158,7 @@ export class Remodel {
         const num = Math.ceil((T * radius) / distance)
         return this.duplicate(num, (b, i) => {
             const angle = (T / num) * i
-            b.p = b.p.plus(vec.arg(angle).scaled(radius))
+            b.p = b.p.add(vec.arg(angle).scale(radius))
 
             if (direction === "inner") {
                 b.radian = T * (i / num + 0.5)

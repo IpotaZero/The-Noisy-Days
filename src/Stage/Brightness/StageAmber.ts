@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -60,7 +60,7 @@ class Core extends Enemy {
         for (let i = 0; i < frame; i++) {
             remodel()
                 .colorful(this.frame)
-                .p(p.plus(vec.arg(T * (i / frame)).scaled(200)))
+                .p(p.add(vec.arg(T * (i / frame)).scale(200)))
                 .radian(T * (i / frame))
                 .speed(-8)
                 .g(function* (me, j) {
@@ -125,7 +125,7 @@ class Turret extends Enemy {
         private readonly index: number, // 0=上 1=下
     ) {
         super(50, 30, new EnemyRendererMob(), { remainingCharge: 600 })
-        this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scaled(90))
+        this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scale(90))
         this.interval = Math.floor((Math.sin(index) + 1) * 30) + 30
     }
 

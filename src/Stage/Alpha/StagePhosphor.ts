@@ -1,16 +1,16 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
 import { Dom } from "../../Dom"
 
+import { vec } from "@ipota/vec"
+
 import * as Curves from "../../utils/Functions/Curves"
 import { EnemyRendererMob } from "../../Game/Enemy/EnemyRendererMob"
 import { EnemyRendererCore } from "../../Game/Enemy/EnemyRendererCore"
-import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
 import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 import { Ease } from "../../utils/Functions/Ease"
 
@@ -55,7 +55,7 @@ class FortressCore extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - this.moveDuration) / 600).plus(vec(0, -g.height / 3))
+        this.p = this.curve((this.frame - this.moveDuration) / 600).add(vec(0, -g.height / 3))
         yield
     }
 
@@ -92,7 +92,7 @@ class OrbitalShield extends Enemy {
         super(50, 44, new EnemyRendererMob(), { remainingCharge: 600 })
         this.setParent(core, () => {
             const angle = (this.frame / 180) * (this.shieldIndex % 2 ? 1 : -1) + (this.shieldIndex * T) / 4
-            return vec.arg(angle).scaled(200)
+            return vec.arg(angle).scale(200)
         })
     }
 
@@ -129,7 +129,7 @@ class TacticalDrone extends Enemy {
         super(50, 32, new EnemyRendererMob(), { margin: droneIndex * 15 })
         this.setParent(shield, () => {
             const angle = this.frame / 45 + (this.droneIndex * T) / 4
-            return vec.arg(angle).scaled(70)
+            return vec.arg(angle).scale(70)
         })
     }
 
@@ -159,7 +159,7 @@ class TacticalDrone extends Enemy {
                 })
                 .g(function* (me) {
                     while (1) {
-                        me.p = me.p.plus(vec.arg(me.radian).scaled(12))
+                        me.p = me.p.add(vec.arg(me.radian).scale(12))
                         yield* Array(2)
                     }
                 })
@@ -185,7 +185,7 @@ class OuterShield extends Enemy {
         super(50, 36, new EnemyRendererMob(), { remainingCharge: 2400 })
         this.setParent(core, () => {
             const angle = -(this.frame / 240) * T + (this.index * T) / 6
-            return vec.arg(angle).scaled(350)
+            return vec.arg(angle).scale(350)
         })
     }
 
@@ -230,7 +230,7 @@ class ShieldCannon extends Enemy {
         private readonly index: number,
     ) {
         super(50, 26, new EnemyRendererMob(), { remainingCharge: 1200 })
-        this.setParent(shield, () => vec.arg(T / 4 + index * Math.PI).scaled(80))
+        this.setParent(shield, () => vec.arg(T / 4 + index * Math.PI).scale(80))
         this.interval = [50, 70, 60, 80][shieldIndex]
     }
 
@@ -251,10 +251,10 @@ class ShieldCannon extends Enemy {
                 yield* Remodel.stop(me, 15)
 
                 if (isSmartPhone) {
-                    me.radian = g.player.p.minus(me.p).arg() + T
+                    me.radian = g.player.p.sub(me.p).radian() + T
                     yield* Array(15)
                 } else {
-                    yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg() + T, 15, Ease.Out, 8)
+                    yield* Remodel.ease(me, "radian", g.player.p.sub(me.p).radian() + T, 15, Ease.Out, 8)
                 }
 
                 yield* Remodel.accel(me, 15, 13)
@@ -280,12 +280,12 @@ class RingUnit extends Enemy {
         private readonly index: number,
     ) {
         super(50, 18, new EnemyRendererMob(), { margin: index * 10 })
-        this.setParent(core, () => vec.arg((this.frame / 120) * T + (this.index * T) / 8).scaled(130))
+        this.setParent(core, () => vec.arg((this.frame / 120) * T + (this.index * T) / 8).scale(130))
         this.prevP = this.p.clone()
     }
 
     *G() {
-        const velocity = this.p.minus(this.prevP)
+        const velocity = this.p.sub(this.prevP)
         const speed = Math.min(velocity.magnitude(), 8)
         this.prevP = this.p.clone()
 
@@ -296,7 +296,7 @@ class RingUnit extends Enemy {
                 .r(6)
                 .p(this.p.clone())
                 .speed(speed)
-                .radian(velocity.arg() + T / 4)
+                .radian(velocity.radian() + T / 4)
                 .nway(2, Math.PI)
                 .g((me) => Remodel.appear(me, 6))
                 .fire()

@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { SE } from "../../SE"
@@ -60,7 +60,7 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 960).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 960).add(vec(0, -g.height / 4))
         yield
     }
 }
@@ -68,7 +68,7 @@ class E extends Enemy {
 class Child0 extends Enemy {
     constructor(parent: Enemy, index: number) {
         super(300, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(T * (this.frame / 360) + (T / 4) * index).scaled(150))
+        this.setParent(parent, () => vec.arg(T * (this.frame / 360) + (T / 4) * index).scale(150))
     }
 
     *G() {

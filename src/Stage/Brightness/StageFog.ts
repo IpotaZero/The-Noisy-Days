@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -54,7 +54,7 @@ class Anchor extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 360).plus(vec(0, -g.height / 5))
+        this.p = this.curve((this.frame - 60) / 360).add(vec(0, -g.height / 5))
         yield
     }
 
@@ -85,7 +85,7 @@ class Arm extends Enemy {
     constructor(parent: Enemy, { hp = 300, r = 36 }) {
         super(hp, r, new EnemyRendererMob())
         // StageFog 本来の連結ロジック
-        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scaled(r * 2))
+        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scale(r * 2))
     }
 
     *G() {
@@ -111,7 +111,7 @@ class Satellite extends Enemy {
         private readonly index: number,
     ) {
         super(200, 64, new EnemyRendererMob(), { remainingCharge: 600 })
-        this.setParent(parent, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scaled(280))
+        this.setParent(parent, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scale(280))
     }
 
     *G() {
@@ -135,7 +135,7 @@ class SubSatellite extends Enemy {
         private readonly index: number,
     ) {
         super(50, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 3).scaled(96))
+        this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 3).scale(96))
     }
 
     *G() {

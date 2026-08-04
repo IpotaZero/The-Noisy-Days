@@ -1,7 +1,6 @@
+import { Vec, vec } from "@ipota/vec"
 import { g } from "../../global"
 import { Ease } from "../../utils/Functions/Ease"
-import { Vec, vec } from "../../utils/Vec"
-import { remodel } from "../Bullet/Remodel"
 import { EnemyRendererCore } from "./EnemyRendererCore"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
@@ -105,7 +104,7 @@ export class Enemy {
                         return
                     }
 
-                    this.p = enemy.p.plus(position())
+                    this.p = enemy.p.add(position())
                     yield
                 }
             }.bind(this)(),
@@ -118,7 +117,7 @@ export class Enemy {
         this.g.push(
             function* (this: Enemy) {
                 for (let i = 1; i < frame + 1; i++) {
-                    this.p = start.plus(target.minus(start).scaled(easing(i / frame)))
+                    this.p = start.add(target.sub(start).scale(easing(i / frame)))
                     yield
                 }
             }.bind(this)(),
@@ -174,7 +173,7 @@ export class Enemy {
                 let i = 0
 
                 while (1) {
-                    if (i > timeoutFrame || this.p.minus(g.player.p).magnitude() < this.r * scale) {
+                    if (i > timeoutFrame || this.p.sub(g.player.p).magnitude() < this.r * scale) {
                         break
                     }
 

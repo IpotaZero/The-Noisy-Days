@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -53,7 +53,7 @@ class Core extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 480).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 480).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -82,7 +82,7 @@ class Core extends Enemy {
                 .nway(7, T / 24)
                 .g(function* (me) {
                     yield* Array(15)
-                    yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 20, Ease.InOut)
+                    yield* Remodel.ease(me, "radian", g.player.p.sub(me.p).radian(), 20, Ease.InOut)
                     yield* Remodel.accel(me, 15, 32)
                 })
                 .fire()
@@ -128,7 +128,7 @@ class TrailFunnel extends Enemy {
         const spd = 3.5 + (index % 3) * 0.8
         this.speed = vec(Math.cos(baseAngle) * spd, Math.sin(baseAngle) * spd)
 
-        this.p = core.p.plus(vec.arg(baseAngle).scaled(150))
+        this.p = core.p.add(vec.arg(baseAngle).scale(150))
         this.g.push(this.movement())
     }
 
@@ -137,7 +137,7 @@ class TrailFunnel extends Enemy {
         // 充電中: コアを公転
         while (this.chargeRemaining > 0) {
             const angle = (this.frame / 300) * T + (this.index / FUNNEL_COUNT) * T
-            this.p = this.core.p.plus(vec(Math.sin(angle * 2) * 3, Math.cos(angle * 5)).scaled(150))
+            this.p = this.core.p.add(vec(Math.sin(angle * 2) * 3, Math.cos(angle * 5)).scale(150))
             yield
         }
 

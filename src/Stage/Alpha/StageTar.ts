@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -60,7 +60,7 @@ class CommandUnit extends Enemy {
 
     *G() {
         const basePos = this.curve((this.frame - 60) / 480)
-        this.p = vec(basePos.x * this.side, basePos.y).plus(vec(this.side * g.width * 0.3, -g.height / 4))
+        this.p = vec(basePos.x * this.side, basePos.y).add(vec(this.side * g.width * 0.3, -g.height / 4))
         yield
     }
 
@@ -89,8 +89,8 @@ class CommandUnit extends Enemy {
                 .p(this.p.clone())
                 .radian(
                     vec(targetX, -g.height / 4)
-                        .minus(this.p)
-                        .arg(),
+                        .sub(this.p)
+                        .radian(),
                 )
                 .nway(7, T / 22)
                 .speed(7)
@@ -116,13 +116,13 @@ class CommandUnit extends Enemy {
             remodel()
                 .appearance(Bullet.Appearance.Ball)
                 .colorful(this.side > 0 ? this.frame : this.frame + 180)
-                .p(playerP.plus(vec.arg(angle).scaled(radius)))
+                .p(playerP.add(vec.arg(angle).scale(radius)))
                 .speed(0)
                 .r(28)
                 .g(function* (me) {
                     yield* Remodel.appear(me, 12)
                     yield* Array(70)
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Remodel.accel(me, 20, 12)
                 })
                 .fire()
@@ -147,7 +147,7 @@ class Escort extends Enemy {
         super(100, 24, new EnemyRendererMob(), { remainingCharge: 300 })
         this.setParent(parent, () => {
             const angle = (this.frame / 360) * T * parent.side + (this.index / 3) * T
-            return vec.arg(angle).scaled(150)
+            return vec.arg(angle).scale(150)
         })
     }
 
@@ -172,7 +172,7 @@ class Escort2 extends Enemy {
         super(100, 32, new EnemyRendererMob(), { margin: 30 + index * 30 })
         this.setParent(parent, () => {
             const angle = -(this.frame / 360) * T * parent.side + (this.index / 4) * T
-            return vec.arg(angle).scaled(200)
+            return vec.arg(angle).scale(200)
         })
     }
 

@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -47,7 +47,7 @@ class MineMasterCore extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 360).plus(vec(0, -g.height / 5))
+        this.p = this.curve((this.frame - 60) / 360).add(vec(0, -g.height / 5))
         yield
     }
 
@@ -118,7 +118,7 @@ class MineMasterCore extends Enemy {
 class Arm extends Enemy {
     constructor(parent: Enemy, { hp = 300, r = 36 }) {
         super(hp, r, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scaled(r * 2.2))
+        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scale(r * 2.2))
     }
 
     *G() {
@@ -146,7 +146,7 @@ class ThrowingFunnel extends Enemy {
         yield* this.waitCharge()
 
         // 自機方向へ機雷を投擲
-        const throwAngle = g.player.p.minus(this.p).arg()
+        const throwAngle = g.player.p.sub(this.p).radian()
         const mine = new ThrownMine(this.p.clone(), throwAngle)
         g.enemies.push(mine)
 
@@ -156,7 +156,7 @@ class ThrowingFunnel extends Enemy {
     private *movement() {
         // 充電中はコアの少し下に追従
         while (this.chargeRemaining > 0) {
-            this.p = this.parent.p.plus(vec(0, 120))
+            this.p = this.parent.p.add(vec(0, 120))
             yield
         }
         // 充電後は画面内を自由飛行（壁で反射）

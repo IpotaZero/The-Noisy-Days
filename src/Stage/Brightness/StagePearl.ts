@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -50,7 +50,7 @@ class Battleship extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 720).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 720).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -120,7 +120,7 @@ class Gun extends Enemy {
     constructor(turret: Turret, index: number) {
         super(50, 24, new EnemyRendererMob(), { margin: index * 10 + 30 })
         // 砲台の前方に扇形（-60度・0度・+60度）に配置
-        this.setParent(turret, () => vec.arg(T / 4 + (index - 1) * (T / 6)).scaled(80))
+        this.setParent(turret, () => vec.arg(T / 4 + (index - 1) * (T / 6)).scale(80))
     }
 
     *G() {
@@ -135,7 +135,7 @@ class Gun extends Enemy {
                 .nway(3, T / 24)
                 .g(function* (me) {
                     yield* Remodel.stop(me, 15)
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Remodel.accel(me, 15, 15)
                 })
                 .fire()

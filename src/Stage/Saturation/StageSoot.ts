@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -81,7 +81,7 @@ class Star extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 960).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 960).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -151,14 +151,14 @@ class Star extends Enemy {
                     for (let i = 1; i < homingFrame + 1; i++) {
                         yield
                         const p = g.player.p
-                        me.p = me.p.plus(p.minus(me.p).scaled(1 / 6))
+                        me.p = me.p.add(p.sub(me.p).scale(1 / 6))
                     }
 
                     const p = g.player.p.clone()
 
                     for (let i = 1; i < finishedFrame + 1; i++) {
                         yield
-                        me.p = me.p.plus(p.minus(me.p).scaled(1 / 6))
+                        me.p = me.p.add(p.sub(me.p).scale(1 / 6))
                     }
 
                     me.life = 0
@@ -211,7 +211,7 @@ class Star extends Enemy {
                         .p(me.p.clone())
                         .duplicate(4, (b, j) => {
                             const angle = (T / 4) * j
-                            b.p = b.p.plus(vec.arg(angle).scaled((1 - Ease.Out(i / frame)) * 128 + 18))
+                            b.p = b.p.add(vec.arg(angle).scale((1 - Ease.Out(i / frame)) * 128 + 18))
                             return b
                         })
                         .delete()
@@ -270,7 +270,7 @@ class Planet extends Enemy {
     ) {
         super(300, 56, new EnemyRendererCore())
         this.isInvincible = true
-        this.setParent(star, () => vec.arg(T * (this.frame / 600) + T * (index / 2)).scaled(250))
+        this.setParent(star, () => vec.arg(T * (this.frame / 600) + T * (index / 2)).scale(250))
         this.interval = index === 0 ? 29 : 37
     }
 
@@ -306,7 +306,7 @@ class Satellite extends Enemy {
         private readonly index: number,
     ) {
         super(150, 36, new EnemyRendererMob())
-        this.setParent(planet, () => vec.arg(T * (this.frame / 240) + T * (index / 2)).scaled(120))
+        this.setParent(planet, () => vec.arg(T * (this.frame / 240) + T * (index / 2)).scale(120))
         this.interval = index === 0 ? 41 : 53
     }
 
@@ -334,7 +334,7 @@ class Satellite extends Enemy {
                         yield
                     }
                 } else {
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Array(15)
                 }
 

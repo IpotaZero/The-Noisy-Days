@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -46,7 +46,7 @@ class HeavyCruiser extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 720).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 720).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -114,7 +114,7 @@ class WaveTurret extends Enemy {
                 })
                 .g(function* (me) {
                     while (1) {
-                        me.p = me.p.plus(vec.arg(me.radian).scaled(12))
+                        me.p = me.p.add(vec.arg(me.radian).scale(12))
                         yield* Array(2)
                     }
                 })
@@ -133,7 +133,7 @@ class WaveTurret extends Enemy {
 class ClusterGun extends Enemy {
     constructor(turret: Enemy, index: number) {
         super(50, 24, new EnemyRendererMob(), { margin: index * 10 + 30 })
-        this.setParent(turret, () => vec.arg(T / 4 + (index - 1) * (T / 6)).scaled(80))
+        this.setParent(turret, () => vec.arg(T / 4 + (index - 1) * (T / 6)).scale(80))
     }
 
     *G() {

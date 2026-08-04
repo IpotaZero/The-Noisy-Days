@@ -5,7 +5,7 @@ import { EnemyRendererBoss } from "../../Game/Enemy/EnemyRendererBoss"
 import { bossDefeat, explosion, fireDeleteField, g } from "../../global"
 import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 
 export class GameLogic {
     private readonly collision = new Collision()
@@ -35,11 +35,11 @@ export class GameLogic {
             g.bullets
                 .values()
                 .filter((b) => b.type === Bullet.Type.Friend)
-                .filter((b) => b.p.minus(e.p).magnitude() <= b.r + e.r)
+                .filter((b) => b.p.sub(e.p).magnitude() <= b.r + e.r)
                 .forEach((b) => {
                     b.life = 0
 
-                    const damage = Math.ceil(b.p.minus(e.p).magnitude() / g.width)
+                    const damage = Math.ceil(b.p.sub(e.p).magnitude() / g.width)
 
                     e.hit(damage)
                     g.effects.push(
@@ -50,7 +50,7 @@ export class GameLogic {
                             for (let i = 1; i < frame + 1; i++) {
                                 Ctx.rect(
                                     g.ctx,
-                                    p.minus(vec(b.r, b.r)).l,
+                                    p.sub(vec(b.r, b.r)).l,
                                     [damage * 24, damage * 24],
                                     `rgba(255,255,255,${(1 - i / frame) * 0.1})`,
                                 )
@@ -90,7 +90,7 @@ export class GameLogic {
             .forEach((b) => {
                 if (g.player.isInvincible()) return
 
-                const distance = b.p.minus(g.player.p).magnitude()
+                const distance = b.p.sub(g.player.p).magnitude()
 
                 if (distance <= b.r + g.player.GRAZE_R) {
                     SE.graze.play()
@@ -113,7 +113,7 @@ export class GameLogic {
         g.bullets
             .values()
             .filter((b) => b.type === Bullet.Type.Score)
-            .filter((b) => b.p.minus(g.player.p).magnitude() <= b.r + g.player.GRAZE_R)
+            .filter((b) => b.p.sub(g.player.p).magnitude() <= b.r + g.player.GRAZE_R)
             .forEach((b) => {
                 b.life = 0
                 SE.graze.play()

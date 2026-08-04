@@ -2,7 +2,7 @@ import { g, T } from "../../global"
 import { Bullet } from "../Bullet/Bullet"
 import { PlayerRenderer } from "./PlayerRenderer"
 import { remodel } from "../Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
@@ -105,7 +105,7 @@ export class Player {
         ctx.globalAlpha = 1 - i / frame
         const text = [..."CHARGED"]
         text.forEach((c, index) => {
-            const p = this.p.plus(vec.arg(T * (index / text.length)).scaled(this.GRAZE_R * 3))
+            const p = this.p.add(vec.arg(T * (index / text.length)).scale(this.GRAZE_R * 3))
             Ctx.text(ctx, p.l, "#ffffff80", c, {
                 fontFamily: "fraktur",
                 fontSize: this.GRAZE_R,

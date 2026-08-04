@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -61,7 +61,7 @@ class ResonanceCore extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 120) / 600).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 120) / 600).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -92,10 +92,10 @@ class ResonanceCore extends Enemy {
 
     private *attackPredictiveBeam() {
         // 予測照準: 自機の速度ベクトルから先読み位置を計算
-        const velocity = g.player.p.minus(this.prevPlayerP)
+        const velocity = g.player.p.sub(this.prevPlayerP)
         const leadFrames = 55 // 何フレーム先を狙うか
-        const predictedP = g.player.p.plus(velocity.scaled(leadFrames))
-        const beamAngle = predictedP.minus(this.p).arg()
+        const predictedP = g.player.p.add(velocity.scale(leadFrames))
+        const beamAngle = predictedP.sub(this.p).radian()
 
         remodel()
             .p(this.p.clone())
@@ -130,7 +130,7 @@ class ResonanceShield extends Enemy {
     ) {
         // 充電 300 / 450 / 600 / 750f でずらす
         super(300, 40, new EnemyRendererMob(), { remainingCharge: 300 + index * 150 })
-        this.setParent(core, () => vec.arg((this.frame / 720) * T + (this.index * T) / 4).scaled(240))
+        this.setParent(core, () => vec.arg((this.frame / 720) * T + (this.index * T) / 4).scale(240))
     }
 
     *G() {
@@ -163,7 +163,7 @@ class ResonanceDrone extends Enemy {
         private readonly index: number,
     ) {
         super(100, 24, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 20 })
-        this.setParent(parent, () => vec.arg((-this.frame / 480) * T + (this.index * T) / 4).scaled(80))
+        this.setParent(parent, () => vec.arg((-this.frame / 480) * T + (this.index * T) / 4).scale(80))
     }
 
     *G() {
@@ -184,10 +184,10 @@ class ResonanceDrone extends Enemy {
                 yield* Array(60)
 
                 if (isSmartPhone) {
-                    me.radian = Math.floor(g.player.p.minus(me.p).arg() * 8) / 8
+                    me.radian = Math.floor(g.player.p.sub(me.p).radian() * 8) / 8
                     yield* Array(15)
                 } else {
-                    yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg() + T, 15, Ease.Out)
+                    yield* Remodel.ease(me, "radian", g.player.p.sub(me.p).radian() + T, 15, Ease.Out)
                 }
 
                 yield* Remodel.accel(me, 20, 16)
@@ -210,7 +210,7 @@ class ResonanceRing extends Enemy {
         private readonly index: number,
     ) {
         super(100, 18, new EnemyRendererMob(), { remainingCharge: 900, margin: index * 15 })
-        this.setParent(core, () => vec.arg((this.frame / 360) * T + (this.index * T) / 8).scaled(130))
+        this.setParent(core, () => vec.arg((this.frame / 360) * T + (this.index * T) / 8).scale(130))
     }
 
     *G() {
@@ -297,7 +297,7 @@ class HeavyGuard extends Enemy {
         private readonly index: number,
     ) {
         super(250, 50, new EnemyRendererMob(), { remainingCharge: 720, margin: index * 60 })
-        this.setParent(core, () => vec.arg((this.frame / 400) * T + (this.index * T) / 3).scaled(170))
+        this.setParent(core, () => vec.arg((this.frame / 400) * T + (this.index * T) / 3).scale(170))
     }
 
     *G() {

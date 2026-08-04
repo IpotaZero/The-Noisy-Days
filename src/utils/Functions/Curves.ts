@@ -1,4 +1,4 @@
-import { Vec, vec } from "../Vec"
+import { Vec, vec } from "@ipota/vec"
 
 export type Curve = (t: number) => Vec
 
@@ -27,9 +27,9 @@ export function catmullRom(points: readonly Vec[]): Curve {
     const segs = points.length - 3
 
     return (t) => {
-        const scaled = Math.min(t * segs, segs - 1e-10)
-        const i = Math.floor(scaled)
-        const u = scaled - i
+        const scale = Math.min(t * segs, segs - 1e-10)
+        const i = Math.floor(scale)
+        const u = scale - i
 
         const [p0, p1, p2, p3] = points.slice(i, i + 4)
         const u2 = u * u
@@ -79,9 +79,9 @@ export function hypotrochoid(centerR: number, moveR: number, deltaR: number): Cu
 export function join(...curves: Curve[]): Curve {
     const n = curves.length
     return (t) => {
-        const scaled = Math.min(t * n, n - 1e-10)
-        const i = Math.floor(scaled)
-        return curves[i](scaled - i)
+        const scale = Math.min(t * n, n - 1e-10)
+        const i = Math.floor(scale)
+        return curves[i](scale - i)
     }
 }
 

@@ -5,6 +5,7 @@
     "@ipota/focuses": "^1.0.3",
     "@ipota/input": "^1.0.8",
     "@ipota/pages": "^1.0.2",
+    "@ipota/vec": "^1.0.4",
     "lz-string": "^1.5.0",
     "typia": "^12.0.2",
     "vite": "^8.0.0"

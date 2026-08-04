@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -41,20 +41,20 @@ class EnemyTutorial extends Enemy {
 
         // donut
         remodel()
-            .p(leftTop.plus(vec(100, 100)))
+            .p(leftTop.add(vec(100, 100)))
             .speed(0)
             .fire()
 
         remodel()
             .appearance(Bullet.Appearance.Ball)
-            .p(leftTop.plus(vec(200, 100)))
+            .p(leftTop.add(vec(200, 100)))
             .r(6)
             .speed(0)
             .fire()
 
         remodel()
             .appearance(Bullet.Appearance.Ball)
-            .p(leftTop.plus(vec(300, 100)))
+            .p(leftTop.add(vec(300, 100)))
             .r(28)
             .speed(0)
             .fire()
@@ -62,7 +62,7 @@ class EnemyTutorial extends Enemy {
         remodel()
             .appearance(Bullet.Appearance.Line)
             .collision(Bullet.Collision.Line)
-            .p(leftTop.plus(vec(400, 100)))
+            .p(leftTop.add(vec(400, 100)))
             .r(28)
             .speed(0)
             .fire()
@@ -70,7 +70,7 @@ class EnemyTutorial extends Enemy {
         remodel()
             .appearance(Bullet.Appearance.Arrow)
             .collision(Bullet.Collision.Arrow)
-            .p(leftTop.plus(vec(500, 100)))
+            .p(leftTop.add(vec(500, 100)))
             .r(28)
             .speed(0)
             .fire()

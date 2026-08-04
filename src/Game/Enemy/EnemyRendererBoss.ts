@@ -3,7 +3,7 @@ import { IEnemyRenderer } from "./IEnemyRenderer"
 import * as Curves from "../../utils/Functions/Curves"
 import { g, T } from "../../global"
 import { Ctx } from "../../utils/Functions/Ctx"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 
 const WHITE = "#ffffff80"
 const GOLD = "rgba(255, 215, 0, 0.6)"
@@ -87,12 +87,7 @@ export class EnemyRendererBoss implements IEnemyRenderer {
     /**
      * 重なり合う回転リングと刻み目（ルーン）の描画
      */
-    private drawMagicCircle(
-        ctx: CanvasRenderingContext2D,
-        e: Enemy,
-        theta: number,
-        pulse: number,
-    ): void {
+    private drawMagicCircle(ctx: CanvasRenderingContext2D, e: Enemy, theta: number, pulse: number): void {
         const radii = [1.5, 1.8, 2.2]
 
         radii.forEach((rMul, idx) => {
@@ -105,8 +100,8 @@ export class EnemyRendererBoss implements IEnemyRenderer {
             const count = 12 + idx * 6
             for (let i = 0; i < count; i++) {
                 const angle = (i * T) / count + currentTheta
-                const p1 = e.p.plus(vec(r, 0).rotated(angle))
-                const p2 = e.p.plus(vec(r + 8, 0).rotated(angle))
+                const p1 = e.p.add(vec(r, 0).rotated(angle))
+                const p2 = e.p.add(vec(r + 8, 0).rotated(angle))
 
                 ctx.strokeStyle = idx === 1 ? GOLD : WHITE
                 ctx.lineWidth = 2
@@ -118,11 +113,7 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         })
     }
 
-    private drawMiddleFrame(
-        ctx: CanvasRenderingContext2D,
-        e: Enemy,
-        theta: number,
-    ): void {
+    private drawMiddleFrame(ctx: CanvasRenderingContext2D, e: Enemy, theta: number): void {
         Ctx.polygon(ctx, 8, 2, e.p.l, e.r * 2, BLACK_VALE, {
             theta: theta * 0.2,
             lineWidth: 3,
@@ -133,17 +124,13 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         })
     }
 
-    private drawCoreBits(
-        ctx: CanvasRenderingContext2D,
-        e: Enemy,
-        theta: number,
-    ): void {
+    private drawCoreBits(ctx: CanvasRenderingContext2D, e: Enemy, theta: number): void {
         const bitCount = 5
         const curve = Curves.lissajous(e.r * 4, e.r * 4, 12, 17)
 
         for (let i = 0; i < bitCount; i++) {
             const angle = (i * T) / bitCount + theta / 2
-            const bitPos = e.p.plus(curve(angle))
+            const bitPos = e.p.add(curve(angle))
 
             Ctx.polygon(ctx, 4, 1, bitPos.l, e.r / 3, WHITE, {
                 theta: theta * 5,
@@ -152,16 +139,12 @@ export class EnemyRendererBoss implements IEnemyRenderer {
         }
     }
 
-    private drawRoundBits(
-        ctx: CanvasRenderingContext2D,
-        e: Enemy,
-        theta: number,
-    ): void {
+    private drawRoundBits(ctx: CanvasRenderingContext2D, e: Enemy, theta: number): void {
         const bitCount = 7
 
         for (let i = 0; i < bitCount; i++) {
             const angle = (i * T) / bitCount + theta / 3
-            const bitPos = e.p.plus(vec.arg(angle).scaled(e.r * 3.5))
+            const bitPos = e.p.add(vec.arg(angle).scale(e.r * 3.5))
 
             Ctx.polygon(ctx, 5, 1, bitPos.l, e.r / 3, CYAN, {
                 theta: theta * 5,
@@ -173,12 +156,7 @@ export class EnemyRendererBoss implements IEnemyRenderer {
     /**
      * 中心部の複雑な幾何学構造
      */
-    private drawCoreComplex(
-        ctx: CanvasRenderingContext2D,
-        e: Enemy,
-        theta: number,
-        pulse: number,
-    ): void {
+    private drawCoreComplex(ctx: CanvasRenderingContext2D, e: Enemy, theta: number, pulse: number): void {
         const coreColor = e.damaged ? RED : WHITE
 
         Ctx.polygon(ctx, 13, 2, e.p.l, e.r * (0.9 + pulse), coreColor, {
@@ -202,11 +180,7 @@ export class EnemyRendererBoss implements IEnemyRenderer {
     /**
      * 実際の当たり判定 (e.r) を示す円を描画
      */
-    private drawHitBox(
-        ctx: CanvasRenderingContext2D,
-        e: Enemy,
-        puls: number,
-    ): void {
+    private drawHitBox(ctx: CanvasRenderingContext2D, e: Enemy, puls: number): void {
         Ctx.arc(ctx, e.p.l, e.r, WHITE, { lineWidth: 2 })
         Ctx.arc(ctx, e.p.l, e.r * (1 + puls * 2), WHITE, { lineWidth: 1 })
     }

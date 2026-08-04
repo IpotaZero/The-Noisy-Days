@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
@@ -98,7 +98,7 @@ class EnemyTutorial extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 120).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 120).add(vec(0, -g.height / 4))
         yield
     }
 }
@@ -106,7 +106,7 @@ class EnemyTutorial extends Enemy {
 class Child extends Enemy {
     constructor(parent: Enemy) {
         super(300, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(this.frame / 60).scaled(150))
+        this.setParent(parent, () => vec.arg(this.frame / 60).scale(150))
         this.isInvincible = true
     }
 

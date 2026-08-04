@@ -1,6 +1,6 @@
 import { T } from "../../global"
 import { Ctx } from "../../utils/Functions/Ctx"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { Enemy } from "./Enemy"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
@@ -26,8 +26,8 @@ export class EnemyRendererMine implements IEnemyRenderer {
             const inner = e.r * 0.6
             const outer = e.r * (1.2 + pulse)
 
-            const p1 = e.p.plus(vec(inner, 0).rotated(angle))
-            const p2 = e.p.plus(vec(outer, 0).rotated(angle))
+            const p1 = e.p.add(vec(inner, 0).rotated(angle))
+            const p2 = e.p.add(vec(outer, 0).rotated(angle))
 
             ctx.strokeStyle = mainColor
             ctx.lineWidth = 1.5

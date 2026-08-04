@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -104,7 +104,7 @@ class Turret extends Enemy {
         private readonly index: number,
     ) {
         super(80, 30, new EnemyRendererMob(), { remainingCharge: 600 }) //[cite: 10]
-        this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scaled(90)) //[cite: 10]
+        this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scale(90)) //[cite: 10]
     }
 
     *G() {
@@ -121,10 +121,10 @@ class Turret extends Enemy {
                 yield* Array(30)
 
                 if (isSmartPhone) {
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Array(30)
                 } else {
-                    yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 30, Ease.Out)
+                    yield* Remodel.ease(me, "radian", g.player.p.sub(me.p).radian(), 30, Ease.Out)
                 }
 
                 yield* Remodel.accel(me, 30, 32)

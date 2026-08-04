@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -46,7 +46,7 @@ class MineMasterCore extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 360).plus(vec(0, -g.height / 5))
+        this.p = this.curve((this.frame - 60) / 360).add(vec(0, -g.height / 5))
         yield
     }
 
@@ -99,13 +99,13 @@ class MineMasterCore extends Enemy {
             remodel()
                 .appearance(Bullet.Appearance.Ball)
                 .colorful(this.frame + i * 15)
-                .p(playerP.plus(vec.arg((i / count) * T).scaled(radius)))
+                .p(playerP.add(vec.arg((i / count) * T).scale(radius)))
                 .speed(0)
                 .r(28)
                 .g(function* (me) {
                     yield* Remodel.appear(me, 15)
                     yield* Array(80)
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Remodel.accel(me, 20, 12)
                 })
                 .fire()
@@ -121,7 +121,7 @@ class MineMasterCore extends Enemy {
 class Arm extends Enemy {
     constructor(parent: Enemy, { hp = 300, r = 36 }) {
         super(hp, r, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scaled(r * 2.2))
+        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scale(r * 2.2))
     }
 
     *G() {
@@ -150,7 +150,7 @@ class MineLayFunnel extends Enemy {
 
     private *a() {
         while (this.chargeRemaining > 0) {
-            this.p = this.parent.p.plus(vec(0, 100))
+            this.p = this.parent.p.add(vec(0, 100))
             yield
         }
         this.funnel(vec(5, 5))

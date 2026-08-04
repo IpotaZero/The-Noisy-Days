@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -68,10 +68,10 @@ class Core extends Enemy {
                 yield* Array(30)
 
                 if (isSmartPhone) {
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Array(30)
                 } else {
-                    yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 30, Ease.Out)
+                    yield* Remodel.ease(me, "radian", g.player.p.sub(me.p).radian(), 30, Ease.Out)
                 }
             })
             .fire()
@@ -137,7 +137,7 @@ class Turret extends Enemy {
         private readonly index: number,
     ) {
         super(50, 30, new EnemyRendererMob(), { remainingCharge: 600 })
-        this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scaled(90))
+        this.setParent(wing, () => vec.arg(T * (index / 13) - T / 4).scale(90))
     }
 
     *G() {
@@ -157,7 +157,7 @@ class Turret extends Enemy {
                 yield* Remodel.accel(me, 15, 8)
                 yield* Remodel.stop(me, 20)
                 // 自機方向へ反転
-                me.radian = g.player.p.minus(me.p).arg()
+                me.radian = g.player.p.sub(me.p).radian()
                 yield* Remodel.accel(me, 20, 14)
             })
             .fire()

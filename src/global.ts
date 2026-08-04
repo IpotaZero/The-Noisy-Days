@@ -5,8 +5,8 @@ import { Player } from "./Game/Player/Player"
 import { Remodel, remodel } from "./Game/Bullet/Remodel"
 import { Ease } from "./utils/Functions/Ease"
 import { shake } from "./utils/shake"
-import { Vec, vec } from "./utils/Vec"
 import { SE } from "./SE"
+import { Vec, vec } from "@ipota/vec"
 
 export const g = {
     enemies: [] as Enemy[],
@@ -69,7 +69,7 @@ export function* fireDeleteField(ctx: CanvasRenderingContext2D) {
         g.bullets
             .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
             .filter((b) => b.scorenizable)
-            .filter((b) => b.p.minus(p).magnitude() <= r)
+            .filter((b) => b.p.sub(p).magnitude() <= r)
             .forEach((b) => {
                 b.scorenize(g.player)
             })
@@ -149,7 +149,7 @@ export function* bossDefeat(ctx: CanvasRenderingContext2D, bossP: Vec) {
 
                     g.bullets
                         .filter((b) => b.type === Bullet.Type.Enemy || b.type === Bullet.Type.Neutral)
-                        .filter((b) => b.p.minus(bossP).magnitude() <= r)
+                        .filter((b) => b.p.sub(bossP).magnitude() <= r)
                         .forEach((b) => b.scorenize(g.player))
 
                     yield

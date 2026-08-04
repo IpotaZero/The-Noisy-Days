@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -50,7 +50,7 @@ class Battleship extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 720).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 720).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -115,7 +115,7 @@ class Turret extends Enemy {
                 yield* Remodel.appear(me, 15)
                 yield* Remodel.stop(me, 15)
 
-                const target = g.player.p.minus(me.p).arg() + T
+                const target = g.player.p.sub(me.p).radian() + T
                 const first = me.radian
                 for (let i = 1; i < 15 + 1; i++) {
                     me.radian = first + (target - first) * Ease.InOut(i / 15)
@@ -138,7 +138,7 @@ class Turret extends Enemy {
 class Gun extends Enemy {
     constructor(turret: Turret, index: number) {
         super(50, 24, new EnemyRendererMob(), { margin: index * 10 + 30 })
-        this.setParent(turret, () => vec.arg(T / 4 + (index - 1) * (T / 6)).scaled(80))
+        this.setParent(turret, () => vec.arg(T / 4 + (index - 1) * (T / 6)).scale(80))
     }
 
     *G() {

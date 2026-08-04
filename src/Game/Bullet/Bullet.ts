@@ -1,5 +1,5 @@
 import { g } from "../../global"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { Player } from "./../Player/Player"
 
 type GS = {
@@ -60,12 +60,11 @@ export class Bullet {
     }
 
     clone(): Bullet {
-        const b = { ...this }
+        const b = Object.assign(new Bullet(), this)
 
         b.p = this.p.clone()
         b.gs = [...this.gs]
         b.g = [...this.g]
-        ;(b as any).__proto__ = Bullet.prototype
 
         return b
     }
@@ -96,10 +95,10 @@ export class Bullet {
 
     private *homing(player: Player) {
         while (1) {
-            const v = player.p.minus(this.p).scaled(1 / 7)
+            const v = player.p.sub(this.p).scale(1 / 7)
 
             this.speed = Math.max(v.magnitude(), 16)
-            this.radian = v.arg()
+            this.radian = v.radian()
 
             yield
         }

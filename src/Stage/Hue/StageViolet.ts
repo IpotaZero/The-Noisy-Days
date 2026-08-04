@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { SE } from "../../SE"
@@ -53,7 +53,7 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 480).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 480).add(vec(0, -g.height / 4))
         yield
     }
 }

@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -171,10 +171,10 @@ class SnakeHead extends Enemy {
     private *patternChase() {
         this.isChasing = true
         for (let i = 0; i < 4; i++) {
-            const target = this.p.plus(g.player.p.minus(this.p).scaled(0.95))
+            const target = this.p.add(g.player.p.sub(this.p).scale(0.95))
             yield* this.moveTo(target, 30)
 
-            const dir = g.player.p.minus(this.p).arg()
+            const dir = g.player.p.sub(this.p).radian()
 
             remodel()
                 .p(this.p.clone())
@@ -192,8 +192,8 @@ class SnakeHead extends Enemy {
 
             yield* Array(35)
         }
-        const away = this.p.minus(g.player.p)
-        const target = this.p.plus(away.scaled((1.8 / away.magnitude()) * g.width * 0.4))
+        const away = this.p.sub(g.player.p)
+        const target = this.p.add(away.scale((1.8 / away.magnitude()) * g.width * 0.4))
         const clamped = vec(Math.max(-g.width * 0.42, Math.min(g.width * 0.42, target.x)), Math.max(-g.height * 0.45, Math.min(0, target.y)))
         this.isChasing = false
         yield* this.moveTo(clamped, 90, Ease.Out)
@@ -219,11 +219,11 @@ class SnakeSegment extends Enemy {
     }
 
     *G() {
-        const diff = this.prev.p.minus(this.p)
+        const diff = this.prev.p.sub(this.p)
         const dist = diff.magnitude()
         if (dist > SEGMENT_LENGTH) {
-            const move = diff.scaled(((dist - SEGMENT_LENGTH) / dist) * FOLLOW_STIFFNESS)
-            this.p = this.p.plus(move)
+            const move = diff.scale(((dist - SEGMENT_LENGTH) / dist) * FOLLOW_STIFFNESS)
+            this.p = this.p.add(move)
         }
         yield
     }
@@ -236,7 +236,7 @@ class SnakeSegment extends Enemy {
      * - 尻尾は急加速時に扇形弾を追加（方向転換が危険になる）
      */
     *H() {
-        const velocity = this.p.minus(this.prevP)
+        const velocity = this.p.sub(this.prevP)
         const speed = velocity.magnitude()
         this.prevP = this.p.clone()
 
@@ -354,7 +354,7 @@ class DetachedTail extends Enemy {
                 })
                 .g(function* (me) {
                     while (1) {
-                        me.p = me.p.plus(vec.arg(me.radian).scaled(12))
+                        me.p = me.p.add(vec.arg(me.radian).scale(12))
                         yield* Array(2)
                     }
                 })

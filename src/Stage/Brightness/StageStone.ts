@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -50,7 +50,7 @@ class Anchor extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 360).plus(vec(0, -g.height / 5))
+        this.p = this.curve((this.frame - 60) / 360).add(vec(0, -g.height / 5))
         yield
     }
 
@@ -66,13 +66,13 @@ class Anchor extends Enemy {
             remodel()
                 .appearance(Bullet.Appearance.Ball)
                 .colorful(this.frame + i * 12)
-                .p(playerP.plus(vec.arg(angle).scaled(radius)))
+                .p(playerP.add(vec.arg(angle).scale(radius)))
                 .speed(0)
                 .r(28)
                 .g(function* (me) {
                     yield* Remodel.appear(me, 15)
                     yield* Array(60)
-                    me.radian = g.player.p.minus(me.p).arg()
+                    me.radian = g.player.p.sub(me.p).radian()
                     yield* Remodel.accel(me, 20, 13)
                 })
                 .fire()
@@ -91,7 +91,7 @@ class Anchor extends Enemy {
 class Arm extends Enemy {
     constructor(parent: Enemy, { hp = 300, r = 36 }) {
         super(hp, r, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scaled(r * 2))
+        this.setParent(parent, () => vec.arg((this.frame / r) * 4).scale(r * 2))
     }
 
     *G() {
@@ -127,7 +127,7 @@ class Satellite extends Enemy {
         private readonly index: number,
     ) {
         super(300, 64, new EnemyRendererMob(), { remainingCharge: 600 })
-        this.setParent(parent, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scaled(280))
+        this.setParent(parent, () => vec.arg((this.frame / 360) * T + (this.index * T) / 4).scale(280))
     }
 
     *G() {
@@ -168,7 +168,7 @@ class SubSatellite extends Enemy {
         private readonly index: number,
     ) {
         super(80, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 3).scaled(96))
+        this.setParent(parent, () => vec.arg((-this.frame / 240) * T + (this.index * T) / 3).scale(96))
     }
 
     *G() {
@@ -186,7 +186,7 @@ class SubSatellite extends Enemy {
                 yield* Remodel.accel(me, 15, 8)
                 yield* Remodel.stop(me, 20)
                 // 自機方向へ反転加速
-                me.radian = g.player.p.minus(me.p).arg()
+                me.radian = g.player.p.sub(me.p).radian()
                 yield* Remodel.accel(me, 20, 13)
             })
             .fire()

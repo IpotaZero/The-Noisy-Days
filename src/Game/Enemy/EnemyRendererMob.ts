@@ -1,5 +1,5 @@
 import { Ctx } from "../../utils/Functions/Ctx"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { Enemy } from "./Enemy"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
@@ -22,7 +22,7 @@ export class EnemyRendererMob implements IEnemyRenderer {
         const isCharging = e.chargeRemaining > 0
         const barW = e.r * 3
         const barH = 6
-        const barPos = e.p.plus(vec(-barW / 2, -e.r - 24))
+        const barPos = e.p.add(vec(-barW / 2, -e.r - 24))
 
         if (isCharging && e.chargeMax > 0) {
             // 充電中はHPバーを隠し、充電進捗バーのみ表示

@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { Vec, vec } from "../../utils/Vec"
+import { vec, Vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -119,7 +119,7 @@ class Rei extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 480).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 480).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -174,7 +174,7 @@ class Core0 extends Enemy {
     constructor(parent: Enemy, index: number) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
@@ -205,16 +205,16 @@ class Core0 extends Enemy {
                 .collision(Bullet.Collision.Arrow)
                 .r(28)
                 .color("white")
-                .p(this.curve2(this.frame2 + i * 200).plus(vec(0, -g.height / 4)))
+                .p(this.curve2(this.frame2 + i * 200).add(vec(0, -g.height / 4)))
                 .radian(T / 4 + i * 5)
                 .g(function* (me) {
                     yield* Remodel.stop(me, 35 - i * 2)
 
                     if (isSmartPhone) {
-                        me.radian = g.player.p.minus(me.p).arg()
+                        me.radian = g.player.p.sub(me.p).radian()
                         yield* Array(15)
                     } else {
-                        yield* Remodel.ease(me, "radian", g.player.p.minus(me.p).arg(), 15, Ease.InOut)
+                        yield* Remodel.ease(me, "radian", g.player.p.sub(me.p).radian(), 15, Ease.InOut)
                     }
 
                     yield* Remodel.accel(me, 30, 32)
@@ -246,7 +246,7 @@ class Core1 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
@@ -276,7 +276,7 @@ class Core1 extends Enemy {
                 .collision(Bullet.Collision.Line)
                 .r(28)
                 .color("white")
-                .p(this.parent.p.plus(vec.arg(i).scaled(200)))
+                .p(this.parent.p.add(vec.arg(i).scale(200)))
                 .ex(17)
                 .delayByIndex()
                 .g(function* (me, i) {
@@ -313,7 +313,7 @@ class Core2 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
@@ -379,7 +379,7 @@ class Core3 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
@@ -439,7 +439,7 @@ class Core4 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
@@ -463,7 +463,7 @@ class Core4 extends Enemy {
             remodel()
                 .appearance(Bullet.Appearance.Ball)
                 .r(6)
-                .p(this.curve2(this.frame2 * i * 4).plus(vec(0, -g.height / 4)))
+                .p(this.curve2(this.frame2 * i * 4).add(vec(0, -g.height / 4)))
                 .aim(g.player.p)
                 .nway(3, T / 12)
                 .sim(18, 6, 18)
@@ -493,14 +493,14 @@ class Core5 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
     *G() {
         while (this.isInvincible) yield
 
-        const radian = g.player.p.minus(this.p).arg()
+        const radian = g.player.p.sub(this.p).radian()
 
         remodel()
             .radian(radian)
@@ -582,7 +582,7 @@ class Core6 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
@@ -612,7 +612,7 @@ class Core6 extends Enemy {
     }
 
     private *musi(h: number) {
-        const p = this.curve2(this.frame2 + h * 40).plus(vec(0, -g.height / 4))
+        const p = this.curve2(this.frame2 + h * 40).add(vec(0, -g.height / 4))
 
         for (let i = 0; i < 8; i++) {
             remodel()
@@ -636,7 +636,7 @@ class Core6 extends Enemy {
                 })
                 .g(function* (me) {
                     while (1) {
-                        me.p = me.p.plus(vec.arg(me.radian).scaled(12))
+                        me.p = me.p.add(vec.arg(me.radian).scale(12))
                         yield* Array(2)
                     }
                 })
@@ -747,18 +747,18 @@ class Core7 extends Enemy {
     ) {
         super(300, 60, new EnemyRendererCore(), { margin: 60 })
         this.p = vec(0, -g.height)
-        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scaled(200))
+        this.setParent(parent, () => vec.arg(T / 4 + (T / 8) * (index + 1)).scale(200))
         this.isInvincible = true
     }
 
     *G() {
         while (this.isInvincible) yield
 
-        const p = vec.arg(this.frame2).scaled(30)
+        const p = vec.arg(this.frame2).scale(30)
 
         for (let i = 0; i < 10; i++) {
             remodel()
-                .p(vec(0, (i - 5) * 120).plus(p))
+                .p(vec(0, (i - 5) * 120).add(p))
                 .radian(0)
                 .ex(2)
                 .laser(this, 30 - i, 30)
@@ -768,7 +768,7 @@ class Core7 extends Enemy {
 
         for (let i = 0; i < 11; i++) {
             remodel()
-                .p(vec((i - 5) * 120, 0).plus(p))
+                .p(vec((i - 5) * 120, 0).add(p))
                 .radian(T / 4)
                 .ex(2)
                 .laser(this, 20 - i, 30)

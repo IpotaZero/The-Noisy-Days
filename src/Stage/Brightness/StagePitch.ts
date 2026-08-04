@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { flash, shake } from "../../utils/shake"
@@ -43,7 +43,7 @@ class FortressCore extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - this.moveDuration) / 600).plus(vec(0, -g.height / 3))
+        this.p = this.curve((this.frame - this.moveDuration) / 600).add(vec(0, -g.height / 3))
         yield
     }
 
@@ -81,7 +81,7 @@ class OrbitalShield extends Enemy {
         super(300, 44, new EnemyRendererMob(), { remainingCharge: 600 })
         this.setParent(core, () => {
             const angle = (this.frame / 180) * (this.shieldIndex % 2 ? 1 : -1) + (this.shieldIndex * T) / 4
-            return vec.arg(angle).scaled(200)
+            return vec.arg(angle).scale(200)
         })
     }
 
@@ -148,7 +148,7 @@ class TacticalDrone extends Enemy {
         super(50, 24, new EnemyRendererMob(), { margin: droneIndex * 15 })
         this.setParent(shield, () => {
             const angle = this.frame / 45 + (this.droneIndex * T) / 4
-            return vec.arg(angle).scaled(70)
+            return vec.arg(angle).scale(70)
         })
     }
 

@@ -1,7 +1,7 @@
 import { Bullet } from "../../Game/Bullet/Bullet"
 import { Enemy } from "../../Game/Enemy/Enemy"
 import { Remodel, remodel } from "../../Game/Bullet/Remodel"
-import { vec } from "../../utils/Vec"
+import { vec } from "@ipota/vec"
 import { g, scorenize, T } from "../../global"
 import { Stage } from "../Stage"
 import { SE } from "../../SE"
@@ -66,7 +66,7 @@ class E extends Enemy {
     }
 
     *G() {
-        this.p = this.curve((this.frame - 60) / 720).plus(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 720).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -127,7 +127,7 @@ class E extends Enemy {
     }
 
     private *phase3() {
-        const p = this.p.plus(vec.arg(this.frame).scaled(150))
+        const p = this.p.add(vec.arg(this.frame).scale(150))
 
         remodel()
             .colorful(this.frame)
@@ -172,7 +172,7 @@ class E extends Enemy {
 class Child extends Enemy {
     constructor(parent: Enemy, index: number) {
         super(250, 64)
-        this.setParent(parent, () => vec.arg(this.frame / 90 + T * (index / 3)).scaled(300))
+        this.setParent(parent, () => vec.arg(this.frame / 90 + T * (index / 3)).scale(300))
 
         this.isInvincible = true
     }
