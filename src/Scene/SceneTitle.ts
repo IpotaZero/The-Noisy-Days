@@ -211,17 +211,7 @@ export default class extends Scene {
     private refreshStaminaDisplay(stamina: Stamina = Stamina.load()) {
         this.selector.writeTo("stamina-current", String(stamina.current))
         this.selector.writeTo("stamina-max", String(stamina.max))
-        this.selector.writeTo("stamina-timer", this.formatStaminaTimer(stamina))
-    }
-
-    private formatStaminaTimer(stamina: Stamina): string {
-        if (stamina.isFull) return ""
-
-        const totalSeconds = Math.ceil(stamina.msUntilNextRecover() / 1000)
-        const minutes = Math.floor(totalSeconds / 60)
-        const seconds = totalSeconds % 60
-
-        return `次の回復まで ${minutes}:${String(seconds).padStart(2, "0")}`
+        this.selector.writeTo("stamina-timer", stamina.formatRecoveryTimer())
     }
 
     private setupSetting() {
@@ -389,7 +379,7 @@ export default class extends Scene {
 
         if (!stamina.consume()) {
             this.refreshStaminaDisplay(stamina)
-            alert(`スタミナが足りない。\n${this.formatStaminaTimer(stamina)}`)
+            alert(`スタミナが足りない。\n${stamina.formatRecoveryTimer()}`)
             di.clear()
             return
         }

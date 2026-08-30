@@ -14,6 +14,7 @@ import { ai, di, touch } from "../input"
 import { sc } from "../sceneChanger"
 import { looper } from "../looper"
 import { pageRefocus } from "../focuses"
+import { Stamina } from "../Stamina/Stamina"
 
 export default class SceneStage extends Scene {
     private readonly pages = new Pages()
@@ -136,6 +137,15 @@ export default class SceneStage extends Scene {
     }
 
     private retry() {
+        const stamina = Stamina.load()
+
+        if (!stamina.consume()) {
+            alert(`スタミナが足りない。\n${stamina.formatRecoveryTimer()}`)
+            di.clear()
+            ai.clear()
+            return
+        }
+
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 
         this.stage.reset()

@@ -52,6 +52,17 @@ export class Stamina {
         return Math.max(0, StaminaConfig.RECOVER_INTERVAL_MS - (Date.now() - this.lastUpdatedAt))
     }
 
+    /** 次回復までの残り時間を「次の回復まで M:SS」の形式で返す。満タンなら空文字。 */
+    formatRecoveryTimer(): string {
+        if (this.isFull) return ""
+
+        const totalSeconds = Math.ceil(this.msUntilNextRecover() / 1000)
+        const minutes = Math.floor(totalSeconds / 60)
+        const seconds = totalSeconds % 60
+
+        return `次の回復まで ${minutes}:${String(seconds).padStart(2, "0")}`
+    }
+
     private recover(): void {
         if (this.isFull) {
             this.lastUpdatedAt = Date.now()

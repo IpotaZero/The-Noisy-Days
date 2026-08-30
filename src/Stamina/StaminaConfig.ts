@@ -1,6 +1,6 @@
 export const StaminaConfig = {
     /** スタミナの最大値 */
-    MAX: 5,
+    MAX: 8,
 
     /** ステージ挑戦1回あたりの消費量 */
     COST: 1,
