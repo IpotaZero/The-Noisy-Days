@@ -1,6 +1,7 @@
 import * as lzstring from "lz-string"
 import { defaultConfig, DigitalAction } from "./input"
 import { DigitalInput } from "@ipota/input"
+import { StaminaConfig } from "./Stamina/StaminaConfig"
 
 export class LocalStorage {
     private static readonly KEY = "The Noisy Days!"
@@ -10,6 +11,7 @@ export class LocalStorage {
         swipeRatio: 1,
         volumeBGM: 9,
         volumeSE: 9,
+        stamina: { current: StaminaConfig.MAX, lastUpdatedAt: Date.now() },
 
         config: defaultConfig,
     }
@@ -91,6 +93,17 @@ export class LocalStorage {
         return this.get().config ?? defaultConfig
     }
 
+    static getStamina(): StaminaData {
+        // 旧セーブデータには存在しないフィールドなのでフォールバックする
+        return this.get().stamina ?? { current: StaminaConfig.MAX, lastUpdatedAt: Date.now() }
+    }
+
+    static setStamina(stamina: StaminaData) {
+        const data = this.get()
+        data.stamina = stamina
+        this.set(data)
+    }
+
     static setConfig(value: DigitalInput.Config<DigitalAction>) {
         const data = this.get()
         data.config = value
@@ -107,7 +120,13 @@ type Data = {
     swipeRatio: number
     volumeBGM: number
     volumeSE: number
+    stamina: StaminaData
 
     config: DigitalInput.Config<DigitalAction>
+}
+
+export type StaminaData = {
+    current: number
+    lastUpdatedAt: number
 }
 ;(window as any).LocalStorage = LocalStorage

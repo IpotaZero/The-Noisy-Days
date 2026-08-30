@@ -8,21 +8,21 @@ import { LocalStorage } from "../LocalStorage"
 import { MathEx } from "../utils/Functions/MathEx"
 import { Awaits } from "../utils/Functions/Awaits"
 import { createPage } from "./createPage"
-import { downLoadString } from "../utils/Functions/downLoadString"
-import typia from "typia"
 import { bm } from "../bgm"
 import { Scene } from "../utils/Scene/Scene"
 import { Pages } from "@ipota/pages"
-import { DigitalInput } from "@ipota/input"
-import { di, DigitalAction } from "../input"
 import { sc } from "../sceneChanger"
 import { pageRefocus } from "../focuses"
+import { Stamina } from "../Stamina/Stamina"
+import { di } from "../input"
 
 const FINISHED = 64
 
 export default class extends Scene {
     private readonly pages = new Pages()
     private readonly selector
+
+    private staminaIntervalId?: number
 
     constructor(
         private readonly config: {
@@ -45,6 +45,10 @@ export default class extends Scene {
             // "#load-template": { alias: "load-template" },
 
             ".fullscreen": { alias: "fullscreen" },
+
+            "#stamina-current": { alias: "stamina-current" },
+            "#stamina-max": { alias: "stamina-max" },
+            "#stamina-timer": { alias: "stamina-timer" },
         })
 
         pageRefocus(this.pages)
@@ -95,6 +99,7 @@ export default class extends Scene {
         })
 
         this.setupSetting()
+        this.setupStamina()
         this.lockButtons()
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
@@ -198,6 +203,27 @@ export default class extends Scene {
         button.querySelectorAll(".lock").forEach((e) => e.remove())
     }
 
+    private setupStamina() {
+        this.refreshStaminaDisplay()
+        this.staminaIntervalId = window.setInterval(() => this.refreshStaminaDisplay(), 1000)
+    }
+
+    private refreshStaminaDisplay(stamina: Stamina = Stamina.load()) {
+        this.selector.writeTo("stamina-current", String(stamina.current))
+        this.selector.writeTo("stamina-max", String(stamina.max))
+        this.selector.writeTo("stamina-timer", this.formatStaminaTimer(stamina))
+    }
+
+    private formatStaminaTimer(stamina: Stamina): string {
+        if (stamina.isFull) return ""
+
+        const totalSeconds = Math.ceil(stamina.msUntilNextRecover() / 1000)
+        const minutes = Math.floor(totalSeconds / 60)
+        const seconds = totalSeconds % 60
+
+        return `次の回復まで ${minutes}:${String(seconds).padStart(2, "0")}`
+    }
+
     private setupSetting() {
         const swipeRatio = this.selector.getFirst("swipe-ratio", HTMLNumberElement)
 
@@ -230,6 +256,7 @@ export default class extends Scene {
                 this.setupSetting()
                 this.lockButtons()
                 this.evaluateStageCleared()
+                this.refreshStaminaDisplay()
             }
         })
 
@@ -351,9 +378,24 @@ export default class extends Scene {
 
     async end(): Promise<void> {
         this.pages.dispose()
+
+        if (this.staminaIntervalId !== undefined) {
+            clearInterval(this.staminaIntervalId)
+        }
     }
 
     private async gotoStage(stageIndex: number, stageName: string) {
+        const stamina = Stamina.load()
+
+        if (!stamina.consume()) {
+            this.refreshStaminaDisplay(stamina)
+            alert(`スタミナが足りない。\n${this.formatStaminaTimer(stamina)}`)
+            di.clear()
+            return
+        }
+
+        this.refreshStaminaDisplay(stamina)
+
         SE.start.play()
         bm.fadeOut(1)
 
