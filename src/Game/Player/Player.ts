@@ -9,7 +9,7 @@ import { Ease } from "../../utils/Functions/Ease"
 import { AnalogInput, DigitalInput, TouchTracker } from "@ipota/input"
 
 export class Player {
-    life = 8
+    life: number
     p = vec(0, 0)
     v = vec(0, 0)
 
@@ -36,7 +36,10 @@ export class Player {
         private readonly ai: AnalogInput.Reader<"horizontal" | "vertical">,
         private readonly touch: TouchTracker,
         private readonly scale: number,
-    ) {}
+        initialLife: number,
+    ) {
+        this.life = initialLife
+    }
 
     damage() {
         this.deadFrame = this.DASH_COOL_DOWN

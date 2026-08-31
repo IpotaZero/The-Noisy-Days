@@ -14,7 +14,6 @@ import { Pages } from "@ipota/pages"
 import { sc } from "../sceneChanger"
 import { pageRefocus } from "../focuses"
 import { Stamina } from "../Stamina/Stamina"
-import { di } from "../input"
 
 const FINISHED = 64
 
@@ -375,17 +374,6 @@ export default class extends Scene {
     }
 
     private async gotoStage(stageIndex: number, stageName: string) {
-        const stamina = Stamina.load()
-
-        if (!stamina.consume()) {
-            this.refreshStaminaDisplay(stamina)
-            alert(`スタミナが足りない。\n${stamina.formatRecoveryTimer()}`)
-            di.clear()
-            return
-        }
-
-        this.refreshStaminaDisplay(stamina)
-
         SE.start.play()
         bm.fadeOut(1)
 

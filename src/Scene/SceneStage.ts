@@ -24,7 +24,11 @@ export default class SceneStage extends Scene {
     private gameLogic!: GameLogic
     private renderer!: GameRenderer
 
+    private stamina!: Stamina
+    private initialLife = 0
+
     private isFinished = false
+    private cleared = false
 
     update(): void {
         if (touch.touchesCount() >= 3) {
@@ -64,9 +68,12 @@ export default class SceneStage extends Scene {
 
     private onClear() {
         this.isFinished = true
+        this.cleared = true
         this.pages.enter("clear")
 
-        const rank = g.player.life === 8 ? 2 : 1
+        this.stamina.setCurrent(g.player.life)
+
+        const rank = g.player.life === this.initialLife ? 2 : 1
         LocalStorage.updateClearedStage(this.stageIndex, rank)
     }
 
@@ -80,11 +87,15 @@ export default class SceneStage extends Scene {
         this.selector.onClick("retry", () => this.retry())
         this.initCanvas()
 
+        this.stamina = Stamina.load()
+        this.initialLife = this.stamina.current
+
         g.player = new Player(
             di,
             ai,
             touch,
             (g.width / this.canvasSetup.initialRect.width) * LocalStorage.getSwipeRatio(),
+            this.initialLife,
         )
 
         console.log("#jiu")
@@ -118,7 +129,7 @@ export default class SceneStage extends Scene {
     private backScene() {
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 
-        const index = g.player.life >= 0 ? this.stageIndex : undefined
+        const index = this.cleared ? this.stageIndex : undefined
 
         sc.goto(
             () =>
@@ -137,15 +148,6 @@ export default class SceneStage extends Scene {
     }
 
     private retry() {
-        const stamina = Stamina.load()
-
-        if (!stamina.consume()) {
-            alert(`スタミナが足りない。\n${stamina.formatRecoveryTimer()}`)
-            di.clear()
-            ai.clear()
-            return
-        }
-
         document.querySelectorAll("button").forEach((b) => (b.disabled = true))
 
         this.stage.reset()
@@ -178,6 +180,8 @@ export default class SceneStage extends Scene {
         this.isFinished = true
         this.pages.enter("retry")
         g.player.remove()
+
+        this.stamina.setCurrent(g.player.life)
     }
 
     private selfDestruct() {
@@ -185,8 +189,10 @@ export default class SceneStage extends Scene {
 
         SE.u.play()
         SE.hit.play()
-        g.player.life = -1
+        g.player.life--
         g.effects.push(fireDeleteField(this.canvasSetup.ctx))
+
+        this.onPlayerDead()
     }
 
     private draw() {

@@ -4,8 +4,10 @@ import { StaminaConfig } from "./StaminaConfig"
 /**
  * ソシャゲ的なスタミナ（体力）システム。
  *
- * ステージへの挑戦には一定量のスタミナを消費し、時間経過で自動的に回復する。
- * 経過時間から回復量を都度計算するため、アプリを閉じている間も裏側で回復が進む。
+ * スタミナ＝残機。ステージ挑戦時の初期残機として現在値がそのまま使われ、
+ * 被弾して減った分だけがステージ終了後にスタミナへ反映される（消費した分だけ減る）。
+ * 時間経過で自動的に回復し、経過時間から回復量を都度計算するため、
+ * アプリを閉じている間も裏側で回復が進む。
  */
 export class Stamina {
     private constructor(
@@ -33,17 +35,10 @@ export class Stamina {
         return this._current >= StaminaConfig.MAX
     }
 
-    canConsume(cost: number = StaminaConfig.COST): boolean {
-        return this._current >= cost
-    }
-
-    /** 消費を試みる。足りなければ何もせずfalseを返す。成功したら状態を保存してtrueを返す。 */
-    consume(cost: number = StaminaConfig.COST): boolean {
-        if (!this.canConsume(cost)) return false
-
-        this._current -= cost
+    /** 現在値を直接指定して保存する（0〜MAXにクランプ）。ステージ終了後、残った残機を反映する用途。 */
+    setCurrent(value: number): void {
+        this._current = Math.max(0, Math.min(StaminaConfig.MAX, value))
         this.save()
-        return true
     }
 
     /** 次の1回復までの残り時間(ms)。満タンなら0。 */
