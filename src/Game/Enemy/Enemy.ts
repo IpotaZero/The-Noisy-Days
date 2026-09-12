@@ -1,6 +1,7 @@
 import { Vec, vec } from "@ipota/vec"
 import { g } from "../../global"
 import { Ease } from "../../utils/Functions/Ease"
+import { GeneratorQueue } from "../../utils/GeneratorQueue"
 import { EnemyRendererCore } from "./EnemyRendererCore"
 import { IEnemyRenderer } from "./IEnemyRenderer"
 
@@ -17,7 +18,7 @@ export class Enemy {
     isInvincible = false
 
     readonly renderer: IEnemyRenderer
-    protected g: Generator[] = []
+    protected queue = new GeneratorQueue()
 
     protected margin = 30
 
@@ -39,7 +40,7 @@ export class Enemy {
         this.chargeMax = remainingCharge ?? 0
 
         if ("G" in this) {
-            this.g.push(
+            this.queue.push(
                 function* (this: any) {
                     yield* Array(this.margin)
                     while (1) yield* this.G()
@@ -47,7 +48,7 @@ export class Enemy {
             )
         }
         if ("H" in this) {
-            this.g.push(
+            this.queue.push(
                 function* (this: any) {
                     yield* Array(this.margin)
                     while (1) yield* this.H()
@@ -55,7 +56,7 @@ export class Enemy {
             )
         }
         if ("I" in this) {
-            this.g.push(
+            this.queue.push(
                 function* (this: any) {
                     yield* Array(this.margin)
                     while (1) yield* this.I()
@@ -81,16 +82,7 @@ export class Enemy {
         // 充電カウントダウン
         if (this.chargeRemaining > 0) this.chargeRemaining--
 
-        // map()+filter()は毎フレーム配列を2つ確保していた。実行順序を保ったまま
-        // その場で詰め直す(Bullet.tick()と同じ考え方)
-        let writeIndex = 0
-        for (let readIndex = 0; readIndex < this.g.length; readIndex++) {
-            const gen = this.g[readIndex]
-            if (!gen.next().done) {
-                this.g[writeIndex++] = gen
-            }
-        }
-        this.g.length = writeIndex
+        this.queue.advance()
 
         this.frame++
     }
@@ -105,7 +97,7 @@ export class Enemy {
     }
 
     protected setParent(enemy: Enemy, position: () => Vec) {
-        this.g.push(
+        this.queue.push(
             function* (this: Enemy) {
                 while (1) {
                     if (enemy.life <= 0) {
@@ -123,7 +115,7 @@ export class Enemy {
     protected moveTo(target: Vec, frame: number, easing: Ease.Type = Ease.Out): void[] {
         const start = this.p.clone()
 
-        this.g.push(
+        this.queue.push(
             function* (this: Enemy) {
                 for (let i = 1; i < frame + 1; i++) {
                     this.p = start.add(target.sub(start).scale(easing(i / frame)))
@@ -136,7 +128,7 @@ export class Enemy {
     }
 
     protected funnel(v: Vec) {
-        this.g.push(
+        this.queue.push(
             function* (this: Enemy) {
                 while (1) {
                     if (this.p.x < -g.width / 2) {
@@ -173,7 +165,7 @@ export class Enemy {
 
         this.r = 0
 
-        this.g.push(
+        this.queue.push(
             function* (this: Enemy) {
                 for (let i = 1; i < 15 + 1; i++) {
                     this.r = r * Ease.InOut(i / 15)

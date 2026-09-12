@@ -661,7 +661,7 @@ class DeployedMine extends Enemy {
         super(20, 32, new EnemyRendererMine())
         this.p = pos
 
-        this.g.push(this.physics(angle))
+        this.queue.push(this.physics(angle))
 
         this.mine(
             90,

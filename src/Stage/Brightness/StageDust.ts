@@ -287,7 +287,7 @@ class DetachedTail extends Enemy {
         this.moveTo(head.p, 30)
         this.isInvincible = true
 
-        this.g.push(
+        this.queue.push(
             function* (this: Enemy) {
                 for (let i = 1; i < 31; i++) {
                     this.r = (i / 30) * 28

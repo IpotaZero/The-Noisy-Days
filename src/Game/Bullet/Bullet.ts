@@ -1,6 +1,7 @@
 import { g } from "../../global"
 import { vec } from "@ipota/vec"
 import { Player } from "./../Player/Player"
+import { GeneratorQueue } from "../../utils/GeneratorQueue"
 
 type GS = {
     g: (me: Bullet, index: number) => Generator
@@ -25,7 +26,7 @@ export class Bullet {
     type = Bullet.Type.Enemy
     scorenizable = true
 
-    private g: Generator[] = []
+    private queue = new GeneratorQueue()
     private gs: GS[] = []
 
     scorenize(player: Player) {
@@ -35,11 +36,11 @@ export class Bullet {
         this.alpha = 0.6
         this.delay = 0
         this.appearance = Bullet.Appearance.Score
-        this.g = [this.move(), this.boundary(), this.homing(player)]
+        this.queue.reset([this.move(), this.boundary(), this.homing(player)])
     }
 
     init() {
-        this.g = [
+        this.queue.reset([
             this.move(),
             this.boundary(),
             ...this.gs.map(({ g, index }) =>
@@ -48,21 +49,11 @@ export class Bullet {
                     yield* g(this, index)
                 }.bind(this)(),
             ),
-        ]
+        ])
     }
 
     tick() {
-        // filter()は毎フレーム新しい配列を確保する。大半のジェネレータはwhile(1)で
-        // 終わらないため、実行順序(move→boundary→独自g)を保ったまま同じ配列を
-        // その場で詰め直し、実際に何か終了した時だけ配列を縮める
-        let writeIndex = 0
-        for (let readIndex = 0; readIndex < this.g.length; readIndex++) {
-            const gen = this.g[readIndex]
-            if (!gen.next().done) {
-                this.g[writeIndex++] = gen
-            }
-        }
-        this.g.length = writeIndex
+        this.queue.advance()
     }
 
     G(gs: GS) {
@@ -74,7 +65,7 @@ export class Bullet {
 
         b.p = this.p.clone()
         b.gs = [...this.gs]
-        b.g = [...this.g]
+        b.queue = this.queue.clone()
 
         return b
     }

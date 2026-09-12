@@ -138,7 +138,7 @@ class MineLayFunnel extends Enemy {
         super(250, 24, new EnemyRendererFunnel(), { remainingCharge: 360 })
         this.p = vec(0, 0)
 
-        this.g.push(this.a())
+        this.queue.push(this.a())
     }
 
     *G() {

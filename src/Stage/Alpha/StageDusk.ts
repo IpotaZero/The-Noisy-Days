@@ -124,7 +124,7 @@ class TrailFunnel extends Enemy {
         this.speed = vec(Math.cos(baseAngle) * spd, Math.sin(baseAngle) * spd)
 
         this.p = core.p.add(vec.arg(baseAngle).scale(150))
-        this.g.push(this.movement())
+        this.queue.push(this.movement())
     }
 
     // 移動と軌跡生成を担うジェネレータ

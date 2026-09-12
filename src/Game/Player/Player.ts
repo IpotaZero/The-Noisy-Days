@@ -7,6 +7,7 @@ import { SE } from "../../SE"
 import { Ctx } from "../../utils/Functions/Ctx"
 import { Ease } from "../../utils/Functions/Ease"
 import { AnalogInput, DigitalInput, TouchTracker } from "@ipota/input"
+import { GeneratorQueue } from "../../utils/GeneratorQueue"
 
 export class Player {
     life: number
@@ -26,7 +27,7 @@ export class Player {
 
     private readonly renderer = new PlayerRenderer()
 
-    private gs: Generator[] = []
+    private readonly effects = new GeneratorQueue()
 
     frame = 0
     isDead = false
@@ -64,7 +65,7 @@ export class Player {
 
     draw(ctx: CanvasRenderingContext2D) {
         this.renderer.draw(ctx, this)
-        this.gs = this.gs.filter((g) => !g.next().done)
+        this.effects.advance()
     }
 
     // ----------------------------------------------------------------
@@ -79,7 +80,7 @@ export class Player {
             this.dashCoolDown--
             if (this.dashCoolDown === 0) {
                 SE.charge.play()
-                this.gs.push(this.charge(ctx))
+                this.effects.push(this.charge(ctx))
             }
         }
     }
