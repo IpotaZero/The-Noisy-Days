@@ -1,21 +1,22 @@
 {
-  "type": "module",
-  "dependencies": {
-    "@ipota/bgm-manager": "^1.0.3",
-    "@ipota/focuses": "^1.0.3",
-    "@ipota/input": "^1.0.8",
-    "@ipota/pages": "^1.0.2",
-    "@ipota/vec": "^1.0.4",
-    "lz-string": "^1.5.0",
-    "typia": "^12.0.2",
-    "vite": "^8.0.0"
-  },
-  "devDependencies": {
-    "@typia/unplugin": "^12.0.2",
-    "ts-patch": "^3.3.0",
-    "typescript": "~5.9.3"
-  },
-  "scripts": {
-    "prepare": "ts-patch install"
-  }
+    "type": "module",
+    "dependencies": {
+        "@ipota/bgm-manager": "^1.0.3",
+        "@ipota/focuses": "^1.0.3",
+        "@ipota/input": "^1.0.8",
+        "@ipota/pages": "^1.0.2",
+        "@ipota/vec": "^1.0.4",
+        "lz-string": "^1.5.0",
+        "typia": "^12.0.2",
+        "vite": "^8.0.0"
+    },
+    "devDependencies": {
+        "@typia/unplugin": "^12.0.2",
+        "ts-patch": "^3.3.0",
+        "typescript": "~5.9.3"
+    },
+    "scripts": {
+        "prepare": "ts-patch install",
+        "start": "npx vite build --watch"
+    }
 }

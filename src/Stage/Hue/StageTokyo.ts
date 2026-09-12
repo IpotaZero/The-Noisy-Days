@@ -106,7 +106,7 @@ class EnemyTutorial extends Enemy {
 class Child extends Enemy {
     constructor(parent: Enemy) {
         super(300, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(this.frame / 60).scale(150))
+        this.setParent(parent, () => vec.arg(this.frame / 360).scale(150))
         this.isInvincible = true
     }
 

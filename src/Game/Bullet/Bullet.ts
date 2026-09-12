@@ -52,7 +52,17 @@ export class Bullet {
     }
 
     tick() {
-        this.g = this.g.filter((g) => !g.next().done)
+        // filter()は毎フレーム新しい配列を確保する。大半のジェネレータはwhile(1)で
+        // 終わらないため、実行順序(move→boundary→独自g)を保ったまま同じ配列を
+        // その場で詰め直し、実際に何か終了した時だけ配列を縮める
+        let writeIndex = 0
+        for (let readIndex = 0; readIndex < this.g.length; readIndex++) {
+            const gen = this.g[readIndex]
+            if (!gen.next().done) {
+                this.g[writeIndex++] = gen
+            }
+        }
+        this.g.length = writeIndex
     }
 
     G(gs: GS) {

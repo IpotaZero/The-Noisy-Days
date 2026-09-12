@@ -44,7 +44,7 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 240).add(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 480).add(vec(0, -g.height / 4))
         yield
     }
 }

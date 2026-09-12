@@ -40,7 +40,7 @@ class E extends Enemy {
     }
 
     *G() {
-        this.p = this.curve(this.frame / 240).add(vec(0, -g.height / 4))
+        this.p = this.curve(this.frame / 720).add(vec(0, -g.height / 4))
         yield
     }
 
@@ -72,7 +72,7 @@ class Child extends Enemy {
         private readonly index: number,
     ) {
         super(200, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(this.frame / 30 + T * (index / 3)).scale(150))
+        this.setParent(parent, () => vec.arg(this.frame / 180 + T * (index / 3)).scale(150))
     }
 
     *G() {

@@ -57,7 +57,7 @@ class E extends Enemy {
 class Child extends Enemy {
     constructor(parent: Enemy) {
         super(200, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(this.frame / 30).scale(150))
+        this.setParent(parent, () => vec.arg(this.frame / 180).scale(150))
     }
 
     *G() {

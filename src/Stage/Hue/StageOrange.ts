@@ -49,7 +49,7 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 120).add(vec(0, -g.height / 4))
+        this.p = this.curve((this.frame - 60) / 240).add(vec(0, -g.height / 4))
         yield
     }
 }
@@ -57,7 +57,7 @@ class E extends Enemy {
 class Child extends Enemy {
     constructor(parent: Enemy) {
         super(200, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(this.frame / 30).scale(150 * Math.sin(this.frame / 30)))
+        this.setParent(parent, () => vec.arg(this.frame / 360).scale(150 * Math.sin(this.frame / 30)))
     }
 
     *G() {

@@ -59,7 +59,10 @@ class E extends Enemy {
     }
 
     *H() {
-        this.p = this.curve((this.frame - 60) / 960).add(vec(0, -g.height / 4))
+        // 元は/960。半分の速さにするため分母を2倍(*2)。
+        // this.frameは実tick数そのままなので、tick60で(60-60)=0は分母に関係なく成立し、
+        // moveTo(60フレーム)からの引き継ぎは常に連続(ワープしない)
+        this.p = this.curve((this.frame - 60) / 1920).add(vec(0, -g.height / 4))
         yield
     }
 }
@@ -72,7 +75,8 @@ class Child0 extends Enemy {
         private readonly index: number,
     ) {
         super(200, 48, new EnemyRendererMob())
-        this.setParent(parent, () => vec.arg(T * (this.frame / 360) + (T / 4) * index).scale(150))
+        // 元は/360。半分の速さにするため分母を2倍
+        this.setParent(parent, () => vec.arg(T * (this.frame / 720) + (T / 4) * index).scale(150))
     }
 
     *G() {
@@ -102,7 +106,8 @@ class Child0 extends Enemy {
 class Child2 extends Enemy {
     constructor(parent: Enemy, index: number) {
         super(50, 32, new EnemyRendererMob())
-        this.setParent(parent, () => Curves.hypotrochoid(300, 180, 300)(this.frame / 18 + (T / 4) * index))
+        // 元は/18。半径が大きく体感速度が出やすいので、Child0より強めに落とす(/18 -> /120 ≒ 6.7倍減速)
+        this.setParent(parent, () => Curves.hypotrochoid(300, 180, 300)(this.frame / 120 + (T / 4) * index))
     }
 
     *G() {

@@ -81,8 +81,17 @@ export class Enemy {
         // 充電カウントダウン
         if (this.chargeRemaining > 0) this.chargeRemaining--
 
-        const done = this.g.map((g) => g.next().done)
-        this.g = this.g.filter((_, i) => !done[i])
+        // map()+filter()は毎フレーム配列を2つ確保していた。実行順序を保ったまま
+        // その場で詰め直す(Bullet.tick()と同じ考え方)
+        let writeIndex = 0
+        for (let readIndex = 0; readIndex < this.g.length; readIndex++) {
+            const gen = this.g[readIndex]
+            if (!gen.next().done) {
+                this.g[writeIndex++] = gen
+            }
+        }
+        this.g.length = writeIndex
+
         this.frame++
     }
 

@@ -5,6 +5,7 @@ import { Ease } from "../../utils/Functions/Ease"
 import { Enemy } from "../Enemy/Enemy"
 import { NumberKeys } from "../../utils/UtilTypes"
 import { GenUtils } from "../../utils/GeneratorUtils"
+import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 
 export const remodel = (e?: Enemy) =>
     new Proxy(new Remodel([new Bullet()], e), {
@@ -20,6 +21,8 @@ export const remodel = (e?: Enemy) =>
 type Mod = Remodel & {
     [key in keyof Bullet]: (value: Bullet[key]) => Mod
 }
+
+const colorResolution = isSmartPhone ? 16 : 4
 
 export class Remodel {
     constructor(
@@ -104,7 +107,7 @@ export class Remodel {
     }
 
     colorful(seed: number) {
-        return this.set("color", `hsl(${seed % 360} 100% 50%)`)
+        return this.set("color", `hsl(${(Math.floor(seed / colorResolution) * colorResolution) % 360} 100% 50%)`)
     }
 
     aim(target: Vec) {
