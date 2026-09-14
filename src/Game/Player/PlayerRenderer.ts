@@ -229,9 +229,15 @@ export class PlayerRenderer {
     private drawWings(ctx: CanvasRenderingContext2D, player: Player): void {
         const { p } = player
 
+        // Y軸の振動とScaleY（縦の伸縮）の振動を加える例
+        const phase = player.frame % 2 === 0 ? 1 : -1
+        const offsetY = phase * 3 // 上下に3px振る
+        const scaleY = 1 + phase * 0.08 // ほんの少し縦に伸び縮みさせる
+
         ctx.save()
+        ctx.translate(p.x, p.y + offsetY)
+        ctx.scale(1, scaleY)
         ctx.globalAlpha = 0.6
-        ctx.translate(p.x, p.y)
         ctx.rotate((player.v.x / 20) * T * 0.01)
         ctx.translate(-256, -40)
 

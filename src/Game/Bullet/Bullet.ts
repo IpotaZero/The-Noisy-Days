@@ -113,6 +113,7 @@ export namespace Bullet {
         Line,
         Arrow,
         Beam,
+        Laser,
 
         Player,
         Score,

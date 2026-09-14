@@ -60,7 +60,59 @@ export class Player {
         this.move()
         this.tickFrames(ctx)
         this.fire()
+        this.emitScaleParticles(ctx)
         this.frame++
+    }
+
+    private emitScaleParticles(ctx: CanvasRenderingContext2D) {
+        if (this.v.magnitude() < 0.1 && !this.isDead) return
+
+        const isDashing = this.dashFrame > 0
+
+        const count = isDashing ? 2 : 1
+        for (let i = 0; i < count; i++) {
+            this.effects.push(this.createScaleParticle(ctx, isDashing))
+        }
+    }
+
+    private *createScaleParticle(ctx: CanvasRenderingContext2D, isDashing: boolean) {
+        // 時間を少し長めにして、隙間の中に存在感を残す (20〜30フレーム)
+        const maxFrame = isDashing ? 30 : 20
+
+        // 自機の中心付近から発生（ブレを抑えてくっきり見せる）
+        const offset = vec((Math.random() - 0.5) * this.GRAZE_R * 8, (Math.random() - 0.5) * this.GRAZE_R * 4)
+        let p = this.p.add(offset)
+
+        // 初速も控えめにして自機の軌跡上に残るようにする
+        let vx = (Math.random() - 0.5) * 8 - this.v.x * 0.05
+        let vy = (Math.random() - 0.5) * 8 - this.v.y * 0.05
+
+        const size = Math.random() * 2 + 3
+        let angle = Math.random() * T
+        const angularVelocity = (Math.random() - 0.5) * 0.1 // ゆっくり回転
+
+        for (let i = 0; i < maxFrame; i++) {
+            // アルファ値を高くして色を濃く保つ (初期値 0.85)
+            const alpha = (1 - i / maxFrame) * 0.35
+
+            ctx.save()
+            ctx.globalAlpha = alpha
+
+            const color = "#e0e0e0"
+
+            // 塗りつぶしの三角形を描画
+            Ctx.polygon(ctx, 3, 1, p.l, size, color, {
+                theta: angle,
+            })
+            ctx.restore()
+
+            p = p.add(vec(vx, vy))
+            vx *= 0.96
+            vy *= 0.96
+            angle += angularVelocity
+
+            yield
+        }
     }
 
     draw(ctx: CanvasRenderingContext2D) {
@@ -203,6 +255,7 @@ export class Player {
             .radian(-T / 4)
             .speed(48)
             .nway(5, T / 48)
+            .inertia(this.v.scale(0.5))
             .fire()
     }
 
@@ -216,6 +269,7 @@ export class Player {
             .radian(-T / 4)
             .speed(48)
             .shift(5, this.GRAZE_R / 2)
+            .inertia(this.v.scale(0.5))
             .fire()
     }
 

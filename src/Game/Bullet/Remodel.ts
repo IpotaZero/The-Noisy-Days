@@ -95,6 +95,14 @@ export class Remodel {
         }
     }
 
+    inertia(v: Vec) {
+        return this.forEach((me) => {
+            const velocity = vec.arg(me.radian).scale(me.speed).add(v)
+            me.speed = velocity.magnitude()
+            me.radian = velocity.radian()
+        })
+    }
+
     delayByIndex(scalar = 1) {
         return this.forEach((me, index) => {
             me.alpha = 0
@@ -238,7 +246,7 @@ export class Remodel {
             .alpha(0)
             .r(2)
             .color("yellow")
-            .appearance(Bullet.Appearance.Beam)
+            .appearance(Bullet.Appearance.Laser)
             .collision(Bullet.Collision.Rect)
             .scorenizable(false)
             .g(function* (me) {
