@@ -15,21 +15,21 @@ const WarmStages = [
 ]
 
 const CoolStages = [
-    { "stage-name": "シオン", "description": "シオン・シマについて" },
+    { "stage-name": "シオン", "description": "第一話" },
     { "stage-name": "Cyan", "description": "扇状" },
     { "stage-name": "Blue", "description": "針" },
     { "stage-name": "Navy", "description": "隘路" },
 ]
 
 const NeutralStages = [
-    { "stage-name": "SILO", "description": "逆説的措置" },
+    { "stage-name": "SILO", "description": "第二話" },
     { "stage-name": "Green", "description": "単純な自機狙い" },
     { "stage-name": "Purple", "description": "画面端で跳ね返る自機狙い" },
     { "stage-name": "Violet", "description": "区切られた領域に3-wayを打ち込む" },
 ]
 
 const AchromaticStages = [
-    { "stage-name": "機械大戦", "description": "歴史" },
+    { "stage-name": "機械大戦", "description": "第三話" },
     { "stage-name": "White", "description": "単純に数の多い自機狙い" },
     { "stage-name": "Gray", "description": "真下に小粒をばらまく" },
     {
