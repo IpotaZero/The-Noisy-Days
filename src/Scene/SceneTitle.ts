@@ -35,6 +35,7 @@ export default class extends Scene {
             "[data-stage]": { alias: "stage-button", expectedCount: 64 },
             ".act-button": { alias: "act-button", expectedCount: 16 },
             ".chapter-button": { alias: "chapter-button", expectedCount: 4 },
+            ".memo-button": { alias: "memo-button", expectedCount: 16 },
 
             "#swipe-ratio": { alias: "swipe-ratio" },
             "#volume-bgm": { alias: "volume-bgm" },
@@ -76,6 +77,14 @@ export default class extends Scene {
             if (!stageName) throw new Error("Stage name is missing")
 
             this.gotoStage(index, stageName)
+        })
+
+        this.selector.onClick("memo-button", ({ element }) => {
+            const chapterName = element.dataset.memoChapter
+            const actName = element.dataset.memoAct
+            if (!chapterName || !actName) throw new Error("Memo data is missing")
+
+            this.gotoMemo(chapterName, actName)
         })
 
         this.selector.onClick("fullscreen", () => {
@@ -392,6 +401,30 @@ export default class extends Scene {
                 const scene = await import(`./SceneStage`).then(
                     (module) => new module.default(stageIndex, stage, this.pages.getHistory()),
                 )
+                return scene
+            },
+            {
+                msIn: 1000,
+                msOut: 1000,
+            },
+        )
+    }
+
+    private async gotoMemo(chapterName: string, actName: string) {
+        SE.start.play()
+        bm.fadeOut(1)
+
+        document.querySelectorAll("button").forEach((b) => (b.disabled = true))
+
+        sc.goto(
+            async () => {
+                // @ts-ignore
+                const modules = import.meta.glob("../Stage/Memo/*/*")
+                const url = `../Stage/Memo/${chapterName}/${actName}.ts`
+                const { default: Stage } = await modules[url]()
+
+                const stage = new Stage()
+                const scene = await import(`./SceneMemo`).then((module) => new module.default(stage, this.pages.getHistory()))
                 return scene
             },
             {
