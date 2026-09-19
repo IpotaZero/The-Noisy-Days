@@ -34,7 +34,7 @@ const AchromaticStages = [
     { "stage-name": "Gray", "description": "真下に小粒をばらまく" },
     {
         "stage-name": "Black",
-        "description": "スナガワ",
+        "description": "コウダ",
     },
 ]
 

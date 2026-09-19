@@ -46,14 +46,16 @@ export default class extends Stage {
         // マス初登場
         yield* this.text(`「よーお、お手柄じゃあないの。さっすが、合成人。」`, { name: "マス" })
         yield* this.text(`「その言い方、好きじゃないし嫌いだよ。何の用かな、新聞屋さん。」`, { name: "シオン" })
-        yield* this.text(`作戦から帰った恰好のまま、少女は床で伸びていた。`)
+        yield* this.text(`少女は気だるげに床で伸びている。`)
         yield* this.text(`「悪ぃ悪ぃ。で、此度の戦闘はどうでした?」`, { name: "マス" })
-        yield* this.text(`懐から煙草を取り出して火を点けると、少女はこちらへ距離を詰めてきた。`)
+        yield* this.text(`マスが懐から煙草を取り出して火を点けると、少女はマスへ距離を詰める。`)
         yield* this.text(`「あたしにもくれない?」`, { name: "シオン" })
         yield* this.text(`「あんた、何歳だっけ。」`, { name: "マス" })
         yield* this.text(`「十三。」`, { name: "シオン" })
         yield* this.text(`「へぇー。サーティーン。世も末だね。」`, { name: "マス" })
         yield* this.text(`テントの中に二本の紫煙が立ち上る。`)
+
+        yield* this.wait(30)
 
         // 次の戦闘への接続
         yield* this.text(`テントの外で、誰かが叫んだ。`)
