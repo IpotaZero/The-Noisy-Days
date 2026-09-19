@@ -6,7 +6,7 @@
     flex-direction: column;
 
     height: 100%;
-    aspect-ratio: 9/16;
+    aspect-ratio: 8/16;
 
     background-color: var(--black);
     border: 1px solid var(--white);
@@ -20,7 +20,7 @@
 }
 
 /* スマホ用 */
-@media (aspect-ratio<=9/16) {
+@media (aspect-ratio<=8/16) {
     #container {
         aspect-ratio: unset;
         width: 100%;

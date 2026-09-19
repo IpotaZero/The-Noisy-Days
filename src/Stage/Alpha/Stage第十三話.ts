@@ -25,7 +25,5 @@ export default class extends Stage {
 
         yield* this.text(`「……あたしの話、してるんだよね。」`, { name: "シオン" })
         yield* this.text(`誰も答えなかった。`)
-
-        yield* this.text(`結局、作戦は変わらなかった。<br>少女の意思は、最初から数に入っていなかったのだと、その時初めて分かった。`)
     }
 }

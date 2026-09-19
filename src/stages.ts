@@ -63,31 +63,31 @@ const HueActs = [
 
 // Chapter 1: Saturation
 const VividStages = [
-    { "stage-name": "アオ", "description": "アオ・ササキに対するインタビュー" },
+    { "stage-name": "第四話", "description": "第四話" },
     { "stage-name": "Scarlet", "description": "円環と自機狙い" },
     { "stage-name": "Cobalt", "description": "絨毯爆撃と自機狙い" },
     { "stage-name": "Gold", "description": "薄く区切られた領域と自機狙い" },
 ]
 
 const MutedStages = [
-    { "stage-name": "ヤナガワ", "description": "シュンスケ・ヤナガワとの密談" },
+    { "stage-name": "第五話", "description": "第五話" },
     { "stage-name": "Rust", "description": "中心に寄せる" },
     { "stage-name": "Khaki", "description": "中心に寄せた" },
     { "stage-name": "Olive", "description": "中心" },
 ]
 
 const PaleStages = [
-    { "stage-name": "レイ", "description": "クラスメイト" },
+    { "stage-name": "第六話", "description": "第六話" },
     { "stage-name": "Blush", "description": "花と虫" },
     { "stage-name": "Sage", "description": "雨と花粉" },
     { "stage-name": "Lavender", "description": "怖くない" },
 ]
 
 const DullStages = [
-    { "stage-name": "合成人", "description": "初対面" },
+    { "stage-name": "第七話", "description": "第七話" },
     { "stage-name": "Mud", "description": "拳" },
     { "stage-name": "Moss", "description": "回る/回らない" },
-    { "stage-name": "Soot", "description": "イシカワ" },
+    { "stage-name": "Soot", "description": "コウダ" },
 ]
 
 const SaturationActs = [
@@ -99,31 +99,31 @@ const SaturationActs = [
 
 // Chapter 2: Brightness
 const LightStages = [
-    { "stage-name": "犠牲", "description": "SILOの存在意義" },
+    { "stage-name": "第八話", "description": "第八話" },
     { "stage-name": "Pearl", "description": "乱視" },
     { "stage-name": "Ivory", "description": "二重" },
     { "stage-name": "Snow", "description": "泳ぐ" },
 ]
 
 const DarkStages = [
-    { "stage-name": "一ヶ月前その1", "description": "クラスメイト" },
+    { "stage-name": "第九話", "description": "第九話" },
     { "stage-name": "Obsidian", "description": "オーソドックス" },
     { "stage-name": "Noir", "description": "気にしない" },
     { "stage-name": "Pitch", "description": "焼野原" },
 ]
 
 const HighStages = [
-    { "stage-name": "一ヶ月前その2", "description": "TAMAMUSHI" },
+    { "stage-name": "第十話", "description": "第十話" },
     { "stage-name": "Amber", "description": "ねじ" },
     { "stage-name": "Vermilion", "description": "死なないと思っていた" },
     { "stage-name": "Lime", "description": "裏切る" },
 ]
 
 const LowStages = [
-    { "stage-name": "隣", "description": "レイ・コウダ" },
+    { "stage-name": "第十一話", "description": "第十一話" },
     { "stage-name": "Fog", "description": "だめ" },
     { "stage-name": "Stone", "description": "あわ" },
-    { "stage-name": "Dust", "description": "サカイ" },
+    { "stage-name": "Dust", "description": "コウダ" },
 ]
 
 const BrightnessActs = [
@@ -135,31 +135,31 @@ const BrightnessActs = [
 
 // Chapter 3: Alpha
 const ClearStages = [
-    { "stage-name": "勇気", "description": "ではない" },
+    { "stage-name": "第十二話", "description": "第十二話" },
     { "stage-name": "Glass", "description": "動かない" },
     { "stage-name": "Ice", "description": "滑った" },
     { "stage-name": "Haze", "description": "逆二乗" },
 ]
 
 const TranslucentStages = [
-    { "stage-name": "人", "description": "とは" },
+    { "stage-name": "第十三話", "description": "第十三話" },
     { "stage-name": "Veil", "description": "焦点" },
     { "stage-name": "Frost", "description": "化身" },
     { "stage-name": "Dusk", "description": "巡る" },
 ]
 
 const OpaqueStages = [
-    { "stage-name": "心", "description": "色即是空" },
+    { "stage-name": "第十四話", "description": "第十四話" },
     { "stage-name": "Lead", "description": "ブレ" },
     { "stage-name": "Clay", "description": "虹彩" },
     { "stage-name": "Tar", "description": "協力" },
 ]
 
 const LuminousStages = [
-    { "stage-name": "信じましたが", "description": "戦争" },
+    { "stage-name": "第十五話", "description": "第十五話" },
     { "stage-name": "Phosphor", "description": "変わりゆく" },
     { "stage-name": "Glow", "description": "拒絶" },
-    { "stage-name": "Dawn", "description": "言いたくなかったけれど" },
+    { "stage-name": "Dawn", "description": "コウダ" },
 ]
 
 const AlphaActs = [
