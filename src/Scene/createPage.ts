@@ -93,17 +93,10 @@ function createActPage(chapterName: string, act: Act): string {
             </section>
 
             <div class="options" data-direction="column">
-                ${act["stages"].map(createStageButton).join("")}
-            </div>
-
-            <div class="options" data-direction="row">
-                <button class="button memo-button" data-memo-chapter="${chapterName}" data-memo-act="${act["act-name"]}">
-                    <section>
-                        <div class="title">
-                            <span class="name">マスの手記</span>
-                        </div>
-                    </section>
+                <button class="memo-button" data-memo-chapter="${chapterName}" data-memo-act="${act["act-name"]}">
+                    マスの手記
                 </button>
+                ${act["stages"].map(createStageButton).join("")}
             </div>
 
             <div class="options" data-direction="row"><button data-back>Back</button></div>

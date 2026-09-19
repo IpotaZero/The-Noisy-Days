@@ -4,18 +4,28 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        // 親であり、友である
+        yield* this.text(`アオがいなくなってから、テントの中の声はいつも尖っていた。`)
+        yield* this.text(`「今度は南だ。SILOの補給線を叩く。看板も連れて行く。」`, { name: "TAMAMUSHIの男" })
+        yield* this.text(`「補給線の裏は住宅区だぞ。」`, { name: "テル" })
+        yield* this.text(`「上等だ。アオを殺ったのはあっち側だ。」`, { name: "TAMAMUSHIの男" })
 
-        yield* this.text("「ねえ新聞屋さん。合成人って、何なのかな。」", { name: "シオン" })
-        yield* this.text("テントの中、シオンはだらしなく寝転びながらマスに問を投げる。")
-        yield* this.text("「そりゃあ、あんたが一番良く分かるんじゃないのか?」", { name: "マス" })
-        yield* this.text("「知りたいのはさ、変位なんだよ。原点を知らないと知りようがない。」", { name: "シオン" })
-        yield* this.text("「要するに、人とは何か、か。」", { name: "マス" })
-        yield* this.text("「そう。」", { name: "シオン" })
-        yield* this.text("「そうだな……。人にだって勘が良いやつ悪いやつ、居るよな。」", { name: "マス" })
-        yield* this.text("「パラメタは無数にあって、平均値はきっと意味をなさない。戦闘機の話知ってるか。」", { name: "マス" })
-        yield* this.text("「俺たちは大きな揺らぎの中の一点に過ぎない。合成人は外れ値かもしれないけどな、同じなんだよ。」", { name: "マス" })
-        yield* this.text("「……。」", { name: "シオン" })
-        yield* this.text("「つまんねー……。」", { name: "シオン" })
+        yield* this.text(`少女は初めて聞く話だった。`)
+        yield* this.text(`「ちょっと待って。看板って、あたしのこと?」`, { name: "シオン" })
+        yield* this.text(`「決まってるだろ。TAMAMUSHIの顔が出りゃ、住民だって多少は黙る。」`, { name: "TAMAMUSHIの男" })
+
+        yield* this.text(`「あたしは行くなんて言ってない。」`, { name: "シオン" })
+        yield* this.text(`「言う必要ない。決まったことだ。」`, { name: "TAMAMUSHIの男" })
+
+        yield* this.text(`テルが割って入った。`)
+        yield* this.text(`「本人の意思も聞かずに勝手に……」`, { name: "テル" })
+        yield* this.text(`「お前が甘やかしすぎたんだよ、テル。」`, { name: "TAMAMUSHIの男" })
+
+        yield* this.text(`二人は睨み合ったまま、しばらく動かなかった。<br>その間、少女に話しかける者は誰もいなかった。`)
+        yield* this.text(`まるで、そこに置物でもあるかのように。`)
+
+        yield* this.text(`「……あたしの話、してるんだよね。」`, { name: "シオン" })
+        yield* this.text(`誰も答えなかった。`)
+
+        yield* this.text(`結局、作戦は変わらなかった。<br>少女の意思は、最初から数に入っていなかったのだと、その時初めて分かった。`)
     }
 }

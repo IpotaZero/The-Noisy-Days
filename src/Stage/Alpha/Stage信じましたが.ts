@@ -4,21 +4,32 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        yield* this.text("「ササキさん。」")
-        yield* this.text("「あなたは───待ってください!」", { name: "ササキ" })
-        yield* this.text("何の変哲もない主婦が、その手に光線銃を構えている。")
-        yield* this.text("「どうして、本当に、戦争なんて!」")
-        yield* this.text("「我々は話せば分かる!」", { name: "ササキ" })
-        yield* this.text("「私にも子供が居るのよ!」")
-        yield* this.wait(30)
-        yield* this.text("(熱い。)", { name: "ササキ" })
-        yield* this.wait(30)
-        yield* this.text("2XXX年 9月 アオ・ササキ 死亡")
-        yield* this.text("実行犯は合成人の主婦であった。")
+        yield* this.text(`「よお。」`, { name: "マス" })
+        yield* this.text(`「……新聞屋さん、茶化しに来た?」`, { name: "シオン" })
+        yield* this.text(`「いや。」`, { name: "マス" })
+        yield* this.text(`珍しく、マスは煙草に火を点けなかった。`)
 
-        // 信じましたが死んじまいました、ね
-        // 分かり合えない、ということ
-        // それはこの物語世界に於ける真理である
-        // それだけは表現しなくてはならなかった
+        yield* this.text(`「アオに、最後に取材した時のこと、話してなかったよな。」`, { name: "マス" })
+        yield* this.text(`「聞きたくない。」`, { name: "シオン" })
+        yield* this.text(`「勝手に話す。」`, { name: "マス" })
+
+        yield* this.text(`「……あいつは、最後まで人は分かり合えるって言ってたぜ。」`, { name: "マス" })
+        yield* this.text(`「……そうだろうね。でも、そうじゃなかったんだ。」`, { name: "シオン" })
+        yield* this.text(`「だが、あいつはそれを信じて、あの女に手を伸ばしたまま死んだ。」`, { name: "マス" })
+        yield* this.text(`「……。」`, { name: "シオン" })
+        yield* this.text(`「…………。」`, { name: "シオン" })
+        yield* this.text(`「……あたしも、分かり合えると思ってた。きっとみんな、分かり合おうとすれば分かり合えると思ってたんだ。」`, { name: "シオン" })
+        yield* this.text(`「だけど、ほんとはそんなことはなくて、あたし達は傷つけあうばかりだって、知った。」`, { name: "シオン" })
+        yield* this.text(`「ならいっそ、SILOに飲み込まれた方が幸せか?」`, { name: "マス" })
+        yield* this.text(`「それがダメだってことは歴史が証明してる。でも、じゃあ、」`, { name: "シオン" })
+        yield* this.text(`少女はそこで言葉に詰まった。`)
+        yield* this.text(`マスは急かさなかった。ただ、待った。`)
+
+        yield* this.text(`「……傷つけあうのは、たぶん、やめられない。」`, { name: "シオン" })
+        yield* this.text(`「ああ。」`, { name: "マス" })
+        yield* this.text(`「だったら、せめて。」`, { name: "シオン" })
+
+        yield* this.text(`その先は、言葉にならなかった。`)
+        yield* this.text(`それでも、少女の中で何かが、静かに決まった。`)
     }
 }

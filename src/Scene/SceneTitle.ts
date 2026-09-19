@@ -109,6 +109,7 @@ export default class extends Scene {
         this.setupSetting()
         this.setupStamina()
         this.lockButtons()
+        this.lockMemoButtons()
         this.evaluateStageCleared()
         this.setupUnlockAnimation()
         this.unlockStage()
@@ -253,6 +254,7 @@ export default class extends Scene {
                 alert("データを初期化した")
                 this.setupSetting()
                 this.lockButtons()
+                this.lockMemoButtons()
                 this.evaluateStageCleared()
                 this.refreshStaminaDisplay()
             }
@@ -302,6 +304,21 @@ export default class extends Scene {
         this.selector.getAll("chapter-button", HTMLButtonElement).forEach((button, index) => {
             if (index > firstUnclearedChapter) {
                 this.lock(button)
+            }
+        })
+    }
+
+    private lockMemoButtons() {
+        const stages = LocalStorage.getStages()
+
+        this.selector.getAll("memo-button", HTMLButtonElement).forEach((button, index) => {
+            const stageIndex = index * 4
+            const actStages = stages.slice(stageIndex, stageIndex + 4)
+            const isNoMissCleared = actStages.every((rank) => rank === 2)
+
+            if (!isNoMissCleared) {
+                // this.lock(button)
+                button.disabled = true
             }
         })
     }
@@ -424,7 +441,9 @@ export default class extends Scene {
                 const { default: Stage } = await modules[url]()
 
                 const stage = new Stage()
-                const scene = await import(`./SceneMemo`).then((module) => new module.default(stage, this.pages.getHistory()))
+                const scene = await import(`./SceneMemo`).then(
+                    (module) => new module.default(stage, this.pages.getHistory()),
+                )
                 return scene
             },
             {
