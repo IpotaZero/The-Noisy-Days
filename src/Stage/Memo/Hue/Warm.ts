@@ -3,6 +3,14 @@ import { Stage } from "../../Stage"
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
-        yield* this.text(`（マスの手記：まだ何も書かれていない。）`)
+
+        yield* this.text("機械大戦")
+        yield* this.text("前世紀に発生した世界大戦。参加国が継戦能力を完全に喪失するまで、実に何十年もの間続いた。")
+        yield* this.text("発端は、SNSを媒介として拡散した、ある民族虐殺であったとされる。")
+        yield* this.text("開戦当初から自律兵器の性能は飛躍的に向上しており、これにより前線の大半は膠着状態に陥った。")
+        yield* this.text("兵器同士が均衡する一方で、資源と国民の生活だけが際限なく浪費され続けた。")
+        yield* this.text("戦争後期には核を超える兵器も開発されたが、これによる直接的な人命被害は、全体から見れば決して大きくない。")
+        yield* this.text("むしろ被害の大半は、長期化する戦争がもたらした地球環境の悪化、経済の低迷、それに伴う食糧難と治安の悪化によるものであった。")
+        yield* this.text("最終的に人口の四割が失われ、全ての参加国が継戦能力を喪失したことで、機械大戦はようやく終結した。")
     }
 }
