@@ -7,6 +7,7 @@ export default class extends Stage {
         yield* this.text("まだトウキョウが平和だった夏のことを、懐かし気に思い出している。")
 
         // 背景を変更したい(教室)
+        this.changeBackground("asset/background/classroom.png")
         yield* this.wait(30)
 
         yield* this.text("教室のざわめきは、少女の机の周りだけ薄くなる。")
@@ -19,6 +20,7 @@ export default class extends Stage {
         yield* this.text(`レイは別に、睨んでいたわけじゃない。<br>ただ、不思議な虫でも見るような目をしていた。`)
 
         // 背景を変更したい(帰り道)
+        this.changeBackground("asset/background/black.png")
         yield* this.wait(30)
 
         yield* this.text(`放課後、施設への帰り道。`)

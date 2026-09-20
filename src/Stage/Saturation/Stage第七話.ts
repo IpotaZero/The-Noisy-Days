@@ -3,5 +3,36 @@ import { Stage } from "../Stage"
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
+
+        yield* this.text(`建設部隊は半壊し、資材だけを残して撤収していった。`)
+        yield* this.text(`残されたのは、逃げ遅れた技師が一人。`)
+
+        yield* this.text(`「……殺すの、これ。」`, { name: "シオン" })
+        yield* this.text(`「聞き出すことがある。まだ早い。」`, { name: "テル" })
+
+        yield* this.text(`縛られた技師は、ずっと俯いていた。<br>制服のサイズが、微妙に合っていなかった。`)
+
+        yield* this.text(`「……あんた、いくつ。」`, { name: "シオン" })
+        yield* this.text(`「……二十歳、です。」`, { name: "技師" })
+        yield* this.text(`「へえ。」`, { name: "シオン" })
+
+        yield* this.text(`「なんで、あんな境界作んの。誰かを閉じ込めときたいから?」`, { name: "シオン" })
+        yield* this.text(`技師は少しだけ顔を上げた。`)
+        yield* this.text(`「閉じ込めるなんて、思ったこと、ないです。」`, { name: "技師" })
+        yield* this.text(`「境界の中にいれば、誰も、傷つけ合わずに済むんです。」`, { name: "技師" })
+
+        yield* this.text(`「学校で、ずっと教わってきました。<br>混ざり合うから、争いが起きるんだって。」`, { name: "技師" })
+        yield* this.text(`「だから、これは、正しいことのはずです。」`, { name: "技師" })
+
+        yield* this.text(`迷いのない声だった。<br>脅されているのでも、強がっているのでもなさそうだった。`)
+
+        yield* this.text(`「……あんた、それ、自分で考えたの?」`, { name: "シオン" })
+        yield* this.text(`「……どういう、意味ですか。」`, { name: "技師" })
+        yield* this.text(`「別に。」`, { name: "シオン" })
+
+        yield* this.text(`「シオン、行くぞ。今夜が最後の好機だ。」`, { name: "テル" })
+        yield* this.text(`少女は技師から目を逸らし、装備に手を伸ばした。`)
+        yield* this.text(`「……その人、ちゃんと帰してあげてよ。」`, { name: "シオン" })
+        yield* this.text(`テルは何も言わず、先に歩き出した。`)
     }
 }

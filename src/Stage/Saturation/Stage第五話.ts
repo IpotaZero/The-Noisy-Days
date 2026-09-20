@@ -17,10 +17,13 @@ export default class extends Stage {
         yield* this.text(`「現実を見てるだけさ。」`, { name: "アオ" })
         yield* this.text(`アオは笑った。疲れた笑い方だった。`)
 
-        yield* this.text(`「でも、僕がそこで甘さを捨てたら、君を担ぎ出した理由も消える。」`, { name: "アオ" })
-        yield* this.text(`「……よく分かんない。」`, { name: "シオン" })
-        yield* this.text(`「分からなくていいよ。ただ、殺さないでくれ。それだけ覚えてて。」`, { name: "アオ" })
+        yield* this.text(`「……だけど、どうしてもSILOは破壊しないと。」`, { name: "アオ" })
+        yield* this.text(`「歴史を繰り返すわけにはいかない。」`, { name: "アオ" })
+        yield* this.text(`「歴史?」`, { name: "シオン" })
+        yield* this.text(`「前世紀の大戦の原因とアナロジーだろう? SILOは。」`, { name: "アオ" })
+        yield* this.text(`「理屈的には争いをなくせるが、絶対はないからね。」`, { name: "アオ" })
 
-        yield* this.text(`少女は装備を担ぎながら、初めて、この人の弱さを見た気がした。`)
+        yield* this.text(`アオはゆっくりと伸びをした。`)
+        yield* this.text(`少女は装備を担ぎながらアオの言葉を咀嚼していた。`)
     }
 }
