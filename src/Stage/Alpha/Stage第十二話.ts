@@ -12,17 +12,18 @@ export default class extends Stage {
         yield* this.text(`「……何があったの。」`, { name: "シオン" })
         yield* this.text(`テルはしばらく答えなかった。`)
 
-        yield* this.text(`「面会だった。テントの前で、女が一人。」`, { name: "テル" })
-        yield* this.text(`「非武装だって、確認は取れてた。だから誰も止めなかった。」`, { name: "テル" })
+        yield* this.text(`「面会だった。相手側の代表と、テントで二人きり。」`, { name: "テル" })
+        yield* this.text(`「その場に、あの女が紛れ込んでた。」`, { name: "テル" })
 
         this.changeBackground("asset/background/black.png")
         yield* this.wait(30)
 
-        yield* this.text(`『あなたは───待ってください!』`, { name: "アオ" })
-        yield* this.text(`何の変哲もない主婦が、その手に光線銃を構えていた。`)
-        yield* this.text(`『どうして、本当に、戦争なんて!』`)
-        yield* this.text(`『我々は話せば分かる!』`, { name: "アオ" })
-        yield* this.text(`『私にも子供が居るのよ!』`)
+        yield* this.text(`『……あなた、また来たの。』`, { name: "アオ" })
+        yield* this.text(`合成人の女性が、隠し持った刃物を握りしめていた。`)
+        yield* this.text(`『あの子を看板にして、いつまで続けるつもり?』`)
+        yield* this.text(`『矢面に立たせて、あんたは後ろで演説してるだけ。』`)
+        yield* this.text(`『待って、話を───』`, { name: "アオ" })
+        yield* this.text(`『もう、聞き飽きた。』`)
 
         yield* this.wait(30)
         this.changeBackground(undefined)
@@ -31,13 +32,12 @@ export default class extends Stage {
         yield* this.text(`テルはそこで言葉を切った。`)
         yield* this.text(`「……それだけだ。」`, { name: "テル" })
 
-        yield* this.text(`「……もう一つある。」`, { name: "テル" })
-        yield* this.text(`「あの女も、合成人だったらしい。」`, { name: "テル" })
+        yield* this.text(`「あの女……前に居住区の前で、あんたを睨んでた奴だ。」`, { name: "テル" })
         yield* this.text(`「……。」`, { name: "シオン" })
 
-        yield* this.text(`「話せば分かるって、言ったんでしょ。」`, { name: "シオン" })
-        yield* this.text(`「ああ。」`, { name: "テル" })
-        yield* this.text(`「なのに。」`, { name: "シオン" })
+        yield* this.text(`「話せば分かるって、いつも言ってたのに。」`, { name: "シオン" })
+        // yield* this.text(`「ああ。」`, { name: "テル" })
+        // yield* this.text(`「味方だったはずの人に、殺されたんだね。」`, { name: "シオン" })
         yield* this.text(`テルは何も言わなかった。答えを持っている人間は、もうどこにもいなかった。`)
 
         yield* this.text(`少女はその場に座り込んだ。<br>装備を脱ぐ気力さえ、しばらく戻ってこなかった。`)

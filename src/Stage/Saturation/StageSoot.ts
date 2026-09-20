@@ -34,9 +34,14 @@ export default class extends Stage {
         yield* this.text("「……。」", { name: "シオン" })
         yield* this.text("「シマさん。あなたは、どうして戦うの?」", { name: "レイ" })
         yield* this.text("「SILOは悪意を増幅する。それだけで十分じゃないか?」", { name: "シオン" })
-        yield* this.text("「SILOのおかげで誰も悪意なんて持たないのに?」", { name: "レイ" })
+        yield* this.text("「SILOのおかげで誰も悪意なんて持たないのに? あなた、そう信じたいんでしょう?」", { name: "レイ" })
         yield* this.text("「悪意があるから人が死ぬんだろ!」", { name: "シオン" })
         yield* this.text("「ふふっ、それにはハンロンさせてもらうわっ!」", { name: "レイ" })
+
+        satellite00.isInvincible = false
+        satellite01.isInvincible = false
+        satellite10.isInvincible = false
+        satellite11.isInvincible = false
 
         star.started = true
         planet0.started = true
@@ -309,6 +314,7 @@ class Satellite extends Enemy {
         super(150, 36, new EnemyRendererMob())
         this.setParent(planet, () => vec.arg(T * (this.frame / 240) + T * (index / 2)).scale(120))
         this.interval = index === 0 ? 41 : 53
+        this.isInvincible = true
     }
 
     *G() {
