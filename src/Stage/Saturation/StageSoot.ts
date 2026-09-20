@@ -28,14 +28,15 @@ export default class extends Stage {
 
         g.enemies.push(star, planet0, planet1, satellite00, satellite01, satellite10, satellite11)
 
-        yield* this.text("「ちょいちょいちょおいっ!<br>自律兵器は条約違反でしょおっ!?」", { name: "イシカワ" })
-        yield* this.text("「生憎あたしはロボットじゃあない。」", { name: "シオン" })
-        yield* this.text("「って、にゃるへそ『当たらなければどうということはない』<br>……ってかぁ?」", { name: "イシカワ" })
-        yield* this.text("「てゆーか、なんで君は戦ってるのかな?」", { name: "イシカワ" })
-        yield* this.text("「SILOは悪意を増幅させる! 第二の機械大戦を起こす訳にはいかない!」", { name: "シオン" })
-        yield* this.text("「それは建前だ。本当は誰も悪意なんて持ってない事、分かってんでしょう?」", { name: "イシカワ" })
-        yield* this.text("「悪意があるから人が死ぬんだろっ!?」", { name: "シオン" })
-        yield* this.text("「それにはハンロンさせてもらうよっ!」", { name: "イシカワ" })
+        yield* this.text("「あら、シマさん。こんにちは。」", { name: "レイ" })
+        yield* this.text("「……あんた、まだやってたの。」", { name: "シオン" })
+        yield* this.text("「それはこっちの台詞でもあるのよ。」", { name: "レイ" })
+        yield* this.text("「……。」", { name: "シオン" })
+        yield* this.text("「シマさん。あなたは、どうして戦うの?」", { name: "レイ" })
+        yield* this.text("「SILOは悪意を増幅する。それだけで十分じゃないか?」", { name: "シオン" })
+        yield* this.text("「SILOのおかげで誰も悪意なんて持たないのに?」", { name: "レイ" })
+        yield* this.text("「悪意があるから人が死ぬんだろ!」", { name: "シオン" })
+        yield* this.text("「ふふっ、それにはハンロンさせてもらうわっ!」", { name: "レイ" })
 
         star.started = true
         planet0.started = true

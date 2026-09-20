@@ -12,7 +12,7 @@ export default class extends Stage {
         yield* this.text(`「一度建ったら、次はもうこの辺一帯、丸ごと塗り替えられる。」`, { name: "テル" })
 
         yield* this.text(`奥で誰かが吐き捨てるように言った。`)
-        yield* this.text(`「だったら、建つ前に人ごと落とせばいい話だろ。」`, { name: "TAMAMUSHIの男" })
+        yield* this.text(`「だったら、建つ前に人ごと落とせばいい話だろ。」`, { name: "ヨウ" })
         yield* this.text(`テルは何も言い返さなかった。少しの間だけ、手元のリストに目を落としていた。`)
 
         yield* this.text(`「今日の相手は選抜部隊だ。SILO派が看板に使ってる、若い連中。」`, { name: "テル" })

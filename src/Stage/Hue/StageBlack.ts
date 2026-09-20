@@ -29,13 +29,10 @@ export default class extends Stage {
         yield* this.text("「武装を解除し、投降しなさい。」", { name: "???" })
         yield* this.text("聞き覚えのある喋り方だった。うんざりするほど、丁寧すぎる。")
         yield* this.text("「……コウダ?」", { name: "シオン" })
-        yield* this.text("声が、思ったより上ずった。")
+        yield* this.text("声が、思わず上ずった。")
         yield* this.text("「はい。投降してください、シマさん。」", { name: "レイ" })
-        yield* this.text("「その呼び方、卒業したはずだけど。」", { name: "シオン" })
-        yield* this.text("動揺の欠片もない声だった。<br>まるで、この日が来るのを最初から知っていたみたいに。")
         yield* this.text("「……なんで、あんたが。」", { name: "シオン" })
         yield* this.text("「模範飛行査察官よ。伊達に選ばれてないの。」", { name: "レイ" })
-        yield* this.text("「今はコウダ巡査です。私情は挟みません。」", { name: "レイ" })
 
         core0.isInvincible = false
         parent.phase = 1
