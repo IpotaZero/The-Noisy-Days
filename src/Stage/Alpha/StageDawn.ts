@@ -41,7 +41,7 @@ export default class extends Stage {
         yield* this.text("「こんにちは、<br>シオン・シマ。」", { name: "レイ" })
         yield* this.text("「……どうして。」", { name: "シオン" })
         yield* this.text("「あなたの気持ちが知りたくて。」", { name: "レイ" })
-        yield* this.text("「……家へ帰るんだ。子供が使いこなせるものじゃあない。そもそも誰が……」", { name: "シオン" })
+        yield* this.text("「……もうやめるんだ。子供が使いこなせるものじゃあない。そもそも誰が……」", { name: "シオン" })
         yield* this.text("「使いこなす必要はないわ。使われるだけ。あなたと同様に。」", { name: "レイ" })
         yield* this.text("「まさかっ人工知能か!? そんなもの! 人を承認するだけの道具にするなんて、絶対にやっちゃいけない事なんだ!」", { name: "シオン" })
         yield* this.text("「ふははっ、相変わらず勘が良いのね。さあ、行きましょう。分かり合いましょう?」", { name: "レイ" })
@@ -90,6 +90,9 @@ export default class extends Stage {
         yield* this.text("「アンタに、アンタたちに傷つけられたこと。」", { name: "シオン" })
         yield* this.text("「だから、」", { name: "シオン" })
         yield* this.text("「さようなら。」", { name: "シオン" })
+        yield* this.text("「……。」", { name: "レイ" })
+        yield* this.text("「…………。」", { name: "レイ" })
+        yield* this.text("「………………。」", { name: "レイ" })
         yield* this.text("「……さようなら。」", { name: "レイ" })
         yield* this.text("分かり合えなかったら、サヨナラしましょう。")
 
