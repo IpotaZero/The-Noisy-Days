@@ -39,7 +39,9 @@ export default class extends Stage {
         yield* this.text(`「こんなっ体液なんかでっ。」`, { name: "シオン" })
 
         yield* this.text(`マスは何も言わず、煙草の箱を少女の方へ放った。`)
-        yield* this.text(`「……いらないって、言ったじゃん。」`, { name: "シオン" })
+        yield* this.text(`「……いらないって。」`, { name: "シオン" })
         yield* this.text(`「泣き止むまで、そこに置いとくだけだ。」`, { name: "マス" })
+
+        yield* this.text(`「……大丈夫。最後まで戦える。」`, { name: "シオン" })
     }
 }

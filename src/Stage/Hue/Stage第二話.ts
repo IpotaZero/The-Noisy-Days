@@ -13,7 +13,7 @@ export default class extends Stage {
         yield* this.text(`ヘルメットを外すと、その場の全員が動きを止めた。`)
         yield* this.text(`「……子供?」`, { name: "テル" })
 
-        yield* this.text(`「それ、返した方がいい?」`, { name: "シオン" })
+        yield* this.text(`「これ、返した方がいい?」`, { name: "シオン" })
         yield* this.text(`少女は装備の腕を軽く持ち上げてみせた。皮肉のつもりだったが、誰も笑わなかった。`)
 
         yield* this.text(`「いや……いい。それより、あんた、これどこで。」`, { name: "テル" })

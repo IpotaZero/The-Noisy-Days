@@ -11,10 +11,10 @@ export default class extends Stage {
 
         yield* this.text(`「殺すの?」`, { name: "シオン" })
         yield* this.text(`「いや。護衛を落として、追い返すだけでいい。」`, { name: "アオ" })
-        yield* this.text(`「殺したら、僕らは本当にただのテロリストだ。」`, { name: "アオ" })
+        yield* this.text(`「殺したら、世論が悪くなる。」`, { name: "アオ" })
 
         yield* this.text(`「甘くない?」`, { name: "シオン" })
-        yield* this.text(`「甘いよ。」`, { name: "アオ" })
+        yield* this.text(`「現実を見てるだけさ。」`, { name: "アオ" })
         yield* this.text(`アオは笑った。疲れた笑い方だった。`)
 
         yield* this.text(`「でも、僕がそこで甘さを捨てたら、君を担ぎ出した理由も消える。」`, { name: "アオ" })
