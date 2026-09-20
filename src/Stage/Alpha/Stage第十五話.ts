@@ -27,7 +27,7 @@ export default class extends Stage {
 
         yield* this.text(`「……傷つけあうのは、たぶん、やめられない。」`, { name: "シオン" })
         yield* this.text(`「ああ。」`, { name: "マス" })
-        yield* this.text(`「だったら、せめて。」`, { name: "シオン" })
+        yield* this.text(`「だったら、せめて、」`, { name: "シオン" })
 
         yield* this.text(`その先は、言葉にならなかった。`)
 

@@ -73,7 +73,7 @@ export default class extends Stage {
         this.changeBackground("asset/background/black.png")
         yield* this.wait(30)
 
-        yield* this.text("アオは死んだ。")
+        yield* this.text("アオの死によって、頭を失った組織は分裂し、崩壊した。")
         yield* this.text("玉虫色が、黒く塗りつぶされていく。")
         yield* this.text("だが、一つだけ勝ち取ったものがあった。当局は反政府主義の凝集をリスクと認識し、一部地域でのSILOの導入を見送ったのだ。")
         yield* this.text("完全な単色化は起きなかった。")

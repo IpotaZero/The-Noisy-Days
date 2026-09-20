@@ -5,25 +5,31 @@ export default class extends Stage {
         yield* this.wait(30)
 
         yield* this.text(`アオがいなくなってから、テントの中の声はいつも尖っていた。`)
-        yield* this.text(`「今度は南だ。SILOの補給線を叩く。看板も連れて行く。」`, { name: "ヨウ" })
-        yield* this.text(`「補給線の裏は住宅区だぞ。」`, { name: "テル" })
-        yield* this.text(`「上等だ。アオを殺ったのはあっち側だ。」`, { name: "ヨウ" })
+        yield* this.text(`「後任は俺だ。文句あるか。」`, { name: "ヨウ" })
+        yield* this.text(`「話し合いで決める話だろう。」`, { name: "テル" })
+        yield* this.text(`「話し合いなんぞしてる間に、また誰か殺られるんだよ。」`, { name: "ヨウ" })
 
-        yield* this.text(`少女は初めて聞く話だった。`)
-        yield* this.text(`「ちょっと待って。看板って、あたしのこと?」`, { name: "シオン" })
-        yield* this.text(`「決まってるだろ。TAMAMUSHIの顔が出りゃ、住民だって多少は黙る。」`, { name: "ヨウ" })
+        yield* this.text(`少女は隅で、ただそれを聞いていた。`)
+        yield* this.text(`「……アオの葬式も、まだなのに。」`, { name: "シオン" })
+        yield* this.text(`誰も、答えなかった。`)
 
-        yield* this.text(`「あたしは行くなんて言ってない。」`, { name: "シオン" })
-        yield* this.text(`「言う必要ない。決まったことだ。」`, { name: "ヨウ" })
+        yield* this.text(`そこへ、無線の係が慌てて飛び込んできた。`)
+        yield* this.text(`「大変です! 南のSILO駐屯地、警備が急に厚くなって……。」`, { name: "通信係" })
+        yield* this.text(`「は? 情報が漏れてんじゃねえのか。」`, { name: "ヨウ" })
+        yield* this.text(`「装備を担当してたのは……ちっ、あの民族派の男か。」`, { name: "テル" })
 
-        yield* this.text(`テルが割って入った。`)
-        yield* this.text(`「本人の意思も聞かずに勝手に……」`, { name: "テル" })
-        yield* this.text(`「お前が甘やかしすぎたんだよ、テル。」`, { name: "ヨウ" })
+        // yield* this.text(`一同の視線が、自然と一箇所に集まった。<br>民族派を束ねる、ジンという男だった。`)
 
-        yield* this.text(`二人は睨み合ったまま、しばらく動かなかった。<br>その間、少女に話しかける者は誰もいなかった。`)
-        yield* this.text(`まるで、そこに置物でもあるかのように。`)
+        // yield* this.text(`「……見損なったぜ、ジン。」`, { name: "ヨウ" })
+        // yield* this.text(`「見損なうのは勝手だが、俺たちには俺たちの筋がある。」`, { name: "ジン" })
+        // yield* this.text(`「装備の在処を渡す代わりに、俺の同胞の安全は保障された。」`, { name: "ジン" })
+        // yield* this.text(`「日本を取り戻すのに、お前らと心中する義理はない。」`, { name: "ジン" })
 
-        yield* this.text(`「……あたしの話、してるんだよね。」`, { name: "シオン" })
-        yield* this.text(`誰も答えなかった。`)
+        yield* this.text(`「アオが死んで、まだ十日と経ってないんだぞ。」`, { name: "テル" })
+        yield* this.text(`「アオが甘すぎたんだよ。誰でも受け入れりゃ、こうなるに決まってる。」`, { name: "ヨウ" })
+
+        yield* this.text(`その一言に、誰も言い返せなかった。<br>それが一番、事実に近かったからだ。`)
+
+        yield* this.text(`シオンは、じっと拳を握っていた。<br>外の世界と、何も変わらない。`)
     }
 }

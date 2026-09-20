@@ -32,7 +32,7 @@ export default class extends Stage {
         yield* this.text(`テルはそこで言葉を切った。`)
         yield* this.text(`「……それだけだ。」`, { name: "テル" })
 
-        yield* this.text(`「あの女……前に居住区の前で、あんたを睨んでた奴だ。」`, { name: "テル" })
+        yield* this.text(`「あの女……前に居住区の前で、おまえを睨んでた奴だ。」`, { name: "テル" })
         yield* this.text(`「……。」`, { name: "シオン" })
 
         yield* this.text(`「話せば分かるって、いつも言ってたのに。」`, { name: "シオン" })
