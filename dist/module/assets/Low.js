@@ -1,0 +1,2 @@
+import{t as e}from"./Stage.js";var t=class extends e{*G(){yield*this.wait(30),yield*this.text(`集団浅慮`),yield*this.text(`過度に同質性の高いコミュニティで発生する、視野の狭い判断などの総称。`),yield*this.text(`個々人が持つ意見がほとんど同じになるため、議論はスムーズに進む反面、反対意見が出づらく、偏った判断を招きやすい。`)}};export{t as default};
+//# sourceMappingURL=Low.js.map

@@ -1,0 +1,2 @@
+import{t as e}from"./Stage.js";var t=class extends e{*G(){yield*this.wait(30),yield*this.text(`シュンスケ・ヤナガワ`),yield*this.text(`当局のSILO推進派のトップ`),yield*this.text(`曰く、我々は前世紀の戦争を反省し、棲み分けをしなければならない。`)}};export{t as default};
+//# sourceMappingURL=Muted.js.map

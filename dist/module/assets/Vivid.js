@@ -1,0 +1,2 @@
+import{t as e}from"./Stage.js";var t=class extends e{*G(){yield*this.wait(30),yield*this.text(`アオ・ササキ`),yield*this.text(`第二世代合成人`),yield*this.text(`反SILOテロ組織TAMAMUSHIの代表`),yield*this.text(`曰く、SILOは反SILO勢力をも集めてしまう構造的矛盾を抱えている。`),yield*this.text(`来るもの拒まずの精神は、合成人ゆえか。`)}};export{t as default};
+//# sourceMappingURL=Vivid.js.map
