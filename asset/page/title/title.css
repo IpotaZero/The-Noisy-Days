@@ -175,7 +175,8 @@ button {
     }
 }
 
-#credit {
+#credit,
+#how-to-play {
     font-size: 3.5cqw;
     justify-content: space-between;
 
