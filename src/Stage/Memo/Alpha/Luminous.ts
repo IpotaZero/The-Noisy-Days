@@ -4,7 +4,7 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
-        yield* this.text("20XX年、レイ・コウダに対するインタビューより。")
+        yield* this.text("2XXX年、レイ・コウダに対するインタビューより。")
 
         yield* this.text("『学校で合成人は、あの子だけでした。』")
         yield* this.text('『理由なんて"ただ違う"ってだけで、あの子はずっと腫れ物でした。』')
@@ -20,9 +20,7 @@ export default class extends Stage {
         yield* this.text("『理由なんて、どうでも良かった。』")
         yield* this.text("『訓練は、何度も抜け出しました。会いに行くために。』")
 
-        yield* this.text(
-            "『……うちの親世代は、その親から直接、戦争の悲惨さを聞いてるんです。人は分かり合えない、って。』",
-        )
+        yield* this.text("『……うちの親世代は、その親から直接、戦争の悲惨さを聞いてるんです。』")
         yield* this.text("『でも私たちは、又聞きでしかそれを知らない。それに、合成人がいる。』")
         yield* this.text("『だから、漠然と信じてたんだと思います。人は、分かり合えるはずだって。』")
         yield* this.text("『分かりたいと思ったのは、反抗期だったのかもしれません。』")

@@ -3,6 +3,37 @@ import { Stage } from "../../Stage"
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
-        yield* this.text(`（マスの手記：まだ何も書かれていない。）`)
+
+        yield* this.text(`「新聞屋さん、今日締め切りは。」`, { name: "シオン" })
+        yield* this.text(`「明日。なんで。」`, { name: "マス" })
+        yield* this.text(`「暇なら、肩揉んで。」`, { name: "シオン" })
+        yield* this.text(`「子供が大人使うな。」`, { name: "マス" })
+        yield* this.text(`そう言いつつ、マスは煙草を消して隣にしゃがみ込んだ。`)
+
+        yield* this.text(`「……下手。」`, { name: "シオン" })
+        yield* this.text(`「贅沢言うな、タダだぞ。」`, { name: "マス" })
+        yield* this.text(`「新聞屋さんの記事もタダみたいなクオリティじゃん。」`, { name: "シオン" })
+        yield* this.text(`「おい。」`, { name: "マス" })
+
+        yield* this.text(`しばらく、無言で肩を揉む音だけが続いた。`)
+
+        yield* this.text(`「……あんた、いつまでここに居んの。」`, { name: "シオン" })
+        yield* this.text(`「記事になる限り。」`, { name: "マス" })
+        yield* this.text(`「記事になんなくなったら?」`, { name: "シオン" })
+        yield* this.text(`「……知らん。考えたことない。」`, { name: "マス" })
+
+        yield* this.text(`「ふーん。」`, { name: "シオン" })
+        yield* this.text(`「なんだよ、その顔。」`, { name: "マス" })
+        yield* this.text(`「別に。」`, { name: "シオン" })
+
+        yield* this.text(`少女は、肩を揉む手の甲を、つねった。`)
+        yield* this.text(`「痛っ、何すんだ。」`, { name: "マス" })
+        yield* this.text(`「記事になんなくても、居ればいいじゃん。」`, { name: "シオン" })
+
+        yield* this.text(`マスは何も答えず、懐から煙草の箱を取り出し、また一本くわえた。`)
+        yield* this.text(`「……その言い方、狡いな。」`, { name: "マス" })
+        yield* this.text(`「うるさい。肩、続けて。」`, { name: "シオン" })
+
+        yield* this.text(`夕暮れのキャンプに、紫煙と、下手くそな肩揉みの音だけが、しばらく続いた。`)
     }
 }

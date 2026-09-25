@@ -3,6 +3,50 @@ import { Stage } from "../../Stage"
 export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
-        yield* this.text(`（マスの手記：まだ何も書かれていない。）`)
+
+        yield* this.text(`コウダ氏への取材メモ`)
+        yield* this.text(`レイ・コウダの父親、コウダには、一度だけ会ったことがある。`)
+        yield* this.text(`SILO区画整備局の中堅役人で、肩書の割に愛想のいい男だった。`)
+
+        yield* this.text(`「娘のことを書きたいなら、まず俺の話を聞け。」`, { name: "コウダ" })
+        yield* this.text(`頼んでもいないのに、コーヒーを二杯おごられた。悪い癖だと自分でも思う。`)
+
+        yield* this.text(
+            `十数年前、彼はまだ現場の配給担当官だった。<br>大戦の傷跡が残る集落で、限られた物資を割り振る仕事をしていたらしい。`,
+        )
+        yield* this.text(`「顔見知りだった隣人の子が、体調を崩しててな。」`, { name: "コウダ" })
+        yield* this.text(`「規定の順番を、一つ繰り上げたんだ。大した数じゃない。」`, { name: "コウダ" })
+
+        yield* this.text(
+            `その繰り上げのしわ寄せで、別の家庭に物資が届かなかった。<br>そちらの子供は、後日亡くなったという。`,
+        )
+
+        yield* this.text(`「知らない子供だった。名前も、顔も覚えてない。」`, { name: "コウダ" })
+        yield* this.text(`「知ってる子を助けたくて、知らない子を殺した。それだけの話だ。」`, {
+            name: "コウダ",
+        })
+
+        yield* this.text(`彼はそれから、SILOの区分アルゴリズムに志願で移った。<br>人間が割り振りを決めない部署だった。`)
+        yield* this.text(`「機械は、誰かを知ってるとか、可愛いとか、そういうことで揺れない。」`, {
+            name: "コウダ",
+        })
+        yield* this.text(`「揺れないってのは、冷たいことじゃない。誰も贔屓しないってことだ。」`, {
+            name: "コウダ",
+        })
+
+        yield* this.text(`娘のレイには、この話を何度も聞かせたそうだ。`)
+        yield* this.text(`「あいつは昔から、俺に似て感情が顔に出やすい。」`, { name: "コウダ" })
+        yield* this.text(`「だから余計に、感情で動くことの危うさを、口を酸っぱくして教えた。」`, {
+            name: "コウダ",
+        })
+
+        yield* this.text(`俺はそれを聞いて、少し意地悪な質問をした。`)
+        yield* this.text(`「じゃああんたは今、自分を許せてるのか」と。`, { name: "マス" })
+
+        yield* this.text(`コウダ氏は、しばらく黙ってコーヒーを飲んでいた。`)
+        yield* this.text(`「……いや。」`, { name: "コウダ" })
+        yield* this.text(`「だから、娘には同じ思いをさせたくないだけだ。」`, { name: "コウダ" })
+
+        yield* this.text(`愛情なのか、免罪符なのか。<br>俺には、最後まで判別がつかなかった。`)
     }
 }

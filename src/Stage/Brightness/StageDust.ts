@@ -78,7 +78,9 @@ export default class extends Stage {
         yield* this.text("「……はは、はははっ!」", { name: "シオン" })
         yield* this.text("「善意が、傍から見ればこんなにも滑稽だなんて!」", { name: "シオン" })
 
+        this.changeBackground("asset/background/black.png")
         yield* this.wait(30)
+
         yield* this.text("キャンプに戻ると、通信係が電報を差し出した。")
         yield* this.text("「アオ・ササキ、死亡。」")
         yield* this.text("それだけだった。")

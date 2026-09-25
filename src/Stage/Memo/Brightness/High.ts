@@ -4,6 +4,15 @@ export default class extends Stage {
     protected *G(): Generator<void, void, unknown> {
         yield* this.wait(30)
 
+        yield* this.text("合成人の絶滅")
+        yield* this.text("合成人はもともと個体数の少ない存在だ。")
+        yield* this.text(
+            "しかしSILO自体は出自ではなく思想の違いを判別するため、共感能力の高い合成人はそれぞれの地区になじみ、合成人同士が集まることは少なかった。",
+        )
+        yield* this.text("しかしそれをアオ・ササキは良しとしなかった。")
+        yield* this.text("彼はこのままでは合成人が絶滅してしまうと考えた。")
+        yield* this.text("それが彼がTAMAMUSHIを作った理由とされている。")
+
         // yield* this.text("「やあ、こんにちは、僕はアオ。アオ・ササキ。」", { name: "ササキ" })
         // yield* this.text("アオは髪を耳に掛ける。")
         // yield* this.text("「……。」", { name: "シオン" })
