@@ -255,7 +255,7 @@ export class Player {
             .radian(-T / 4)
             .speed(48)
             .nway(5, T / 48)
-            .inertia(this.v.scale(0.5))
+            // .inertia(this.v.scale(0.5))
             .fire()
     }
 
@@ -269,7 +269,7 @@ export class Player {
             .radian(-T / 4)
             .speed(48)
             .shift(5, this.GRAZE_R / 2)
-            .inertia(this.v.scale(0.5))
+            // .inertia(this.v.scale(0.5))
             .fire()
     }
 

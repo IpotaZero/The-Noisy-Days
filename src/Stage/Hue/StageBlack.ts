@@ -26,15 +26,19 @@ export default class extends Stage {
         const core2 = new Child(parent, 2)
         g.enemies.push(parent, core0, core1, core2)
 
-        yield* this.text("「ハローハロー、条約違反の兵器かと思ったけど、まさかホントに人間とはね。」", { name: "スナガワ" })
-        yield* this.text("「五月蝿い奴だ。」", { name: "シオン" })
-        yield* this.text("「逮捕、させてもらうよ。」", { name: "スナガワ" })
-        yield* this.text("「できるもんならね。」", { name: "シオン" })
+        yield* this.text("「武装を解除し、投降しなさい。」", { name: "???" })
+        yield* this.text("聞き覚えのある喋り方だった。うんざりするほど、丁寧すぎる。")
+        yield* this.text("「……コウダ?」", { name: "シオン" })
+        yield* this.text("声が、思わず上ずった。")
+        yield* this.text("「はい。投降してください、シマさん。」", { name: "レイ" })
+        yield* this.text("「……なんで、あんたが。」", { name: "シオン" })
+        yield* this.text("「模範飛行査察官よ。伊達に選ばれてないの。」", { name: "レイ" })
 
         core0.isInvincible = false
         parent.phase = 1
 
         while (core0.life > 0) yield
+
         parent.phase = 2
         core1.isInvincible = false
         while (core1.life > 0) yield
@@ -48,6 +52,13 @@ export default class extends Stage {
         scorenize()
         flash(Dom.container)
         shake(Dom.container, 3000, 8)
+
+        yield* this.text("コアを全て失った機体が、大きく傾いだ。")
+        yield* this.text("それでも墜ちる気配はなく、噴射音だけを残して後退していく。")
+        yield* this.text("「……やっぱり、分かるのね。」", { name: "レイ" })
+        yield* this.text("無線越しの声は、もう機体と同じくらい遠かった。")
+        yield* this.text("少女は答えなかった。ただ、昔と同じように。")
+        yield* this.text("機体は振り返ることなく、光点になって消えた。")
     }
 }
 

@@ -32,25 +32,18 @@ export default class extends Stage {
 
         g.enemies.push(head, ...segments)
 
-        yield* this.text("「あなた、合成人でしょう。」", { name: "サカイ" })
-        yield* this.text("「誰だアンタは。」", { name: "シオン" })
-        yield* this.text("「トウキョウ警察機動隊アルファのサカイです。」", { name: "サカイ" })
-        yield* this.text("「……シオン・シマ。」", { name: "シオン" })
-        yield* this.text("「それで、あなたしかも、子供でしょう。」", { name: "サカイ" })
-        yield* this.text("「ハタチを大人とするなら、そう。」", { name: "シオン" })
-        yield* this.text("「可哀相に。」", { name: "サカイ" })
-        yield* this.text("「……。」", { name: "シオン" })
-        yield* this.text("「SILOの中に居れば、傷付く事なんて無かったのに。」", { name: "サカイ" })
+        yield* this.text("「まだ、その装備で飛んでるんだ。」", { name: "レイ" })
+        yield* this.text("「誰かさんが、なかなか墜としてくれないからね。」", { name: "シオン" })
+
+        yield* this.text("「SILOの中にいれば、こんな思いしなくて済んだのに。」", { name: "レイ" })
         yield* this.text("「その代わりに絶滅しろと?」", { name: "シオン" })
-        yield* this.text("「そんなこと言ってないでしょう!? あなた、TAMAMUSHIの洗脳を受けてるのね。」", {
-            name: "サカイ",
-        })
-        yield* this.text("「可哀相に!」", { name: "サカイ" })
+        yield* this.text("「そんなこと言ってない。あなたたちのためを思って言ってるの。」", { name: "レイ" })
         yield* this.text("「本当に、100%の善意で、そんなことを。」", { name: "シオン" })
-        yield* this.text("「そうよ! 全て、あなたたちの為にやってるんじゃない!」", { name: "サカイ" })
-        // 本当に分かり合えない人がいるという絶望
-        yield* this.text("「……ッ!!」", { name: "シオン" })
-        yield* this.text("「もう、やるしかないのよっ!」", { name: "サカイ" })
+
+        yield* this.text("「そういえば、聞いた話だけど。」", { name: "レイ" })
+        yield* this.text("「TAMAMUSHIの中でも、あなたの扱いを巡って揉めてるそうじゃない。」", { name: "レイ" })
+        yield* this.text("「……適当なこと言うなよ。」", { name: "シオン" })
+        yield* this.text("「適当かどうかは、帰ってから確かめれば? できるもんならね!」", { name: "レイ" })
 
         head.start()
 
@@ -84,6 +77,14 @@ export default class extends Stage {
         yield* this.wait(30)
         yield* this.text("「……はは、はははっ!」", { name: "シオン" })
         yield* this.text("「善意が、傍から見ればこんなにも滑稽だなんて!」", { name: "シオン" })
+
+        this.changeBackground("asset/background/black.png")
+        yield* this.wait(30)
+
+        yield* this.text("キャンプに戻ると、通信係が電報を差し出した。")
+        yield* this.text("「アオ・ササキ、死亡。」")
+        yield* this.text("それだけだった。")
+        yield* this.text("さっきまでの笑い声が、喉の奥で固まった。")
     }
 }
 

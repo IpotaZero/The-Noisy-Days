@@ -1,0 +1,45 @@
+import { Stage } from "../Stage"
+
+export default class extends Stage {
+    protected *G(): Generator<void, void, unknown> {
+        yield* this.wait(30)
+
+        yield* this.text(`「へえ。」`, { name: "シオン" })
+        yield* this.text(`テントに入ってきた男を見て、少女は思わず声を漏らした。`)
+        yield* this.text(`「なに、その反応。」`, { name: "アオ" })
+        yield* this.text(`「テロ組織のトップって、もっとおっさんだと思ってた。」`, { name: "シオン" })
+        yield* this.text(`「僕もそう思うよ、たまに。」`, { name: "アオ" })
+
+        yield* this.text(`アオは笑いながら、無造作に前髪を掻き上げた。`)
+        yield* this.text(`その拍子に、耳が覗いた。<br>三角に、尖った耳が。`)
+
+        yield* this.text(`「……。」`, { name: "シオン" })
+        yield* this.text(`何も言わなくても、伝わることがあった。`)
+        yield* this.text(`初めてだった、そんな相手は。`)
+
+        yield* this.text(`「僕はアオ。アオ・ササキ。」`, { name: "アオ" })
+        yield* this.text(`「シオン。」`, { name: "シオン" })
+        yield* this.text(`「うん、知ってる。」`, { name: "アオ" })
+
+        yield* this.text(`「あんた、なんでこんなことしてんの。」`, { name: "シオン" })
+        yield* this.text(`「こんなこと、って?」`, { name: "アオ" })
+        yield* this.text(`「テロ組織のトップとか。」`, { name: "シオン" })
+
+        yield* this.text(`「僕らみたいなのは、数が少ないから。誰かがやらないと、いなくなる。」`, { name: "アオ" })
+        yield* this.text(`「それだけ?」`, { name: "シオン" })
+        yield* this.text(`「それだけだよ。」`, { name: "アオ" })
+
+        yield* this.text(`嘘をついているようには見えなかった。<br>いや、見えない、と思えることそのものが、不思議だった。`)
+
+        yield* this.text(`人間相手なら、絶対にこうはいかない。<br>言葉の裏を探って、探って、それでも分からなくて、疲れて、諦める。`)
+        yield* this.text(`アオの言葉は、探るまでもなく、すとんと胸に落ちた。`)
+
+        yield* this.text(`「合成人同士って、案外楽なんだね。」`, { name: "シオン" })
+        yield* this.text(`「そうだね。そう、作られたんだろうね。」`, { name: "アオ" })
+        yield* this.text(`アオは笑って、それ以上は何も言わなかった。`)
+
+        yield* this.text(`「じゃあ、行ってくるよ。」`, { name: "シオン" })
+        yield* this.text(`「……ごめんね。」`, { name: "アオ" })
+        yield* this.text(`少女はひらひらと後ろに手を振った。`)
+    }
+}

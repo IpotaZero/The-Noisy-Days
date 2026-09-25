@@ -75,7 +75,7 @@ class CommandUnit extends Enemy {
             })
             .g(function* (me) {
                 while (1) {
-                    me.p.add(vec.arg(me.radian).scale(16))
+                    me.p = me.p.add(vec.arg(me.radian).scale(16))
                     yield
                     yield
                 }
@@ -137,7 +137,7 @@ class Escort2 extends Enemy {
             })
             .g(function* (me) {
                 while (1) {
-                    me.p.add(vec.arg(me.radian).scale(12))
+                    me.p = me.p.add(vec.arg(me.radian).scale(12))
                     yield
                     yield
                 }

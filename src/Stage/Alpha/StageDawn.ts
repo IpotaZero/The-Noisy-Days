@@ -39,9 +39,9 @@ export default class extends Stage {
         g.enemies.push(rei, ...cores)
 
         yield* this.text("「こんにちは、<br>シオン・シマ。」", { name: "レイ" })
-        yield* this.text("「なっ……なんでアンタが。」", { name: "シオン" })
+        yield* this.text("「……どうして。」", { name: "シオン" })
         yield* this.text("「あなたの気持ちが知りたくて。」", { name: "レイ" })
-        yield* this.text("「……家へ帰るんだ。子供が使いこなせるものじゃあない。そもそも誰が……」", { name: "シオン" })
+        yield* this.text("「……もうやめるんだ。子供が使いこなせるものじゃあない。そもそも誰が……」", { name: "シオン" })
         yield* this.text("「使いこなす必要はないわ。使われるだけ。あなたと同様に。」", { name: "レイ" })
         yield* this.text("「まさかっ人工知能か!? そんなもの! 人を承認するだけの道具にするなんて、絶対にやっちゃいけない事なんだ!」", { name: "シオン" })
         yield* this.text("「ふははっ、相変わらず勘が良いのね。さあ、行きましょう。分かり合いましょう?」", { name: "レイ" })
@@ -73,8 +73,7 @@ export default class extends Stage {
         this.changeBackground("asset/background/black.png")
         yield* this.wait(30)
 
-        yield* this.text("アオは死んだ。")
-        yield* this.text("頭を失ったTAMAMUSHIは烏合の衆と化し瓦解した。")
+        yield* this.text("アオの死によって、頭を失った組織は分裂し、崩壊した。")
         yield* this.text("玉虫色が、黒く塗りつぶされていく。")
         yield* this.text("だが、一つだけ勝ち取ったものがあった。当局は反政府主義の凝集をリスクと認識し、一部地域でのSILOの導入を見送ったのだ。")
         yield* this.text("完全な単色化は起きなかった。")
@@ -85,7 +84,15 @@ export default class extends Stage {
         yield* this.text("「……。」", { name: "レイ" })
 
         yield* this.text("混ざり合えない、分かり合えない、<ruby>摩擦<rt>ノイズ</rt></ruby>だらけの、斑のある鈍色の都市。")
-        yield* this.text("「さようなら。レイ。」", { name: "シオン" })
+        yield* this.text("「レイ。」", { name: "シオン" })
+        yield* this.text("「あたしは、許すよ。」", { name: "シオン" })
+        yield* this.text("「……何を。」", { name: "レイ" })
+        yield* this.text("「アンタに、アンタたちに傷つけられたこと。」", { name: "シオン" })
+        yield* this.text("「だから、」", { name: "シオン" })
+        yield* this.text("「さようなら。」", { name: "シオン" })
+        yield* this.text("「……。」", { name: "レイ" })
+        yield* this.text("「…………。」", { name: "レイ" })
+        yield* this.text("「………………。」", { name: "レイ" })
         yield* this.text("「……さようなら。」", { name: "レイ" })
         yield* this.text("分かり合えなかったら、サヨナラしましょう。")
 
@@ -103,6 +110,14 @@ export default class extends Stage {
         // これは前向きな諦めで、傷つけられたことを許すことなんだ
         // もう二度と出会いませんように
         // これは、許せるようになる物語?
+
+        // ガンダムは「人はいつか分かり合える」
+        // ガンダムSEEDは「人は分かり合おうとしなければならない」
+        // エヴァは「人は分かり合えないけど、傷つくことを避けていては何にもならない」
+        // けど、やっぱり、傷つけられた恨みを忘れることはできなくて、それならいっそ出会わなかった方が幸せだったのでは?
+        // でも、それもダメだって歴史が証明している。
+        // ……。
+        // みんながちょっとずつ傷つけあう。傷ついたうえで、それを許しあう。摩擦だらけの世界。
     }
 }
 

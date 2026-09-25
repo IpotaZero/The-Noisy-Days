@@ -1,0 +1,10 @@
+.memo-paper {
+    width: 100%;
+    height: 100%;
+}
+
+#memo-end {
+    .options {
+        width: 40%;
+    }
+}

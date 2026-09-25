@@ -113,7 +113,7 @@ class TrailFunnel extends Enemy {
     ) {
         // 充電時間を 240〜600f の範囲で各機にばらつかせる
         const charge = 240 + index * 20
-        super(20, 20, new EnemyRendererFunnel(), { remainingCharge: charge })
+        super(10, 20, new EnemyRendererFunnel(), { remainingCharge: charge })
 
         // 各機の軌跡の長さも少し変える（8〜20f）
         this.trailFrames = 180 + Math.floor(Math.sin(index) * 90)

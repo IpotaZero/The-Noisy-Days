@@ -343,3 +343,12 @@ button {
         }
     }
 }
+
+.memo-button {
+    width: 40%;
+    font-size: 1em;
+
+    &:disabled {
+        opacity: 0.5;
+    }
+}

@@ -94,6 +94,9 @@ function createActPage(chapterName: string, act: Act): string {
 
             <div class="options" data-direction="column">
                 ${act["stages"].map(createStageButton).join("")}
+                <button class="memo-button" data-memo-chapter="${chapterName}" data-memo-act="${act["act-name"]}">
+                    マスの手記
+                </button>
             </div>
 
             <div class="options" data-direction="row"><button data-back>Back</button></div>
