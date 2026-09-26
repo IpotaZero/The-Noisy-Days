@@ -1,8 +1,11 @@
+import { g } from "../../global"
 import { isSmartPhone } from "../../utils/Functions/isSmartPhone"
 import { Bullet } from "./Bullet"
+import { BulletGpuBatchRenderer } from "./BulletGpuBatchRenderer"
 
 export class BulletDrawer {
     private readonly cache = new Map<string, HTMLCanvasElement>()
+    private readonly gpu = BulletGpuBatchRenderer.tryCreate()
 
     private getHalfCanvasSize(bullet: Bullet) {
         switch (bullet.appearance) {
@@ -47,15 +50,42 @@ export class BulletDrawer {
             this.cache.set(hash, offscreenCanvas)
         }
 
+        const rotation = this.getEffectiveRotation(bullet)
+
+        if (this.gpu?.queue(hash, offscreenCanvas, bullet.p.x, bullet.p.y, rotation, bullet.alpha, halfCanvasSize)) {
+            return
+        }
+
+        this.drawSpriteDirectly(bullet, ctx, offscreenCanvas, halfCanvasSize, rotation)
+    }
+
+    /**
+     * queue()で溜め込んだ弾をまとめてWebGLで描画し、メインのCanvas2Dへ合成する。
+     * 毎フレーム、弾のforEachの直後に1回呼ぶ想定。
+     */
+    public flush(ctx: CanvasRenderingContext2D): void {
+        const canvas = this.gpu?.render()
+        if (canvas) ctx.drawImage(canvas, -g.width / 2, -g.height / 2, g.width, g.height)
+    }
+
+    // Donut と Ball は回転させない（見た目が変わらないため）
+    private getEffectiveRotation(bullet: Bullet): number {
+        if (bullet.appearance === Bullet.Appearance.Donut || bullet.appearance === Bullet.Appearance.Ball) return 0
+        return bullet.radian
+    }
+
+    // WebGLが使えない環境や、アトラスが満杯だった弾の救済策
+    private drawSpriteDirectly(
+        bullet: Bullet,
+        ctx: CanvasRenderingContext2D,
+        offscreenCanvas: HTMLCanvasElement,
+        halfCanvasSize: number,
+        rotation: number,
+    ) {
         ctx.save()
         ctx.globalAlpha = bullet.alpha
         ctx.translate(bullet.p.x, bullet.p.y)
-
-        // Donut と Ball は回転させない（見た目が変わらないため）
-        if (bullet.appearance !== Bullet.Appearance.Donut && bullet.appearance !== Bullet.Appearance.Ball) {
-            ctx.rotate(bullet.radian)
-        }
-
+        ctx.rotate(rotation)
         ctx.drawImage(offscreenCanvas, -halfCanvasSize, -halfCanvasSize)
         ctx.restore()
     }

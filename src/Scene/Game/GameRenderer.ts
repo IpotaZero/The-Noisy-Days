@@ -18,6 +18,7 @@ export class GameRenderer {
 
         g.player.draw(this.ctx)
         g.bullets.forEach((b) => this.drawer.draw(b, this.ctx))
+        this.drawer.flush(this.ctx)
         g.enemies.forEach((e) => e.draw(this.ctx))
 
         this.ctx.restore()
