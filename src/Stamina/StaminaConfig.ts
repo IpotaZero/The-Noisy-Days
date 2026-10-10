@@ -3,5 +3,5 @@ export const StaminaConfig = {
     MAX: 8,
 
     /** スタミナが1回復するのにかかる時間(ms) */
-    RECOVER_INTERVAL_MS: 5 * 60 * 1000,
+    RECOVER_INTERVAL_MS: 144000,
 } as const
